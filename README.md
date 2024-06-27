@@ -28,6 +28,10 @@ For example, think of a "Money" plugin that delegates the "Currency" management 
 
 As you can infer from the preceding descriptions, the ng-xtend framework heavily relies on types. Any data manipulated in a ng-xtendable application manipulates data with a type.
 
+With the type, ng-xtend selects the right plugin and invokes it. As mentioned, a plugin can be used to display or edit a certain type in the UI, or provides possible actions to the type. The actions will be displayed as buttons the user can click.
+
+Upon loading, the plugin registers itself to ng-xtend and provides the list of types and actions it supports.
+
 A plugin can add additional types, however to keep compatiblity the most used ones are defined in this list.
 Whenever encountering a certain type, ng-xtend will look for the right plugin depending on the context, and call it. This happens without the host knowing the plugin.
 

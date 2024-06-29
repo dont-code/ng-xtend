@@ -302,6 +302,11 @@
       "packageName": "xt-type",
       "projectFolder": "libs/xt-type",
       "shouldPublish": true
+    },
+    {
+      "packageName": "xt-components",
+      "projectFolder": "libs/xt-components",
+      "shouldPublish": true
     }
     // {
     //   /**

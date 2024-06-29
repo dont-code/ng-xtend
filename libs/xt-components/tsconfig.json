@@ -25,7 +25,7 @@
     ],
     "paths": {
       "xt-components": [
-        "./dist/xt-components"
+        "./projects/xt-components/src/public-api.ts"
       ]
     }
   },

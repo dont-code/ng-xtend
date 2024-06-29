@@ -9,7 +9,7 @@ import { NgComponentOutlet } from '@angular/common';
   templateUrl: './test-component.component.html',
   styleUrl: './test-component.component.scss'
 })
-export class TestComponentComponent {
+export class TestComponent {
 
   myComponent = signal (XtComponentsComponent);
 

@@ -36,6 +36,9 @@ importers:
       '@angular/router':
         specifier: ~18.0.5
         version: 18.0.5(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1))(@angular/platform-browser@18.0.5(@angular/animations@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)))(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1)))(rxjs@7.8.1)
+      primeng:
+        specifier: ~17.18.2
+        version: 17.18.2(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1))(@angular/forms@18.0.5(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1))(@angular/platform-browser@18.0.5(@angular/animations@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)))(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1)))(rxjs@7.8.1))(rxjs@7.8.1)
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -5325,6 +5328,15 @@ packages:
   pretty-ms@9.0.0:
     resolution: {integrity: sha512-E9e9HJ9R9NasGOgPaPE8VMeiPKAyWR5jcFpNnwIejslIhWqdqOrb2wShBsncMPUb+BcCd2OPYfh7p2W6oemTng==}
     engines: {node: '>=18'}
+
+  primeng@17.18.2:
+    resolution: {integrity: sha512-2uux//0AOj/EwiOQHmUVFst+9dtf4duNLI+Oo6vN3HLXoQF+Eax5Mfi5eHh+EDSJMFCrzeCUma0N2Nj5pNpSHg==}
+    peerDependencies:
+      '@angular/common': ^17.0.0 || ^18.0.0
+      '@angular/core': ^17.0.0 || ^18.0.0
+      '@angular/forms': ^17.0.0 || ^18.0.0
+      rxjs: ^6.0.0 || ^7.8.1
+      zone.js: ~0.14.0
 
   proc-log@3.0.0:
     resolution: {integrity: sha512-++Vn7NS4Xf9NacaU9Xq3URUuqZETPsf8L4j5/ckhaRYsfPeRyzGw+iDjFhV/Jr3uNmTvvddEJFWh5R1gRgUH8A==}
@@ -12391,6 +12403,14 @@ snapshots:
   pretty-ms@9.0.0:
     dependencies:
       parse-ms: 4.0.0
+
+  primeng@17.18.2(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1))(@angular/forms@18.0.5(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1))(@angular/platform-browser@18.0.5(@angular/animations@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)))(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1)))(rxjs@7.8.1))(rxjs@7.8.1):
+    dependencies:
+      '@angular/common': 18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1)
+      '@angular/core': 18.0.5(rxjs@7.8.1)
+      '@angular/forms': 18.0.5(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1))(@angular/platform-browser@18.0.5(@angular/animations@18.0.5(@angular/core@18.0.5(rxjs@7.8.1)))(@angular/common@18.0.5(@angular/core@18.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@18.0.5(rxjs@7.8.1)))(rxjs@7.8.1)
+      rxjs: 7.8.1
+      tslib: 2.6.3
 
   proc-log@3.0.0: {}
 

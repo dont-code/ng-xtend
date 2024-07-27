@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TestComponent } from './test-component.component';
+import { TestComponent } from './test.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
-describe('TestComponentComponent', () => {
+describe('TestComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 

@@ -1,0 +1,15 @@
+<p>Testing components</p>
+
+<label for="switcher">Switch component:</label>
+<input id="switcher" type="checkbox" (change)="switchComponent($event)" />
+
+<h1>Testing Inline readonly</h1>
+<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', true, true)}" />
+<h1>Testing Inline editable</h1>
+<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', true, false)}" />
+
+<h1>Testing FullView readonly</h1>
+<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', false, true)}" />
+
+<h1>Testing FullView editable</h1>
+<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', false, false)}" />

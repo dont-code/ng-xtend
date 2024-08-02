@@ -5,11 +5,16 @@
 
 <h1>Testing Inline readonly</h1>
 <ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', true, true)}" />
+
 <h1>Testing Inline editable</h1>
+<form>
 <ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', true, false)}" />
+</form>
 
 <h1>Testing FullView readonly</h1>
 <ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', false, true)}" />
 
 <h1>Testing FullView editable</h1>
-<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', false, false)}" />
+<form>
+    <ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', false, false)}" />
+</form>

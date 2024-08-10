@@ -2,7 +2,7 @@ import { JsonPipe, NgComponentOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { XtContext, XtCurrencyComponent, XtOtherComponent } from 'xt-components';
+import { XtBaseContext, XtContext, XtCurrencyComponent, XtOtherComponent } from 'xt-components';
 
 @Component({
   selector: 'app-xt-form-test',
@@ -14,7 +14,7 @@ import { XtContext, XtCurrencyComponent, XtOtherComponent } from 'xt-components'
 export class XtFormTestComponent {
 
   mainForm = this.builder.group ({
-    currency: [''],
+    currency: [123.4],
     other: ['']
   });
 
@@ -34,8 +34,9 @@ export class XtFormTestComponent {
     return XtOtherComponent;
   }
 
-  contextFor (subComponentName:string, inlineView:boolean, readOnly:boolean): XtContext {
-    return {displayMode:inlineView?'INLINE_VIEW':'FULL_VIEW', readOnly, formGroup:this.mainForm};
+  contextFor (subComponentName:string, inlineView:boolean, readOnly:boolean): XtContext<any> {
+    const displayType=readOnly?(inlineView?'INLINE_VIEW':'FULL_VIEW'):'FULL_EDITABLE';
+    return new XtBaseContext(displayType, this.mainForm, subComponentName);
   }
 
 

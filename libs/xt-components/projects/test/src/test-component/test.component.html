@@ -4,17 +4,12 @@
 <input id="switcher" type="checkbox" (change)="switchComponent($event)" />
 
 <h1>Testing Inline readonly</h1>
-<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', true, true)}" />
-
-<h1>Testing Inline editable</h1>
-<form>
-<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', true, false)}" />
-</form>
+<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor (true, true)}" />
 
 <h1>Testing FullView readonly</h1>
-<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', false, true)}" />
+<ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor (false, true)}" />
 
-<h1>Testing FullView editable</h1>
-<form>
-    <ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ('subComponent', false, false)}" />
+<form [formGroup]="mainForm">
+    <h1>Testing FullView editable</h1>
+    <ng-container *ngComponentOutlet="myComponent(); inputs: {context:contextFor ( false, false, 'currency')}" />
 </form>

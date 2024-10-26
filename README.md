@@ -16,15 +16,15 @@ It's an Angular library allowing you to:
 - Dynamically load and install plugins in your Angular application
 - Easily develops Plugins that will be automatically recognized and use at the right time and the right place.
 
-## What kind of plugins is supported
+## What kind of plugins will be supported
 
 3 types of plugins will be supported as a first step
 - Simple Component: With limited effort and intrusion in your code, you can transform a regular Angular component into a pluggable one. Ideal for providing view or display of a custom type.
-- Complex Component: With some additional effortt, this type Angular Component can itself provide xtend-points, filled by ng-xtend with the right plugin. Ideal for displaying complex information, where you want to delegate actions or display.
+- Complex Component: With some additional effort, this type Angular Component can itself provide xtend-points, filled by ng-xtend with the right plugin. Ideal for displaying complex information, where you want to delegate actions or display.
 For example, think of a "Money" plugin that delegates the "Currency" management to another plugin, without even knowing it.
 - Action Components: Provides actionable services on types without User Interface elements.
 
-## How is it working ?
+## How will it work ?
 
 As you can infer from the preceding descriptions, the ng-xtend framework heavily relies on types. Any data manipulated in a ng-xtendable application manipulates data with a type.
 
@@ -38,5 +38,17 @@ Whenever encountering a certain type, ng-xtend will look for the right plugin de
 The host only provides xtend-points in their application, like "here you can display buttons of all actions of this 'type'", or "here I need the user to enter this 'type', please find the right plugin".
 
 As well, plugins can alter the application menus and some other customizations.
+
+## What is the roadmap ?
+
+- [x] Insertion of simple component dynamically 
+- [ ] Registry of plugins
+- [ ] Dynamic loading of plugins
+- [ ] Easier support for complex components
+- [ ] v1 !
+- [ ] Enhanced component selection criteria (xt-type, context)
+- [ ] Support for action components
+- [ ] v2 !
+
 
 ## Thank you

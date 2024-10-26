@@ -1,4 +1,6 @@
+
 <h1>Form Editor</h1>
+
 <form [formGroup]="mainForm">
     <ng-container *ngComponentOutlet="currencyComponent(); inputs: {context:contextFor ('currency', false, false)}" />
     <ng-container *ngComponentOutlet="otherComponent(); inputs: {context:contextFor ('other', false, false)}" />

@@ -2,7 +2,8 @@ import { JsonPipe, NgComponentOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { XtBaseContext, XtContext, XtCurrencyComponent, XtOtherComponent } from 'xt-components';
+import { XtBaseContext, XtContext } from 'xt-components';
+import {XtCurrencyComponent, XtOtherComponent} from 'xt-sample-plugins';
 
 @Component({
   selector: 'app-xt-form-test',
@@ -14,7 +15,7 @@ import { XtBaseContext, XtContext, XtCurrencyComponent, XtOtherComponent } from 
 export class XtFormTestComponent {
 
   mainForm = this.builder.group ({
-    currency: [123.4],
+    currency: ['EUR'],
     other: ['']
   });
 

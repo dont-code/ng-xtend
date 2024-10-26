@@ -2,9 +2,16 @@
  * Public API Surface of xt-components
  */
 
-export * from './lib/xt-components.service';
-export * from './lib/xt-components.component';
+export * from './lib/xt-component';
 export * from './lib/xt-context';
-export * from './lib/xt-other/xt-other.component';
-export * from './lib/xt-currency/xt-currency.component';
+export * from './lib/xt-resolved-component';
+export * from './lib/resolver/xt-resolver';
+export * from './lib/registry/xt-plugin-registry'
+export * from './lib/plugin/xt-plugin-info'
 
+export * from './lib/angular/xt-tokens';
+export * from './lib/angular/xt-resolver.service';
+
+export * from './lib/render/xt-render.component';
+export * from './lib/xt-simple/xt-simple.component';
+export * from './lib/xt-composite/xt-composite.component';

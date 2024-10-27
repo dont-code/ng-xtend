@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtCurrencyComponent, XtOtherComponent } from 'xt-sample-plugins';
 
 @Component({
-  selector: 'app-test-component',
+  selector: 'app-plugin-tester-component',
   standalone: true,
   imports: [NgComponentOutlet, ReactiveFormsModule, XtCurrencyComponent, XtOtherComponent],
   templateUrl: './test.component.html',

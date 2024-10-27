@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { XtBaseContext, XtContext } from 'xt-components';
 
 @Component({
-  selector: 'app-xt-form-test',
+  selector: 'app-xt-form-plugin-tester',
   standalone: true,
   imports: [NgComponentOutlet, ReactiveFormsModule, ButtonModule, JsonPipe],
   templateUrl: './xt-form-test.component.html',

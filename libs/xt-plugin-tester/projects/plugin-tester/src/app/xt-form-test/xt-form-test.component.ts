@@ -6,7 +6,7 @@ import { XtBaseContext, XtContext } from 'xt-components';
 import {XtCurrencyComponent, XtOtherComponent} from 'xt-sample-plugins';
 
 @Component({
-  selector: 'app-xt-form-test',
+  selector: 'app-xt-form-plugin-tester',
   standalone: true,
   imports: [NgComponentOutlet, ReactiveFormsModule, ButtonModule, JsonPipe],
   templateUrl: './xt-form-test.component.html',

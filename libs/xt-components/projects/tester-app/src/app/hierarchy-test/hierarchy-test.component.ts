@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XtRenderComponent, XtBaseContext, XtResolverService } from 'xt-components';
 
 @Component({
-  selector: 'app-hierarchy-test',
+  selector: 'app-hierarchy-plugin-tester',
   standalone: true,
   imports: [ReactiveFormsModule, XtRenderComponent],
   templateUrl: './hierarchy-test.component.html',

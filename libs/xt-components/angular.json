@@ -38,36 +38,36 @@
         }
       }
     },
-    "test": {
+    "tester-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "projects/test",
-      "sourceRoot": "projects/test/src",
+      "root": "projects/tester-app",
+      "sourceRoot": "projects/tester-app/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/test",
-            "index": "projects/test/src/index.html",
-            "browser": "projects/test/src/main.ts",
+            "outputPath": "dist/tester-app",
+            "index": "projects/tester-app/src/index.html",
+            "browser": "projects/tester-app/src/main.ts",
             "preserveSymlinks": true,
             "polyfills": [
             ],
-            "tsConfig": "projects/test/tsconfig.app.json",
+            "tsConfig": "projects/tester-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/test/public"
+                "input": "projects/tester-app/public"
               }
             ],
             "styles": [
-              "projects/test/src/styles.scss"
+              "projects/tester-app/src/styles.scss"
             ],
             "scripts": []
           },
@@ -99,10 +99,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "test:build:production"
+              "buildTarget": "tester-app:build:production"
             },
             "development": {
-              "buildTarget": "test:build:development"
+              "buildTarget": "tester-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -115,16 +115,16 @@
           "options": {
             "polyfills": [
             ],
-            "tsConfig": "projects/test/tsconfig.spec.json",
+            "tsConfig": "projects/tester-app/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/test/public"
+                "input": "projects/tester-app/public"
               }
             ],
             "styles": [
-              "projects/test/src/styles.scss"
+              "projects/tester-app/src/styles.scss"
             ],
             "scripts": []
           }

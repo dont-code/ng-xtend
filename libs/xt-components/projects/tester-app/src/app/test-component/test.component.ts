@@ -4,7 +4,7 @@ import { NgComponentOutlet } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-test-component',
+  selector: 'app-plugin-tester-component',
   standalone: true,
   imports: [NgComponentOutlet, ReactiveFormsModule],
   templateUrl: './test.component.html',

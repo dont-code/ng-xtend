@@ -3,6 +3,6 @@ module.exports = {
     setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
     moduleNameMapper: {
       'xt-components': '<rootDir>/../../dist/xt-components/fesm2022/xt-components.mjs',
-      'sample-plugin': '<rootDir>/../../dist/sample-plugin/fesm2022/sample-plugin.mjs'
-    }
+    },
+    testEnvironment: "@happy-dom/jest-environment"
 };

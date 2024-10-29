@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build test",
+    "build": "ng build tester-app",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/xt-components && ../../node_modules/.bin/jest && cd ../../projects/tester-app && ../../node_modules/.bin/jest "
   },

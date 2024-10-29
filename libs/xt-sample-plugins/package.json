@@ -9,7 +9,8 @@
     "start": "ng serve",
     "build": "ng build sample-plugin",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "cd projects/sample-plugin && ../../node_modules/.bin/jest"
+
   },
   "private": false,
   "dependencies": {

@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build plugin-tester",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "cd projects/plugin-tester && ../../node_modules/.bin/jest"
   },
   "private": false,
   "dependencies": {

@@ -13,10 +13,19 @@
   "commands": [
     {
       "commandKind": "bulk",
+      "name": "build",
+      "summary": "Build all artifacts",
+      "description": "Build all artifacts allowing warning",
+      "enableParallelism": true,
+      "allowWarningsInSuccessfulBuild": true
+    },
+    {
+      "commandKind": "bulk",
       "name": "test",
       "summary": "Run unit tests",
       "description": "Run unit tests",
-      "enableParallelism": true
+      "enableParallelism": true,
+      "allowWarningsInSuccessfulBuild": true
     }
     // {
     //   /**

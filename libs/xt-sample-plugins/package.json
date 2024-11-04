@@ -24,9 +24,9 @@
     "@angular/router": "~18.1.2",
     "xt-components": "workspace:^",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
     "primeng": "~17.18.6",
-    "primeicons": "~7.0.0"
+    "primeicons": "~7.0.0",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.1.2",

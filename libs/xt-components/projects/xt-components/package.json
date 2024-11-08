@@ -1,11 +1,6 @@
 {
   "name": "xt-components",
   "version": "0.0.1",
-  "scripts": {
-    "build": "cd .. && ng build xt-components && ng build tester-app",
-    "watch": "cd .. && ng build --watch --configuration development",
-    "test": "../../node_modules/.bin/jest && cd ../../projects/tester-app && ../../node_modules/.bin/jest "
-  },
   "peerDependencies": {
     "@angular/animations": "^18.1.2",
     "@angular/common": "^18.1.2",
@@ -21,6 +16,5 @@
   },
   "dependencies": {
     "tslib": "^2.3.0"
-  },
-  "sideEffects": false
+  }
 }

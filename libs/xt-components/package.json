@@ -1,7 +1,7 @@
 {
   "name": "xt-components",
   "version": "0.0.0",
-  "main": "dist/xt-components/esm2022/xt-components.mjs",
+  "main": "dist/xt-components/fesm2022/xt-components.mjs",
   "files": ["dist/xt-components"],
   "types": "dist/xt-components/index.d.ts",
   "scripts": {

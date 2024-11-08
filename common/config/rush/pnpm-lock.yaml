@@ -127,6 +127,9 @@ importers:
       xt-components:
         specifier: workspace:^
         version: link:../xt-components
+      xt-sample-plugins:
+        specifier: workspace:^
+        version: link:../xt-sample-plugins
     devDependencies:
       '@angular-builders/jest':
         specifier: ~18.0.0

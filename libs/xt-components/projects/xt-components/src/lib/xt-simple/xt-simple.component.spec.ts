@@ -1,7 +1,7 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { XtSimpleComponent } from './xt-simple.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 describe('XtSimpleComponent', () => {
   let component: XtSimpleComponent;
@@ -12,7 +12,7 @@ describe('XtSimpleComponent', () => {
       imports: [XtSimpleComponent],
       providers: [provideExperimentalZonelessChangeDetection()]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(XtSimpleComponent);
     component = fixture.componentInstance;
@@ -22,4 +22,5 @@ describe('XtSimpleComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

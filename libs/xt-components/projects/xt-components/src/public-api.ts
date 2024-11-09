@@ -15,3 +15,5 @@ export * from './lib/angular/xt-resolver.service';
 export * from './lib/render/xt-render.component';
 export * from './lib/xt-simple/xt-simple.component';
 export * from './lib/xt-composite/xt-composite.component';
+
+export * from './lib/test/xt-unit-test-helper';

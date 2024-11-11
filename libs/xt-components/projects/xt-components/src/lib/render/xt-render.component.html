@@ -1,1 +1,6 @@
-<ng-container *ngComponentOutlet="componentType(); inputs: {context:context ()}" />
+@let form = formGroup();
+@if (form != undefined) {
+  <ng-container *ngComponentOutlet="componentType(); inputs: {context:context ()}" />
+} @else {
+  <ng-container *ngComponentOutlet="componentType(); inputs: {context:context ()}" />
+}

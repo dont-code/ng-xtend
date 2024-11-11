@@ -1,14 +1,20 @@
-import { Component, computed, input, model, Signal, Type } from '@angular/core';
+import { Component, computed, ElementRef, input, model, Signal, Type } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { XtComponent } from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
-import { FormGroup } from '@angular/forms';
+import {
+  FormControlName,
+  FormGroup,
+  FormGroupDirective,
+  ReactiveFormsModule
+} from '@angular/forms';
 
 @Component({
   selector: 'xt-render',
   standalone: true,
   imports: [
-    NgComponentOutlet
+    NgComponentOutlet,
+    ReactiveFormsModule
   ],
   templateUrl: './xt-render.component.html',
   styleUrl: './xt-render.component.css'
@@ -20,12 +26,17 @@ export class XtRenderComponent<T> {
 
   // Either we set the value directly
   value= model<T> ();
-  // Or it's in edit mode using a formgroup
-  form = input<FormGroup> ();
-  name = input<string> ();
+  formGroup=input<FormGroup>();
+  subName= input<string>();
+
+  constructor(private elementRef:ElementRef) {
+
+  }
 
   context: Signal<XtContext<T>> = computed(() => {
-    const ret= new XtBaseContext<T>(this.displayMode(), this.form(), this.name());
+    let form = this.formGroup();
+
+    const ret= new XtBaseContext<T>(this.displayMode(), form, this.subName());
     if (!ret.isInForm()) ret.setNonFormValue(this.value());
     return ret;
   });

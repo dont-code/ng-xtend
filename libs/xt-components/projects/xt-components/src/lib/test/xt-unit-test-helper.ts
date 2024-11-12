@@ -1,4 +1,4 @@
-import { XtResolverService } from 'xt-components';
+import { XtResolverService } from '../angular/xt-resolver.service';
 import { inject } from '@angular/core';
 
 export class XtUnitTestHelper {

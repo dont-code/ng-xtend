@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { XtRenderComponent } from './xt-render.component';
-import { Component, inject, input, provideExperimentalZonelessChangeDetection, signal, Type } from '@angular/core';
+import { Component, inject, provideExperimentalZonelessChangeDetection, signal, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { XtComponent} from '../xt-component';
+import { XtComponent } from '../xt-component';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 describe('XtRenderComponent', () => {
 

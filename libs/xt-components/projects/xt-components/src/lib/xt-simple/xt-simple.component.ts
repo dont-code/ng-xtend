@@ -4,6 +4,10 @@ import { XtContext } from '../xt-context';
 import {XtComponent} from "../xt-component";
 
 
+/**
+ * An XtSimpleComponent just displays the given value or element in a form.
+ * If you need to dynamically embed other XtComponents to display sub elements, then please use the XtCompositeComponent
+ */
 @Component({
   standalone: true,
   imports: [],

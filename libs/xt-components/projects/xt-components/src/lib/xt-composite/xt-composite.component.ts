@@ -9,6 +9,9 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrl: './xt-composite.component.css'
 })
 export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
+  /**
+   * We need to create a new form group to manage the sub elements.
+   */
   override formGroup = computed<FormGroup> (() => {
     const context = this.context();
     if (context==null) throw new Error ('No context while try to calculate FormGroup '+ this.componentDescriptor());
@@ -24,4 +27,11 @@ export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
     return ret;
   });
 
+  /**
+   * Helper function to calculate the sub context
+   * @param subName
+   */
+  subContext (subName:string) {
+    return this.context()?.subContext(subName);
+  }
 }

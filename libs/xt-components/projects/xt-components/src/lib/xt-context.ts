@@ -20,7 +20,7 @@ export type XtContext<T> = {
 
     value ():T | null | undefined;
 
-    subContext(subName: string | undefined | null, typeResolver: XtTypeResolver<string>): XtContext<T>;
+    subContext(subName: string | undefined | null, typeResolver?: XtTypeResolver<string>): XtContext<T>;
 
     valueType?:string;
 
@@ -46,11 +46,11 @@ export class XtBaseContext<T> implements XtContext<T>{
     valueType?:string;
 
     /**
-     * 
-     * @param displayMode 
-     * @param readOnly 
-     * @param parentGroup 
-     * @param controlName 
+     *
+     * @param displayMode
+     * @param readOnly
+     * @param parentGroup
+     * @param controlName
      */
 
     constructor (displayMode: XtDisplayMode,parentGroup?: FormGroup, controlName?: string)
@@ -67,7 +67,7 @@ export class XtBaseContext<T> implements XtContext<T>{
     }
 
     isInForm (): boolean {
-        return (this.formControlName != null) && ((this.parentFormGroup!=null) || (this.formGroup!=null));
+        return ((this.formControlName != null) && (this.formGroup()!=null));
     }
 
     formControlNameOrNull():string|null {

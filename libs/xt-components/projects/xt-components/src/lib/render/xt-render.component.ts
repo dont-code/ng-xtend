@@ -1,14 +1,14 @@
-import { Component, computed, ElementRef, input, model, Signal, Type } from '@angular/core';
+import { Component, computed, input, model, Signal, Type } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { XtComponent } from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
-import {
-  FormControlName,
-  FormGroup,
-  FormGroupDirective,
-  ReactiveFormsModule
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+/**
+ * Offers a nice and easy to dynamically embed a component.
+ * You set the type, the display mode, and either the value or the formgroup & subName to use.
+ * XtRender will then instantiate the component, bind it to the value or form, and display it.
+ */
 @Component({
   selector: 'xt-render',
   standalone: true,
@@ -26,10 +26,11 @@ export class XtRenderComponent<T> {
 
   // Either we set the value directly
   value= model<T> ();
+  // Or we are inside a Form
   formGroup=input<FormGroup>();
   subName= input<string>();
 
-  constructor(private elementRef:ElementRef) {
+  constructor() {
 
   }
 

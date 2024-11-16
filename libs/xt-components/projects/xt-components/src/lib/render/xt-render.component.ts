@@ -37,8 +37,8 @@ export class XtRenderComponent<T> {
   context: Signal<XtContext<T>> = computed(() => {
     let form = this.formGroup();
 
-    const ret= new XtBaseContext<T>(this.displayMode(), form, this.subName());
+    const ret= new XtBaseContext<T>(this.displayMode(), this.subName(), form);
     if (!ret.isInForm()) ret.setNonFormValue(this.value());
-    return ret;
+    return ret as XtContext<T>;
   });
 }

@@ -21,7 +21,7 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
   });
 
   formControlNameIfAny = computed<string | undefined> (() => {
-    return this.context()?.formControlName;
+    return this.context()?.subName;
   });
 
   formGroupIfAny = computed<FormGroup | undefined> (() => {
@@ -35,7 +35,7 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
   });
 
   formControlName = computed<string> (() => {
-    const ret = this.context()?.formControlName;
+    const ret = this.context()?.subName;
     if (ret==null) throw new Error ('No form groups in this component of type '+this.componentDescriptor());
     return ret;
   });

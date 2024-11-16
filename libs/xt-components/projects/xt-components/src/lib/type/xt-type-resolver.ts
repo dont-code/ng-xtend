@@ -1,38 +1,42 @@
 import { XtTypeInfo } from "../plugin/xt-plugin-info";
+import { XtContext } from 'xt-components';
 
 /**
  * Determines the type of elements based on a hierarchy of type
  */
 export type XtTypeResolver<TypeContext> = {
 
-    findType (typeInfo:TypeContext, subName?:string, value?:any):any|undefined;
+    findType (typeInfo:TypeContext|null|undefined, subName?:string, value?:any):string|null|undefined;
 
     canUpdate (): boolean;
 }
 
 export type XtUpdatableTypeResolver<TypeContext> = XtTypeResolver<TypeContext> & {
-    addType (typeInfo:TypeContext, type:XtTypeInfo):void;
+    addType (typeName:string, type:XtTypeInfo):void;
 
 }
 
-export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver<string> {
+export class XtTypeHierarchyResolver<T> implements XtUpdatableTypeResolver<XtContext<T>> {
     types= new Map<string, XtTypeHierarchy> ();
 
-    addType (typeInfo:string, type:XtTypeInfo):void {
-        this.types.set (typeInfo, fromDescription (type));
+    addType (typeName:string, type:XtTypeInfo):void {
+        this.types.set (typeName, fromDescription (type));
     }
 
     canUpdate(): boolean {
         return true;
     }
 
-    findType(typeInfo: string | null | undefined, subName?: string, value?: any):string | null | undefined {
+    findType(typeInfo: XtContext<T> | null | undefined, subName?: string, value?: any):string | null | undefined {
         if( typeInfo==null)
             return typeInfo;
+        if (typeInfo.valueType==null)
+          return typeInfo.valueType;
+
         if (subName==null) {
-            return typeInfo;
+            return typeInfo.valueType;
         } else {
-            const selectedType = this.types.get(typeInfo);
+            const selectedType = this.types.get(typeInfo.valueType);
             if( (selectedType != null) && (selectedType.children!=null)) {
                 return selectedType.children[subName].type;
             }

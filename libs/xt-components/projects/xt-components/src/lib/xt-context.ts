@@ -5,7 +5,7 @@ export type XtContext<T> = {
 
     displayMode: XtDisplayMode;
 
-    formControlName?: string;
+    subName?: string; // The subName in the parentFormGroup and parentContext
     parentFormGroup?: FormGroup;
     localFormGroup?:FormGroup;
     nonFormvalue?: T | null;
@@ -20,10 +20,11 @@ export type XtContext<T> = {
 
     value ():T | null | undefined;
 
-    subContext(subName: string | undefined | null, typeResolver?: XtTypeResolver<string>): XtContext<T>;
+    subContext(subName: string | undefined | null, typeResolver?: XtTypeResolver<XtContext<T>>): XtContext<T>;
 
     valueType?:string;
 
+    toString (): string;
 }
 
 export type XtDisplayMode = 'INLINE_VIEW'|'FULL_VIEW'|'FULL_EDITABLE';
@@ -34,9 +35,9 @@ export class XtBaseContext<T> implements XtContext<T>{
     /**
      * When editable, the value is stored in a parent formGroup
      */
-    formControlName?: string | undefined;
-    parentFormGroup?: FormGroup<any> | undefined;
-    localFormGroup?: FormGroup<any> | undefined;
+    subName?: string;
+    parentFormGroup?: FormGroup<any>;
+    localFormGroup?: FormGroup<any>;
 
     /**
      * When not editable, the value is here
@@ -53,25 +54,26 @@ export class XtBaseContext<T> implements XtContext<T>{
      * @param controlName
      */
 
-    constructor (displayMode: XtDisplayMode,parentGroup?: FormGroup, controlName?: string)
+    constructor (displayMode: XtDisplayMode,subName?: string, parentGroup?: FormGroup )
     {
         this.displayMode=displayMode;
         this.parentFormGroup=parentGroup;
-        this.formControlName=controlName;
+        this.subName=subName;
     }
 
     setNonFormValue (newValue:T|undefined, type?:string): XtBaseContext<T> {
         this.nonFormvalue=newValue;
-        this.valueType = type;
+        if (type!=undefined)
+          this.valueType = type;
         return this;
     }
 
     isInForm (): boolean {
-        return ((this.formControlName != null) && (this.formGroup()!=null));
+        return ((this.subName != null) && (this.formGroup()!=null));
     }
 
     formControlNameOrNull():string|null {
-        return this.formControlName??null;
+        return this.subName??null;
     }
 
     value ():T | null | undefined {
@@ -80,13 +82,13 @@ export class XtBaseContext<T> implements XtContext<T>{
 
     formControlValue (): T | null | undefined {
         if (this.isInForm()) {
-            return this.parentFormGroup?.value[this.formControlName!];
+            return this.parentFormGroup?.value[this.subName!];
         } else {
             return undefined;
         }
     }
 
-    subContext(subName: string | undefined | null, typeResolver?:XtTypeResolver<string>): XtBaseContext<T> {
+    subContext(subName: string | undefined | null, typeResolver?:XtTypeResolver<XtContext<T>>): XtContext<T> {
         if ((subName==null) || (subName.length==0)) {
             return this;
         } else {
@@ -102,10 +104,11 @@ export class XtBaseContext<T> implements XtContext<T>{
                 value = (value as any)[subName];
             }
 
-            const ret = new XtBaseContext<T> (this.displayMode, parentGroup, subName);
+            const ret = new XtBaseContext<T> (this.displayMode, subName, parentGroup);
             ret.nonFormvalue=value;
-            if ((this.valueType!=null) && (typeResolver!=null))
-                ret.valueType=typeResolver.findType(this.valueType, subName, this.value());
+            if ((this.valueType!=null) && (typeResolver!=null)) {
+                ret.valueType=typeResolver.findType(this, subName, this.value())??undefined;
+            }
             return ret;
         }
     }
@@ -113,5 +116,15 @@ export class XtBaseContext<T> implements XtContext<T>{
     formGroup (): FormGroup|undefined {
         return this.localFormGroup??this.parentFormGroup;
     }
+
+  toString():string {
+      let ret='XtContext named ';
+      ret += this.subName??'None';
+      ret += ' with type ';
+      ret += this.valueType??'None';
+      ret +=' with value ';
+      ret += this.nonFormvalue??'Unknown';
+      return ret;
+  }
 }
 

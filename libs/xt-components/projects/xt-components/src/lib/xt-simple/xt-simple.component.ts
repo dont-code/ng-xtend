@@ -25,7 +25,7 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
   });
 
   formGroupIfAny = computed<FormGroup | undefined> (() => {
-    return this.context()?.parentFormGroup;
+    return this.context()?.formGroup();
   })
 
   formGroup = computed<FormGroup> (() => {

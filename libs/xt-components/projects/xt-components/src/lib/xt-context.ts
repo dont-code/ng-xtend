@@ -37,7 +37,10 @@ export class XtBaseContext<T> implements XtContext<T>{
      */
     subName?: string;
     parentFormGroup?: FormGroup<any>;
-    localFormGroup?: FormGroup<any>;
+  /**
+   * localFormGroup exists only for composite components, simple components are only managing the subName'd ccontrol of the parentFormGroup
+   */
+  localFormGroup?: FormGroup<any>;
 
     /**
      * When not editable, the value is here
@@ -92,7 +95,7 @@ export class XtBaseContext<T> implements XtContext<T>{
         if ((subName==null) || (subName.length==0)) {
             return this;
         } else {
-            let parentGroup = this.parentFormGroup;
+            let parentGroup = this.formGroup();
             let value = this.nonFormvalue;
             // Recalculate parentGroup and formControlName and value if needed.
             if (parentGroup!=null) {

@@ -77,7 +77,7 @@ export class HostTestFormComponent {
 @Component({
   selector:'test-typed-host',
   standalone:true,
-  imports: [CommonModule, XtRenderComponent, XtRenderSubComponent],
+  imports: [CommonModule, XtRenderSubComponent],
   template: '<h1>Test Typed Component</h1> <xt-render-sub [context]="context()" ></xt-render-sub> '
 
 })
@@ -104,14 +104,15 @@ export class HostTestTypedComponent {
 @Component({
   selector:'test-typed-form-host',
   standalone:true,
-  imports: [CommonModule, XtRenderComponent, ReactiveFormsModule, XtRenderSubComponent],
+  imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent],
   template: '<h1>Test Typed Form Component</h1> <form [formGroup]="parentFormGroup"> <xt-render-sub [context]="context()"></xt-render-sub></form>'
 })
 export class HostTestTypedFormComponent {
   builder = inject(FormBuilder);
   resolver = inject(XtResolverService);
 
-  controlName = input.required<string>();
+  static readonly CONTROL_NAME='ForTest';
+
   valueType = input<string> ();
   // You can send the description to be used in a FormBuilder to create the formgroup;
   formDescription = input<any> ({ });
@@ -122,28 +123,29 @@ export class HostTestTypedFormComponent {
 
   createdFormGroup: FormGroup|null = null;
 
-  computedFormGroup () {
+  computedFormGroup = computed(() =>{
     if( this.createdFormGroup==null) {
       const formGroup=this.formGroup();
       this.createdFormGroup=formGroup??this.builder.group(this.formDescription());
-      this.parentFormGroup.addControl(this.controlName(), this.createdFormGroup);
+      this.parentFormGroup.addControl(HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
     }
     return this.createdFormGroup;
-  }
+  });
 
   context = computed( () => {
-    const ret = new XtBaseContext('FULL_EDITABLE', this.controlName(), this.computedFormGroup());
+    this.computedFormGroup(); // Make sure the subformgroups are created
+    const ret = new XtBaseContext('FULL_EDITABLE', HostTestTypedFormComponent.CONTROL_NAME, this.parentFormGroup);
     ret.valueType=this.valueType();
     return ret;
   });
 
-  patchValue (newVal:any) {
+  patchValue (controlName:string, newVal:any) {
     const patch:{[key:string]:any}={};
-    patch[this.controlName()]=newVal;
-    this.parentFormGroup.patchValue(patch);
+    patch[controlName]=newVal;
+    this.computedFormGroup().patchValue(patch);
   }
 
-  retrieveValue (): any {
-    return this.parentFormGroup.value[this.controlName()];
+  retrieveValue (controlName:string): any {
+    return this.computedFormGroup().value[controlName];
   }
 }

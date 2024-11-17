@@ -20,9 +20,13 @@ export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
     if (context==null) throw new Error ('No context while try to calculate FormGroup '+ this.componentDescriptor());
     let ret= context.localFormGroup;
     if ((ret==null) && (context.parentFormGroup!=null) && (context.subName!=null)) {
-      ret= new FormGroup ({});
-      context.parentFormGroup.addControl(context.subName, ret);
-      context.localFormGroup=ret;
+        if (context.parentFormGroup.contains(context.subName)) {
+          context.localFormGroup = context.parentFormGroup.get(context.subName) as FormGroup;
+        } else {
+          context.localFormGroup= new FormGroup ({});
+          context.parentFormGroup.addControl(context.subName, context.localFormGroup);
+      }
+      ret=context.localFormGroup;
     } else {
       throw new Error ('No parent form or component name '+this.componentDescriptor());
     }

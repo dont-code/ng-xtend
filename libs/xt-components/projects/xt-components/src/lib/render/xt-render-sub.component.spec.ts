@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { XtCompositeComponent } from '../xt-composite/xt-composite.component';
 import { expect } from '@jest/globals';
-import { HostTestTypedComponent } from '../test/xt-test-helper-components';
+import { HostTestTypedComponent, HostTestTypedFormComponent } from '../test/xt-test-helper-components';
 import { XtResolverService } from '../angular/xt-resolver.service';
 
 describe('XtRenderSubComponent', () => {
@@ -47,32 +47,50 @@ describe('XtRenderSubComponent', () => {
 
   });
 
-/*  it('should support forms', () => {
-    const hostFixture = TestBed.createComponent(HostTestFormComponent);
-    hostFixture.componentRef.setInput('type', TestMoneyTypedComponent);
+  it('should support forms by type', () => {
+    const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
+    hostFixture.componentRef.setInput('formDescription', {
+        amount: [12.4],
+        currency:['EUR']
+    });
+    hostFixture.componentRef.setInput('valueType', 'TestMoney');
+
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();
     hostFixture.detectChanges();
 
-    const text = hostFixture.nativeElement.querySelector('#text_input') as HTMLInputElement;
-    expect(text.value).toEqual("EUR");
+    const currencyText = hostFixture.nativeElement.querySelector('#currency_input') as HTMLInputElement;
+    expect(currencyText.value).toEqual("EUR");
 
-    host.updateValue("USD");
-    hostFixture.detectChanges();
-    expect(text.value).toEqual("USD");
+    const amountText = hostFixture.nativeElement.querySelector('#amount_input') as HTMLInputElement;
+    expect(amountText.value).toEqual("12.4");
 
-    text.value = "GBP";
-    text.dispatchEvent(new Event('input'));
+    host.patchValue('currency',"USD");
     hostFixture.detectChanges();
-    expect(host.retrieveValue()).toEqual("GBP");
-  });*/
+    expect(currencyText.value).toEqual("USD");
+
+    host.patchValue('amount', 5);
+    hostFixture.detectChanges();
+    expect(amountText.value).toEqual("5");
+
+    currencyText.value = "GBP";
+    currencyText.dispatchEvent(new Event('input'));
+    hostFixture.detectChanges();
+    expect(host.retrieveValue('currency')).toEqual("GBP");
+
+    amountText.value = "14";
+    amountText.dispatchEvent(new Event('input'));
+    hostFixture.detectChanges();
+    expect(host.retrieveValue('amount')).toEqual(14);
+
+  });
 });
 
 @Component({
   selector: 'test-currency',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  template: '@if (isInForm()) {<ng-container [formGroup]="formGroup()"><input id="text_input" [name]="formControlName()" type="text" [formControlName]="formControlName()" /></ng-container>} @else {Currency {{context().value()}}}'
+  template: '@if (isInForm()) {<ng-container [formGroup]="formGroup()"><input id="currency_input" [name]="formControlName()" type="text" [formControlName]="formControlName()" /></ng-container>} @else {Currency {{context().value()}}}'
 })
 export class TestCurrencyComponent extends XtSimpleComponent<string> {
 }
@@ -82,7 +100,10 @@ export class TestCurrencyComponent extends XtSimpleComponent<string> {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent],
   template: '@if (isInForm()) {' +
-    '<ng-container [formGroup]="formGroup()"><xt-render-sub [context]="subContext(\'currency\')" /></ng-container>' +
+    '<ng-container [formGroup]="formGroup()">' +
+      '<input id="amount_input" type="number" formControlName="amount" />' +
+      '<xt-render-sub [context]="subContext(\'currency\')" />' +
+    '</ng-container>' +
     '} @else { <h2>Amount: {{context().value().amount}}</h2>' +
     '<h3><xt-render-sub [context]="subContext(\'currency\')" /></h3>' +
     '}'

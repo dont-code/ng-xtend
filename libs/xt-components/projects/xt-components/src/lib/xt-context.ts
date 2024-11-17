@@ -92,7 +92,7 @@ export class XtBaseContext<T> implements XtContext<T>{
         if ((subName==null) || (subName.length==0)) {
             return this;
         } else {
-            let parentGroup = this.parentFormGroup;
+            let parentGroup = this.formGroup();
             let value = this.nonFormvalue;
             // Recalculate parentGroup and formControlName and value if needed.
             if (parentGroup!=null) {

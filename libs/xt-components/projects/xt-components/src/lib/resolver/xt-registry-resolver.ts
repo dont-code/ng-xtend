@@ -23,5 +23,5 @@ export class XtRegistryResolver implements XtResolver {
         }
         return null;
     }
-    
+
 }

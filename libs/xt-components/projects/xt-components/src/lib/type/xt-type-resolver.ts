@@ -1,5 +1,5 @@
 import { XtTypeInfo } from "../plugin/xt-plugin-info";
-import { XtContext } from 'xt-components';
+import { XtContext } from '../xt-context';
 
 /**
  * Determines the type of elements based on a hierarchy of type

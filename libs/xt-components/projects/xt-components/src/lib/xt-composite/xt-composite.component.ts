@@ -1,6 +1,6 @@
-import { Component, computed, effect, inject, OnInit, Signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { XtResolverService } from '../angular/xt-resolver.service';
 
 @Component({

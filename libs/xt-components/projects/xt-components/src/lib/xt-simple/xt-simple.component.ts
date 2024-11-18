@@ -14,7 +14,7 @@ import {XtComponent} from "../xt-component";
   template: ''
 })
 export class XtSimpleComponent<T = any> implements XtComponent<T>{
-  context = input<XtContext<T> | undefined>();
+  context = input.required<XtContext<T>>();
 
   isInForm = computed<boolean> ( () => {
     return this.context()?.isInForm()??false;

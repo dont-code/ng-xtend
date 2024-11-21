@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Money } from './xt-money.model';
-import {XtCompositeComponent, XtRenderSubComponent} from 'xt-components';
+import { XtCompositeComponent, XtRenderSubComponent } from 'xt-components';
 import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({

@@ -1,7 +1,8 @@
 import { Component, inject, signal, Type } from '@angular/core';
-import { XtContext, XtBaseContext, XtComponent, XtResolverService } from 'xt-components';
+import { XtBaseContext, XtComponent, XtContext, XtResolverService } from 'xt-components';
 import { NgComponentOutlet } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+
 //import { XtCurrencyComponent, XtOtherComponent } from 'xt-sample-plugins';
 
 @Component({
@@ -24,7 +25,7 @@ export class TestComponent {
 
   inlineContext = new XtBaseContext ('INLINE_VIEW');
   fullViewContext = new XtBaseContext ('FULL_VIEW');
-  editContext = new XtBaseContext ('FULL_EDITABLE', this.mainForm);
+  editContext = new XtBaseContext ('FULL_EDITABLE', undefined, this.mainForm);
 
   constructor (protected builder:FormBuilder) {
     this.inlineContext.setNonFormValue ('EUR');

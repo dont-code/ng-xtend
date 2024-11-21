@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { XtRenderComponent, XtBaseContext, XtResolverService } from 'xt-components';
+import { XtBaseContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
 
 @Component({
   selector: 'app-hierarchy-plugin-tester',
   standalone: true,
-  imports: [ReactiveFormsModule, XtRenderComponent],
+  imports: [ReactiveFormsModule, XtRenderSubComponent],
   templateUrl: './hierarchy-test.component.html',
   styleUrl: './hierarchy-test.component.scss'
 })
@@ -18,7 +18,7 @@ export class HierarchyTestComponent {
     payment: [{amount:234.5, currency:'EUR'}]
   });
 
-  editContext = new XtBaseContext ('FULL_EDITABLE', this.mainForm);
+  editContext = new XtBaseContext ('FULL_EDITABLE', 'payment', this.mainForm);
 
   xtResolver = inject (XtResolverService);
 

@@ -39,7 +39,7 @@ export class XtFormTestComponent {
 
   contextFor (subComponentName:string, inlineView:boolean, readOnly:boolean): XtContext<any> {
     const displayType=readOnly?(inlineView?'INLINE_VIEW':'FULL_VIEW'):'FULL_EDITABLE';
-    return new XtBaseContext(displayType, this.mainForm, subComponentName);
+    return new XtBaseContext(displayType, subComponentName, this.mainForm);
   }
 
 

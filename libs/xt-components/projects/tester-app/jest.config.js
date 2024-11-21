@@ -1,8 +1,10 @@
+
 module.exports = {
     preset: 'jest-preset-angular',
     setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
+    testEnvironment: "@happy-dom/jest-environment",
     moduleNameMapper: {
-      'xt-components': '<rootDir>/../../dist/xt-components/fesm2022/xt-components.mjs',
-    },
-    testEnvironment: "@happy-dom/jest-environment"
+      'xt-components': '<rootDir>/../xt-components/src/public-api.ts'
+    }
+
 };

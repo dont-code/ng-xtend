@@ -10,5 +10,5 @@ const testEnvironmentOptions =
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
-  testEnvironmentOptions,
+  testEnvironmentOptions
 )

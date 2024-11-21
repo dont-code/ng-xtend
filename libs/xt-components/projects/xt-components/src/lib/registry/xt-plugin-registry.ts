@@ -20,7 +20,7 @@ export class XtPluginRegistry {
         }
         if (info.types != null) {
             for (const newType of info.types) {
-                
+
             }
         }
     }
@@ -29,7 +29,7 @@ export class XtPluginRegistry {
         this.componentRegistry.set (info.componentName, info);
     }
 
-    findComponentsForType<T> (valueType?:string, value?:T): XtComponentInfo<any>[] {
+    findComponentsForType<T> (valueType:string|null|undefined, value?:T): XtComponentInfo<any>[] {
         if (valueType == null) valueType=XtPluginRegistry.ANY_TYPE;
 
         let ret = this.componentByTypeCache.get(valueType);

@@ -18,7 +18,7 @@ export class HierarchyTestComponent {
     payment: [{amount:234.5, currency:'EUR'}]
   });
 
-  editContext = new XtBaseContext ('FULL_EDITABLE', this.mainForm);
+  editContext = new XtBaseContext ('FULL_EDITABLE', undefined, this.mainForm);
 
   xtResolver = inject (XtResolverService);
 

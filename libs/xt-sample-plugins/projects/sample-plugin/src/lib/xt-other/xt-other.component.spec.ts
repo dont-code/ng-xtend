@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { XtOtherComponent } from './xt-other.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { XtBaseContext } from 'xt-components';
 
 describe('XtOtherComponent', () => {
   let component: XtOtherComponent;
@@ -16,6 +17,7 @@ describe('XtOtherComponent', () => {
 
     fixture = TestBed.createComponent(XtOtherComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('context', new XtBaseContext('FULL_VIEW'));
     fixture.detectChanges();
   });
 

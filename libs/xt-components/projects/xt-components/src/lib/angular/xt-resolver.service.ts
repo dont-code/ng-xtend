@@ -29,7 +29,7 @@ export class XtResolverService {
   findBestComponent<T> (baseContext: XtContext<T>, subName?:string) : XtResolvedComponent{
     const ret= this.resolver!.resolve(baseContext, subName);
     if (ret!=null) return ret;
-    else throw new Error ("No components found for this context "+ baseContext);
+    else throw new Error ("No components found for this context "+ baseContext.toString());
   }
 
   findTypeOf<T> (baseContext:XtContext<T>, subName?:string, value?:T): any | undefined {

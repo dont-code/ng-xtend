@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { XtMoneyComponent } from './xt-money.component';
 import {provideExperimentalZonelessChangeDetection} from "@angular/core";
+import { XtBaseContext } from 'xt-components';
 
 describe('XtMoneyComponent', () => {
   let component: XtMoneyComponent;
@@ -16,6 +17,7 @@ describe('XtMoneyComponent', () => {
 
     fixture = TestBed.createComponent(XtMoneyComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('context', new XtBaseContext('FULL_VIEW'));
     fixture.detectChanges();
   });
 

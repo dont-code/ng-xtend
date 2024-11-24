@@ -131,11 +131,13 @@ const TEST_MONEY_PLUGIN_INFO={
       typesHandled: ['TestMoney']
     },
   ],
-  types: [
+  types:
     {
-      __type:'TestMoney',
-      amount: 'number',
-      currency: 'TestCurrency'
+      'TestMoney': {
+        amount: 'number',
+        currency: 'TestCurrency'
+      },
+      'TestCurrency': 'string'
     }
-  ]
+
 }

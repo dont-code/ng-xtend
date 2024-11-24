@@ -20,6 +20,8 @@ export type XtContext<T> = {
 
     value ():T | null | undefined;
 
+    subValue (subName?:string):T | null | undefined;
+
     subContext(subName: string | undefined | null, typeResolver?: XtTypeResolver<XtContext<T>>): XtContext<T>;
 
     valueType?:string;
@@ -83,7 +85,16 @@ export class XtBaseContext<T> implements XtContext<T>{
         return this.nonFormvalue??this.formControlValue();
     }
 
-    formControlValue (): T | null | undefined {
+    subValue (subsubName?:string):any | null | undefined {
+      const value = this.nonFormvalue??this.formControlValue();
+      if ((subsubName != null) && (value != null)) {
+        return value[subsubName as keyof typeof value];
+      }else {
+        return value;
+      }
+    }
+
+  formControlValue (): T | null | undefined {
         if (this.isInForm()) {
             return this.parentFormGroup?.value[this.subName!];
         } else {

@@ -42,10 +42,10 @@ export class XtResolverService {
     this.registerTypes (info.types);
   }
 
-  registerTypes (types:XtTypeInfo[]|undefined) {
+  registerTypes (types:XtTypeInfo|undefined) {
     if ((types !=null) && (this.typeResolver?.canUpdate())===true) {
-      for (const newType of types) {
-        (this.typeResolver as XtUpdatableTypeResolver<string>).addType (newType.__type, newType);
+      for (const newType in types) {
+        (this.typeResolver as XtUpdatableTypeResolver<string>).addType (newType, types[newType]);
       }
     }
   }

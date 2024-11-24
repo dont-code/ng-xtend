@@ -1,7 +1,7 @@
-import {XtOtherComponent} from './xt-other/xt-other.component';
-import {XtResolverService} from 'xt-components';
-import {XtCurrencyComponent} from './xt-currency/xt-currency.component';
-import {XtMoneyComponent} from './xt-money/xt-money.component';
+import { XtOtherComponent } from './xt-other/xt-other.component';
+import { XtResolverService } from 'xt-components';
+import { XtCurrencyComponent } from './xt-currency/xt-currency.component';
+import { XtMoneyComponent } from './xt-money/xt-money.component';
 
 export function registerSamplePlugin (resolverService:XtResolverService):boolean {
     console.info ('Registering Sample Plugin');
@@ -24,13 +24,15 @@ export function registerSamplePlugin (resolverService:XtResolverService):boolean
                 typesHandled: ['money']
             },
         ],
-        types: [
+        types:
             {
-                __type:'money',
-                amount: 'number',
-                currency: 'currency'
-            }
-        ]
+                money:{
+                  amount: 'number',
+                  currency: 'currency'
+                },
+                other:'string',
+                currency:'string'
+          }
     });
     return true;
 }

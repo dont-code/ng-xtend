@@ -4,12 +4,12 @@
 <input id="switcher" type="checkbox" (change)="switchComponent($event)" />
 
 <h1>Testing Inline readonly</h1>
-<ng-container *ngComponentOutlet="myComponentType(); inputs: {context:contextFor (true, true)}" />
+<xt-render displayMode="INLINE_VIEW" [componentType]="myComponentType()" [value]="nonFormValue()" ></xt-render>
 
 <h1>Testing FullView readonly</h1>
-<ng-container *ngComponentOutlet="myComponentType(); inputs: {context:contextFor (false, true)}" />
+<xt-render displayMode="FULL_VIEW" [componentType]="myComponentType()" [value]="nonFormValue()" ></xt-render>
 
+<h1>Testing FullView editable</h1>
 <form [formGroup]="mainForm">
-    <h1>Testing FullView editable</h1>
-    <ng-container *ngComponentOutlet="myComponentType(); inputs: {context:contextFor ( false, false)}" />
+    <xt-render-sub [componentType]="myComponentType()" [context]="editContext" ></xt-render-sub>
 </form>

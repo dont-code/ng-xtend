@@ -12,24 +12,25 @@ import { XtBaseContext, XtRenderSubComponent, XtResolverService } from 'xt-compo
 export class HierarchyTestComponent {
 
   protected builder = inject(FormBuilder);
+  protected xtResolver = inject (XtResolverService);
 
   mainForm = this.builder.group ({
     toWho: ['Me'],
     payment: [{amount:234.5, currency:'EUR'}]
   });
 
-  editContext = new XtBaseContext ('FULL_EDITABLE', 'payment', this.mainForm);
+  editContext = new XtBaseContext ('FULL_EDITABLE', undefined, this.mainForm);
 
-  xtResolver = inject (XtResolverService);
 
   constructor () {
     // Register the edited type
-    this.xtResolver.registerTypes ([
+    this.xtResolver.registerTypes (
       {
-        __type:'TestPayment',
-        toWho:'string',
-        payment:'money'
-      }]);
+        'TestPayment': {
+          toWho: 'string',
+          payment: 'money'
+        }
+      });
     this.editContext.valueType='TestPayment';
   }
 

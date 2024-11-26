@@ -96,7 +96,11 @@ export class XtBaseContext<T> implements XtContext<T>{
 
   formControlValue (): T | null | undefined {
         if (this.isInForm()) {
-            return this.parentFormGroup?.value[this.subName!];
+          if (this.subName!=null) {
+            return this.parentFormGroup?.value[this.subName];
+          } else {
+            return this.parentFormGroup?.value;
+          }
         } else {
             return undefined;
         }

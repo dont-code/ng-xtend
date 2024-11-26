@@ -54,6 +54,7 @@ describe('XtRenderSubComponent', () => {
         currency:['EUR']
     });
     hostFixture.componentRef.setInput('valueType', 'TestMoney');
+//    hostFixture.componentRef.setInput('controlName', 'payment');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();

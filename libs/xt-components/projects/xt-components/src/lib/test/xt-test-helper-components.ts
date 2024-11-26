@@ -105,7 +105,7 @@ export class HostTestTypedComponent {
   selector:'test-typed-form-host',
   standalone:true,
   imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent],
-  template: '<h1>Test Typed Form Component</h1> <form [formGroup]="parentFormGroup"> <xt-render-sub [context]="context()"></xt-render-sub></form>'
+  template: '<h1>Test Typed Form Component</h1> <form [formGroup]="parentFormGroup"> <xt-render-sub [context]="subContext()"></xt-render-sub></form>'
 })
 export class HostTestTypedFormComponent {
   builder = inject(FormBuilder);
@@ -114,6 +114,7 @@ export class HostTestTypedFormComponent {
   static readonly CONTROL_NAME='ForTest';
 
   valueType = input<string> ();
+  controlName = input<string>();
   // You can send the description to be used in a FormBuilder to create the formgroup;
   formDescription = input<any> ({ });
   // Or set the FormGroup directly
@@ -127,15 +128,24 @@ export class HostTestTypedFormComponent {
     if( this.createdFormGroup==null) {
       const formGroup=this.formGroup();
       this.createdFormGroup=formGroup??this.builder.group(this.formDescription());
-      this.parentFormGroup.addControl(HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
+      this.parentFormGroup.addControl(this.controlName()??HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
     }
     return this.createdFormGroup;
   });
 
-  context = computed( () => {
+  subContext = computed( () => {
     this.computedFormGroup(); // Make sure the subformgroups are created
-    const ret = new XtBaseContext('FULL_EDITABLE', HostTestTypedFormComponent.CONTROL_NAME, this.parentFormGroup);
+
+    const ctrlName = this.controlName();
+    let ret:XtBaseContext<any>|null = null;
+    if (ctrlName==null){
+      ret = new XtBaseContext('FULL_EDITABLE', HostTestTypedFormComponent.CONTROL_NAME, this.parentFormGroup);
+    }
+    else{
+      ret = new XtBaseContext('FULL_EDITABLE', ctrlName, this.createdFormGroup!);
+    }
     ret.valueType=this.valueType();
+
     return ret;
   });
 

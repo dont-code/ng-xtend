@@ -1,6 +1,6 @@
 @if (isInForm() ) {
     <ng-container [formGroup]="formGroup()">
-        <input type="text" [formControlName]="formControlName()" />
+        <input type="text" pInputText [name]="formControlName ()" formControlName="currency" />
     </ng-container>
 } @else {
     {{ context()?.value() }}

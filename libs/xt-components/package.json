@@ -1,9 +1,17 @@
 {
   "name": "xt-components",
   "version": "0.0.0",
-  "main": "dist/xt-components/fesm2022/xt-components.mjs",
-  "files": ["dist/xt-components"],
-  "types": "dist/xt-components/index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./dist/xt-components/package.json"
+    },
+    ".": {
+      "types": "./dist/xt-components/index.d.ts",
+      "esm2022": "./dist/xt-components/esm2022/xt-components.mjs",
+      "esm": "./dist/xt-components/esm2022/xt-components.mjs",
+      "default": "./dist/xt-components/fesm2022/xt-components.mjs"
+    }
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,6 +19,11 @@
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/xt-components && ../../node_modules/.bin/jest && cd ../../projects/tester-app && ../../node_modules/.bin/jest "
   },
+  "publishConfig": {
+    "directory": "dist/xt-components",
+    "linkDirectory": true
+  },
+
   "private": false,
   "dependencies": {
     "@angular/animations": "^18.1.2",

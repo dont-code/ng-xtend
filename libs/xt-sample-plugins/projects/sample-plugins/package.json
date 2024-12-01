@@ -2,7 +2,7 @@
   "name": "xt-sample-plugins",
   "version": "0.0.1",
   "scripts": {
-    "build": "cd .. && ng build sample-plugin",
+    "build": "cd .. && ng build sample-plugins",
     "watch": "cd .. && ng build --watch --configuration development",
     "test": "../../node_modules/.bin/jest"
   },

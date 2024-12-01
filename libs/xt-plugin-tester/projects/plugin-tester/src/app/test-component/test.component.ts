@@ -1,6 +1,7 @@
-import { Component, computed, inject, signal, Type } from '@angular/core';
-import { XtBaseContext, XtComponent, XtRenderComponent, XtRenderSubComponent, XtResolverService } from 'xt-components';
+import { Component, computed, inject, signal } from '@angular/core';
+import { XtBaseContext, XtRenderComponent, XtRenderSubComponent, XtResolverService } from 'xt-components';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-plugin-tester-component',
@@ -13,12 +14,14 @@ export class TestComponent {
   protected xtResolver = inject (XtResolverService);
   protected builder = inject(FormBuilder);
 
+  value = signal<{currency?:string, other?:string}>({currency:'GBP', other:'view'});
   mainForm = this.builder.group ({
-    currency: ['EUR'],
-    other: ['edit']
+    currency: [this.value().currency],
+    other: [this.value().other]
   });
-  nonFormValue = signal({currency:'GBP', other:'view'})
   editContext = new XtBaseContext('FULL_EDITABLE', undefined, this.mainForm);
+  inlineContext = new XtBaseContext('INLINE_VIEW', undefined);
+  nonEditContext = new XtBaseContext('FULL_VIEW', undefined);
 
   subName = signal ('currency');
 
@@ -26,13 +29,37 @@ export class TestComponent {
     // We register the parent type for the xt-render-sub to find
     this.xtResolver.registerTypes({'TestComponent':{ 'currency':'currency', 'other':'other'}});
     this.editContext.valueType='TestComponent';
+    this.nonEditContext.valueType='TestComponent';
+    this.inlineContext.valueType='TestComponent';
+
+    // Synchronize value with edited form
+    this.nonEditContext.nonFormvalue=this.value();
+    this.inlineContext.nonFormvalue=this.value();
+    this.mainForm.valueChanges.pipe(takeUntilDestroyed()).subscribe({
+      next: newValue => {
+        this.value.update((value) => {
+          for (const key in newValue) {
+            const val= newValue[key as keyof typeof value];
+            if( val!=undefined)
+              value[key as keyof typeof value] = val;
+          }
+          return value;
+        });
+      }
+    })
   }
 
-  myComponentType = computed<Type<XtComponent>> (()=> {
-    const found = this.xtResolver.findBestComponent (this.editContext, this.subName());
-    return found.componentClass;
-  });
+  subInlineContext(){
+    return this.inlineContext.subContext(this.subName(), this.xtResolver.typeResolver);
+  }
 
+  subNonEditContext () {
+    return this.nonEditContext.subContext(this.subName(), this.xtResolver.typeResolver);
+  }
+
+  subEditContext = computed(() => {
+    return this.editContext.subContext(this.subName(), this.xtResolver.typeResolver);
+  });
 
   switchComponent($event:Event) {
     if (($event.currentTarget as any).checked) {

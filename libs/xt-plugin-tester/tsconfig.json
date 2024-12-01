@@ -24,8 +24,8 @@
       "dom"
     ],
     "paths": {
-      "xt-components": ["./node_modules/xt-components/dist/xt-components"],
-      "xt-sample-plugins": ["./node_modules/xt-sample-plugins/dist/sample-plugin"]
+      "xt-components": ["./node_modules/xt-components/projects/xt-components/src"],
+      "xt-sample-plugins": ["./node_modules/xt-sample-plugins/projects/sample-plugin/src"]
     }
   },
   "angularCompilerOptions": {

@@ -1,15 +1,16 @@
-<p>Testing components</p>
+<h1>Testing components</h1>
 
 <label for="switcher">Switch component:</label>
 <input id="switcher" type="checkbox" (change)="switchComponent($event)" />
 
-<h1>Testing Inline readonly</h1>
-<ng-container *ngComponentOutlet="myComponentType(); inputs: {context:contextFor (true, true)}" />
-
-<h1>Testing FullView readonly</h1>
-<ng-container *ngComponentOutlet="myComponentType(); inputs: {context:contextFor (false, true)}" />
-
-<form [formGroup]="mainForm">
-    <h1>Testing FullView editable</h1>
-    <ng-container *ngComponentOutlet="myComponentType(); inputs: {context:contextFor ( false, false)}" />
+<h2>Edit Element</h2>
+<form id="editView" [formGroup]="mainForm">
+  <xt-render-sub [context]="subEditContext()" ></xt-render-sub>
 </form>
+
+<h2>View Inline</h2>
+<xt-render-sub id="inlineView" [context]="subInlineContext()" ></xt-render-sub>
+
+<h2>Full View</h2>
+<xt-render-sub id="fullView" [context]="subNonEditContext()" ></xt-render-sub>
+

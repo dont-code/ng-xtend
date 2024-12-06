@@ -1,10 +1,10 @@
-import { Component, inject, OnInit, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { XtResolverService } from 'xt-components';
-//import {registerSamplePlugin} from 'xt-sample-plugins';
+import { registerSamplePlugin } from 'xt-sample-plugins';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   constructor () {
     //Todo: Setup automatic registration of plugins
-  //  registerSamplePlugin(this.resolverService);
+    registerSamplePlugin(this.resolverService);
 
   }
 

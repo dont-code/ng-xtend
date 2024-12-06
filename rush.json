@@ -306,7 +306,8 @@
     {
       "packageName": "xt-components",
       "projectFolder": "libs/xt-components",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-components"
     },
     {
       "packageName": "xt-sample-plugins",
@@ -389,7 +390,7 @@
     //    * The "rush publish" command will publish the subfolder instead of the project folder.  The subfolder
     //    * must contain its own package.json file, which is typically a build output.
     //    */
-    //   // "publishFolder": "temp/publish",
+    // "publishFolder": "dist/xt-components",
     // 
     //   /**
     //    * An optional version policy associated with the project.  Version policies are defined

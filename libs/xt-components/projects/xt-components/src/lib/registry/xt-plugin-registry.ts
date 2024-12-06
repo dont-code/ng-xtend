@@ -18,11 +18,6 @@ export class XtPluginRegistry {
             }
             if (updated) this.componentByTypeCache.clear(); // Force recalculation of type
         }
-        if (info.types != null) {
-            for (const newType of info.types) {
-
-            }
-        }
     }
 
     registerComponent<T> (info:XtComponentInfo<T>) {
@@ -51,5 +46,4 @@ export class XtPluginRegistry {
     }
 }
 
-console.log ('Defining registry');
 export const XT_REGISTRY=new XtPluginRegistry ();

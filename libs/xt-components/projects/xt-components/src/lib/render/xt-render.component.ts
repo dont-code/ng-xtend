@@ -38,7 +38,7 @@ export class XtRenderComponent<T> {
     let form = this.formGroup();
 
     const ret= new XtBaseContext<T>(this.displayMode(), this.subName(), form);
-    if (!ret.isInForm()) ret.setNonFormValue(this.value());
+    if (!ret.isInForm()) ret.setDisplayValue(this.value());
     return ret as XtContext<T>;
   });
 }

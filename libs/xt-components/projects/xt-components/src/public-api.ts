@@ -18,3 +18,4 @@ export * from './lib/xt-simple/xt-simple.component';
 export * from './lib/xt-composite/xt-composite.component';
 
 export * from './lib/test/xt-unit-test-helper';
+export * from './lib/test/xt-test-helper-components';

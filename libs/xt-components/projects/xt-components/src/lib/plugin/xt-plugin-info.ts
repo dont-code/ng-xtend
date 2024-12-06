@@ -8,10 +8,9 @@ export type XtComponentInfo<T> = {
 export type XtPluginInfo ={
     name: string;
     components?: XtComponentInfo<any>[];
-    types?: XtTypeInfo[];
+    types?: XtTypeInfo;
 }
 
 export type XtTypeInfo = {
-    __type:string;
     [keys: string]: XtTypeInfo|string;
 }

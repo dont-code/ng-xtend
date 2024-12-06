@@ -2,27 +2,28 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "pnpm"
+    "packageManager": "pnpm",
+    "analytics": "aa50d3e8-3b23-4c0b-886c-589e9f92b5bc"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "sample-plugin": {
+    "sample-plugins": {
       "projectType": "library",
-      "root": "projects/sample-plugin",
-      "sourceRoot": "projects/sample-plugin/src",
+      "root": "projects/sample-plugins",
+      "sourceRoot": "projects/sample-plugins/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/sample-plugin/ng-package.json"
+            "project": "projects/sample-plugins/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/sample-plugin/tconfig.lib.prod.json"
+              "tsConfig": "projects/sample-plugins/tconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/sample-plugin/tsconfig.lib.json"
+              "tsConfig": "projects/sample-plugins/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "development"
@@ -30,7 +31,7 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "tsConfig": "projects/sample-plugin/tsconfig.spec.json",
+            "tsConfig": "projects/sample-plugins/tsconfig.spec.json",
             "polyfills": [
             ]
           }

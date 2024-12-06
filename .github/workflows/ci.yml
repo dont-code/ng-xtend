@@ -1,16 +1,33 @@
 name: CI
 on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch name to re-build ?
+        required: true
+        type: string
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - 'main'
 jobs:
   build:
+    env:
+      branch: ${{ inputs.branch || github.head_ref || github.ref_name }}
+      ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ env.branch }}
+          token: ${{secrets.DONTCODE_ACTIONS_TOKEN}}
           fetch-depth: 2
+      - name: Git config user
+        uses: snow-actions/git-config-user@v1.0.0
+        with:
+          name: Dont-code
+          email: developer@dont-code.net
       - uses: actions/setup-node@v4
         with:
           node-version: 20

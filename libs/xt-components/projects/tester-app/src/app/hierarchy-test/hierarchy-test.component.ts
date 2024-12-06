@@ -24,12 +24,13 @@ export class HierarchyTestComponent {
 
   constructor () {
     // Register the edited type
-    this.xtResolver.registerTypes ([
+    this.xtResolver.registerTypes (
       {
-        __type:'TestPayment',
-        toWho:'string',
-        payment:'money'
-      }]);
+        'TestPayment': {
+          toWho: 'string',
+          payment: 'money'
+        }
+      });
     this.editContext.valueType='TestPayment';
   }
 

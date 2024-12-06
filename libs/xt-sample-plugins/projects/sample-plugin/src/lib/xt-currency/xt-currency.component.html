@@ -1,7 +1,0 @@
-@if (isInForm() ) {
-    <ng-container [formGroup]="formGroup()">
-        <input type="text" [formControlName]="formControlName()" />
-    </ng-container>
-} @else {
-    {{ context()?.value() }}
-}

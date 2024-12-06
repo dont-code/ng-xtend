@@ -1,0 +1,7 @@
+@if (isInForm() ) {
+    <ng-container [formGroup]="formGroup()">
+        <input type="text" pInputText [name]="formControlName ()" formControlName="currency" />
+    </ng-container>
+} @else {
+    {{ context()?.displayValue() }}
+}

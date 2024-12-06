@@ -26,8 +26,8 @@ export class TestComponent {
   editContext = new XtBaseContext ('FULL_EDITABLE', undefined, this.mainForm);
 
   constructor (protected builder:FormBuilder) {
-    this.inlineContext.setNonFormValue ('EUR');
-    this.fullViewContext.setNonFormValue ('USD');
+    this.inlineContext.setDisplayValue ('EUR');
+    this.fullViewContext.setDisplayValue ('USD');
   }
 
   switchComponent($event:Event) {

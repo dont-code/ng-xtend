@@ -1,8 +1,0 @@
-@if (isInForm() ) {
-    <ng-container [formGroup]="formGroup()">
-        <xt-render-sub [context]="subContext('currency')"/>
-        <p-inputNumber mode="currency" currency="currency()" formControlName="amount" />
-    </ng-container>
-} @else {
-      {{ context()?.value()?.amount | currency : currency() }}
-}

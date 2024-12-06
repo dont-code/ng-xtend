@@ -12,14 +12,14 @@ export type XtTypeResolver<TypeContext> = {
 }
 
 export type XtUpdatableTypeResolver<TypeContext> = XtTypeResolver<TypeContext> & {
-    addType (typeName:string, type:XtTypeInfo):void;
+    addType (typeName:string, type:XtTypeInfo|string):void;
 
 }
 
 export class XtTypeHierarchyResolver<T> implements XtUpdatableTypeResolver<XtContext<T>> {
     types= new Map<string, XtTypeHierarchy> ();
 
-    addType (typeName:string, type:XtTypeInfo):void {
+    addType (typeName:string, type:XtTypeInfo|string):void {
         this.types.set (typeName, fromDescription (type));
     }
 
@@ -38,7 +38,12 @@ export class XtTypeHierarchyResolver<T> implements XtUpdatableTypeResolver<XtCon
         } else {
             const selectedType = this.types.get(typeInfo.valueType);
             if( (selectedType != null) && (selectedType.children!=null)) {
-                return selectedType.children[subName].type;
+                const type = selectedType.children[subName].type;
+                if (type==null) {
+                  throw new Error('SubType named '+subName+' of '+typeInfo.valueType+ ' doesn\'t have a type name.');
+                } else {
+                  return type;
+                }
             }
         }
 
@@ -49,7 +54,7 @@ export class XtTypeHierarchyResolver<T> implements XtUpdatableTypeResolver<XtCon
 }
 
 export type XtTypeHierarchy = {
-    type:string;
+    type?:string;
     children?:{[key:string]: XtTypeHierarchy} ;
     parent?:XtTypeHierarchy;
 
@@ -57,12 +62,13 @@ export type XtTypeHierarchy = {
 }
 
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
-    type:string;
+    type?:string;
     children?:{[key:string]: XtTypeHierarchy} ;
     parent?:XtTypeHierarchy;
 
-    constructor (type:string) {
+    constructor (type?:string, parent?:XtTypeHierarchy) {
         this.type=type;
+        this.parent=parent;
     }
 
     addChild (key:string, child:XtTypeHierarchy) : void {
@@ -72,23 +78,25 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
 
 }
 
-export function fromDescription (typeHierarchy:XtTypeInfo): XtTypeHierarchy {
-    const ret: XtBaseTypeHierarchy=new XtBaseTypeHierarchy(typeHierarchy.__type);
+export function fromDescription (typeHierarchy:XtTypeInfo|string, name?:string, parent?:XtTypeHierarchy): XtTypeHierarchy {
+  let ret: XtBaseTypeHierarchy|null = null;
+  if (typeof typeHierarchy == 'string') {
+    ret= new XtBaseTypeHierarchy(typeHierarchy, parent);
+  } else {
+
+    ret = new XtBaseTypeHierarchy(undefined, parent);
 
     for (const key of Object.keys(typeHierarchy)) {
-        const value = typeHierarchy[key];
-        if (key!=='__type') {
-            if ( typeof value === 'string') {
-                // It's a type
-                ret.addChild(key, new XtBaseTypeHierarchy (value));
-            }
-            else if (value.__type!=null){
-                ret.addChild(key, fromDescription (value as XtTypeInfo));
-            } else {
-                throw new Error ("Cannot read type "+ value);
-            }
-        }
+      const value = typeHierarchy[key];
+      fromDescription(value, key, ret);
     }
-    return ret;
+  }
+
+  if((parent!=null) && (name!=null))
+    parent.addChild(name, ret);
+  else if ((parent!=null) && (name==null)) {
+    throw new Error("Cannot add type to parent without a name.");
+  }
+  return ret;
 }
 

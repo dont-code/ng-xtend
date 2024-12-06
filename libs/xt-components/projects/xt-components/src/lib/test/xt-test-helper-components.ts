@@ -91,7 +91,7 @@ export class HostTestTypedComponent {
     const ret = new XtBaseContext(this.displayMode());
 
     ret.valueType=this.valueType();
-    ret.setNonFormValue(this.value());
+    ret.setDisplayValue(this.value());
     return ret;
   });
 }

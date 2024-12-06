@@ -32,7 +32,7 @@ describe('TestComponent', () => {
     const fullViewCurrency=fixture.debugElement.query(By.css('#fullView')).query(By.directive(XtCurrencyComponent));
     expect(fullViewCurrency).toBeTruthy();
 
-    expect(fullViewCurrency.nativeElement.textContent).toEqual('1');
+    expect(fullViewCurrency.nativeElement.textContent).toContain('GBP');
   });
 
 });

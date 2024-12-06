@@ -24,6 +24,7 @@
       "dom"
     ],
     "paths": {
+      "xt-components": ["./node_modules/xt-components/public-api.d.ts"]
     }
   },
   "angularCompilerOptions": {

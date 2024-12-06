@@ -3,5 +3,5 @@
         <input type="text" pInputText [name]="formControlName ()" formControlName="currency" />
     </ng-container>
 } @else {
-    {{ context()?.value() }}
+    {{ context()?.displayValue() }}
 }

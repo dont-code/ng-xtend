@@ -4,5 +4,8 @@
         <p-inputNumber mode="currency" [currency]="currency()" formControlName="amount" />
     </ng-container>
 } @else {
-      {{ context()?.value()?.amount | currency : currency() }}
+  @let displayAmount = amount();
+    @if (displayAmount) {
+      {{ displayAmount | currency : currency() }}
+    }
 }

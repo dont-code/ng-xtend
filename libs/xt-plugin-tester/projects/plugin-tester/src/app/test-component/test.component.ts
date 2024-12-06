@@ -33,8 +33,8 @@ export class TestComponent {
     this.inlineContext.valueType='TestComponent';
 
     // Synchronize value with edited form
-    this.nonEditContext.nonFormvalue=this.value();
-    this.inlineContext.nonFormvalue=this.value();
+    this.nonEditContext.nonFormValue=this.value;
+    this.inlineContext.nonFormValue =this.value;
     this.mainForm.valueChanges.pipe(takeUntilDestroyed()).subscribe({
       next: newValue => {
         this.value.update((value) => {
@@ -46,7 +46,7 @@ export class TestComponent {
           return value;
         });
       }
-    })
+    });
   }
 
   subInlineContext(){

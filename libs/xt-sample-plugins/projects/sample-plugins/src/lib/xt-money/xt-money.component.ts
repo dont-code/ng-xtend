@@ -16,4 +16,8 @@ export class XtMoneyComponent extends XtCompositeComponent<Money>{
   currency= computed<string|undefined> (() => {
     return this.context()?.value()?.currency;
   });
+
+  amount = computed<number|undefined>(()=> {
+    return this.context()?.displayValue()?.amount;
+  })
 }

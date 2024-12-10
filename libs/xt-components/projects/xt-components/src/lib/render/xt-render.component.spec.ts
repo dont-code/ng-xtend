@@ -64,7 +64,7 @@ describe('XtRenderComponent', () => {
   selector: 'test-currency',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  template: '@if (isInForm()) {<ng-container [formGroup]="formGroup()"><input id="text_input" [name]="formControlName()" type="text" [formControlName]="formControlName()" /></ng-container>} @else {<h2>Value is {{context().nonFormValue()}}</h2>}'
+  template: '@if (isInForm()) {<ng-container [formGroup]="formGroup()"><input id="text_input" [name]="formControlName()" type="text" [formControlName]="formControlName()" /></ng-container>} @else {<h2>Value is {{context().displayValue()}}</h2>}'
 })
 export class TestCurrencyComponent extends XtSimpleComponent<string> {
 }

@@ -85,7 +85,85 @@ describe('XtRenderSubComponent', () => {
     expect(host.retrieveValue('amount')).toEqual(14);
 
   });
+
+  it('should support displaying null value', () => {
+
+    const hostFixture = TestBed.createComponent(HostTestTypedComponent);
+    hostFixture.componentRef.setInput('value', null);
+    hostFixture.componentRef.setInput('valueType', 'TestMoney');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const textAmount = hostFixture.nativeElement.querySelector('h2');
+    expect(textAmount.textContent).toBe('Amount: ');
+    const textCurrency = hostFixture.nativeElement.querySelector('h3');
+    expect(textCurrency.textContent).toContain('Currency ');
+
+    hostFixture.componentRef.setInput('value', {amount:4.4, currency: 'USD'} as TestMoney);
+    hostFixture.detectChanges();
+    expect(textAmount.textContent).toBe('Amount: 4.4');
+    expect(textCurrency.textContent).toContain('Currency USD');
+
+  });
+
+  it('should support undefined subvalue', () => {
+
+    const hostFixture = TestBed.createComponent(HostTestTypedComponent);
+    hostFixture.componentRef.setInput('value', {amount:1.4} as TestMoney);
+    hostFixture.componentRef.setInput('valueType', 'TestMoney');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const textAmount = hostFixture.nativeElement.querySelector('h2');
+    expect(textAmount.textContent).toBe('Amount: 1.4');
+    const textCurrency = hostFixture.nativeElement.querySelector('h3');
+    expect(textCurrency.textContent).toContain('Currency ');
+
+    hostFixture.componentRef.setInput('value', {amount:4.4, currency: 'USD'} as TestMoney);
+    hostFixture.detectChanges();
+    expect(textAmount.textContent).toBe('Amount: 4.4');
+    expect(textCurrency.textContent).toContain('Currency USD');
+
+  });
+
+  it('should support editing null values', () => {
+    const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
+    hostFixture.componentRef.setInput('formDescription', {
+      amount: [null],
+      currency:[null]
+    });
+    hostFixture.componentRef.setInput('valueType', 'TestMoney');
+//    hostFixture.componentRef.setInput('controlName', 'payment');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const currencyText = hostFixture.nativeElement.querySelector('#currency_input') as HTMLInputElement;
+    expect(currencyText.value).toEqual("");
+
+    const amountText = hostFixture.nativeElement.querySelector('#amount_input') as HTMLInputElement;
+    expect(amountText.value).toEqual("");
+
+    currencyText.value = "GBP";
+    currencyText.dispatchEvent(new Event('input'));
+    hostFixture.detectChanges();
+    expect(host.retrieveValue('currency')).toEqual("GBP");
+
+    amountText.value = "14";
+    amountText.dispatchEvent(new Event('input'));
+    hostFixture.detectChanges();
+    expect(host.retrieveValue('amount')).toEqual(14);
+
+  });
+
 });
+
+
 
 @Component({
   selector: 'test-currency',
@@ -105,7 +183,7 @@ export class TestCurrencyComponent extends XtSimpleComponent<string> {
       '<input id="amount_input" type="number" formControlName="amount" />' +
       '<xt-render-sub [context]="subContext(\'currency\')" />' +
     '</ng-container>' +
-    '} @else { <h2>Amount: {{context().value().amount}}</h2>' +
+    '} @else { <h2>Amount: {{context().value()?.amount}}</h2>' +
     '<h3><xt-render-sub [context]="subContext(\'currency\')" /></h3>' +
     '}'
 

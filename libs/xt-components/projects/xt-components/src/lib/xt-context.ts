@@ -1,8 +1,15 @@
-import { FormGroup } from "@angular/forms"
-import { XtTypeResolver } from "./type/xt-type-resolver";
+import { FormGroup } from '@angular/forms';
+import { XtTypeResolver } from './type/xt-type-resolver';
 import { computed, Signal, signal, WritableSignal } from '@angular/core';
-import { single } from 'rxjs';
 
+/**
+ * A XtContext provides all the necessary information for an ng-extended component to operate. It is passed from parent to child component and pass
+ * - The display mode - View, Inline view or Edit
+ * - The value, either directly as a signal or in a formgroup when editing.
+ * - The valueType, necessary to find the right ng-extended component to display
+ *
+ * To do this, it maintains a hierarchy of context and subContexts by name.
+ */
 export type XtContext<T> = {
 
     displayMode: XtDisplayMode;
@@ -10,6 +17,9 @@ export type XtContext<T> = {
     subName?: string; // The subName in the parentFormGroup and parentContext
     parentFormGroup?: FormGroup;
     localFormGroup?: FormGroup;
+
+    // A parentContext if defined
+    parentContext?:XtContext<any>;
 
     isInForm (): boolean;
 
@@ -24,6 +34,8 @@ export type XtContext<T> = {
     subContext(subName: string | undefined | null, typeResolver?: XtTypeResolver<XtContext<T>>): XtContext<T>;
 
     displayValue: Signal<T|null>;
+
+    setDisplayValue (newValue:T|null|undefined, type?:string): XtContext<T>;
 
     value(): T | null | undefined;
 
@@ -42,8 +54,19 @@ export class XtBaseContext<T> implements XtContext<T>{
      */
     subName?: string;
     parentFormGroup?: FormGroup<any>;
+
+    /**
+     * When the context is a child, it potentially needs to update its parent value
+     */
+    parentContext?:XtBaseContext<any>;
+
+    /**
+     * All child contexts are kept in this map
+     */
+    protected childContexts?:Map<string, XtBaseContext<any>>;
+
   /**
-   * localFormGroup exists only for composite components, simple components are only managing the subName'd ccontrol of the parentFormGroup
+   * localFormGroup exists only for composite components: it's children are all gathered in a form group
    */
     localFormGroup?: FormGroup<any>;
 
@@ -62,23 +85,46 @@ export class XtBaseContext<T> implements XtContext<T>{
      * @param controlName
      */
 
-    constructor (displayMode: XtDisplayMode, subName?: string, parentGroup?: FormGroup )
+    constructor (displayMode: XtDisplayMode, subName?: string, parentGroup?: FormGroup, parentContext?:XtBaseContext<any>)
     {
         this.displayMode=displayMode;
         this.parentFormGroup=parentGroup;
+        this.parentContext=parentContext;
         this.subName=subName;
     }
 
-    setDisplayValue (newValue:T|null|undefined, type?:string): XtBaseContext<T> {
-      if (newValue!=undefined){
+    setDisplayValue (newValue:T|null|undefined, type?:string, updateParent:boolean=true): XtBaseContext<T> {
+      if (newValue!==undefined){
+        const oldValue = this.nonFormValue?this.nonFormValue():null;
         if (this.nonFormValue==null) {
+          if ((this.childContexts!=null) && (this.childContexts.size>0)) throw new Error ('An XtContext with no values cannot have children ',{cause:this});
           this.nonFormValue=signal(newValue);
         }else {
           this.nonFormValue.set(newValue);
         }
+
+        // Change the children values if needed
+        if (this.childContexts!=null) {
+          if (newValue==null) {
+            for (const [subName, child] of this.childContexts) {
+              child.setDisplayValue(null, undefined, false);
+            }
+
+          } else if (oldValue!=null) {
+            for (const [subName, child] of this.childContexts) {
+              if (newValue[subName as keyof T]!=oldValue[subName as keyof T]) {
+                // The value has changed, let's update
+                child.setDisplayValue(newValue[subName as keyof T], undefined, false);
+              }
+            }
+          }
+        }
+
+        if ((updateParent) && (this.subName!=null))
+          this.parentContext?.updateSubDisplayValue(this.subName,newValue);
       }
 
-      if (type!=undefined)
+      if (type!==undefined)
         this.valueType = type;
       return this;
     }
@@ -107,7 +153,7 @@ export class XtBaseContext<T> implements XtContext<T>{
     }
 
     subValue (subsubName?:string):any | null | undefined {
-      const value = this.nonFormValue??this.formControlValue();
+      const value = this.nonFormValue?this.nonFormValue():this.formControlValue();
       if ((subsubName != null) && (value != null)) {
         return value[subsubName as keyof typeof value];
       }else {
@@ -115,7 +161,25 @@ export class XtBaseContext<T> implements XtContext<T>{
       }
     }
 
-    formControlValue (): T | null | undefined {
+  /**
+   * Enable child contexts to update its own value in the parent context whenever it's value changes
+   */
+  protected updateSubDisplayValue (subName:string, subValue:any): void {
+    if (this.nonFormValue!=null) {
+      let newValue = this.nonFormValue();
+      if (newValue==null) {
+        const newValue = {} as T;
+        newValue[subName as keyof T]=subValue
+        this.nonFormValue.set(newValue);
+      } else {
+        newValue[subName as keyof T] = subValue; // Discretly update the subValue without triggering parent signal
+      }
+    } else {
+      throw new Error ("No noFormValue to update subDisplayValue"+this.toString());
+    }
+  }
+
+  formControlValue (): T | null | undefined {
         if (this.isInForm()) {
           if (this.subName!=null) {
             return this.parentFormGroup?.value[this.subName];
@@ -130,7 +194,9 @@ export class XtBaseContext<T> implements XtContext<T>{
     subContext(subName: string | undefined | null, typeResolver?:XtTypeResolver<XtContext<T>>): XtContext<T> {
         if ((subName==null) || (subName.length==0)) {
             return this;
-        } else {
+        } else if (this.childContexts?.has(subName)) {
+          return this.childContexts?.get(subName)!;
+        }else {
             let subValue:WritableSignal<any|null> | null = null;
             let parentGroup = this.formGroup();
             // Recalculate parentGroup and formControlName and value if needed.
@@ -151,12 +217,15 @@ export class XtBaseContext<T> implements XtContext<T>{
               }
             }
 
-            const ret = new XtBaseContext<T> (this.displayMode, subName, parentGroup);
+            const ret = new XtBaseContext<T> (this.displayMode, subName, parentGroup, this);
             if( subValue!=null) ret.nonFormValue=subValue;
 
             if ((this.valueType!=null) && (typeResolver!=null)) {
                 ret.valueType=typeResolver.findType(this, subName, this.value())??undefined;
             }
+
+            if (this.childContexts==null) this.childContexts=new Map<string, XtBaseContext<any>>();
+            this.childContexts.set(subName, ret);
             return ret;
         }
     }

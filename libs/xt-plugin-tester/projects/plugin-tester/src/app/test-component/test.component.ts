@@ -14,7 +14,7 @@ export class TestComponent {
   protected xtResolver = inject (XtResolverService);
   protected builder = inject(FormBuilder);
 
-  value = signal<{currency?:string, other?:string}>({currency:'GBP', other:'view'});
+  value = signal<{currency?:string, other?:string}>({});
   mainForm = this.builder.group ({
     currency: [this.value().currency],
     other: [this.value().other]

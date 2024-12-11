@@ -21,6 +21,7 @@ describe('TestComponent', () => {
     registerSamplePlugin(TestBed.inject(XtResolverService));
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
+    component.value.set({currency: 'GBP', other:'other'});
     fixture.detectChanges();
   });
 

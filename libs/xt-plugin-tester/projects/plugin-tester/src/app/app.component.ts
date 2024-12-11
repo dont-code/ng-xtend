@@ -1,6 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PrimeNGConfig } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { XtResolverService } from 'xt-components';
@@ -13,10 +12,9 @@ import { registerSamplePlugin } from 'xt-sample-plugins';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'test';
 
-  protected primengConfig = inject (PrimeNGConfig);
   protected resolverService = inject (XtResolverService);
 
   constructor () {
@@ -25,7 +23,4 @@ export class AppComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    this.primengConfig.ripple=true;
-  }
 }

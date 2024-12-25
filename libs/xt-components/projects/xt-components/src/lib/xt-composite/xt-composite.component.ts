@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { FormGroup } from '@angular/forms';
 import { XtResolverService } from '../angular/xt-resolver.service';
+import { XtContext } from '../xt-context';
 
 @Component({
   standalone: true,
@@ -38,7 +39,7 @@ export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
    * Helper function to calculate the sub context
    * @param subName
    */
-  subContext (subName:string) {
-    return this.context()?.subContext(subName, this.resolverService.typeResolver??undefined);
+  subContext (subName:string):XtContext<any> {
+    return this.context().subContext(subName, this.resolverService.typeResolver ?? undefined);
   }
 }

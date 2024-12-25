@@ -1,10 +1,13 @@
 import { XtComponentInfo, XtPluginInfo } from "../plugin/xt-plugin-info";
+import { signal } from '@angular/core';
 
 export class XtPluginRegistry {
 
     pluginRegistry = new Map<string, XtPluginInfo> ();
     componentRegistry = new Map<string, XtComponentInfo<any>> ();
     componentByTypeCache = new Map<string, XtComponentInfo<any>[]> ();
+
+    listComponents = signal(new Array<XtComponentInfo<any>>());
 
     public static readonly ANY_TYPE="ANY";
 
@@ -22,6 +25,10 @@ export class XtPluginRegistry {
 
     registerComponent<T> (info:XtComponentInfo<T>) {
         this.componentRegistry.set (info.componentName, info);
+        this.listComponents.update((array) => {
+          array.push(info);
+          return array;
+        });
     }
 
     findComponentsForType<T> (valueType:string|null|undefined, value?:T): XtComponentInfo<any>[] {

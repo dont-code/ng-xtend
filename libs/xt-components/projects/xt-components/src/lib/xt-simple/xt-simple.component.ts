@@ -1,5 +1,5 @@
 import { Component, computed, input, InputSignal } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
 import {XtComponent} from "../xt-component";
 
@@ -34,14 +34,46 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
     return ret;
   });
 
-  formControlName = computed<string> (() => {
+  /**
+   * Returns the component form name, which is for now the subName
+   */
+  componentNameInForm=computed<string> ( () => {
+    return this.safelyGetSubName();
+  });
+
+  manageFormControl<T> (ctrlName:string): AbstractControl<T> {
+    const formGroup = this.formGroup();
+    let ctrl=formGroup.get(ctrlName);
+    if (ctrl==null) {
+      ctrl = new FormControl<T|undefined>(undefined);
+      formGroup.addControl(ctrlName, ctrl);
+    }
+    return ctrl;
+  }
+
+  safelyGetSubName = computed<string>(() => {
     const ret = this.context()?.subName;
-    if (ret==null) throw new Error ('No form groups in this component of type '+this.componentDescriptor());
+    if (ret==null) throw new Error ('This component has no name in the form '+this.componentDescriptor());
     return ret;
   });
 
+  /**
+   * Returns the form control name and create a form control behind the scene
+   */
+  formControlName = computed<string> (() => {
+    const ret = this.safelyGetSubName();
+
+    this.manageFormControl<any>(ret); // Creates the form control
+    return ret;
+  });
+
+  formControl = computed<AbstractControl<T>> (() => {
+    const subName = this.safelyGetSubName();
+    return this.manageFormControl(subName);
+});
+
   componentDescriptor (): string {
-    return this.context()?.valueType??'unknown';
+    return "Component with type "+this.constructor.name+" with context "+this.context().toString();
   }
 
 }

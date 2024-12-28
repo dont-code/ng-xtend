@@ -130,7 +130,7 @@ export class XtBaseContext<T> implements XtContext<T>{
     }
 
     displayValue = computed( ()=>  {
-      if (this.nonFormValue!=null) {
+      if (this.nonFormValue!==undefined) {
         return this.nonFormValue();
       } else {
         throw new Error ("Cannot display a value that does not exist. Are you sure you're not using Reactive Form with this context? "+ this.toString());

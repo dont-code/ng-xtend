@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
@@ -6,7 +6,6 @@ import { XtResolvedComponent } from '../xt-resolved-component';
 import { XtTypeHierarchyResolver, XtTypeResolver, XtUpdatableTypeResolver } from '../type/xt-type-resolver';
 import { XtComponentInfo, XtPluginInfo, XtTypeInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
-import { XtComponent } from '../xt-component';
 
 @Injectable({
   providedIn: 'root'

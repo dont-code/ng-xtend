@@ -41,14 +41,20 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
     return this.safelyGetSubName();
   });
 
-  manageFormControl<T> (ctrlName:string): AbstractControl<T> {
-    const formGroup = this.formGroup();
-    let ctrl=formGroup.get(ctrlName);
-    if (ctrl==null) {
-      ctrl = new FormControl<T|undefined>(undefined);
-      formGroup.addControl(ctrlName, ctrl);
+  manageFormControl<T> (ctrlName:string): AbstractControl<T>|undefined {
+    const formGroup = this.formGroupIfAny();
+    if (formGroup==null) {
+      // You can call manageFormControl even in not a form, it just get ignored
+      //console.debug('FormGroup is undefined when declaring managedcontrol '+ctrlName);
+      return undefined;
+    } else {
+      let ctrl=formGroup.get(ctrlName);
+      if (ctrl==null) {
+        ctrl = new FormControl<T|undefined>(undefined);
+        formGroup.addControl(ctrlName, ctrl);
+      }
+      return ctrl;
     }
-    return ctrl;
   }
 
   safelyGetSubName = computed<string>(() => {
@@ -67,9 +73,11 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
     return ret;
   });
 
-  formControl = computed<AbstractControl<T>> (() => {
+  formControl = computed<AbstractControl<any>> (() => {
     const subName = this.safelyGetSubName();
-    return this.manageFormControl(subName);
+    const formControl= this.manageFormControl(subName);
+    if (formControl==null) throw new Error ("Calling formControl for subName "+subName+" when none exist.");
+    return formControl;
 });
 
   componentDescriptor (): string {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Money } from './xt-money.model';
 import { XtCompositeComponent, XtRenderSubComponent } from 'xt-components';
@@ -12,12 +12,17 @@ import { InputNumberModule } from 'primeng/inputnumber';
   templateUrl: './xt-money.component.html',
   styleUrl: './xt-money.component.css'
 })
-export class XtMoneyComponent extends XtCompositeComponent<Money>{
+export class XtMoneyComponent extends XtCompositeComponent<Money> implements OnInit {
+
   currency= computed<string|undefined> (() => {
-    return this.context()?.value()?.currency;
+    return this.context().value()?.currency;
   });
 
   amount = computed<number|undefined>(()=> {
-    return this.context()?.displayValue()?.amount;
+    return this.context().displayValue()?.amount;
   })
+
+  ngOnInit(): void {
+    this.manageFormControl('amount');
+  }
 }

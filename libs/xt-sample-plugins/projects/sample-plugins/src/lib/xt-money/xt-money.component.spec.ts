@@ -74,4 +74,36 @@ describe('XtMoneyComponent', () => {
     hostFixture.detectChanges();
     expect(host.retrieveValue('currency')).toEqual('GBP');
   });
+
+  it('should support edit with no value', async () => {
+    const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
+    hostFixture.componentRef.setInput('valueType', 'money');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const moneyComponent = hostFixture.debugElement.query(By.directive(XtMoneyComponent));
+    expect(moneyComponent).toBeTruthy();
+    const currency=moneyComponent.query(By.css('input[type="text"]'));
+    let amount = moneyComponent.query(By.directive(InputNumber));
+    expect(amount.componentInstance.value).toEqual (null);
+    expect(amount.componentInstance.mode).toEqual ("decimal");
+    expect(currency.nativeElement.value).toEqual("");
+
+    amount.componentInstance.value = 12.5;
+    amount.nativeElement.dispatchEvent(new Event('input'));
+    hostFixture.detectChanges();
+
+    host.computedFormGroup().patchValue({currency:"USD"});
+    hostFixture.detectChanges();
+    expect(currency.nativeElement.value).toEqual ("USD");
+
+    amount = moneyComponent.query(By.directive(InputNumber));
+    expect(amount.componentInstance.mode).toEqual ("currency");
+    expect(amount.componentInstance.value).toEqual (12.50);
+
+    expect(host.computedFormGroup().value).toEqual({currency:"USD", amount:12.5});
+  });
+
 });

@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, OnInit } from '@angular/core';
+import { Component, computed, inject, Injector, OnInit, runInInjectionContext, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Money } from './xt-money.model';
 import { XtCompositeComponent, XtRenderSubComponent } from 'xt-components';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'lib-xt-money',
@@ -13,9 +14,17 @@ import { InputNumberModule } from 'primeng/inputnumber';
   styleUrl: './xt-money.component.css'
 })
 export class XtMoneyComponent extends XtCompositeComponent<Money> implements OnInit {
+  injector = inject(Injector);
 
-  currency= computed<string|undefined> (() => {
-    return this.context().value()?.currency;
+  // Force a recalculation of currency
+  recalculate = signal<boolean>(true);
+
+  currency= computed<string|undefined>( () => {
+  //  console.debug("Calculating currency in XtMoneyComponent");
+    this.recalculate();
+    const value = this.context().value();
+    if (value==null) return undefined;
+    return value.currency;
   });
 
   amount = computed<number|undefined>(()=> {
@@ -23,6 +32,18 @@ export class XtMoneyComponent extends XtCompositeComponent<Money> implements OnI
   })
 
   ngOnInit(): void {
-    this.manageFormControl('amount');
+//    console.debug("XtMoneyComponent ngOnInit");
+    const amountCtrl = this.manageFormControl('amount');
+
+      // Make sure the display is updated whenever the value change in the formgroup
+    runInInjectionContext(this.injector, () => {
+      if (amountCtrl?.parent!=null) {
+        amountCtrl.parent.valueChanges.pipe(takeUntilDestroyed()).subscribe({
+          next: value => {
+            this.recalculate.set(!this.recalculate());
+          }
+        });
+      }
+    });
   }
 }

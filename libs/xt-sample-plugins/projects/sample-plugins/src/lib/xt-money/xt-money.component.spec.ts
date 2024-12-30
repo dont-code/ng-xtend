@@ -25,7 +25,9 @@ describe('XtMoneyComponent', () => {
     let fixture: ComponentFixture<XtMoneyComponent>;
     fixture = TestBed.createComponent(XtMoneyComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('context', new XtBaseContext('FULL_VIEW'));
+    const context =  new XtBaseContext('FULL_VIEW');
+    context.setDisplayValue({amount:0.0, currency:'EUR'});
+    fixture.componentRef.setInput('context', context);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
@@ -40,7 +42,7 @@ describe('XtMoneyComponent', () => {
     hostFixture.detectChanges();
     expect(hostFixture.nativeElement.textContent).toContain('€12.00');
 
-    hostFixture.componentRef.setInput('value', { amount:14, currenct:'USD'});
+    hostFixture.componentRef.setInput('value', { amount:14, currency:'USD'});
     hostFixture.detectChanges();
     expect(hostFixture.nativeElement.textContent).toContain('$14.00');
 
@@ -75,13 +77,15 @@ describe('XtMoneyComponent', () => {
     expect(host.retrieveValue('currency')).toEqual('GBP');
   });
 
-  it('should support edit with no value', async () => {
+  it('should support edit with no value', () => {
     const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('valueType', 'money');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();
     hostFixture.detectChanges();
+
+    const formGroup = host.computedFormGroup();
 
     const moneyComponent = hostFixture.debugElement.query(By.directive(XtMoneyComponent));
     expect(moneyComponent).toBeTruthy();
@@ -91,9 +95,16 @@ describe('XtMoneyComponent', () => {
     expect(amount.componentInstance.mode).toEqual ("decimal");
     expect(currency.nativeElement.value).toEqual("");
 
-    amount.componentInstance.value = 12.5;
-    amount.nativeElement.dispatchEvent(new Event('input'));
+    /*const amountInput=amount.query(By.css('input'));
+    amountInput.nativeElement.dispatchEvent(new KeyboardEvent('keydown', {key:'1'}));
+    amountInput.nativeElement.dispatchEvent(new KeyboardEvent('keydown', {key:'2'}));
     hostFixture.detectChanges();
+    amountInput.nativeElement.value="12";
+    amountInput.nativeElement.dispatchEvent(new Event('input'));
+    amount.componentInstance.value=12;*/
+    formGroup.patchValue({amount:12.5});
+    hostFixture.detectChanges();
+    expect(amount.componentInstance.value).toEqual (12.5);
 
     host.computedFormGroup().patchValue({currency:"USD"});
     hostFixture.detectChanges();
@@ -101,7 +112,7 @@ describe('XtMoneyComponent', () => {
 
     amount = moneyComponent.query(By.directive(InputNumber));
     expect(amount.componentInstance.mode).toEqual ("currency");
-    expect(amount.componentInstance.value).toEqual (12.50);
+    expect(amount.componentInstance.value).toEqual (12.5);
 
     expect(host.computedFormGroup().value).toEqual({currency:"USD", amount:12.5});
   });

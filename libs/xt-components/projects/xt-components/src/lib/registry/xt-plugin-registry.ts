@@ -26,7 +26,15 @@ export class XtPluginRegistry {
     registerComponent<T> (info:XtComponentInfo<T>) {
         this.componentRegistry.set (info.componentName, info);
         this.listComponents.update((array) => {
-          array.push(info);
+          let found=false;
+          for (let i=0; i<array.length; i++) {
+            if (array[i].componentName==info.componentName) {
+              found=true;
+              array[i] = info;
+            }
+          }
+          if( !found)
+            array.push(info);
           return array;
         });
     }

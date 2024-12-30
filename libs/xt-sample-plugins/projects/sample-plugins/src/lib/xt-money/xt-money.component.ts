@@ -40,7 +40,10 @@ export class XtMoneyComponent extends XtCompositeComponent<Money> implements OnI
       if (amountCtrl?.parent!=null) {
         amountCtrl.parent.valueChanges.pipe(takeUntilDestroyed()).subscribe({
           next: value => {
-            this.recalculate.set(!this.recalculate());
+            // Is the value a known currency ?
+            if (Intl.supportedValuesOf('currency').indexOf(value.currency) > -1) {
+              this.recalculate.set(!this.recalculate());
+            }
           }
         });
       }

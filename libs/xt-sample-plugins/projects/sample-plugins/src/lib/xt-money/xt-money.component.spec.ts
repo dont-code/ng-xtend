@@ -117,4 +117,34 @@ describe('XtMoneyComponent', () => {
     expect(host.computedFormGroup().value).toEqual({currency:"USD", amount:12.5});
   });
 
+  it('should support wrong currency edit', () => {
+    const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
+    hostFixture.componentRef.setInput('formDescription', {
+      amount:12,
+      currency:null
+    });
+    hostFixture.componentRef.setInput('valueType', 'money');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const moneyComponent = hostFixture.debugElement.query(By.directive(XtMoneyComponent));
+    expect(moneyComponent).toBeTruthy();
+    const currency=moneyComponent.query(By.css('input[type="text"]'));
+    let amount = moneyComponent.query(By.directive(InputNumber));
+    expect(amount.componentInstance.value).toEqual (12);
+    expect(currency.nativeElement.value).toEqual("");
+
+    currency.nativeElement.value='RRR';
+    currency.nativeElement.dispatchEvent(new Event('input'));
+    hostFixture.detectChanges();
+    expect(currency.nativeElement.value).toEqual ("RRR");
+
+    amount = moneyComponent.query(By.directive(InputNumber));
+    expect(amount.componentInstance.value).toEqual (12);
+      // As it's a wrong currency, it should still be decimal
+    expect(amount.componentInstance.mode).toEqual ("decimal");
+  });
+
 });

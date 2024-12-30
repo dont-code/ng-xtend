@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, Type } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal, Type } from '@angular/core';
 import {
   XtComponent,
   XtComponentInfo,
@@ -6,10 +6,10 @@ import {
   XtRenderSubComponent,
   XtResolverService
 } from 'xt-components';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FormBuilder, FormGroup, FormsModule, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
+import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-plugin-tester-component',
@@ -18,50 +18,45 @@ import { CommonModule } from '@angular/common';
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss'
 })
-export class TestComponent {
+export class TestComponent implements OnInit, OnDestroy {
+
   protected xtResolver = inject (XtResolverService);
   protected builder = inject(FormBuilder);
 
-  value = signal<{[keys:string]:any}>({ TestComponent:{}});
-  mainForm = this.builder.group ({
-    TestComponent:['']
+  value = signal<any>({TestComponent:null});
+  mainForm :FormGroup =this.builder.group ({
   });
-  /*editContext = new XtBaseContext('FULL_EDITABLE', 'TestComponent', this.mainForm);
-  inlineContext = new XtBaseContext('INLINE_VIEW', undefined);
-  fullViewContext = new XtBaseContext('FULL_VIEW', undefined);*/
 
   component = signal<XtComponentInfo<any> | null> (null);
   protected query:string|null = null;
+
+  protected subscriptions= new Subscription();
 
   constructor () {
     // Synchronize value with edited form
     /*this.fullViewContext.nonFormValue=this.value;
     this.inlineContext.nonFormValue =this.value;*/
-    this.mainForm.valueChanges.pipe(takeUntilDestroyed()).subscribe({
-      next: newValue => {
-        this.value.update((value) => {
-          for (const key in newValue) {
-            const val= newValue[key as keyof typeof newValue];
-            if( val!=undefined)
-              value[key as keyof typeof value] = val;
-          }
-          return value;
-        });
-      }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.listenToValueChanges();
+  }
+
+  /*  subInlineContext = computed (()=> {
+      return this.inlineContext.subContext(this.subName(), this.xtResolver.typeResolver);
     });
-  }
 
-/*  subInlineContext = computed (()=> {
-    return this.inlineContext.subContext(this.subName(), this.xtResolver.typeResolver);
-  });
+    subNonEditContext () {
+      return this.nonEditContext.subContext(this.subName(), this.xtResolver.typeResolver);
+    }
 
-  subNonEditContext () {
-    return this.nonEditContext.subContext(this.subName(), this.xtResolver.typeResolver);
-  }
-
-  subEditContext = computed(() => {
-    return this.editContext.subContext(this.subName(), this.xtResolver.typeResolver);
-  });*/
+    subEditContext = computed(() => {
+      return this.editContext.subContext(this.subName(), this.xtResolver.typeResolver);
+    });*/
   componentClass = computed<Type<XtComponent<any>>>(() => {
     return this.component()?.componentClass;
   });
@@ -80,5 +75,53 @@ export class TestComponent {
   componentValid():boolean {
     const comp = this.component();
     return ((comp!=null) && (comp.componentClass!=null))
+  }
+
+  componentSwitch($event: AutoCompleteSelectEvent) {
+    // Reset the mainForm
+    this.mainForm.removeControl('TestComponent');
+    this.component.set($event.value);
+  }
+
+  valueType = computed<string|undefined>( () => {
+    const comp = this.component();
+    if(( comp?.typesHandled!=null) && (comp.typesHandled.length > 0)) {
+      return comp.typesHandled[0];
+    } else {
+      return undefined;
+    }
+  });
+
+  protected listenToValueChanges() {
+   // this.subscriptions.unsubscribe();
+    this.subscriptions.add(this.mainForm.valueChanges.subscribe({
+      next: newValue => {
+        /*this.value.update((value) => {
+          for (const key in newValue) {
+            const val = newValue[key as keyof typeof newValue];
+            if (val != undefined) {
+              if (value==null) value={};
+              value[key as keyof typeof value] = val;
+            }
+          }
+          return value;
+        });*/
+        if (newValue.TestComponent !== undefined)
+          this.value.set(newValue);
+      }
+    }));
+
+  /*  this.subscriptions.add(this.mainForm.events.subscribe ({
+      next: event => {
+        const pristine:boolean|undefined = (event as PristineChangeEvent).pristine;
+        if ((pristine!=null) && (!pristine)) {
+          this.value.set(this.mainForm.value);
+          this.mainForm.markAsPristine({onlySelf:false, emitEvent:false});
+        }
+      },
+      error:err => {console.error (err)},
+      complete:() => {console.debug ('Complete')
+      }
+    }));*/
   }
 }

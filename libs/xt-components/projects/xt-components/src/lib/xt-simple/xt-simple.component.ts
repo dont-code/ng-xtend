@@ -51,7 +51,7 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
       let ctrl=formGroup.get(ctrlName);
       if (ctrl==null) {
         ctrl = new FormControl<T|undefined>(undefined);
-        formGroup.addControl(ctrlName, ctrl);
+        formGroup.setControl(ctrlName, ctrl);
       }
       return ctrl;
     }

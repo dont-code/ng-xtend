@@ -1,8 +1,9 @@
-import { Component, computed, input, model, Signal, Type } from '@angular/core';
+import { Component, computed, inject, input, model, Signal, Type } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { XtComponent } from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { XtResolverService } from '../angular/xt-resolver.service';
 
 /**
  * Offers a nice and easy to dynamically embed a component.
@@ -20,8 +21,9 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './xt-render.component.css'
 })
 export class XtRenderComponent<T> {
+  resolverService = inject(XtResolverService);
 
-  componentType = input.required<Type<XtComponent<T>>> ();
+  componentType = input<Type<XtComponent<T>>> ();
   displayMode = input.required<XtDisplayMode> ();
   valueType = input<string> ();
 
@@ -51,4 +53,17 @@ export class XtRenderComponent<T> {
     }
     return ret as XtContext<T>;
   });
+
+  type:Signal<Type<XtComponent<T>>|null> = computed( () => {
+    //console.debug("Calculating type in XtRenderSubComponent");
+
+    const type=this.componentType();
+    if (type!=null) {
+      return type;
+    }
+
+    const compFound= this.resolverService.findBestComponent(this.context());
+    return compFound.componentClass;
+  });
+
 }

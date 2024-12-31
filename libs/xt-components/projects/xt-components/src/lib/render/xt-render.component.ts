@@ -23,6 +23,7 @@ export class XtRenderComponent<T> {
 
   componentType = input.required<Type<XtComponent<T>>> ();
   displayMode = input.required<XtDisplayMode> ();
+  valueType = input<string> ();
 
   // Either we set the value directly
   value= model<T> ();
@@ -34,11 +35,20 @@ export class XtRenderComponent<T> {
 
   }
 
-  context: Signal<XtContext<T>> = computed(() => {
+  context: Signal<XtContext<any>> = computed(() => {
     let form = this.formGroup();
 
-    const ret= new XtBaseContext<T>(this.displayMode(), this.subName(), form);
-    if (!ret.isInForm()) ret.setDisplayValue(this.value());
+    const ret= new XtBaseContext<any>(this.displayMode(), this.subName(), form);
+    ret.valueType=this.valueType();
+    if (!ret.isInForm()) {
+      const subName = this.subName();
+      const value = this.value();
+      if ( (subName == null) || (value == null)) {
+        ret.setDisplayValue(value);
+      } else {
+        ret.setDisplayValue(value[subName as keyof typeof value]);
+      }
+    }
     return ret as XtContext<T>;
   });
 }

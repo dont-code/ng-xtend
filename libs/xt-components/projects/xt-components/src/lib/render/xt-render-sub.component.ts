@@ -26,6 +26,8 @@ export class XtRenderSubComponent<T> {
   resolverService = inject(XtResolverService);
 
   type:Signal<Type<XtComponent<T>>|null> = computed( () => {
+    //console.debug("Calculating type in XtRenderSubComponent");
+
     const type=this.componentType();
     if (type!=null) {
       return type;

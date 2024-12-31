@@ -130,7 +130,7 @@ export class XtBaseContext<T> implements XtContext<T>{
     }
 
     displayValue = computed( ()=>  {
-      if (this.nonFormValue!=null) {
+      if (this.nonFormValue!==undefined) {
         return this.nonFormValue();
       } else {
         throw new Error ("Cannot display a value that does not exist. Are you sure you're not using Reactive Form with this context? "+ this.toString());
@@ -175,7 +175,7 @@ export class XtBaseContext<T> implements XtContext<T>{
         newValue[subName as keyof T] = subValue; // Discretly update the subValue without triggering parent signal
       }
     } else {
-      throw new Error ("No noFormValue to update subDisplayValue"+this.toString());
+      throw new Error ("No nonFormValue to update subDisplayValue"+this.toString());
     }
   }
 
@@ -240,8 +240,7 @@ export class XtBaseContext<T> implements XtContext<T>{
       ret += ' with type ';
       ret += this.valueType??'None';
       ret +=' with value ';
-      ret += this.nonFormValue??'Unknown';
+      ret += this.nonFormValue?this.nonFormValue():this.formControlValue();
       return ret;
   }
 }
-

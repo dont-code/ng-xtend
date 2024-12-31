@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, Type } from '@angular/core';
+import { Component, computed, inject, input, signal, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtRenderComponent } from '../render/xt-render.component';

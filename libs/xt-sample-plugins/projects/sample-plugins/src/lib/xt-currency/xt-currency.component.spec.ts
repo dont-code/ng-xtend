@@ -24,7 +24,9 @@ describe('XtCurrencyComponent', () => {
     let fixture: ComponentFixture<XtCurrencyComponent>;
     fixture = TestBed.createComponent(XtCurrencyComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('context', new XtBaseContext('FULL_VIEW'));
+    const context= new XtBaseContext<string>('FULL_VIEW');
+    context.setDisplayValue("");
+    fixture.componentRef.setInput('context', context);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });

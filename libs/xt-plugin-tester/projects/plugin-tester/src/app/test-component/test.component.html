@@ -1,7 +1,7 @@
 <h1>Testing components</h1>
 
 <label for="switcher">Select component :</label>
-<p-autoComplete id="switcher" [ngModel]="component" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
+<p-autoComplete id="switcher" [ngModel]="component()" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
   <ng-template let-item pTemplate="item">
     <div class="flex items-center gap-2">
       <div>{{ item.componentName }}</div>
@@ -19,7 +19,7 @@
 <form id="editView" [formGroup]="mainForm">
   <xt-render [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_EDITABLE" subName="TestComponent" [formGroup]="mainForm"></xt-render>
 </form>
-  Value is {{mainForm.value | json}}, pristine is {{mainForm.pristine}}
+  Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
 
 <h2>View Inline</h2>
 <xt-render id="inlineView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="INLINE_VIEW" subName="TestComponent" [value]="value()" ></xt-render>

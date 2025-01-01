@@ -24,6 +24,9 @@ It's an Angular library allowing you to:
 For example, think of a "Money" plugin that delegates the "Currency" management to another plugin, without even knowing it.
 - Action Components: Provides actionable services on types without User Interface elements.
 
+Then, we can think of more advanced components, like
+- Workflow component: Enable pre-defined flow of pages (list to detail for example...) 
+
 ## How will it work ?
 
 As you can infer from the preceding descriptions, the ng-xtend framework heavily relies on types. Any data manipulated in a ng-xtendable application manipulates data with a type.

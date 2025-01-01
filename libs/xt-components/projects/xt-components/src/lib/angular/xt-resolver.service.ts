@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
 import { XtResolvedComponent } from '../xt-resolved-component';
 import { XtTypeHierarchyResolver, XtTypeResolver, XtUpdatableTypeResolver } from '../type/xt-type-resolver';
-import { XtPluginInfo, XtTypeInfo } from '../plugin/xt-plugin-info';
+import { XtComponentInfo, XtPluginInfo, XtTypeInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 
 @Injectable({
@@ -16,6 +16,10 @@ export class XtResolverService {
 
   protected baseResolver = inject (XT_RESOLVER_TOKEN, {optional:true});
   protected baseTypeResolver = inject (XT_TYPE_RESOLVER_TOKEN, {optional:true});
+
+  public listComponents = computed<Array<XtComponentInfo<any>>>(() => {
+    return this.pluginRegistry.listComponents();
+  });
 
   resolver:XtResolver;
   typeResolver:XtTypeResolver<any>;

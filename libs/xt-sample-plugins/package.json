@@ -1,17 +1,6 @@
 {
   "name": "xt-sample-plugins",
   "version": "0.0.0",
-  "exports": {
-    "./package.json": {
-      "default": "./dist/sample-plugins/package.json"
-    },
-    ".": {
-      "types": "./dist/sample-plugins/index.d.ts",
-      "esm2022": "./dist/sample-plugins/esm2022/xt-sample-plugins.mjs",
-      "esm": "./dist/sample-plugins/esm2022/xt-sample-plugins.mjs",
-      "default": "./dist/sample-plugins/fesm2022/xt-sample-plugins.mjs"
-    }
-  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

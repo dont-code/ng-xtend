@@ -1,15 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { XtCurrencyComponent, registerSamplePlugin } from 'xt-sample-plugins';
+import { inject, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { XtCurrencyComponent, XtOtherComponent, registerSamplePlugin } from 'xt-sample-plugins';
 import { XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { expect } from '@jest/globals';
+import { AutoComplete } from 'primeng/autocomplete';
 
 describe('TestComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
+  let resolverService:XtResolverService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,10 +20,10 @@ describe('TestComponent', () => {
     })
     .compileComponents();
 
-    registerSamplePlugin(TestBed.inject(XtResolverService));
+    resolverService=TestBed.inject(XtResolverService);
+    registerSamplePlugin(resolverService);
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    component.value.set({currency: 'GBP', other:'other'});
     fixture.detectChanges();
   });
 
@@ -29,11 +31,22 @@ describe('TestComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the proper component', () => {
-    const fullViewCurrency=fixture.debugElement.query(By.css('#fullView')).query(By.directive(XtCurrencyComponent));
-    expect(fullViewCurrency).toBeTruthy();
+  it('should display other component', async () => {
+    expect(component.suggestedComponents()).toHaveLength(3);
 
-    expect(fullViewCurrency.nativeElement.textContent).toContain('GBP');
+    const componentSelect = fixture.debugElement.query(By.directive(AutoComplete));
+    expect(componentSelect).toBeTruthy();
+
+    component.component.set(resolverService.pluginRegistry.componentRegistry.get('XtOther')??null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.componentValid()).toBeTruthy();
+    const fullViewOther=fixture.debugElement.query(By.css('#fullView')).query(By.directive(XtOtherComponent));
+    expect(fullViewOther).toBeTruthy();
+
+
+    expect(fullViewOther.nativeElement.textContent).toContain('xt-other works!');
   });
 
 });

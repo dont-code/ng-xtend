@@ -1,5 +1,5 @@
 import { Component, computed, input, InputSignal } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
 import {XtComponent} from "../xt-component";
 
@@ -34,14 +34,54 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
     return ret;
   });
 
-  formControlName = computed<string> (() => {
+  /**
+   * Returns the component form name, which is for now the subName
+   */
+  componentNameInForm=computed<string> ( () => {
+    return this.safelyGetSubName();
+  });
+
+  manageFormControl<T> (ctrlName:string): AbstractControl<T>|undefined {
+    const formGroup = this.formGroupIfAny();
+    if (formGroup==null) {
+      // You can call manageFormControl even in not a form, it just get ignored
+      //console.debug('FormGroup is undefined when declaring managedcontrol '+ctrlName);
+      return undefined;
+    } else {
+      let ctrl=formGroup.get(ctrlName);
+      if (ctrl==null) {
+        ctrl = new FormControl<T|undefined>(undefined);
+        formGroup.setControl(ctrlName, ctrl);
+      }
+      return ctrl;
+    }
+  }
+
+  safelyGetSubName = computed<string>(() => {
     const ret = this.context()?.subName;
-    if (ret==null) throw new Error ('No form groups in this component of type '+this.componentDescriptor());
+    if (ret==null) throw new Error ('This component has no name in the form '+this.componentDescriptor());
     return ret;
   });
 
+  /**
+   * Returns the form control name and create a form control behind the scene
+   */
+  formControlName = computed<string> (() => {
+    const ret = this.safelyGetSubName();
+
+    this.manageFormControl<any>(ret); // Creates the form control
+    return ret;
+  });
+
+  formControl = computed<AbstractControl<any>> (() => {
+    const subName = this.safelyGetSubName();
+    const formControl= this.manageFormControl(subName);
+    if (formControl==null) throw new Error ("Calling formControl for subName "+subName+" when none exist.");
+    return formControl;
+});
+
   componentDescriptor (): string {
-    return this.context()?.valueType??'unknown';
+    return "Component with type "+this.constructor.name+" with context "+this.context().toString();
   }
 
 }

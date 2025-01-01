@@ -1,17 +1,6 @@
 {
   "name": "xt-components",
   "version": "0.0.0",
-  "exports": {
-    "./package.json": {
-      "default": "./dist/xt-components/package.json"
-    },
-    ".": {
-      "types": "./dist/xt-components/index.d.ts",
-      "esm2022": "./dist/xt-components/esm2022/xt-components.mjs",
-      "esm": "./dist/xt-components/esm2022/xt-components.mjs",
-      "default": "./dist/xt-components/fesm2022/xt-components.mjs"
-    }
-  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

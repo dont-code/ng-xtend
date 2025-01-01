@@ -1,8 +1,9 @@
-import { Component, computed, input, model, Signal, Type } from '@angular/core';
+import { Component, computed, inject, input, model, Signal, Type } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { XtComponent } from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { XtResolverService } from '../angular/xt-resolver.service';
 
 /**
  * Offers a nice and easy to dynamically embed a component.
@@ -20,9 +21,11 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './xt-render.component.css'
 })
 export class XtRenderComponent<T> {
+  resolverService = inject(XtResolverService);
 
-  componentType = input.required<Type<XtComponent<T>>> ();
+  componentType = input<Type<XtComponent<T>>> ();
   displayMode = input.required<XtDisplayMode> ();
+  valueType = input<string> ();
 
   // Either we set the value directly
   value= model<T> ();
@@ -34,11 +37,33 @@ export class XtRenderComponent<T> {
 
   }
 
-  context: Signal<XtContext<T>> = computed(() => {
+  context: Signal<XtContext<any>> = computed(() => {
     let form = this.formGroup();
 
-    const ret= new XtBaseContext<T>(this.displayMode(), this.subName(), form);
-    if (!ret.isInForm()) ret.setDisplayValue(this.value());
+    const ret= new XtBaseContext<any>(this.displayMode(), this.subName(), form);
+    ret.valueType=this.valueType();
+    if (!ret.isInForm()) {
+      const subName = this.subName();
+      const value = this.value();
+      if ( (subName == null) || (value == null)) {
+        ret.setDisplayValue(value);
+      } else {
+        ret.setDisplayValue(value[subName as keyof typeof value]);
+      }
+    }
     return ret as XtContext<T>;
   });
+
+  type:Signal<Type<XtComponent<T>>|null> = computed( () => {
+    //console.debug("Calculating type in XtRenderSubComponent");
+
+    const type=this.componentType();
+    if (type!=null) {
+      return type;
+    }
+
+    const compFound= this.resolverService.findBestComponent(this.context());
+    return compFound.componentClass;
+  });
+
 }

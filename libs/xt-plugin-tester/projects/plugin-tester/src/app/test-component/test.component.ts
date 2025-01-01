@@ -1,74 +1,127 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { XtBaseContext, XtRenderComponent, XtRenderSubComponent, XtResolverService } from 'xt-components';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, computed, inject, OnDestroy, OnInit, signal, Type } from '@angular/core';
+import {
+  XtComponent,
+  XtComponentInfo,
+  XtRenderComponent,
+  XtRenderSubComponent,
+  XtResolverService
+} from 'xt-components';
+import { FormBuilder, FormGroup, FormsModule, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
+import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-plugin-tester-component',
   standalone: true,
-  imports: [ReactiveFormsModule, XtRenderComponent, XtRenderSubComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, XtRenderComponent, XtRenderSubComponent, AutoCompleteModule],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss'
 })
-export class TestComponent {
+export class TestComponent implements OnInit, OnDestroy {
+
   protected xtResolver = inject (XtResolverService);
   protected builder = inject(FormBuilder);
 
-  value = signal<{currency?:string, other?:string}>({});
-  mainForm = this.builder.group ({
-    currency: [this.value().currency],
-    other: [this.value().other]
+  value = signal<any>({TestComponent:null});
+  mainForm :FormGroup =this.builder.group ({
   });
-  editContext = new XtBaseContext('FULL_EDITABLE', undefined, this.mainForm);
-  inlineContext = new XtBaseContext('INLINE_VIEW', undefined);
-  nonEditContext = new XtBaseContext('FULL_VIEW', undefined);
 
-  subName = signal ('currency');
+  component = signal<XtComponentInfo<any> | null> (null);
+  protected query:string|null = null;
+
+  protected subscriptions= new Subscription();
 
   constructor () {
-    // We register the parent type for the xt-render-sub to find
-    this.xtResolver.registerTypes({'TestComponent':{ 'currency':'currency', 'other':'other'}});
-    this.editContext.valueType='TestComponent';
-    this.nonEditContext.valueType='TestComponent';
-    this.inlineContext.valueType='TestComponent';
-
     // Synchronize value with edited form
-    this.nonEditContext.nonFormValue=this.value;
-    this.inlineContext.nonFormValue =this.value;
-    this.mainForm.valueChanges.pipe(takeUntilDestroyed()).subscribe({
-      next: newValue => {
-        this.value.update((value) => {
-          for (const key in newValue) {
-            const val= newValue[key as keyof typeof value];
-            if( val!=undefined)
-              value[key as keyof typeof value] = val;
-          }
-          return value;
-        });
-      }
+    /*this.fullViewContext.nonFormValue=this.value;
+    this.inlineContext.nonFormValue =this.value;*/
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.listenToValueChanges();
+  }
+
+  /*  subInlineContext = computed (()=> {
+      return this.inlineContext.subContext(this.subName(), this.xtResolver.typeResolver);
+    });
+
+    subNonEditContext () {
+      return this.nonEditContext.subContext(this.subName(), this.xtResolver.typeResolver);
+    }
+
+    subEditContext = computed(() => {
+      return this.editContext.subContext(this.subName(), this.xtResolver.typeResolver);
+    });*/
+  componentClass = computed<Type<XtComponent<any>>>(() => {
+    return this.component()?.componentClass;
+  });
+
+  suggestedComponents(): XtComponentInfo<any>[] {
+    return this.xtResolver.listComponents ().filter((value) => {
+      if ((this.query==null)||(this.query.length==0)) return true;
+      else return value.componentName.indexOf(this.query)!=-1;
     });
   }
 
-  subInlineContext(){
-    return this.inlineContext.subContext(this.subName(), this.xtResolver.typeResolver);
+  completeName($event: any) {
+    this.query=$event.query;
   }
 
-  subNonEditContext () {
-    return this.nonEditContext.subContext(this.subName(), this.xtResolver.typeResolver);
+  componentValid():boolean {
+    const comp = this.component();
+    return ((comp!=null) && (comp.componentClass!=null))
   }
 
-  subEditContext = computed(() => {
-    return this.editContext.subContext(this.subName(), this.xtResolver.typeResolver);
+  componentSwitch($event: AutoCompleteSelectEvent) {
+    // Reset the mainForm
+    this.mainForm.removeControl('TestComponent');
+    this.component.set($event.value);
+  }
+
+  valueType = computed<string|undefined>( () => {
+    const comp = this.component();
+    if(( comp?.typesHandled!=null) && (comp.typesHandled.length > 0)) {
+      return comp.typesHandled[0];
+    } else {
+      return undefined;
+    }
   });
 
-  switchComponent($event:Event) {
-    if (($event.currentTarget as any).checked) {
-      this.subName.set( 'other');
-    }
-    else {
-      this.subName.set ('currency');
-    }
+  protected listenToValueChanges() {
+   // this.subscriptions.unsubscribe();
+    this.subscriptions.add(this.mainForm.valueChanges.subscribe({
+      next: newValue => {
+        /*this.value.update((value) => {
+          for (const key in newValue) {
+            const val = newValue[key as keyof typeof newValue];
+            if (val != undefined) {
+              if (value==null) value={};
+              value[key as keyof typeof value] = val;
+            }
+          }
+          return value;
+        });*/
+        if (newValue.TestComponent !== undefined)
+          this.value.set(newValue);
+      }
+    }));
 
+  /*  this.subscriptions.add(this.mainForm.events.subscribe ({
+      next: event => {
+        const pristine:boolean|undefined = (event as PristineChangeEvent).pristine;
+        if ((pristine!=null) && (!pristine)) {
+          this.value.set(this.mainForm.value);
+          this.mainForm.markAsPristine({onlySelf:false, emitEvent:false});
+        }
+      },
+      error:err => {console.error (err)},
+      complete:() => {console.debug ('Complete')
+      }
+    }));*/
   }
-
 }

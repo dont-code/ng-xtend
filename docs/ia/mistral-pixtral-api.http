@@ -2,7 +2,7 @@
 ####
 
 POST https://api.mistral.ai/v1/chat/completions
-Authorization: Bearer G3mjoJ7Z6tg6PNYNOpaJTOw9accgSJdr
+Authorization: Bearer G3mj...
 Content-Type: application/json
 
 {
@@ -55,4 +55,4 @@ Content-Type: application/json
 ###
 
 GET https://api.mistral.ai/v1/models
-Authorization: Bearer G3mjoJ7Z6tg6PNYNOpaJTOw9accgSJdr
+Authorization: Bearer G3mj...

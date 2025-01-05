@@ -1,5 +1,5 @@
 POST https://api.scaleway.ai/f2c888ff-8d1a-4e94-9268-c1413a92c509/v1/chat/completions
-Authorization: Bearer 6694a4cd-9800-49c0-ac13-4507329284d0
+Authorization: Bearer 6694a4cd-9800...
 Content-Type: application/json
 
 {

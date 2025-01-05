@@ -1,0 +1,58 @@
+
+####
+
+POST https://api.mistral.ai/v1/chat/completions
+Authorization: Bearer G3mjoJ7Z6tg6PNYNOpaJTOw9accgSJdr
+Content-Type: application/json
+
+{
+    "model":"pixtral-large-latest",
+    "response_format": { "type": "json_object" },
+    "messages":[
+        {
+        "role": "user",
+        "content": [
+              {"type": "text", "text": "Describe the following information about the image, in json format. The image category can be a cloth, or an edible product, or an event ticket, or a landscape, or a portrait, or an animal, or a party, or something else. If it's a cloth, describe it's type that can be pyjama, trouser, shirt, skirt, sock, sweat or coat. Describe it's color as well. If it's an edible product, describe it's name, it's type, it's brand and price if possible. If it's an event ticket, find the event date, event price,event name and event location if possible. if it's a landscape, guess if it's type is sea, or mountains or cityscape or countryside. If it's a portrait, check if it's a male or female, if it wears glasses and the color of its hair. If it's a party, tell how many people are in the picture and how many are male and fem. If it's an animal, tell it's race. If it's something else, then describe it as mush as you can."},
+              {"type": "image_url", "image_url": {"url": "https://dont-code.net/assets/images/ia-tests/billet_cinescenie.jpg"}}
+          ]
+        }
+    ]
+}
+
+<> 2025-01-02T180149.200.json
+<> 2025-01-02T180104.200.json
+<> 2025-01-02T175445.200.json
+<> 2025-01-02T175209.200.json
+<> 2025-01-02T175017.200.json
+<> 2025-01-02T174909.200.json
+<> 2025-01-02T174825.200.json
+<> 2025-01-02T174727.200.json
+<> 2025-01-02T174617.200.json
+<> 2025-01-02T173405.200.json
+<> 2025-01-02T173110.200.json
+<> 2025-01-02T173002.200.json
+<> 2025-01-02T172618.200.json
+<> 2025-01-02T172545.200.json
+<> 2025-01-02T172355.200.json
+<> 2025-01-02T172002.200.json
+<> 2025-01-02T171905.200.json
+<> 2025-01-02T171642.200.json
+<> 2025-01-02T171603.200.json
+<> 2025-01-02T171517.200.json
+<> 2025-01-02T171130.200.json
+<> 2025-01-02T163921.200.json
+<> 2025-01-02T163850.200.json
+<> 2025-01-02T163750.200.json
+<> 2025-01-02T163529.200.json
+<> 2025-01-02T163400.200.json
+<> 2025-01-02T163122.200.json
+<> 2025-01-02T163059.200.json
+<> 2025-01-02T162421.200.json
+<> 2025-01-02T162315.500.txt
+<> 2025-01-02T162243.500.txt
+<> 2025-01-02T161913.500.txt
+<> 2025-01-02T161011.500.txt
+###
+
+GET https://api.mistral.ai/v1/models
+Authorization: Bearer G3mjoJ7Z6tg6PNYNOpaJTOw9accgSJdr

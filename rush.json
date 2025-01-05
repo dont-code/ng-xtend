@@ -318,6 +318,12 @@
       "packageName": "xt-plugin-tester",
       "projectFolder": "libs/xt-plugin-tester",
       "shouldPublish": false
+    },
+    {
+      "packageName": "xt-store",
+      "projectFolder": "libs/xt-store",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-store"
     }
     // {
     //   /**

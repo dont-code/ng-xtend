@@ -310,10 +310,16 @@
       "publishFolder": "dist/xt-components"
     },
     {
-      "packageName": "xt-sample-plugins",
-      "projectFolder": "libs/xt-sample-plugins",
+      "packageName": "xt-plugin-sample",
+      "projectFolder": "libs/xt-plugin-sample",
       "shouldPublish": false,
-      "publishFolder": "dist/xt-sample-plugins"
+      "publishFolder": "dist/xt-plugin-sample"
+    },
+    {
+      "packageName": "xt-plugin-default",
+      "projectFolder": "plugins/xt-default",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-plugin-default"
     },{
       "packageName": "xt-plugin-tester",
       "projectFolder": "libs/xt-plugin-tester",

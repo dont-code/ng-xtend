@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "pnpm",
+    "analytics": "aa50d3e8-3b23-4c0b-886c-589e9f92b5bc",
+    "cache": {
+      "enabled": false
+    }
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "sample-plugins": {
+      "projectType": "library",
+      "root": "projects/sample",
+      "sourceRoot": "projects/sample/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/sample/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/sample/tconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/sample/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "tsConfig": "projects/sample/tsconfig.spec.json",
+            "polyfills": [
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -34,7 +34,7 @@ describe('XtCurrencyComponent', () => {
   it('should support currency display', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedComponent);
     hostFixture.componentRef.setInput('value', 'EUR');
-    hostFixture.componentRef.setInput('valueType', 'currency');
+    hostFixture.componentRef.setInput('valueType', 'sampleCurrency');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();
@@ -52,7 +52,7 @@ describe('XtCurrencyComponent', () => {
     hostFixture.componentRef.setInput('formDescription', {
       currency:['EUR']
     });
-    hostFixture.componentRef.setInput('valueType', 'currency');
+    hostFixture.componentRef.setInput('valueType', 'sampleCurrency');
     hostFixture.componentRef.setInput('controlName', 'currency');
 
     const host = hostFixture.componentInstance;

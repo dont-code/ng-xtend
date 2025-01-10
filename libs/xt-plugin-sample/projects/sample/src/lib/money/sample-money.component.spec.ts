@@ -35,7 +35,7 @@ describe('SampleMoneyComponent', () => {
   it('should support money display', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedComponent);
     hostFixture.componentRef.setInput('value', { amount:12, currency:'EUR'});
-    hostFixture.componentRef.setInput('valueType', 'money');
+    hostFixture.componentRef.setInput('valueType', 'sampleMoney');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();
@@ -54,7 +54,7 @@ describe('SampleMoneyComponent', () => {
       amount:12,
       currency:['EUR']
     });
-    hostFixture.componentRef.setInput('valueType', 'money');
+    hostFixture.componentRef.setInput('valueType', 'sampleMoney');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();
@@ -79,7 +79,7 @@ describe('SampleMoneyComponent', () => {
 
   it('should support edit with no value', () => {
     const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
-    hostFixture.componentRef.setInput('valueType', 'money');
+    hostFixture.componentRef.setInput('valueType', 'sampleMoney');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();
@@ -123,7 +123,7 @@ describe('SampleMoneyComponent', () => {
       amount:12,
       currency:null
     });
-    hostFixture.componentRef.setInput('valueType', 'money');
+    hostFixture.componentRef.setInput('valueType', 'sampleMoney');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();

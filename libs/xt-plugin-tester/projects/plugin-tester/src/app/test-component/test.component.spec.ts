@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
 import { inject, provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { XtCurrencyComponent, XtOtherComponent, registerSamplePlugin } from 'xt-sample-plugins';
+import { SampleCurrencyComponent, SampleHelloComponent, registerSamplePlugin } from 'xt-plugin-sample';
 import { XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { expect } from '@jest/globals';
@@ -31,22 +31,22 @@ describe('TestComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display other component', async () => {
+  it('should display hello component', async () => {
     expect(component.suggestedComponents()).toHaveLength(3);
 
     const componentSelect = fixture.debugElement.query(By.directive(AutoComplete));
     expect(componentSelect).toBeTruthy();
 
-    component.component.set(resolverService.pluginRegistry.componentRegistry.get('XtOther')??null);
+    component.component.set(resolverService.pluginRegistry.componentRegistry.get('SampleHello')??null);
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(component.componentValid()).toBeTruthy();
-    const fullViewOther=fixture.debugElement.query(By.css('#fullView')).query(By.directive(XtOtherComponent));
+    const fullViewOther=fixture.debugElement.query(By.css('#fullView')).query(By.directive(SampleHelloComponent));
     expect(fullViewOther).toBeTruthy();
 
 
-    expect(fullViewOther.nativeElement.textContent).toContain('xt-other works!');
+    expect(fullViewOther.nativeElement.textContent).toContain('Hello ');
   });
 
 });

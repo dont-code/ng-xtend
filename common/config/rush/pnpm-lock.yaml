@@ -104,6 +104,9 @@ importers:
       '@angular/animations':
         specifier: ^19.0.5
         version: 19.0.5(@angular/core@19.0.5(rxjs@7.8.1))
+      '@angular/cdk':
+        specifier: ^19.0.5
+        version: 19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1)
       '@angular/common':
         specifier: ^19.0.5
         version: 19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1)
@@ -123,10 +126,10 @@ importers:
         specifier: ^19.0.5
         version: 19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/compiler@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)))(@angular/core@19.0.5(rxjs@7.8.1))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)))
       '@angular/router':
-        specifier: ~19.0.5
+        specifier: ^19.0.5
         version: 19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)))(rxjs@7.8.1)
       '@primeng/themes':
-        specifier: ~19.0.2
+        specifier: ^19.0.2
         version: 19.0.2
       '@primeuix/styled':
         specifier: ^0.4.0
@@ -430,7 +433,7 @@ importers:
         specifier: ^19.0.5
         version: 19.0.5(@angular/core@19.0.5(rxjs@7.8.1))
       '@angular/cdk':
-        specifier: ~19.0.5
+        specifier: ^19.0.5
         version: 19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1)
       '@angular/common':
         specifier: ^19.0.5
@@ -454,8 +457,14 @@ importers:
         specifier: ^19.0.5
         version: 19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)))(rxjs@7.8.1)
       '@primeng/themes':
-        specifier: ~19.0.2
+        specifier: ^19.0.2
         version: 19.0.2
+      '@primeuix/styled':
+        specifier: ^0.4.0
+        version: 0.4.0
+      '@primeuix/utils':
+        specifier: ^0.4.0
+        version: 0.4.0
       primeicons:
         specifier: ~7.0.0
         version: 7.0.0

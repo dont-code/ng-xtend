@@ -15,15 +15,15 @@
 @if (!componentValid()) {
   <h2>Component selected above will be displayed here.</h2>
 } @else {
-<h2>Edit Value</h2>
+<h2>Edit Mode</h2>
 <form id="editView" [formGroup]="mainForm">
   <xt-render [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_EDITABLE" subName="TestComponent" [formGroup]="mainForm"></xt-render>
 </form>
   Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
 
-<h2>View Inline</h2>
+<h2>View Inline Mode</h2>
 <xt-render id="inlineView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="INLINE_VIEW" subName="TestComponent" [value]="value()" ></xt-render>
 
-<h2>Full View</h2>
+<h2>Full View Mode</h2>
 <xt-render id="fullView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_VIEW" subName="TestComponent" [value]="value()"></xt-render>
 }

@@ -27,11 +27,11 @@ export function registerSamplePlugin (resolverService:XtResolverService):boolean
         types:
             {
                 sampleHello:'string',
+                sampleCurrency:'string',
                 sampleMoney:{
                   amount: 'number',
                   currency: 'sampleCurrency'
-                },
-                sampleCurrency:'string'
+                }
           }
     });
     return true;

@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { XtBaseContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
+import { XtBaseContext, XtResolverService } from 'xt-components';
 
 @Component({
   selector: 'app-hierarchy-plugin-tester',
   standalone: true,
-  imports: [ReactiveFormsModule, XtRenderSubComponent],
+  imports: [ReactiveFormsModule],
   templateUrl: './hierarchy-test.component.html',
   styleUrl: './hierarchy-test.component.scss'
 })

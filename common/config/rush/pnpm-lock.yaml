@@ -125,6 +125,12 @@ importers:
       '@primeng/themes':
         specifier: ~19.0.2
         version: 19.0.2
+      '@primeuix/styled':
+        specifier: ^0.4.0
+        version: 0.4.0
+      '@primeuix/utils':
+        specifier: ^0.4.0
+        version: 0.4.0
       primeicons:
         specifier: ~7.0.0
         version: 7.0.0
@@ -209,11 +215,11 @@ importers:
         specifier: ~19.0.2
         version: 19.0.2
       '@primeuix/styled':
-        specifier: ^0.3.2
-        version: 0.3.2
+        specifier: ^0.4.0
+        version: 0.4.0
       '@primeuix/utils':
-        specifier: ^0.3.2
-        version: 0.3.2
+        specifier: ^0.4.0
+        version: 0.4.0
       primeicons:
         specifier: ~7.0.0
         version: 7.0.0
@@ -2672,8 +2678,16 @@ packages:
     resolution: {integrity: sha512-ColZes0+/WKqH4ob2x8DyNYf1NENpe5ZguOvx5yCLxaP8EIMVhLjWLO/3umJiDnQU4XXMLkn2mMHHw+fhTX/mw==}
     engines: {node: '>=12.11.0'}
 
+  '@primeuix/styled@0.4.0':
+    resolution: {integrity: sha512-QLylbvV2HVyqt6a4rMdqOTRMiq95My0G4jipoJYTSTujBMkaGWV9immXsMcknK2IIEQ9KpIilS1dJXa2ONC46Q==}
+    engines: {node: '>=12.11.0'}
+
   '@primeuix/utils@0.3.2':
     resolution: {integrity: sha512-B+nphqTQeq+i6JuICLdVWnDMjONome2sNz0xI65qIOyeB4EF12CoKRiCsxuZ5uKAkHi/0d1LqlQ9mIWRSdkavw==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/utils@0.4.0':
+    resolution: {integrity: sha512-Z4Z0Ml1jc8cbReJsxctqET4kzRUnBoWu4Rcr5xBdiMN6mv1VyKVph6tF5bBh4lbvsdIyJmzaqAHSRNUgH8dylQ==}
     engines: {node: '>=12.11.0'}
 
   '@rollup/plugin-json@6.1.0':
@@ -10608,7 +10622,13 @@ snapshots:
     dependencies:
       '@primeuix/utils': 0.3.2
 
+  '@primeuix/styled@0.4.0':
+    dependencies:
+      '@primeuix/utils': 0.4.0
+
   '@primeuix/utils@0.3.2': {}
+
+  '@primeuix/utils@0.4.0': {}
 
   '@rollup/plugin-json@6.1.0(rollup@4.28.1)':
     dependencies:

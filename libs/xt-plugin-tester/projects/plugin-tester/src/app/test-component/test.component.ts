@@ -3,7 +3,6 @@ import {
   XtComponent,
   XtComponentInfo,
   XtRenderComponent,
-  XtRenderSubComponent,
   XtResolverService
 } from 'xt-components';
 import { FormBuilder, FormGroup, FormsModule, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
@@ -14,7 +13,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-plugin-tester-component',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, XtRenderComponent, XtRenderSubComponent, AutoCompleteModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, XtRenderComponent, AutoCompleteModule],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss'
 })

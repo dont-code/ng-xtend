@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { XtResolverService } from 'xt-components';
+import { registerSamplePlugin } from '../../../sample/src/lib/register';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,6 @@ export class AppComponent {
   protected resolverService = inject (XtResolverService);
 
   constructor () {
-    //Todo: Setup automatic registration of plugins
-
+    registerSamplePlugin(this.resolverService);
   }
 }

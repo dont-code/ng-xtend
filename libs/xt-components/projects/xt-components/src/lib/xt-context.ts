@@ -31,7 +31,7 @@ export type XtContext<T> = {
 
     subValue (subName?:string):T | null | undefined;
 
-    subContext(subName: string | undefined | null, typeResolver?: XtTypeResolver<XtContext<T>>): XtContext<T>;
+    subContext(subName: string | undefined | null, subType?:string, typeResolver?: XtTypeResolver<XtContext<T>> | null): XtContext<T>;
 
     displayValue: Signal<T|null>;
 
@@ -191,7 +191,7 @@ export class XtBaseContext<T> implements XtContext<T>{
         }
     }
 
-    subContext(subName: string | undefined | null, typeResolver?:XtTypeResolver<XtContext<T>>): XtContext<T> {
+    subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver<XtContext<T>> | null): XtContext<T> {
         if ((subName==null) || (subName.length==0)) {
             return this;
         } else if (this.childContexts?.has(subName)) {
@@ -220,7 +220,9 @@ export class XtBaseContext<T> implements XtContext<T>{
             const ret = new XtBaseContext<T> (this.displayMode, subName, parentGroup, this);
             if( subValue!=null) ret.nonFormValue=subValue;
 
-            if ((this.valueType!=null) && (typeResolver!=null)) {
+            if (subType!=null) {
+              ret.valueType=subType;
+            } else if ((this.valueType!=null) && (typeResolver!=null)) {
                 ret.valueType=typeResolver.findType(this, subName, this.value())??undefined;
             }
 

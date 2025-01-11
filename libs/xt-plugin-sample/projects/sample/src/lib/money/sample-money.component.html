@@ -1,7 +1,7 @@
 @if (isInForm() ) {
   @let cur = currency();
     <ng-container [formGroup]="formGroup()">
-        <xt-render-sub [context]="subContext('currency')"/>
+        <xt-render-sub [context]="subContext('currency', 'sampleCurrency')" />
         @if (cur != null) {
           <p-inputNumber mode="currency" [currency]="cur" formControlName="amount" />
         } @else {

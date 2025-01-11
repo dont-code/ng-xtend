@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build sample-plugins",
+    "build": "ng build sample",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/sample && ../../node_modules/.bin/jest"
 
@@ -27,6 +27,8 @@
     "rxjs": "~7.8.0",
     "primeng": "~19.0.2",
     "primeicons": "~7.0.0",
+    "@primeuix/utils": "^0.4.0",
+    "@primeuix/styled": "^0.4.0",
     "tslib": "^2.8.1",
     "@primeng/themes": "~19.0.2"
   },

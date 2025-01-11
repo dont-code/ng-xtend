@@ -42,8 +42,9 @@ export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
   /**
    * Helper function to calculate the sub context
    * @param subName
+   * @param subType
    */
-  subContext (subName:string):XtContext<any> {
-    return this.context().subContext(subName, this.resolverService.typeResolver ?? undefined);
+  subContext (subName:string, subType?:string):XtContext<any> {
+    return this.context().subContext(subName, subType, this.resolverService.typeResolver);
   }
 }

@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { XtRenderComponent } from 'xt-components';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SampleCurrencyComponent } from '../../../../sample/src/lib/currency/sample-currency.component';
 import { SampleMoneyComponent } from '../../../../sample/src/lib/money/sample-money.component';
 import { SampleHelloComponent } from '../../../../sample/src/lib/hello/sample-hello.component';
+import { InputText } from 'primeng/inputtext';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-plugin-tester-component',
   standalone: true,
-  imports: [ReactiveFormsModule, XtRenderComponent],
+  imports: [ReactiveFormsModule, XtRenderComponent, InputText, FormsModule, JsonPipe],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss'
 })
@@ -28,10 +30,15 @@ export class TestComponent {
       })
   });
 
+  whoIsIt= signal<string>("You");
+
   constructor () {
   }
 
   protected readonly SampleCurrencyComponent = SampleCurrencyComponent;
   protected readonly SampleMoneyComponent = SampleMoneyComponent;
   protected readonly SampleHelloComponent = SampleHelloComponent;
+
+
+  protected readonly matchMedia = matchMedia;
 }

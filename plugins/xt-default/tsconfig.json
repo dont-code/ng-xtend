@@ -24,9 +24,6 @@
       "dom"
     ],
     "paths": {
-      "default": [
-        "./dist/default"
-      ],
       "xt-components": [
         "./node_modules/xt-components/index.d.ts"
       ]

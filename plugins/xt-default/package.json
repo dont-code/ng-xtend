@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build default",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/default && ../../node_modules/.bin/jest"
   },
@@ -18,12 +18,14 @@
     "@angular/platform-browser": "^19.0.5",
     "@angular/platform-browser-dynamic": "^19.0.5",
     "@angular/router": "^19.0.5",
-    "@angular/cdk": "~19.0.5",
+    "@angular/cdk": "^19.0.5",
     "xt-components": "workspace:^",
     "rxjs": "~7.8.0",
     "primeng": "~19.0.5",
     "primeicons": "~7.0.0",
-    "@primeng/themes": "~19.0.2",
+    "@primeuix/utils": "^0.4.0",
+    "@primeuix/styled": "^0.4.0",
+    "@primeng/themes": "^19.0.2",
     "tslib": "^2.8.1"
   },
   "devDependencies": {

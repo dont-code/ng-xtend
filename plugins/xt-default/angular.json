@@ -22,15 +22,13 @@
               "tsConfig": "projects/default/tsconfig.lib.json"
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-builders/jest:run",
           "options": {
             "tsConfig": "projects/default/tsconfig.spec.json",
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
             ]
           }
         }

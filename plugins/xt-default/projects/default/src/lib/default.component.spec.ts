@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DefaultComponent } from './default.component';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 describe('DefaultComponent', () => {
   let component: DefaultComponent;
@@ -8,7 +9,9 @@ describe('DefaultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DefaultComponent]
+      imports: [DefaultComponent],
+      providers: [provideExperimentalZonelessChangeDetection()]
+
     })
     .compileComponents();
 

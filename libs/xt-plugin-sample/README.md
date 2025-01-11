@@ -1,6 +1,6 @@
 ![image](../../docs/logos/logo-xtend-angular-red-small.png)
 
-# XT-Sample-Plugins
+# XT-Plugin-Sample
 
-This repository shows example of Simple (Currency) and Complex (Money) components supporting ng-xtend
+This repository shows example of very Simple (Hello), Simple (Currency) and Complex (Money) components supporting ng-xtend
 

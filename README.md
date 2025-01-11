@@ -57,11 +57,11 @@ This is still work in progress, so you will have to get your hands a little bit 
 
 1. Checkout this repository
 2. It's a monorepo using [rush build system](https://rushjs.io/), so first run `npm install -g @microsoft/rush`, then `rush update`, and `rush build`
-2. Use a copy of [libs/xt-sample-plugins](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-sample-plugins) to develop your own plugins and components
+2. Use a copy of [libs/xt-plugin-sample](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample) to develop your own plugins and components
 3. Unit test your components using Jest / Karma
-   1. ng-xtend provides pre-defined hosts for different cases (in a form or not) that will easily include your component
-   2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-sample-plugins/projects/sample-plugins/src/lib/xt-currency/xt-currency.component.spec.ts)
-   3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-sample-plugins/projects/sample-plugins/src/lib/xt-money/xt-money.component.spec.ts)
+   1. ng-xtend provides pre-defined hosts for different cases (in a form or not) that will easily embed your component for testing
+   2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts)
+   3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts)
 4. Test your components by
    1. Adding your plugin project to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-tester/package.json)
    2. Register your plugin in [xt-plugin-tester App Component](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-tester/projects/plugin-tester/src/app/app.component.ts)

@@ -1,0 +1,23 @@
+@if (isInForm() ) {
+  <ng-container [formGroup]="formGroup()">
+    @switch (typeOf ()) {
+      @case ("number") {
+        <p-inputnumber mode="decimal" [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+      }
+      @case ("bigint") {
+        <p-inputnumber [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+      }
+      @case ("boolean") {
+        <p-checkbox [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+      }
+      @case ("date") {
+        <p-datepicker [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+      }
+      @default {
+        <input type="text" pInputText [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+      }
+    }
+  </ng-container>
+} @else {
+  {{ displayValue() }}
+}

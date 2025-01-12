@@ -4,9 +4,9 @@ import { SampleHelloComponent } from './hello/sample-hello.component';
 import { SampleMoneyComponent } from './money/sample-money.component';
 
 export function registerSamplePlugin (resolverService:XtResolverService):boolean {
-    console.info ('Registering Sample Plugin');
+    console.info ('Registering Plugin Sample');
     resolverService.registerPlugin ({
-        name:'SamplePlugin',
+        name:'PluginSample',
         components: [
             {
               componentName:'SampleHello',

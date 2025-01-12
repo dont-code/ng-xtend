@@ -84,8 +84,12 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
     return "Component with type "+this.constructor.name+" with context "+this.context().toString();
   }
 
-  getValue (): T|null|undefined {
-    return this.context()?.value();
-  }
+  getValue= computed (()=> {
+    return this.context().value();
+    });
+
+  displayValue = computed (() => {
+    return this.context().displayValue();
+  });
 
 }

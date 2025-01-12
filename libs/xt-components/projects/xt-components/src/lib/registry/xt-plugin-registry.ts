@@ -9,7 +9,22 @@ export class XtPluginRegistry {
 
     listComponents = signal(new Array<XtComponentInfo<any>>());
 
-    public static readonly ANY_TYPE="ANY";
+  /**
+   * The component can manage any standard javascript primitives types. That's usually the default whenever we don't know any particular type
+   * string
+   * number
+   * bigint
+   * boolean
+   * undefined
+   * null
+   * symbol is not managed
+   * Date, while an object and not a primitive, is managed
+   */
+  public static readonly ANY_PRIMITIVE_TYPE="ANY_PRIMITIVE_TYPE";
+  /**
+   * The components can manage any composite javascript type. Default when no type has been defined and it's a user defined javascript object (not a data type)
+   */
+    public static readonly ANY_OBJECT_TYPE="ANY_OBJECT_TYPE";
 
     registerPlugin (info:XtPluginInfo) {
         this.pluginRegistry.set (info.name, info);
@@ -40,7 +55,15 @@ export class XtPluginRegistry {
     }
 
     findComponentsForType<T> (valueType:string|null|undefined, value?:T): XtComponentInfo<any>[] {
-        if (valueType == null) valueType=XtPluginRegistry.ANY_TYPE;
+        // We don't know the value type, let's try to guess if it's a primitive or object based on the value
+        if (valueType == null) {
+          valueType = XtPluginRegistry.ANY_OBJECT_TYPE;
+          if ((value == null) || (typeof value != 'object')) {
+            valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
+          } else if (value instanceof Date) {
+            valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
+          }
+        }
 
         let ret = this.componentByTypeCache.get(valueType);
         if (ret == null) {

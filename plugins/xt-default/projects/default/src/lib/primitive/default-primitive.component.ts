@@ -61,6 +61,8 @@ export class DefaultPrimitiveComponent extends XtSimpleComponent implements OnDe
           throw new Error('Primitive Component used to display a non primitive type '+ret);
         }
       }
+    } else {
+      return this.context().valueType;
     }
   });
 

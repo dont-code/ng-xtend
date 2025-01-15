@@ -38,7 +38,4 @@ export class TestComponent {
   protected readonly SampleCurrencyComponent = SampleCurrencyComponent;
   protected readonly SampleMoneyComponent = SampleMoneyComponent;
   protected readonly SampleHelloComponent = SampleHelloComponent;
-
-
-  protected readonly matchMedia = matchMedia;
 }

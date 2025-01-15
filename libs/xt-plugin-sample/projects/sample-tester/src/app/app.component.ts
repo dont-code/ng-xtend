@@ -13,7 +13,7 @@ import { registerSamplePlugin } from '../../../sample/src/lib/register';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'test';
+  title = 'SampleTester';
 
   protected resolverService = inject (XtResolverService);
 

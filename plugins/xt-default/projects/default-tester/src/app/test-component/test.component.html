@@ -1,0 +1,19 @@
+<h1>Testing Simple Types</h1>
+
+<label for="TypeSelector">Select the type to use</label>
+<div id="TypeSelector">
+  <p-autocomplete [suggestions]="listOfSimpleTypes()" [ngModel]="selectedType()" (onSelect)="typeSwitch($event)" [dropdown]="true"></p-autocomplete>
+</div>
+
+<h2>Edit Mode</h2>
+<form id="editView" [formGroup]="mainForm">
+  <xt-render [componentType]="simpleComponentType()" [valueType]="selectedType()" displayMode="FULL_EDITABLE" subName="TestType" [formGroup]="mainForm"></xt-render>
+</form>
+Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
+
+<h2>View Inline Mode</h2>
+<xt-render id="inlineView" [componentType]="simpleComponentType()" [valueType]="selectedType()" displayMode="INLINE_VIEW" subName="TestType" [value]="value()" ></xt-render>
+
+<h2>Full View Mode</h2>
+<xt-render id="fullView" [componentType]="simpleComponentType()" [valueType]="selectedType()" displayMode="FULL_VIEW" subName="TestType" [value]="value()"></xt-render>
+

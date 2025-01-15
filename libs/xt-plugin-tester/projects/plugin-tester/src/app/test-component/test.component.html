@@ -1,7 +1,7 @@
 <h1>Testing components</h1>
 
 <label for="switcher">Select component :</label>
-<p-autoComplete id="switcher" [ngModel]="component()" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
+<p-autocomplete id="switcher" [ngModel]="component()" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
   <ng-template let-item pTemplate="item">
     <div class="flex items-center gap-2">
       <div>{{ item.componentName }}</div>
@@ -10,7 +10,7 @@
   <ng-template #header>
     <div class="font-medium px-3 py-2">Available Components</div>
   </ng-template>
-</p-autoComplete>
+</p-autocomplete>
 
 @if (!componentValid()) {
   <h2>Component selected above will be displayed here.</h2>

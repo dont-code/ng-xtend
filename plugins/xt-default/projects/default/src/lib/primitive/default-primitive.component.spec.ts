@@ -6,6 +6,7 @@ import { registerDefaultPlugin } from '../register';
 import { HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { DatePicker } from 'primeng/datepicker';
+import { expect } from '@jest/globals';
 
 describe('DefaultPrimitiveComponent', () => {
 
@@ -76,6 +77,30 @@ describe('DefaultPrimitiveComponent', () => {
     host.computedFormGroup().patchValue({'value':date2});
     hostFixture.detectChanges();
     expect(inputDate.componentInstance.value).toEqual (date2);
+  });
+
+  it('should edit Boolean with a checkbox', () => {
+
+    const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
+    hostFixture.componentRef.setInput('formDescription', {
+      value:[true]
+    });
+    hostFixture.componentRef.setInput('controlName', 'value');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const booleanComponent = hostFixture.debugElement.query(By.directive(DefaultPrimitiveComponent));
+    expect(booleanComponent).toBeTruthy();
+    const checkbox =booleanComponent.query(By.css('input[type="checkbox"]'));
+
+    expect(checkbox.nativeElement.checked).toEqual (true);
+    checkbox.nativeElement.checked = false;
+    checkbox.nativeElement.dispatchEvent(new Event('change'));
+    hostFixture.detectChanges();
+
+    expect(host.computedFormGroup().value).toEqual ({ value: false });
   });
 
 });

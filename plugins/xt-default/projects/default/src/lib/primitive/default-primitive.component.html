@@ -8,7 +8,7 @@
         <p-inputnumber [name]="componentNameInForm ()" [formControlName]="formControlName()" />
       }
       @case ("boolean") {
-        <p-checkbox [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+        <p-checkbox [name]="componentNameInForm ()" [formControlName]="formControlName()" [binary]="true" />
       }
       @case ("date") {
         <p-datepicker [name]="componentNameInForm ()" [formControlName]="formControlName()" />

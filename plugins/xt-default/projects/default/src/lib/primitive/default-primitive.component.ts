@@ -36,7 +36,7 @@ export class DefaultPrimitiveComponent extends XtSimpleComponent implements OnDe
     this.recalculate(); // In case recompute is forced
     if(this.context().valueType == null) {
           // The type has not been set, so let's see if we can guess it from the value
-      const val = this.getValue();
+      const val = this.context().value();  // We don't use this.getValue(), as it returns a cached value
       if (val == null) {   // We really can't know the type
         if (this.valueSubscription==null) {
           // Let's make sure a change of the value is taken into account

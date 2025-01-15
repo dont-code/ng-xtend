@@ -79,7 +79,7 @@ describe('DefaultPrimitiveComponent', () => {
     expect(inputDate.componentInstance.value).toEqual (date2);
   });
 
-  it('should edit Boolean with a checkbox', () => {
+  it('should edit boolean with a checkbox', () => {
 
     const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
@@ -101,6 +101,48 @@ describe('DefaultPrimitiveComponent', () => {
     hostFixture.detectChanges();
 
     expect(host.computedFormGroup().value).toEqual ({ value: false });
+  });
+
+  it('should switch to the correct UI whenever a value is set', () => {
+
+    const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
+    hostFixture.componentRef.setInput('formDescription', {
+      value:[null]
+    });
+    hostFixture.componentRef.setInput('controlName', 'value');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const primitiveComponent = hostFixture.debugElement.query(By.directive(DefaultPrimitiveComponent));
+    expect(primitiveComponent).toBeTruthy();
+
+    // We don't know what type is it (it's null value), so it should be an input text
+    let editor =primitiveComponent.query(By.css('input[type="text"]'));
+    expect(editor).toBeTruthy();
+
+    // Change the value to a boolean
+    host.patchValue('value', true);
+    hostFixture.detectChanges();
+
+    editor =primitiveComponent.query(By.css('input[type="checkbox"]'));
+    // It should display a checkbox
+    expect(editor).toBeTruthy();
+
+    /**
+     * We are NOT testing that changing a value to another type will trigger a change in the component
+     * as changing the type of value shouldn't happen.
+     */
+    /*
+    // Change the value to a date
+    host.patchValue('value', new Date());
+    hostFixture.detectChanges();
+
+    // It should display a datepicker
+    editor =primitiveComponent.query(By.directive(DatePicker));
+    expect(editor).toBeTruthy();*/
+
   });
 
 });

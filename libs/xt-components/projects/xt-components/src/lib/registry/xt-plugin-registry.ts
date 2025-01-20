@@ -55,6 +55,7 @@ export class XtPluginRegistry {
     }
 
     findComponentsForType<T> (valueType:string|null|undefined, value?:T): XtComponentInfo<any>[] {
+      //console.debug('Finding type from '+valueType+' with value ',value);
         // We don't know the value type, let's try to guess if it's a primitive or object based on the value
         if (valueType == null) {
           valueType = XtPluginRegistry.ANY_OBJECT_TYPE;
@@ -64,6 +65,7 @@ export class XtPluginRegistry {
             valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
           }
         }
+      //console.debug('Type found is '+valueType);
 
         let ret = this.componentByTypeCache.get(valueType);
         if (ret == null) {

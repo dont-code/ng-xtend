@@ -59,10 +59,13 @@ export class XtRenderComponent<T> {
 
     const type=this.componentType();
     if (type!=null) {
+      console.debug('XtRender, using component set '+ type);
       return type;
     }
 
     const compFound= this.resolverService.findBestComponent(this.context());
+    console.debug('XtRender, found component ',compFound.componentName);
+
     return compFound.componentClass;
   });
 

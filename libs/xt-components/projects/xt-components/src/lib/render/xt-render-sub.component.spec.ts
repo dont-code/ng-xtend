@@ -50,8 +50,8 @@ describe('XtRenderSubComponent', () => {
   it('should support forms by type', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
-        amount: [12.4],
-        currency:['EUR']
+        amount: 12.4,
+        currency:'EUR'
     });
     hostFixture.componentRef.setInput('valueType', 'TestMoney');
 //    hostFixture.componentRef.setInput('controlName', 'payment');
@@ -133,8 +133,8 @@ describe('XtRenderSubComponent', () => {
   it('should support editing null values', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
-      amount: [null],
-      currency:[null]
+      amount: null,
+      currency:null
     });
     hostFixture.componentRef.setInput('valueType', 'TestMoney');
 //    hostFixture.componentRef.setInput('controlName', 'payment');

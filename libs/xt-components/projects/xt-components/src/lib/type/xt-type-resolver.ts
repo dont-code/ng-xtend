@@ -6,9 +6,11 @@ import { XtContext } from '../xt-context';
  */
 export type XtTypeResolver<TypeContext> = {
 
-    findType (typeInfo:TypeContext|null|undefined, subName?:string, value?:any):string|null|undefined;
+  findType (typeInfo:TypeContext|null|undefined, subName?:string, value?:any):string|null|undefined;
 
-    canUpdate (): boolean;
+  listSubNames (typeInfo: TypeContext | null | undefined, value?: any):string[];
+
+  canUpdate (): boolean;
 }
 
 export type XtUpdatableTypeResolver<TypeContext> = XtTypeResolver<TypeContext> & {
@@ -50,6 +52,22 @@ export class XtTypeHierarchyResolver<T> implements XtUpdatableTypeResolver<XtCon
         return undefined;
     }
 
+    listSubNames (context: XtContext<T> | null | undefined, value?: any):string[] {
+      let ret:string[] = [];
+      if ((context!=null)&&(context.valueType!=null)) {
+        const typeInfo = this.types.get(context.valueType);
+        if( typeInfo?.children!=null) {
+          ret = Object.keys(typeInfo.children);
+        }
+      } else {
+        // We will use the value to extract properties
+        if (value!=null) {
+          ret = Object.keys(value);
+        }
+      }
+
+      return ret;
+    }
 
 }
 

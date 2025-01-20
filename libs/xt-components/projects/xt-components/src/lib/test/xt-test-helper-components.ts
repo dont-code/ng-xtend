@@ -1,6 +1,6 @@
-import { Component, computed, inject, input, signal, Type } from '@angular/core';
+import { Component, computed, inject, input, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtRenderComponent } from '../render/xt-render.component';
 import { XtComponent } from '../xt-component';
 import { XtBaseContext, XtDisplayMode } from '../xt-context';
@@ -50,7 +50,7 @@ export class HostTestFormComponent {
   computedFormGroup () {
     if( this.createdFormGroup==null) {
       const formGroup=this.formGroup();
-      this.createdFormGroup=formGroup??this.builder.group(this.formDescription());
+      this.createdFormGroup=formGroup??generateFormGroup(this.formDescription());
     }
     return this.createdFormGroup;
   }
@@ -127,7 +127,7 @@ export class HostTestTypedFormComponent {
   computedFormGroup = computed(() =>{
     if( this.createdFormGroup==null) {
       const formGroup=this.formGroup();
-      this.createdFormGroup=formGroup??this.builder.group(this.formDescription());
+      this.createdFormGroup=formGroup??generateFormGroup(this.formDescription());
       this.parentFormGroup.addControl(this.controlName()??HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
     }
     return this.createdFormGroup;
@@ -158,4 +158,36 @@ export class HostTestTypedFormComponent {
   retrieveValue (controlName:string): any {
     return this.computedFormGroup().value[controlName];
   }
+
+}
+
+function generateFormGroup(formDescription: any):FormGroup {
+  if (typeof formDescription != 'object') {
+    throw new Error ('Form Description should be an object of values');
+  }
+  return generateFormControl(formDescription) as FormGroup;
+}
+
+function generateFormControl(formDescription: any): AbstractControl {
+
+  if (formDescription==null) {
+    return new FormControl(formDescription);
+  }
+
+  if (Array.isArray(formDescription)){
+    const retArray = new FormArray<AbstractControl>([]);
+    for (const val of formDescription) {
+      retArray.push(generateFormControl(val), {emitEvent:false});
+    }
+    return retArray;
+  }
+
+  if ((typeof formDescription=='object')&&(!(formDescription instanceof Date))) {
+    const retObject=new FormGroup({});
+    for (const key of Object.keys(formDescription)) {
+      retObject.addControl(key, generateFormControl(formDescription[key]));
+    }
+    return retObject;
+  }
+  return new FormControl(formDescription);
 }

@@ -1,1 +1,3 @@
-<p>default-object works!</p>
+@for (subName of subNames(); track subName) {
+  {{subName}}:<xt-render-sub [context]="subContext(subName)" ></xt-render-sub>
+}

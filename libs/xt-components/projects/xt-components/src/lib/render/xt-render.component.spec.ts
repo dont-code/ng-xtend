@@ -38,7 +38,7 @@ describe('XtRenderComponent', () => {
     const hostFixture = TestBed.createComponent(HostTestFormComponent);
     hostFixture.componentRef.setInput('type', TestCurrencyComponent);
     hostFixture.componentRef.setInput('formDescription', {
-      testText: ['TestText']
+      testText: 'TestText'
     });
     hostFixture.componentRef.setInput('controlName', 'testText');
     const host = hostFixture.componentInstance;

@@ -180,16 +180,20 @@ export class XtBaseContext<T> implements XtContext<T>{
   }
 
   formControlValue (): T | null | undefined {
-        if (this.isInForm()) {
-          if (this.subName!=null) {
-            return this.parentFormGroup?.value[this.subName];
-          } else {
-            return this.parentFormGroup?.value;
-          }
-        } else {
-            return undefined;
-        }
+    let ret:T|undefined|null=undefined;
+    if (this.isInForm()) {
+      if (this.subName!=null) {
+        //console.debug ("formControlValue parentGroup value is ", this.parentFormGroup?.value);
+        ret=this.parentFormGroup?.value[this.subName];
+      } else {
+        ret= this.parentFormGroup?.value;
+      }
+    } else {
+        ret= undefined;
     }
+    //console.debug("formControlValue of "+this.subName+ " is ",ret);
+    return ret;
+  }
 
     subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver<XtContext<T>> | null): XtContext<T> {
         if ((subName==null) || (subName.length==0)) {
@@ -200,12 +204,7 @@ export class XtBaseContext<T> implements XtContext<T>{
             let subValue:WritableSignal<any|null> | null = null;
             let parentGroup = this.formGroup();
             // Recalculate parentGroup and formControlName and value if needed.
-            if (parentGroup!=null) {
-                let control = parentGroup.get (subName);
-                if (control instanceof FormGroup) {
-                    parentGroup = control as FormGroup;
-                }
-            } else {
+            if (parentGroup==null){
               let curValue = this.nonFormValue;
               if (curValue!=null){
                 if (curValue()!=null) {

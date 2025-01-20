@@ -50,7 +50,7 @@ describe('XtCurrencyComponent', () => {
   it('should support currency edit', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
-      currency:['EUR']
+      currency:'EUR'
     });
     hostFixture.componentRef.setInput('valueType', 'sampleCurrency');
     hostFixture.componentRef.setInput('controlName', 'currency');

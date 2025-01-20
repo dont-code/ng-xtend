@@ -372,6 +372,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.18.0
         version: 8.18.0(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)
+      arktype:
+        specifier: ^2.0.0
+        version: 2.0.0
       ava:
         specifier: ^6.2.0
         version: 6.2.0(@ava/typescript@5.0.0)(encoding@0.1.13)(rollup@4.28.1)
@@ -722,6 +725,12 @@ packages:
       '@angular/core': 19.0.5
       '@angular/platform-browser': 19.0.5
       rxjs: ^6.5.3 || ^7.4.0
+
+  '@ark/schema@0.35.0':
+    resolution: {integrity: sha512-cV3tiYpIFIt4JB4ZrXSUJ6v2nnAzbX5DqaNWRMpk4pVQV15HMEawg6wYn+JKEI16vfRCIcGqxxdGBvE0zIxqKw==}
+
+  '@ark/util@0.35.0':
+    resolution: {integrity: sha512-KxhwMOGMoV605zcqoBVyNFEtKAc3PKy95IWmVz9dwuUzIQ+sh7Bk9KEnlGPXcPAD8DCDs/10deHeO1kfWWONvg==}
 
   '@ava/typescript@5.0.0':
     resolution: {integrity: sha512-2twsQz2fUd95QK1MtKuEnjkiN47SKHZfi/vWj040EN6Eo2ZW3SNcAwncJqXXoMTYZTWtBRXYp3Fg8z+JkFI9aQ==}
@@ -3415,6 +3424,9 @@ packages:
     resolution: {integrity: sha512-dEamhpPEwRUBpLNHeuCm/v+g0anFByHahxodVO/BbAarHVBBg2MccCwf9K+o1Pof+2btdnkJelYVUWjW/VrATw==}
     engines: {node: '>=0.6.10'}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+
+  arktype@2.0.0:
+    resolution: {integrity: sha512-LVuXndcKO+zB7Hg9laGJmXYD5BZYhm/cUFL5pgB/75/3sGnvN8fsQ/yuBlf4JSn90g4rOoU7+9aTvdn5lToWOg==}
 
   array-buffer-byte-length@1.0.1:
     resolution: {integrity: sha512-ahC5W1xgou+KTXix4sAO8Ki12Q+jf4i0+tmk3sC+zgcynshkHxzpXdImBehiUYKKKDwvfFiJl1tZt6ewscS1Mg==}
@@ -8486,6 +8498,12 @@ snapshots:
       rxjs: 7.8.1
       tslib: 2.8.1
 
+  '@ark/schema@0.35.0':
+    dependencies:
+      '@ark/util': 0.35.0
+
+  '@ark/util@0.35.0': {}
+
   '@ava/typescript@5.0.0':
     dependencies:
       escape-string-regexp: 5.0.0
@@ -11357,6 +11375,11 @@ snapshots:
   argparse@2.0.1: {}
 
   argv@0.0.2: {}
+
+  arktype@2.0.0:
+    dependencies:
+      '@ark/schema': 0.35.0
+      '@ark/util': 0.35.0
 
   array-buffer-byte-length@1.0.1:
     dependencies:

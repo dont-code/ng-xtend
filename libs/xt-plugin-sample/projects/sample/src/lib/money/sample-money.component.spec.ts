@@ -52,7 +52,7 @@ describe('SampleMoneyComponent', () => {
     const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
       amount:12,
-      currency:['EUR']
+      currency:'EUR'
     });
     hostFixture.componentRef.setInput('valueType', 'sampleMoney');
 

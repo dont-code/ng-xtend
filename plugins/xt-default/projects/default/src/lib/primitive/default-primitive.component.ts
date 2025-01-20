@@ -1,4 +1,13 @@
-import { Component, computed, inject, Injector, OnDestroy, runInInjectionContext, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  Injector,
+  OnDestroy,
+  runInInjectionContext,
+  signal
+} from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
@@ -20,7 +29,8 @@ import { Subscription } from 'rxjs';
     DatePicker
   ],
   templateUrl: './default-primitive.component.html',
-  styleUrl: './default-primitive.component.css'
+  styleUrl: './default-primitive.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefaultPrimitiveComponent extends XtSimpleComponent implements OnDestroy{
 

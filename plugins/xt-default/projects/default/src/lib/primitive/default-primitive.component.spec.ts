@@ -34,7 +34,7 @@ describe('DefaultPrimitiveComponent', () => {
   it('should edit text', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
-      value:['Text']
+      value:'Text'
     });
     hostFixture.componentRef.setInput('controlName', 'value');
 
@@ -59,7 +59,7 @@ describe('DefaultPrimitiveComponent', () => {
 
     const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
-      value:[date1]
+      value:date1
     });
     hostFixture.componentRef.setInput('controlName', 'value');
 
@@ -83,7 +83,7 @@ describe('DefaultPrimitiveComponent', () => {
 
     const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
-      value:[true]
+      value:true
     });
     hostFixture.componentRef.setInput('controlName', 'value');
 
@@ -107,7 +107,7 @@ describe('DefaultPrimitiveComponent', () => {
 
     const hostFixture = TestBed.createComponent<HostTestTypedFormComponent>(HostTestTypedFormComponent);
     hostFixture.componentRef.setInput('formDescription', {
-      value:[null]
+      value:null
     });
     hostFixture.componentRef.setInput('controlName', 'value');
 

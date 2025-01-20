@@ -1,0 +1,20 @@
+<h1>Testing Object Types</h1>
+<p>For testing Simple Types => <a href="/">here</a>!</p>
+
+<label for="TypeSelector">Select the object to use</label>
+<div id="TypeSelector">
+  <p-autocomplete [suggestions]="listOfObjects()" [ngModel]="selectedObject()" (onSelect)="objectSwitch($event)" [dropdown]="true"></p-autocomplete>
+</div>
+
+<h2>Edit Mode</h2>
+<form id="editView" [formGroup]="mainForm()">
+  <xt-render [componentType]="objectComponentType()" displayMode="FULL_EDITABLE" subName="TestObject" [formGroup]="mainForm()"></xt-render>
+</form>
+Form Value is {{mainForm().value | json}}, Form is {{mainForm().pristine?"pristine":"Dirty"}}
+
+<h2>View Inline Mode</h2>
+<xt-render id="inlineView" [componentType]="objectComponentType()" displayMode="INLINE_VIEW" [value]="value()" ></xt-render>
+
+<h2>Full View Mode</h2>
+<xt-render id="fullView" [componentType]="objectComponentType()" displayMode="FULL_VIEW" [value]="value()"></xt-render>
+

@@ -1,3 +1,8 @@
-@for (subName of subNames(); track subName) {
-  {{subName}}:<xt-render-sub [context]="subContext(subName)" ></xt-render-sub>
+<div class="grid grid-cols-1 gap-6 outline-1 rounded-sm outline-cyan-800 p-3">
+  @for (subName of subNames(); track subName) {
+    <div class="flex flex-nowrap gap-3 place-items-center">
+      <div class="flex-none">{{subName}}</div>
+      <div class="flex-auto"><xt-render-sub [context]="subContext(subName)" ></xt-render-sub></div>
+    </div>
 }
+</div>

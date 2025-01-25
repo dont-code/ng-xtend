@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
 
 @Component({

@@ -39,7 +39,8 @@
               }
             ],
             "styles": [
-              "projects/plugin-tester/src/styles.css"
+              "projects/plugin-tester/src/styles.css",
+              "node_modules/primeicons/primeicons.css"
             ],
             "scripts": []
           },

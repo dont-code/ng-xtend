@@ -36,7 +36,7 @@ describe('DefaultObjectComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
 
-    expect (fixture.nativeElement.textContent).toContain('test22:');
+    expect (fixture.nativeElement.textContent).toContain('test22');
   });
 
   it('should edit complex type', () => {

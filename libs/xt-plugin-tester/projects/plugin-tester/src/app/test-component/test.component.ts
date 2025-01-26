@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, XtRenderComponent, AutoCompleteModule],
   templateUrl: './test.component.html',
-  styleUrl: './test.component.scss'
+  styleUrl: './test.component.css'
 })
 export class TestComponent implements OnInit, OnDestroy {
 

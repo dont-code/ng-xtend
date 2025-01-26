@@ -226,6 +226,12 @@ importers:
       '@primeuix/utils':
         specifier: ^0.4.0
         version: 0.4.0
+      '@tailwindcss/postcss':
+        specifier: ~4.0.0
+        version: 4.0.0
+      postcss:
+        specifier: ~8.5.1
+        version: 8.5.1
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
@@ -235,6 +241,9 @@ importers:
       rxjs:
         specifier: ^7.8.0
         version: 7.8.1
+      tailwindcss:
+        specifier: ~4.0.0
+        version: 4.0.0
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -526,9 +535,6 @@ importers:
       ng-packagr:
         specifier: ^19.1.1
         version: 19.1.1(@angular/compiler-cli@19.1.3(@angular/compiler@19.1.3(@angular/core@19.1.3(rxjs@7.8.1)))(typescript@5.7.3))(tailwindcss@4.0.0)(tslib@2.8.1)(typescript@5.7.3)
-      tailwindcss-primeui:
-        specifier: ~0.4.0
-        version: 0.4.0(tailwindcss@4.0.0)
       typescript:
         specifier: ^5.7.3
         version: 5.7.3
@@ -7323,11 +7329,6 @@ packages:
 
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
-
-  tailwindcss-primeui@0.4.0:
-    resolution: {integrity: sha512-YYC7B7Yyzm1/4pEGgpf1ABAhbrKY++LuPoUamnKE7fTPO5Ct/Qr/dT+Uq2yiVhQnaW1zHQpYnThxfksaxhlDfQ==}
-    peerDependencies:
-      tailwindcss: '>=3.1.0'
 
   tailwindcss@4.0.0:
     resolution: {integrity: sha512-ULRPI3A+e39T7pSaf1xoi58AqqJxVCLg8F/uM5A3FadUbnyDTgltVnXJvdkTjwCOGA6NazqHVcwPJC5h2vRYVQ==}
@@ -15756,10 +15757,6 @@ snapshots:
   symbol-observable@4.0.0: {}
 
   symbol-tree@3.2.4: {}
-
-  tailwindcss-primeui@0.4.0(tailwindcss@4.0.0):
-    dependencies:
-      tailwindcss: 4.0.0
 
   tailwindcss@4.0.0: {}
 

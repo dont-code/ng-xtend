@@ -10,7 +10,7 @@ import { SampleHelloComponent, SampleCurrencyComponent } from 'xt-plugin-sample'
   standalone: true,
   imports: [NgComponentOutlet, ReactiveFormsModule, ButtonModule, JsonPipe],
   templateUrl: './xt-form-test.component.html',
-  styleUrl: './xt-form-test.component.scss'
+  styleUrl: './xt-form-test.component.css'
 })
 export class XtFormTestComponent {
 

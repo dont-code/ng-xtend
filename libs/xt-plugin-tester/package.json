@@ -26,7 +26,10 @@
     "@primeuix/utils": "^0.4.0",
     "@primeuix/styled": "^0.4.1",
     "primeicons": "^7.0.0",
-    "@primeng/themes": "^19.0.5"
+    "@primeng/themes": "^19.0.5",
+    "@tailwindcss/postcss": "~4.0.0",
+    "postcss": "~8.5.1",
+    "tailwindcss": "~4.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.4",

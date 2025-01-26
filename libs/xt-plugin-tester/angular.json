@@ -14,7 +14,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "css"
         }
       },
       "root": "projects/plugin-tester",
@@ -31,7 +31,7 @@
             "polyfills": [
             ],
             "tsConfig": "projects/plugin-tester/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
+            "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
@@ -39,7 +39,7 @@
               }
             ],
             "styles": [
-              "projects/plugin-tester/src/styles.scss"
+              "projects/plugin-tester/src/styles.css"
             ],
             "scripts": []
           },
@@ -88,7 +88,7 @@
             "polyfills": [
             ],
             "tsConfig": "projects/plugin-tester/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
+            "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
@@ -96,7 +96,7 @@
               }
             ],
             "styles": [
-              "projects/plugin-tester/src/styles.scss"
+              "projects/plugin-tester/src/styles.css"
             ],
             "scripts": []
           }

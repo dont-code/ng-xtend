@@ -7,7 +7,7 @@ import { XtBaseContext, XtResolverService } from 'xt-components';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './hierarchy-test.component.html',
-  styleUrl: './hierarchy-test.component.scss'
+  styleUrl: './hierarchy-test.component.css'
 })
 export class HierarchyTestComponent {
 

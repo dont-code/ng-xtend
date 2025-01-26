@@ -15,7 +15,7 @@ import { XtRenderComponent } from 'xt-components';
     JsonPipe, XtRenderComponent
   ],
   templateUrl: './test.component.html',
-  styleUrl: './test.component.scss'
+  styleUrl: './test.component.css'
 })
 export class TestComponent implements OnInit, OnDestroy {
 

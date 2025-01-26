@@ -24,7 +24,7 @@ import { DefaultObjectComponent } from '../../../../default/src/lib/object/defau
     XtRenderComponent
   ],
   templateUrl: './test-object.component.html',
-  styleUrl: './test-object.component.scss',
+  styleUrl: './test-object.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestObjectComponent implements OnInit, OnDestroy {

@@ -1,0 +1,54 @@
+{
+  "name": "Coffee Beans Evaluation",
+  "template": false,
+  "description": "Let you evaluate Coffee brands.",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Coffee Bean Evaluator",
+      "entities": {
+        "a": {
+          "name": "Coffee Evaluation",
+          "fields": {
+            "e": {
+              name": "Name",
+              type": "Text"
+            },
+            "b": {
+              name": "Picture",
+              type": "Image"
+            },
+            "c": {
+              name": "Comment",
+              type": "Text"
+            },
+            "d": {
+              name": "Note",
+              type": "Rating"
+            },
+            "a": {
+              name": "Maxicoffee",
+              type": "Price"
+            }
+          }
+        },
+        "b": {
+          "fields": {
+            "a": {
+              name": "Name",
+              type": "Text"
+            },
+            "b": {
+              name": "Type",
+              type": "Shop type"
+            }
+          },
+          "name": "Online Shop"
+        }
+      },
+      "sharing": {
+        "with": "Dont-code users"
+      }
+    }
+  }
+}

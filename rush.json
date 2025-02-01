@@ -331,6 +331,11 @@
       "projectFolder": "libs/xt-store",
       "shouldPublish": true,
       "publishFolder": "dist/xt-store"
+    },
+    {
+      "packageName": "xt-host",
+      "projectFolder": "libs/xt-host",
+      "shouldPublish": false
     }
     // {
     //   /**

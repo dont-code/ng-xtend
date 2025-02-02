@@ -11,36 +11,36 @@
           "name": "Coffee Evaluation",
           "fields": {
             "e": {
-              name": "Name",
-              type": "Text"
+              "name": "Name",
+              "type": "Text"
             },
             "b": {
-              name": "Picture",
-              type": "Image"
+              "name": "Picture",
+              "type": "Image"
             },
             "c": {
-              name": "Comment",
-              type": "Text"
+              "name": "Comment",
+              "type": "Text"
             },
             "d": {
-              name": "Note",
-              type": "Rating"
+              "name": "Note",
+              "type": "Rating"
             },
             "a": {
-              name": "Maxicoffee",
-              type": "Price"
+              "name": "Maxicoffee",
+              "type": "Price"
             }
           }
         },
         "b": {
           "fields": {
             "a": {
-              name": "Name",
-              type": "Text"
+              "name": "Name",
+              "type": "Text"
             },
             "b": {
-              name": "Type",
-              type": "Shop type"
+              "name": "Type",
+              "type": "Shop type"
             }
           },
           "name": "Online Shop"

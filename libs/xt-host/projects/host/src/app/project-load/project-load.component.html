@@ -1,0 +1,6 @@
+@let loadingStatus = appConfig.loadingStatus();
+
+<p>{{loadingStatus.status}} of {{loadingStatus.item}}</p>
+@if (loadingStatus.message) {
+  <p>Error {{loadingStatus.message}}</p>
+}

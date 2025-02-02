@@ -75,7 +75,7 @@
               "buildTarget": "xt-host:build:production"
             },
             "development": {
-              "buildTarget": "plugin-tester:build:development"
+              "buildTarget": "xt-host:build:development"
             }
           },
           "defaultConfiguration": "development"

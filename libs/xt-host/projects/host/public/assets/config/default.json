@@ -4,7 +4,6 @@
   "description": "Repository provided by Dont-code using stable versions of plugins",
   "webSocketUrl": "ws://test.dont-code.net/demo/preview",
   "storeApiUrl": "https://test.dont-code.net/demo/data",
-  "projectApiUrl": "https://test.dont-code.net/demo/project",
   "documentApiUrl": "https://test.dont-code.net/demo/documents",
   "plugins": [
     {

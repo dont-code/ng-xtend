@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, Injector, OnInit, runInInjectionContext, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  Injector,
+  OnInit,
+  runInInjectionContext,
+  signal
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SampleMoney } from './sample-money.model';
 import { XtCompositeComponent, XtRenderSubComponent } from 'xt-components';
@@ -12,6 +21,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent, InputNumberModule],
   templateUrl: './sample-money.component.html',
   styleUrl: './sample-money.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class SampleMoneyComponent extends XtCompositeComponent<SampleMoney> implements OnInit {
   injector = inject(Injector);

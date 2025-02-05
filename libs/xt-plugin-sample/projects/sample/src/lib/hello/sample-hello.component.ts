@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {XtSimpleComponent} from 'xt-components';
 
 @Component({
@@ -6,7 +6,9 @@ import {XtSimpleComponent} from 'xt-components';
   standalone: true,
   imports: [],
   templateUrl: './sample-hello.component.html',
-  styleUrl: './sample-hello.component.css'
+  styleUrl: './sample-hello.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class SampleHelloComponent extends XtSimpleComponent<string>{
 

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { XtBaseContext, XtResolverService } from 'xt-components';
 
@@ -7,7 +7,8 @@ import { XtBaseContext, XtResolverService } from 'xt-components';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './hierarchy-test.component.html',
-  styleUrl: './hierarchy-test.component.css'
+  styleUrl: './hierarchy-test.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HierarchyTestComponent {
 

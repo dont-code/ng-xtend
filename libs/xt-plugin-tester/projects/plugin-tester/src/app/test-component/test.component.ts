@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit, signal, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal, Type } from '@angular/core';
 import {
   XtComponent,
   XtComponentInfo,
@@ -15,7 +15,9 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, XtRenderComponent, AutoCompleteModule],
   templateUrl: './test.component.html',
-  styleUrl: './test.component.css'
+  styleUrl: './test.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class TestComponent implements OnInit, OnDestroy {
 

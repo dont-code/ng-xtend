@@ -1,4 +1,4 @@
-import { Component, inject, signal, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, Type } from '@angular/core';
 import { XtContext, XtBaseContext, XtComponent, XtResolverService } from 'xt-components';
 import { NgComponentOutlet } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +8,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [NgComponentOutlet, ReactiveFormsModule],
   templateUrl: './test.component.html',
-  styleUrl: './test.component.scss'
+  styleUrl: './test.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestComponent {
   mainForm = this.builder.group ({

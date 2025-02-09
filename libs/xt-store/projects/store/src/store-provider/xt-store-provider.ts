@@ -1,12 +1,13 @@
 import {XtDataTransformer} from "./xt-data-transformer";
 import { map, Observable } from 'rxjs';
-import { DontCodeStoreCriteria, DontCodeStoreGroupby, DontCodeStoreSort } from '../xt-store-parameters';
+import { XtStoreCriteria, XtGroupBy, XtSortBy } from '../xt-store-parameters';
 import {
   DontCodeStoreGroupedByEntities,
   DontCodeStorePreparedEntities,
   XtStoreProviderHelper
 } from './xt-store-provider-helper';
 import { UploadedDocumentInfo } from '../xt-document';
+import { DontCodeStoreSort } from '../xt-reporting';
 
 /**
  * The standard interface for any store provider
@@ -26,15 +27,15 @@ export type XtStoreProvider<T=never>= {
 
   searchEntities(
     name: string,
-    ...criteria: DontCodeStoreCriteria[]
+    ...criteria: XtStoreCriteria[]
   ): Observable<Array<T>>;
 
   searchAndPrepareEntities(
     name: string,
-    sort?:DontCodeStoreSort,
-    groupBy?:DontCodeStoreGroupby,
+    sort?:XtSortBy,
+    groupBy?:XtGroupBy,
     transformer?: XtDataTransformer<T>,
-    ...criteria: DontCodeStoreCriteria[]
+    ...criteria: XtStoreCriteria[]
   ): Observable<DontCodeStorePreparedEntities<T>>;
 
   canStoreDocument(): boolean;
@@ -72,7 +73,7 @@ export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreP
    * @param position
    * @param criteria
    */
-  searchEntities(name: string, ...criteria: DontCodeStoreCriteria[]): Observable<T[]> {
+  searchEntities(name: string, ...criteria: XtStoreCriteria[]): Observable<T[]> {
     return this.listEntities(name).pipe(
       map (value => {
         return XtStoreProviderHelper.applyFilters(value, ...criteria) as T[];
@@ -89,7 +90,7 @@ export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreP
     return this.searchEntities(name);
   }
 
-  searchAndPrepareEntities(name: string, sort?: DontCodeStoreSort, groupBy?: DontCodeStoreGroupby, transformer?: XtDataTransformer<T>, ...criteria: DontCodeStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
+  searchAndPrepareEntities(name: string, sort?: XtSortBy, groupBy?: XtGroupBy, transformer?: XtDataTransformer<T>, ...criteria: XtStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
     return this.searchEntities(name, ...criteria).pipe(
       map (value => {
         // Run the transformation if any
@@ -114,9 +115,9 @@ export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreP
   abstract storeEntity(position: string, entity: T): Promise<T>;
 
 
-  protected calculateSortHierarchy(sort?: DontCodeStoreSort, groupBy?: DontCodeStoreGroupby ):DontCodeStoreSort|undefined {
+  protected calculateSortHierarchy(sort?: XtSortBy, groupBy?: XtGroupBy ):XtSortBy|undefined {
     // We must first sort by the groupBy, and then by the sort
-    let rootSort:DontCodeStoreSort|undefined;
+    let rootSort:XtSortBy|undefined;
     if (groupBy!=null) {
       rootSort=new DontCodeStoreSort(groupBy.of, undefined, sort);
     } else {

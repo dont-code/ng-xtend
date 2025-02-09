@@ -1,12 +1,10 @@
-import { DontCodeGroupOperationType } from '../xt-reporting';
-
 import { SpecialFields, Counters } from 'xt-type';
 import {
-  DontCodeStoreAggregate,
-  DontCodeStoreCriteria,
-  DontCodeStoreCriteriaOperator,
-  DontCodeStoreGroupby,
-  DontCodeStoreSort
+  XtGroupByAggregate,
+  XtStoreCriteria,
+  XtStoreCriteriaOperator,
+  XtGroupBy,
+  XtSortBy, XtGroupByOperation
 } from '../xt-store-parameters';
 
 /**
@@ -27,17 +25,17 @@ export class XtStoreProviderHelper {
    * @param list
    * @param criteria
    */
-  public static applyFilters<T> (list:Array<T>, ...criteria: DontCodeStoreCriteria[]): Array<T> {
+  public static applyFilters<T> (list:Array<T>, ...criteria: XtStoreCriteria[]): Array<T> {
     if ((criteria==null)||(criteria.length==0)) return list;
     return list.filter(element => {
       for (const criterium of criteria) {
         const toTest = element[criterium.name as keyof T];
         switch (criterium.operator) {
-          case DontCodeStoreCriteriaOperator.EQUALS:
+          case XtStoreCriteriaOperator.EQUALS:
             return criterium.value==toTest;
-          case DontCodeStoreCriteriaOperator.LESS_THAN:
+          case XtStoreCriteriaOperator.LESS_THAN:
             return toTest < criterium.value;
-          case DontCodeStoreCriteriaOperator.LESS_THAN_EQUAL:
+          case XtStoreCriteriaOperator.LESS_THAN_EQUAL:
             return toTest <= criterium.value;
           default:
             throw new Error ("Operator "+criterium.operator+" unknown");
@@ -197,7 +195,7 @@ export class XtStoreProviderHelper {
    * @param toSort
    * @param sortOptions
    */
-  static multiSortArray<T>(toSort: T[], sortOptions?: DontCodeStoreSort): T[] {
+  static multiSortArray<T>(toSort: T[], sortOptions?: XtSortBy): T[] {
     if( sortOptions==null)
       return toSort;
     return toSort;
@@ -211,7 +209,7 @@ export class XtStoreProviderHelper {
    * @param position
    * @param item
    */
-  static calculateGroupedByValues<T>(name: string, values: T[], groupBy: DontCodeStoreGroupby):DontCodeStoreGroupedByEntities|undefined {
+  static calculateGroupedByValues<T>(name: string, values: T[], groupBy: XtGroupBy):DontCodeStoreGroupedByEntities|undefined {
       // We are counting per different value of the groupedBy Item
     if ((groupBy!=null) && (groupBy.display!=null)) {
       let fieldToGroupBy=groupBy.of as keyof T;
@@ -317,13 +315,13 @@ export class XtStoreProviderHelper {
             const counter = group.get(aggregate.of as keyof T);
             if (counter != null) {
               switch (aggregate.operation) {
-                case DontCodeGroupOperationType.Count:
+                case XtGroupByOperation.Count:
                   value = counter.count;
                   break;
-                case DontCodeGroupOperationType.Sum:
+                case XtGroupByOperation.Sum:
                   value = counter.sum;
                   break;
-                case DontCodeGroupOperationType.Average: {
+                case XtGroupByOperation.Average: {
                   const modelMgr:any=null;
                   if ((counter.sum==null) || (counter.count==0)) value=null;
                   else if ((typeof counter.sum === 'object') &&  (!(counter.sum instanceof Date)) && (modelMgr!=null)) {
@@ -333,10 +331,10 @@ export class XtStoreProviderHelper {
                   } else value = counter.sum / counter.count;
                 }
                   break;
-                case DontCodeGroupOperationType.Minimum:
+                case XtGroupByOperation.Minimum:
                   value = counter.minimum;
                   break;
-                case DontCodeGroupOperationType.Maximum:
+                case XtGroupByOperation.Maximum:
                   value = counter.maximum;
                   break;
               }
@@ -358,19 +356,19 @@ export class XtStoreProviderHelper {
 
 
 export class DontCodeStorePreparedEntities<T> {
-  constructor(public sortedData:T[], public sortInfo?:DontCodeStoreSort, public groupedByEntities?:DontCodeStoreGroupedByEntities) {
+  constructor(public sortedData:T[], public sortInfo?:XtSortBy, public groupedByEntities?:DontCodeStoreGroupedByEntities) {
   }
 }
 
 export class DontCodeStoreGroupedByEntities {
-  constructor(public groupInfo:DontCodeStoreGroupby, public values?:Map<any,DontCodeStoreGroupedByValues[]>) {
+  constructor(public groupInfo:XtGroupBy, public values?:Map<any,DontCodeStoreGroupedByValues[]>) {
     if (values==null)
       this.values=new Map<any,DontCodeStoreGroupedByValues[]>();
   }
 }
 
 export class DontCodeStoreGroupedByValues {
-  constructor(public forAggregate:DontCodeStoreAggregate, public value:any) {
+  constructor(public forAggregate:XtGroupByAggregate, public value:any) {
   }
 }
 

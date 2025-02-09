@@ -1,73 +1,67 @@
-import {
-  DontCodeGroupOperationType,
-  DontCodeReportGroupAggregateType,
-  DontCodeReportGroupShowType,
-  DontCodeReportGroupType,
-  DontCodeReportSortType,
-  DontCodeSortDirectionType
-} from './xt-reporting';
 
-export enum DontCodeStoreCriteriaOperator {
+export enum XtStoreCriteriaOperator {
   EQUALS = '=',
   LESS_THAN = '<',
   LESS_THAN_EQUAL = '<=',
 }
 
-export class DontCodeStoreCriteria {
+export class XtStoreCriteria {
   name: string;
   value: any;
-  operator: DontCodeStoreCriteriaOperator;
+  operator: XtStoreCriteriaOperator;
 
   constructor(
     name: string,
     value: any,
-    operator?: DontCodeStoreCriteriaOperator
+    operator?: XtStoreCriteriaOperator
   ) {
     this.name = name;
     this.value = value;
-    if (!operator) this.operator = DontCodeStoreCriteriaOperator.EQUALS;
+    if (!operator) this.operator = XtStoreCriteriaOperator.EQUALS;
     else {
       this.operator = operator;
     }
   }
 }
 
-export class DontCodeStoreSort implements DontCodeReportSortType {
-
-  direction: DontCodeSortDirectionType;
-
-  constructor(public by: string, direction?:DontCodeSortDirectionType, public subSort?:DontCodeStoreSort) {
-    if (direction==null)   this.direction=DontCodeSortDirectionType.None;
-    else this.direction=direction;
-  }
+export type XtSortBy ={
+  by:string,
+  direction: XtSortByDirection
 }
 
-export class DontCodeStoreGroupby implements DontCodeReportGroupType {
-  display:{[key:string]:DontCodeStoreAggregate};
-
-  constructor(public of:string, display?:{[key:string]:DontCodeStoreAggregate}, public show?:DontCodeReportGroupShowType) {
-    if (display==null) this.display={};
-    else this.display=display;
-  }
-
-  public atLeastOneGroupIsRequested (): boolean {
-    if( (this.display!=null) && (Object.keys(this.display).length>0))
-      return true;
-    return false;
-  }
-
-  getRequiredListOfFields(): Set<string> {
-    const ret = new Set<string>();
-    if( this.display!=null) {
-      for (const aggregate of Object.values(this.display)) {
-        ret.add(aggregate.of);
-      }
-    }
-    return ret;
-  }
+export enum XtSortByDirection {
+  None = "None",
+  Ascending = "Ascending",
+  Descending = "Descending"
 }
 
-export class DontCodeStoreAggregate implements DontCodeReportGroupAggregateType{
-  constructor(public of:string, public operation:DontCodeGroupOperationType) {
-  }
+export enum XtGroupByShow {
+  OnlyLowest="OnlyLowest",
+  OnlyHighest="OnlyHighest"
 }
+
+export enum XtGroupByOperation {
+  Count= "Count",
+  Sum="Sum",
+  Average="Average",
+  Minimum="Minimum",
+  Maximum="Maximum"
+}
+
+export type XtGroupBy= {
+  of: string,
+  display:{[key:string]:XtGroupByAggregate};
+  show?:XtGroupByShow,
+  label?:string
+
+  atLeastOneGroupIsRequested (): boolean;
+  getRequiredListOfFields(): Set<string>;
+}
+
+export type XtGroupByAggregate = {
+  operation: XtGroupByOperation;
+  of:string,
+  label?:string
+}
+
+

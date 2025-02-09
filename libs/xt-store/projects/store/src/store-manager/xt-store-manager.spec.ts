@@ -1,7 +1,7 @@
 import {
-  DontCodeStoreCriteria,
-  DontCodeStoreGroupby,
-  DontCodeStoreSort
+  XtGroupBy,
+  XtSortBy,
+  XtStoreCriteria
 } from '../xt-store-parameters';
 import { AbstractDontCodeStoreProvider } from '../store-provider/xt-store-provider';
 import { Observable, of } from 'rxjs';
@@ -80,11 +80,11 @@ class DummyStoreProvider<T> extends AbstractDontCodeStoreProvider<T> {
 
   override searchEntities(
     name: string,
-    ...criteria: DontCodeStoreCriteria[]
+    ...criteria: XtStoreCriteria[]
   ): Observable<Array<T>> {
     return of([]);
   }
-  override searchAndPrepareEntities(name: string, sort?: DontCodeStoreSort | undefined, groupBy?: DontCodeStoreGroupby | undefined, transformer?:XtDataTransformer,...criteria: DontCodeStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
+  override searchAndPrepareEntities(name: string, sort?: XtSortBy | undefined, groupBy?: XtGroupBy | undefined, transformer?:XtDataTransformer,...criteria: XtStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
     return of (new DontCodeStorePreparedEntities([]));
   }
 

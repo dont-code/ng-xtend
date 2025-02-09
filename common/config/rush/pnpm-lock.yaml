@@ -161,9 +161,15 @@ importers:
       xt-components:
         specifier: workspace:^
         version: link:../xt-components/dist/xt-components
-      xt-plugin-sample:
+      xt-plugin-default:
         specifier: workspace:^
-        version: link:../xt-plugin-sample/dist/xt-plugin-sample
+        version: link:../../plugins/xt-default
+      xt-store:
+        specifier: workspace:^
+        version: link:../xt-store
+      xt-type:
+        specifier: workspace:^
+        version: link:../xt-type
     devDependencies:
       '@angular-builders/jest':
         specifier: ^19.0.0

@@ -1,7 +1,7 @@
 import { XtStoreProvider } from '../store-provider/xt-store-provider';
 import { Observable } from 'rxjs';
 import { UploadedDocumentInfo } from '../xt-document';
-import { DontCodeStoreCriteria, DontCodeStoreGroupby, DontCodeStoreSort } from '../xt-store-parameters';
+import { XtStoreCriteria, XtGroupBy, XtSortBy } from '../xt-store-parameters';
 import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provider-helper';
 import { XtDataTransformer } from '../store-provider/xt-data-transformer';
 
@@ -110,17 +110,17 @@ export class XtStoreManager {
 
   searchEntities<T=never>(
     name: string,
-    ...criteria: DontCodeStoreCriteria[]
+    ...criteria: XtStoreCriteria[]
   ): Observable<Array<T>> {
     return this.getProviderSafe<T>(name).searchEntities(name, ...criteria);
   }
 
   searchAndPrepareEntities<T=never>(
     name: string,
-    sort?:DontCodeStoreSort,
-    groupBy?:DontCodeStoreGroupby,
+    sort?:XtSortBy,
+    groupBy?:XtGroupBy,
     dataTransformer?:XtDataTransformer,
-    ...criteria: DontCodeStoreCriteria[]
+    ...criteria: XtStoreCriteria[]
   ): Observable<DontCodeStorePreparedEntities<T>> {
     return this.getProviderSafe<T>(name).searchAndPrepareEntities(name, sort, groupBy, dataTransformer, ...criteria);
   }

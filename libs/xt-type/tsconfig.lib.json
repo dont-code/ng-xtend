@@ -3,9 +3,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/spec",
-    "types": ["jest"],
-    "emitDecoratorMetadata": true
+    "outDir": "./out-tsc/lib",
+    "module": "ES2022",
+    "moduleResolution": "bundler"
   },
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "exclude": [
+    "**/*.spec.ts"
+  ]
 }

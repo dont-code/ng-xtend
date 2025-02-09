@@ -1,23 +1,17 @@
-import {XtStoreProvider,} from './xt-store-provider';
-import {
-  DontCodeGroupOperationType,
-  DontCodeReportGroupAggregateType, DontCodeReportGroupShowType,
-  DontCodeReportGroupType,
-  DontCodeReportSortType,
-  DontCodeSortDirectionType
-} from '../xt-reporting';
-import {XtStorePreparedEntities} from "./xt-store-provider-helper";
-import {Observable} from "rxjs";
-import {XtDataTransformer} from "./xt-data-transformer";
+import { XtStoreProvider } from '../store-provider/xt-store-provider';
+import { Observable } from 'rxjs';
+import { UploadedDocumentInfo } from '../xt-document';
+import { DontCodeStoreCriteria, DontCodeStoreGroupby, DontCodeStoreSort } from '../xt-store-parameters';
+import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provider-helper';
+import { XtDataTransformer } from '../store-provider/xt-data-transformer';
 
 export class XtStoreManager {
-  private _default?: DontCodeStoreProvider<never>;
-  private providerByPosition = new Map<string, DontCodeStoreProvider<never>>();
-  private providerByType = new Map<string, DontCodeStoreProvider<never>>();
+  private _default?: XtStoreProvider<never>;
+  private providerByPosition = new Map<string, XtStoreProvider<never>>();
+  private providerByType = new Map<string, XtStoreProvider<never>>();
 
   constructor(
-    protected modelMgr: DontCodeModelManager,
-    provider?: DontCodeStoreProvider<never>
+    provider?: XtStoreProvider<never>
   ) {
     this._default = provider;
     this.reset();
@@ -28,28 +22,28 @@ export class XtStoreManager {
     this.providerByType.clear();
   }
 
-  getProvider<T>(position?: string): DontCodeStoreProvider<T> | undefined {
-    if (position == null) {
+  getProvider<T>(name?: string): XtStoreProvider<T> | undefined {
+    if (name == null) {
       return this._default;
     } else {
       let ret = null;
       // Try to find if the entity is loaded from a defined source
-      const srcDefinition = this.modelMgr.findTargetOfProperty(
+      /*const srcDefinition = this.modelMgr.findTargetOfProperty(
         DontCodeModel.APP_ENTITIES_FROM_NODE,
         position
       )?.value as DontCodeSourceType;
       if (srcDefinition) {
         ret = this.providerByType.get(srcDefinition.type);
       }
-      if (!ret) {
-        ret = this.providerByPosition.get(position);
-      }
+      if (!ret) {*/
+        ret = this.providerByPosition.get(name);
+      //}
       return ret ?? this._default;
     }
   }
 
-  getProviderSafe<T=never>(position?: string): DontCodeStoreProvider<T> {
-    const ret = this.getProvider<T>(position);
+  getProviderSafe<T=never>(name?: string): XtStoreProvider<T> {
+    const ret = this.getProvider<T>(name);
     if (ret == null) {
       throw new Error('Trying to get an undefined or null provider');
     } else {
@@ -57,36 +51,36 @@ export class XtStoreManager {
     }
   }
 
-  getDefaultProvider<T=never>(): DontCodeStoreProvider<T> | undefined {
+  getDefaultProvider<T=never>(): XtStoreProvider<T> | undefined {
     return this.getProvider();
   }
 
-  getDefaultProviderSafe<T=never>(): DontCodeStoreProvider<T> {
+  getDefaultProviderSafe<T=never>(): XtStoreProvider<T> {
     return this.getProviderSafe();
   }
 
-  setProvider(value: DontCodeStoreProvider<never>, position?: string): void {
-    if (position == null) this._default = value;
+  setProvider(value: XtStoreProvider<never>, name?: string): void {
+    if (name == null) this._default = value;
     else {
-      this.providerByPosition.set(position, value);
+      this.providerByPosition.set(name, value);
     }
   }
 
   setProviderForSourceType(
-    value: DontCodeStoreProvider<never>,
+    value: XtStoreProvider<never>,
     srcType: string
   ): void {
     this.providerByType.set(srcType, value);
   }
 
-  setDefaultProvider(value: DontCodeStoreProvider<never>): void {
+  setDefaultProvider(value: XtStoreProvider<never>): void {
     this.setProvider(value);
   }
 
-  removeProvider(position?: string): void {
-    if (position == null) this._default = undefined;
+  removeProvider(name?: string): void {
+    if (name == null) this._default = undefined;
     else {
-      this.providerByPosition.delete(position);
+      this.providerByPosition.delete(name);
     }
   }
 
@@ -98,122 +92,52 @@ export class XtStoreManager {
     this.removeProvider();
   }
 
-  storeEntity<T=never>(position: string, entity: T): Promise<T> {
-    return this.getProviderSafe<T>(position).storeEntity(position, entity);
+  storeEntity<T=never>(name: string, entity: T): Promise<T> {
+    return this.getProviderSafe<T>(name).storeEntity(name, entity);
   }
 
-  loadEntity<T=never>(position: string, key: any): Promise<T|undefined> {
-    return this.getProviderSafe<T>(position).loadEntity(position, key);
+  loadEntity<T=never>(name: string, key: any): Promise<T|undefined> {
+    return this.getProviderSafe<T>(name).loadEntity(name, key);
   }
 
-  safeLoadEntity<T=never>(position: string, key: any): Promise<T> {
-    return this.getProviderSafe<T>(position).safeLoadEntity(position, key);
+  safeLoadEntity<T=never>(name: string, key: any): Promise<T> {
+    return this.getProviderSafe<T>(name).safeLoadEntity(name, key);
   }
 
-  deleteEntity(position: string, key: any): Promise<boolean> {
-    return this.getProviderSafe(position).deleteEntity(position, key);
+  deleteEntity(name: string, key: any): Promise<boolean> {
+    return this.getProviderSafe(name).deleteEntity(name, key);
   }
 
   searchEntities<T=never>(
-    position: string,
+    name: string,
     ...criteria: DontCodeStoreCriteria[]
   ): Observable<Array<T>> {
-    return this.getProviderSafe<T>(position).searchEntities(position, ...criteria);
+    return this.getProviderSafe<T>(name).searchEntities(name, ...criteria);
   }
 
   searchAndPrepareEntities<T=never>(
-    position: string,
+    name: string,
     sort?:DontCodeStoreSort,
     groupBy?:DontCodeStoreGroupby,
-    dataTransformer?:DontCodeDataTransformer,
+    dataTransformer?:XtDataTransformer,
     ...criteria: DontCodeStoreCriteria[]
   ): Observable<DontCodeStorePreparedEntities<T>> {
-    return this.getProviderSafe<T>(position).searchAndPrepareEntities(position, sort, groupBy, dataTransformer, ...criteria);
+    return this.getProviderSafe<T>(name).searchAndPrepareEntities(name, sort, groupBy, dataTransformer, ...criteria);
   }
 
 
-  canStoreDocument(position?: string): boolean {
-    const res = this.getProvider(position)?.canStoreDocument(position);
+  canStoreDocument(name?: string): boolean {
+    const res = this.getProvider(name)?.canStoreDocument();
     if (res) return res;
     else return false;
   }
 
   storeDocuments(
     toStore: File[],
-    position?: string
+    name?: string
   ): Observable<UploadedDocumentInfo> {
-    return this.getProviderSafe(position).storeDocuments(toStore, position);
+    return this.getProviderSafe(name).storeDocuments(toStore);
   }
 
 }
 
-export type UploadedDocumentInfo = {
-  documentName: string;
-  isUrl: boolean;
-  documentId?: string;
-};
-
-export enum DontCodeStoreCriteriaOperator {
-  EQUALS = '=',
-  LESS_THAN = '<',
-  LESS_THAN_EQUAL = '<=',
-}
-
-export class DontCodeStoreCriteria {
-  name: string;
-  value: any;
-  operator: DontCodeStoreCriteriaOperator;
-
-  constructor(
-    name: string,
-    value: any,
-    operator?: DontCodeStoreCriteriaOperator
-  ) {
-    this.name = name;
-    this.value = value;
-    if (!operator) this.operator = DontCodeStoreCriteriaOperator.EQUALS;
-    else {
-      this.operator = operator;
-    }
-  }
-}
-
-export class DontCodeStoreSort implements DontCodeReportSortType {
-
-  direction: DontCodeSortDirectionType;
-
-  constructor(public by: string, direction?:DontCodeSortDirectionType, public subSort?:DontCodeStoreSort) {
-    if (direction==null)   this.direction=DontCodeSortDirectionType.None;
-    else this.direction=direction;
-  }
-}
-
-export class DontCodeStoreGroupby implements DontCodeReportGroupType {
-  display:{[key:string]:DontCodeStoreAggregate};
-
-  constructor(public of:string, display?:{[key:string]:DontCodeStoreAggregate}, public show?:DontCodeReportGroupShowType) {
-    if (display==null) this.display={};
-    else this.display=display;
-  }
-
-  public atLeastOneGroupIsRequested (): boolean {
-    if( (this.display!=null) && (Object.keys(this.display).length>0))
-      return true;
-    return false;
-  }
-
-  getRequiredListOfFields(): Set<string> {
-    const ret = new Set<string>();
-    if( this.display!=null) {
-      for (const aggregate of Object.values(this.display)) {
-        ret.add(aggregate.of);
-      }
-    }
-    return ret;
-  }
-}
-
-export class DontCodeStoreAggregate implements DontCodeReportGroupAggregateType{
-  constructor(public of:string, public operation:DontCodeGroupOperationType) {
-  }
-}

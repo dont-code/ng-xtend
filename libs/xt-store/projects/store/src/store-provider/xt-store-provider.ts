@@ -1,48 +1,43 @@
-import {map, Observable} from 'rxjs';
-import {
-  DontCodeStoreCriteria,
-  DontCodeStoreGroupby,
-  DontCodeStoreSort,
-  UploadedDocumentInfo
-} from './dont-code-store-manager';
+import {XtDataTransformer} from "./xt-data-transformer";
+import { map, Observable } from 'rxjs';
+import { DontCodeStoreCriteria, DontCodeStoreGroupby, DontCodeStoreSort } from '../xt-store-parameters';
 import {
   DontCodeStoreGroupedByEntities,
   DontCodeStorePreparedEntities,
   XtStoreProviderHelper
-} from "./xt-store-provider-helper";
-import {XtDataTransformer} from "./xt-data-transformer";
-import { DontCodeModelManager } from '../model/dont-code-model-manager';
+} from './xt-store-provider-helper';
+import { UploadedDocumentInfo } from '../xt-document';
 
 /**
  * The standard interface for any store provider
  */
-export interface XtStoreProvider<T=never> {
-  storeEntity(position: string, entity: T): Promise<T>;
+export type XtStoreProvider<T=never>= {
+  storeEntity( name:string, entity: T): Promise<T>;
 
   /**
    * Rejects the promise if the entity is not found
-   * @param position
+   * @param name
    * @param key
    */
-  safeLoadEntity(position: string, key: any): Promise<T>;
-  loadEntity(position: string, key: any): Promise<T|undefined>;
+  safeLoadEntity( name: string, key: any): Promise<T>;
+  loadEntity( name: string, key: any): Promise<T|undefined>;
 
-  deleteEntity(position: string, key: any): Promise<boolean>;
+  deleteEntity(name:string, key: any): Promise<boolean>;
 
   searchEntities(
-    position: string,
+    name: string,
     ...criteria: DontCodeStoreCriteria[]
   ): Observable<Array<T>>;
 
   searchAndPrepareEntities(
-    position: string,
+    name: string,
     sort?:DontCodeStoreSort,
     groupBy?:DontCodeStoreGroupby,
     transformer?: XtDataTransformer<T>,
     ...criteria: DontCodeStoreCriteria[]
   ): Observable<DontCodeStorePreparedEntities<T>>;
 
-  canStoreDocument(position?: string): boolean;
+  canStoreDocument(): boolean;
 
   /**
    * Upload documents to a server store and returns the url or the id needed to retrieve them.
@@ -50,26 +45,22 @@ export interface XtStoreProvider<T=never> {
    * @param position
    */
   storeDocuments(
-    toStore: File[],
-    position?: string
+    toStore: File[]
   ): Observable<UploadedDocumentInfo>;
 }
 
 export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreProvider<T> {
-  abstract canStoreDocument(position?: string): boolean;
+  abstract canStoreDocument(): boolean;
 
-  abstract deleteEntity(position: string, key: any): Promise<boolean>;
+  abstract deleteEntity(name:string, key: any): Promise<boolean>;
 
-  abstract loadEntity(position: string, key: any): Promise<T|undefined>;
+  abstract loadEntity(name:string, key: any): Promise<T|undefined>;
 
-  protected modelMgr?:DontCodeModelManager;
-
-  constructor (modelMgr?:DontCodeModelManager) {
-    this.modelMgr=modelMgr;
+  constructor () {
   }
 
-  safeLoadEntity(position: string, key: any): Promise<T> {
-    return this.loadEntity(position, key).then(value => {
+  safeLoadEntity(name: string, key: any): Promise<T> {
+    return this.loadEntity(name, key).then(value => {
       if (value==null)
         return Promise.reject("Not found");
       else return value;
@@ -81,8 +72,8 @@ export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreP
    * @param position
    * @param criteria
    */
-  searchEntities(position: string, ...criteria: DontCodeStoreCriteria[]): Observable<T[]> {
-    return this.listEntities(position).pipe(
+  searchEntities(name: string, ...criteria: DontCodeStoreCriteria[]): Observable<T[]> {
+    return this.listEntities(name).pipe(
       map (value => {
         return XtStoreProviderHelper.applyFilters(value, ...criteria) as T[];
       })
@@ -94,12 +85,12 @@ export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreP
    * @param position
    * @protected
    */
-  protected listEntities (position:string): Observable<T[]> {
-    return this.searchEntities(position);
+  protected listEntities (name:string): Observable<T[]> {
+    return this.searchEntities(name);
   }
 
-  searchAndPrepareEntities(position: string, sort?: DontCodeStoreSort, groupBy?: DontCodeStoreGroupby, transformer?: XtDataTransformer<T>, ...criteria: DontCodeStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
-    return this.searchEntities(position, ...criteria).pipe(
+  searchAndPrepareEntities(name: string, sort?: DontCodeStoreSort, groupBy?: DontCodeStoreGroupby, transformer?: XtDataTransformer<T>, ...criteria: DontCodeStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
+    return this.searchEntities(name, ...criteria).pipe(
       map (value => {
         // Run the transformation if any
         if (transformer!=null) return transformer.postLoadingTransformation(value);
@@ -110,7 +101,7 @@ export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreP
         if((sort!=null) || (groupBy?.atLeastOneGroupIsRequested()===true)) {
           value = XtStoreProviderHelper.multiSortArray(value, this.calculateSortHierarchy(sort, groupBy)) as T[];
           if (groupBy!=null) {
-            groupedByValues = XtStoreProviderHelper.calculateGroupedByValues(value, groupBy, this.modelMgr);
+            groupedByValues = XtStoreProviderHelper.calculateGroupedByValues(name, value, groupBy);
           }
         }
         return new DontCodeStorePreparedEntities<T> (value, sort, groupedByValues);

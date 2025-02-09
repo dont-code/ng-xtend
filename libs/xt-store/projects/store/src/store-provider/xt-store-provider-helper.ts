@@ -1,12 +1,13 @@
+import { DontCodeGroupOperationType } from '../xt-reporting';
 
+import { SpecialFields, Counters } from 'xt-type';
 import {
-  DontCodeGroupOperationType,
-  DontCodeReportGroupAggregateType,
-  DontCodeReportGroupShowType,
-  DontCodeReportGroupType,
-  DontCodeReportSortType,
-  DontCodeSortDirectionType
-} from '../xt-reporting';
+  DontCodeStoreAggregate,
+  DontCodeStoreCriteria,
+  DontCodeStoreCriteriaOperator,
+  DontCodeStoreGroupby,
+  DontCodeStoreSort
+} from '../xt-store-parameters';
 
 /**
  * Helps handle metadata information about loaded items
@@ -210,7 +211,7 @@ export class XtStoreProviderHelper {
    * @param position
    * @param item
    */
-/*  static calculateGroupedByValues<T>(values: T[], groupBy: DontCodeStoreGroupby, modelMgr?: DontCodeModelManager, position?: DontCodeModelPointer, item?:DontCodeSchemaItem):DontCodeStoreGroupedByEntities|undefined {
+  static calculateGroupedByValues<T>(name: string, values: T[], groupBy: DontCodeStoreGroupby):DontCodeStoreGroupedByEntities|undefined {
       // We are counting per different value of the groupedBy Item
     if ((groupBy!=null) && (groupBy.display!=null)) {
       let fieldToGroupBy=groupBy.of as keyof T;
@@ -243,12 +244,13 @@ export class XtStoreProviderHelper {
           const valSrc=value[field];
           const val=valSrc;
           if (valSrc!=null) {
+            const modelMgr:any=null;
               // If it's an object, we need to set the calculated values as the object itself
             if ((typeof valSrc === 'object') &&  (!(valSrc instanceof Date)) && (modelMgr!=null)) {
               if( counter.sum==null) counter.sum=structuredClone(valSrc);
               else {
                 counter.sum=modelMgr.modifyValues(counter.sum, valSrc, counter.metaData,
-                  (first, second) => {
+                  (first: any, second: any) => {
                     if ((first!=null) && (second!=null))
                       return first + second;
                     else if (first == null) {
@@ -256,10 +258,10 @@ export class XtStoreProviderHelper {
                     } else if (second==null) {
                       return first;
                     }
-                  },
-                  position, item);
+                  }/*,
+                  position, item*/);
               }
-              const value=modelMgr.extractValue(valSrc, counter.metaData,position, item);
+              const value=modelMgr.extractValue(valSrc, counter.metaData/*,position, item*/);
               if( counter.minimum==null)  { counter.minimum=valSrc; counter.minAsValue=value}
               else {
                 const minValue=counter.minAsValue;
@@ -322,11 +324,12 @@ export class XtStoreProviderHelper {
                   value = counter.sum;
                   break;
                 case DontCodeGroupOperationType.Average: {
+                  const modelMgr:any=null;
                   if ((counter.sum==null) || (counter.count==0)) value=null;
                   else if ((typeof counter.sum === 'object') &&  (!(counter.sum instanceof Date)) && (modelMgr!=null)) {
                     value = modelMgr.applyValue(structuredClone(counter.sum),
-                      modelMgr.extractValue(counter.sum, counter.metaData, position, item)/counter.count,
-                      counter.metaData, undefined, position, item);
+                      modelMgr.extractValue(counter.sum, counter.metaData/*, position, item*/)/counter.count,
+                      counter.metaData, undefined/*, position, item*/);
                   } else value = counter.sum / counter.count;
                 }
                   break;
@@ -350,22 +353,8 @@ export class XtStoreProviderHelper {
       }
     }
     return undefined;
-  }*/
+  }
 }
-
-/*class Counters {
-  sum:any;
-
-  count=0;
-
-  minimum: any;
-  minAsValue: number | null = null;
-
-  maximum: any;
-  maxAsValue: number | null = null;
-
-  metaData = new DataTransformationInfo();
-}*/
 
 
 export class DontCodeStorePreparedEntities<T> {
@@ -382,71 +371,6 @@ export class DontCodeStoreGroupedByEntities {
 
 export class DontCodeStoreGroupedByValues {
   constructor(public forAggregate:DontCodeStoreAggregate, public value:any) {
-  }
-}
-
-export enum DontCodeStoreCriteriaOperator {
-  EQUALS = '=',
-  LESS_THAN = '<',
-  LESS_THAN_EQUAL = '<=',
-}
-
-export class DontCodeStoreCriteria {
-  name: string;
-  value: any;
-  operator: DontCodeStoreCriteriaOperator;
-
-  constructor(
-    name: string,
-    value: any,
-    operator?: DontCodeStoreCriteriaOperator
-  ) {
-    this.name = name;
-    this.value = value;
-    if (!operator) this.operator = DontCodeStoreCriteriaOperator.EQUALS;
-    else {
-      this.operator = operator;
-    }
-  }
-}
-
-export class DontCodeStoreSort implements DontCodeReportSortType {
-
-  direction: DontCodeSortDirectionType;
-
-  constructor(public by: string, direction?:DontCodeSortDirectionType, public subSort?:DontCodeStoreSort) {
-    if (direction==null)   this.direction=DontCodeSortDirectionType.None;
-    else this.direction=direction;
-  }
-}
-
-export class DontCodeStoreGroupby implements DontCodeReportGroupType {
-  display:{[key:string]:DontCodeStoreAggregate};
-
-  constructor(public of:string, display?:{[key:string]:DontCodeStoreAggregate}, public show?:DontCodeReportGroupShowType) {
-    if (display==null) this.display={};
-    else this.display=display;
-  }
-
-  public atLeastOneGroupIsRequested (): boolean {
-    if( (this.display!=null) && (Object.keys(this.display).length>0))
-      return true;
-    return false;
-  }
-
-  getRequiredListOfFields(): Set<string> {
-    const ret = new Set<string>();
-    if( this.display!=null) {
-      for (const aggregate of Object.values(this.display)) {
-        ret.add(aggregate.of);
-      }
-    }
-    return ret;
-  }
-}
-
-export class DontCodeStoreAggregate implements DontCodeReportGroupAggregateType{
-  constructor(public of:string, public operation:DontCodeGroupOperationType) {
   }
 }
 

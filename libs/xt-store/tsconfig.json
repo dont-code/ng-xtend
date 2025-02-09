@@ -17,22 +17,17 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "paths": {
-      "store": [
-        "./dist/store"
-      ]
-    },
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "xt-type": ["./node_modules/xt-type/src/index.ts"],
+      "tslib": ["./node_modules/tslib/tslib.d.ts"]
+    }
   },
-  "paths": {
-    "xt-type": ["./node_modules/xt-type/src/index.ts"]
-  },
-
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

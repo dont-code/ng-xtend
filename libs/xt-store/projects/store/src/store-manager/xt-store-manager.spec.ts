@@ -1,18 +1,18 @@
 import {
   DontCodeStoreCriteria,
   DontCodeStoreGroupby,
-  DontCodeStoreSort,
-  UploadedDocumentInfo
-} from './xt-store-manager';
-import {AbstractDontCodeStoreProvider} from './dont-code-store-provider';
-import {dtcde} from '../dontcode';
-import {Observable, of} from 'rxjs';
-import {DontCodeStorePreparedEntities} from './store-provider-helper';
-import {DontCodeDataTransformer} from "./dont-code-data-transformer";
+  DontCodeStoreSort
+} from '../xt-store-parameters';
+import { AbstractDontCodeStoreProvider } from '../store-provider/xt-store-provider';
+import { Observable, of } from 'rxjs';
+import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provider-helper';
+import { XtStoreManager } from './xt-store-manager';
+import { XtDataTransformer } from '../store-provider/xt-data-transformer';
+import { UploadedDocumentInfo } from '../xt-document';
 
 describe('Store Manager', () => {
   it('should correctly return the default provider', () => {
-    const storeManager = dtcde.getStoreManager();
+    const storeManager = new XtStoreManager();
     const defaultProvider = new DummyStoreProvider<never>();
 
     storeManager.setProvider(defaultProvider);
@@ -38,7 +38,7 @@ describe('Store Manager', () => {
   });
 
   it('should correctly return other providers', () => {
-    const storeManager = dtcde.getStoreManager();
+    const storeManager = new XtStoreManager();
     const defaultProvider = new DummyStoreProvider<never>();
     const testProvider = new DummyStoreProvider<never>();
 
@@ -66,31 +66,30 @@ describe('Store Manager', () => {
 });
 
 class DummyStoreProvider<T> extends AbstractDontCodeStoreProvider<T> {
-  canStoreDocument(position?: string): boolean {
+  canStoreDocument(): boolean {
     return false;
   }
 
-  deleteEntity(position: string, key: any): Promise<boolean> {
+  deleteEntity(name: string, key: any): Promise<boolean> {
     return Promise.resolve(false);
   }
 
-  loadEntity(position: string, key: any): Promise<T> {
+  loadEntity(name: string, key: any): Promise<T> {
     return Promise.reject();
   }
 
-  searchEntities(
-    position: string,
+  override searchEntities(
+    name: string,
     ...criteria: DontCodeStoreCriteria[]
   ): Observable<Array<T>> {
     return of([]);
   }
-  searchAndPrepareEntities(position: string, sort?: DontCodeStoreSort | undefined, groupBy?: DontCodeStoreGroupby | undefined, transformer?:DontCodeDataTransformer,...criteria: DontCodeStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
+  override searchAndPrepareEntities(name: string, sort?: DontCodeStoreSort | undefined, groupBy?: DontCodeStoreGroupby | undefined, transformer?:XtDataTransformer,...criteria: DontCodeStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
     return of (new DontCodeStorePreparedEntities([]));
   }
 
   storeDocuments(
-    toStore: File[],
-    position?: string
+    toStore: File[]
   ): Observable<UploadedDocumentInfo> {
     return of({
       documentId:'areere',
@@ -99,7 +98,7 @@ class DummyStoreProvider<T> extends AbstractDontCodeStoreProvider<T> {
     });
   }
 
-  storeEntity(position: string, entity: T): Promise<T> {
+  storeEntity(name: string, entity: T): Promise<T> {
     return Promise.resolve(entity);
   }
 }

@@ -29,7 +29,8 @@
     "@primeng/themes": "^19.0.5",
     "@tailwindcss/postcss": "~4.0.0",
     "postcss": "~8.5.1",
-    "tailwindcss": "~4.0.0"
+    "tailwindcss": "~4.0.0",
+    "@ngrx/signals": "^19.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.4",

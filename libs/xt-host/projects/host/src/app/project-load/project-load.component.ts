@@ -1,17 +1,31 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+  OnInit,
+  resource,
+  ResourceStatus
+} from '@angular/core';
 import { AppConfigService } from '../shared/app-config/app-config.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
 
 @Component({
   selector: 'app-project-load',
   imports: [],
   templateUrl: './project-load.component.html',
-  styleUrl: './project-load.component.css'
+  styleUrl: './project-load.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectLoadComponent implements OnInit {
 
   protected readonly route = inject(ActivatedRoute);
-  appConfig = inject(AppConfigService);
+  protected readonly router = inject(Router);
+
+  protected readonly appMgr=inject(ApplicationModelManagerService);
+  protected readonly appConfig = inject(AppConfigService);
 
   ngOnInit() {
     const projectName = this.route.snapshot.paramMap.get('projectName');
@@ -22,7 +36,34 @@ export class ProjectLoadComponent implements OnInit {
       this.appConfig.updateProjectName('Coffee Beans Evaluation');
   }
 
-  setDefaultConfig() {
+  combinedloadingStatus = linkedSignal( () => {
+      const ret = this.appConfig.loadingStatus();
+      if (!ret.allLoaded) {
+         return ret;
+      }
+      else {
+        return {
+          status:this.moveToNextPage.status(),
+          allLoaded:true,
+          item: 'Entity',
+          message:(this.moveToNextPage.value()===false)?'No displayable entity found':undefined
+      }
+    }
+  });
 
-  }
+  moveToNextPage = resource({
+    request: ()=> {
+      return this.appConfig.loadingStatus().allLoaded;
+    },
+    loader: ((option) => {
+      if (option.request==true) {
+        this.appMgr.setModel (this.appConfig.project.value());
+        const entityName = this.appMgr.retrieveFirstEntity();
+        if (entityName != null)
+          return this.router.navigate(['entity', entityName]);
+      }
+      return Promise.resolve(false);
+  })
+});
+
 }

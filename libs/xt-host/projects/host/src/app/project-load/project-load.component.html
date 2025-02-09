@@ -1,4 +1,4 @@
-@let loadingStatus = appConfig.loadingStatus();
+@let loadingStatus = combinedloadingStatus();
 
 <p>{{loadingStatus.status}} of {{loadingStatus.item}}</p>
 @if (loadingStatus.message) {

@@ -29,6 +29,10 @@
       "dom"
     ]
   },
+  "paths": {
+    "xt-type": ["./node_modules/xt-type/src/index.ts"]
+  },
+
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

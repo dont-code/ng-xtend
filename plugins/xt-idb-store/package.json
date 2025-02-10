@@ -23,7 +23,9 @@
     "@ngrx/signals": "^19.0.0",
     "xt-type": "workspace:^",
     "xt-store": "workspace:^",
-    "dexie": "~4.0.11"
+    "dexie": "~4.0.11",
+    "fake-indexeddb": "~6.0.0",
+    "core-js": "^3.40.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.4",

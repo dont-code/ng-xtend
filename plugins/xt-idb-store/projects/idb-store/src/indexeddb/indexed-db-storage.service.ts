@@ -25,26 +25,26 @@ export class IndexedDbStorageService<T=never> extends AbstractXtStoreProvider<T>
    */
   public static forceCloseDatabase () {
     // eslint-disable-next-line no-restricted-syntax
-    console.debug("IndexedDB: In forceCloseDatabase");
+    //console.debug("IndexedDB: In forceCloseDatabase");
     if (this.globalDb!=null) {
       // eslint-disable-next-line no-restricted-syntax
-      console.debug("IndexedDB: GlobalDB Exist");
+      //console.debug("IndexedDB: GlobalDB Exist");
       if (this.globalDb.isOpen()) {
         // eslint-disable-next-line no-restricted-syntax
-        console.debug("IndexedDB: Closing GlobalDB");
+        //console.debug("IndexedDB: Closing GlobalDB");
         this.globalDb.close();
         // eslint-disable-next-line no-restricted-syntax
-        console.debug("IndexedDB: GlobalDB is closed");
+        //console.debug("IndexedDB: GlobalDB is closed");
       }
     }
   }
 
   public static forceDeleteDatabase (dbName:string):Promise<void> {
     // eslint-disable-next-line no-restricted-syntax
-    console.debug("IndexedDB: In forceDeleteDatabase");
+    //console.debug("IndexedDB: In forceDeleteDatabase");
     return Dexie.delete(dbName).then(() => {
       // eslint-disable-next-line no-restricted-syntax
-      console.debug("IndexedDB: Database "+dbName+" deleted");
+      //console.debug("IndexedDB: Database "+dbName+" deleted");
     });
   }
 
@@ -207,16 +207,16 @@ export class IndexedDbStorageService<T=never> extends AbstractXtStoreProvider<T>
   withDatabase (): Promise<Dexie> {
     if (this.db==null) {
 
-      //console.log("IndexedDB: Checking GlobalDB "+dbName);
+      //console.log("IndexedDB: Checking GlobalDB "+this.dbName);
       if(IndexedDbStorageService.globalDb==null) {
         IndexedDbStorageService.globalDb = new Dexie(this.dbName, {allowEmptyDB:true, autoOpen:false});
-      //  console.log("IndexedDB: GlobalDB "+dbName+" created");
+        //console.log("IndexedDB: GlobalDB "+this.dbName+" created");
       }
       this.db=IndexedDbStorageService.globalDb;
       if( !this.db.isOpen()) {
-  //      console.log("IndexedDB: Opening DB "+dbName);
+        //console.log("IndexedDB: Opening DB "+this.dbName);
         return this.db.open().then(database => {
-    //      console.log ("IndexedDB: DB "+dbName+" v"+database.verno+" opened with tables "+this.allTables(database));
+          //console.log ("IndexedDB: DB "+this.dbName+" v"+database.verno+" opened with tables "+this.allTables(database));
           return database;
         });
       }
@@ -225,7 +225,7 @@ export class IndexedDbStorageService<T=never> extends AbstractXtStoreProvider<T>
   }
 
   ngOnDestroy () {
-//    console.log("IndexedDB: ngOnDestroy called");
+    //console.log("IndexedDB: ngOnDestroy called");
     this.subscriptions.unsubscribe();
     IndexedDbStorageService.forceCloseDatabase();
   }

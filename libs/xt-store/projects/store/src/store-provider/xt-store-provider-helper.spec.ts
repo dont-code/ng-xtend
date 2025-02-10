@@ -1,5 +1,5 @@
 import {XtStoreProviderHelper} from './xt-store-provider-helper';
-import { DontCodeStoreAggregate, DontCodeStoreGroupby } from '../xt-reporting';
+import { XtStoreGroupByAggregate, XtStoreGroupBy } from '../xt-reporting';
 import { XtGroupByOperation } from '../xt-store-parameters';
 
 describe('Store Provider Helper', () => {
@@ -256,23 +256,23 @@ describe('Store Provider Helper', () => {
           id:'idUndefined',
           type:'type2'
         }],
-        new DontCodeStoreGroupby('type', {
-          'aaa': new DontCodeStoreAggregate('text',XtGroupByOperation.Count ),
-          'aba': new DontCodeStoreAggregate('value',XtGroupByOperation.Count ),
-          'abb': new DontCodeStoreAggregate('value',XtGroupByOperation.Minimum ),
-          'abc': new DontCodeStoreAggregate('value',XtGroupByOperation.Maximum ),
-          'abd': new DontCodeStoreAggregate('value',XtGroupByOperation.Sum ),
-          'abe': new DontCodeStoreAggregate('value',XtGroupByOperation.Average ),
-          'aca': new DontCodeStoreAggregate('money',XtGroupByOperation.Count ),
-          'acb': new DontCodeStoreAggregate('money',XtGroupByOperation.Minimum ),
-          'acc': new DontCodeStoreAggregate('money',XtGroupByOperation.Maximum ),
-          'acd': new DontCodeStoreAggregate('money',XtGroupByOperation.Sum ),
-          'ace': new DontCodeStoreAggregate('money',XtGroupByOperation.Average ),
-          'ada': new DontCodeStoreAggregate('date',XtGroupByOperation.Count ),
-          'adb': new DontCodeStoreAggregate('date',XtGroupByOperation.Minimum ),
-          'adc': new DontCodeStoreAggregate('date',XtGroupByOperation.Maximum ),
-          'add': new DontCodeStoreAggregate('date',XtGroupByOperation.Sum ),
-          'ade': new DontCodeStoreAggregate('date',XtGroupByOperation.Average )
+        new XtStoreGroupBy('type', {
+          'aaa': new XtStoreGroupByAggregate('text',XtGroupByOperation.Count ),
+          'aba': new XtStoreGroupByAggregate('value',XtGroupByOperation.Count ),
+          'abb': new XtStoreGroupByAggregate('value',XtGroupByOperation.Minimum ),
+          'abc': new XtStoreGroupByAggregate('value',XtGroupByOperation.Maximum ),
+          'abd': new XtStoreGroupByAggregate('value',XtGroupByOperation.Sum ),
+          'abe': new XtStoreGroupByAggregate('value',XtGroupByOperation.Average ),
+          'aca': new XtStoreGroupByAggregate('money',XtGroupByOperation.Count ),
+          'acb': new XtStoreGroupByAggregate('money',XtGroupByOperation.Minimum ),
+          'acc': new XtStoreGroupByAggregate('money',XtGroupByOperation.Maximum ),
+          'acd': new XtStoreGroupByAggregate('money',XtGroupByOperation.Sum ),
+          'ace': new XtStoreGroupByAggregate('money',XtGroupByOperation.Average ),
+          'ada': new XtStoreGroupByAggregate('date',XtGroupByOperation.Count ),
+          'adb': new XtStoreGroupByAggregate('date',XtGroupByOperation.Minimum ),
+          'adc': new XtStoreGroupByAggregate('date',XtGroupByOperation.Maximum ),
+          'add': new XtStoreGroupByAggregate('date',XtGroupByOperation.Sum ),
+          'ade': new XtStoreGroupByAggregate('date',XtGroupByOperation.Average )
 
         }));
 

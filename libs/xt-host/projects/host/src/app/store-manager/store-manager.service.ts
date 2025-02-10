@@ -49,7 +49,7 @@ getStoreFor (entityName:string|null):any {
                 patchState(store, setEntity(toAdd, {selectId}));
               },
               remove(id:string): void {
-                patchState(store, removeEntity(id), {selectId});
+                patchState(store, removeEntity(id));
               }
             }
           )),

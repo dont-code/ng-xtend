@@ -3,7 +3,7 @@ import {
   XtSortBy,
   XtStoreCriteria
 } from '../xt-store-parameters';
-import { AbstractDontCodeStoreProvider } from '../store-provider/xt-store-provider';
+import { AbstractXtStoreProvider } from '../store-provider/xt-store-provider';
 import { Observable, of } from 'rxjs';
 import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provider-helper';
 import { XtStoreManager } from './xt-store-manager';
@@ -65,7 +65,7 @@ describe('Store Manager', () => {
   });
 });
 
-class DummyStoreProvider<T> extends AbstractDontCodeStoreProvider<T> {
+class DummyStoreProvider<T> extends AbstractXtStoreProvider<T> {
   canStoreDocument(): boolean {
     return false;
   }

@@ -21,7 +21,7 @@ export interface DontCodeReportDisplayType {
   title: string;
 }
 
-export class DontCodeStoreSort implements XtSortBy {
+export class XtStoreSortBy implements XtSortBy {
 
   direction: XtSortByDirection;
 
@@ -31,10 +31,10 @@ export class DontCodeStoreSort implements XtSortBy {
   }
 }
 
-export class DontCodeStoreGroupby implements XtGroupBy {
-  display:{[key:string]:DontCodeStoreAggregate};
+export class XtStoreGroupBy implements XtGroupBy {
+  display:{[key:string]:XtStoreGroupByAggregate};
 
-  constructor(public of:string, display?:{[key:string]:DontCodeStoreAggregate}, public show?:XtGroupByShow) {
+  constructor(public of:string, display?:{[key:string]:XtStoreGroupByAggregate}, public show?:XtGroupByShow) {
     if (display==null) this.display={};
     else this.display=display;
   }
@@ -56,7 +56,7 @@ export class DontCodeStoreGroupby implements XtGroupBy {
   }
 }
 
-export class DontCodeStoreAggregate implements XtGroupByAggregate{
+export class XtStoreGroupByAggregate implements XtGroupByAggregate{
   constructor(public of:string, public operation:XtGroupByOperation) {
   }
 }

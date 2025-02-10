@@ -7,7 +7,7 @@ import {
   XtStoreProviderHelper
 } from './xt-store-provider-helper';
 import { UploadedDocumentInfo } from '../xt-document';
-import { DontCodeStoreSort } from '../xt-reporting';
+import { XtStoreSortBy } from '../xt-reporting';
 
 /**
  * The standard interface for any store provider
@@ -50,7 +50,7 @@ export type XtStoreProvider<T=never>= {
   ): Observable<UploadedDocumentInfo>;
 }
 
-export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreProvider<T> {
+export abstract class AbstractXtStoreProvider<T=never> implements XtStoreProvider<T> {
   abstract canStoreDocument(): boolean;
 
   abstract deleteEntity(name:string, key: any): Promise<boolean>;
@@ -119,7 +119,7 @@ export abstract class AbstractDontCodeStoreProvider<T=never> implements XtStoreP
     // We must first sort by the groupBy, and then by the sort
     let rootSort:XtSortBy|undefined;
     if (groupBy!=null) {
-      rootSort=new DontCodeStoreSort(groupBy.of, undefined, sort);
+      rootSort=new XtStoreSortBy(groupBy.of, undefined, sort);
     } else {
       rootSort=sort;
     }

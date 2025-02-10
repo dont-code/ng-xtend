@@ -14,7 +14,7 @@ export class AppConfigService {
 
   protected resolverService = inject (XtResolverService);
 
-  loadingStatus = computed<{status:string, item:string, message?:string}> (() => {
+  loadingStatus = computed<{status:string, item:string, allLoaded:boolean, message?:string}> (() => {
 
     let overallStatus = 'Idle';
 
@@ -30,13 +30,15 @@ export class AppConfigService {
           return {
             status: 'Error',
             item: name,
+            allLoaded:false,
             message: (statuses[name].error() as any).toString()
           };
         case  ResourceStatus.Reloading:
         case  ResourceStatus.Loading:
           return {
             status: 'Loading',
-            item: name
+            item: name,
+            allLoaded:false
           }
         case ResourceStatus.Resolved:
         case ResourceStatus.Local:
@@ -47,6 +49,7 @@ export class AppConfigService {
 
     return {
       status: overallStatus,
+      allLoaded:(overallStatus=='Loaded'),
       item: 'All'
     }
   });

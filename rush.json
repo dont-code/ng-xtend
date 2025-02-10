@@ -330,7 +330,13 @@
       "packageName": "xt-store",
       "projectFolder": "libs/xt-store",
       "shouldPublish": true,
-      "publishFolder": "dist/xt-store"
+      "publishFolder": "dist/store"
+    },
+    {
+      "packageName": "xt-idb-store",
+      "projectFolder": "plugins/xt-idb-store",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-idb-store"
     },
     {
       "packageName": "xt-host",

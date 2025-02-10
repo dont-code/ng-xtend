@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { XtRenderComponent } from 'xt-components';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SampleCurrencyComponent } from '../../../../sample/src/lib/currency/sample-currency.component';
@@ -12,7 +12,8 @@ import { JsonPipe } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, XtRenderComponent, InputText, FormsModule, JsonPipe],
   templateUrl: './test.component.html',
-  styleUrl: './test.component.scss'
+  styleUrl: './test.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestComponent {
 

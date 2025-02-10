@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { XtSimpleComponent } from 'xt-components';
@@ -10,7 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
   standalone: true,
   imports: [CommonModule, InputNumberModule, ReactiveFormsModule, InputTextModule],
   templateUrl: './sample-currency.component.html',
-  styleUrl: './sample-currency.component.css'
+  styleUrl: './sample-currency.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SampleCurrencyComponent extends XtSimpleComponent {
 }

@@ -25,7 +25,9 @@
     ],
     "paths": {
       "xt-components": ["./node_modules/xt-components/public-api.d.ts"],
-      "xt-sample-plugins": ["./node_modules/xt-sample-plugins/public-api.d.ts"]
+      "xt-plugin-default": ["./node_modules/xt-plugin-default/public-api.d.ts"],
+      "xt-type": ["./node_modules/xt-type/src/index.ts"],
+      "xt-store": ["./node_modules/xt-store/public-api.d.ts"]
     }
   },
   "angularCompilerOptions": {

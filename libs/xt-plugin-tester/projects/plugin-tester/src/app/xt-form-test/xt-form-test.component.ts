@@ -1,5 +1,5 @@
 import { JsonPipe, NgComponentOutlet } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { XtBaseContext, XtContext } from 'xt-components';
@@ -10,7 +10,8 @@ import { SampleHelloComponent, SampleCurrencyComponent } from 'xt-plugin-sample'
   standalone: true,
   imports: [NgComponentOutlet, ReactiveFormsModule, ButtonModule, JsonPipe],
   templateUrl: './xt-form-test.component.html',
-  styleUrl: './xt-form-test.component.css'
+  styleUrl: './xt-form-test.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class XtFormTestComponent {
 

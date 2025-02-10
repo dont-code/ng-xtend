@@ -1,3 +1,4 @@
+
 # Logs
 *.log
 npm-debug.log*
@@ -115,6 +116,7 @@ lib-shim/
 dist/
 dist-storybook/
 *.tsbuildinfo
+out-tsc/
 
 # Heft temporary files
 .cache/

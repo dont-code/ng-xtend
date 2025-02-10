@@ -29,8 +29,6 @@
           "options": {
             "tsConfig": "projects/store/tsconfig.spec.json",
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
             ]
           }
         }

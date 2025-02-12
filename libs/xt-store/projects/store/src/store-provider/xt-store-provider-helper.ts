@@ -48,12 +48,12 @@ export class XtStoreProviderHelper {
 
   /** Returns any field who is a date, in order to convert it from json. Keep the result in a cache map
    *
-   * @param position
+   * @param name
    * @param entity
    * @protected
    */
-  public static findSpecialFields (position:string, entity:any):SpecialFields {
-    let specialFields = XtStoreProviderHelper.specialFieldsCache.get(position);
+  public static findSpecialFields (name:string, entity:any):SpecialFields {
+    let specialFields = XtStoreProviderHelper.specialFieldsCache.get(name);
     if (specialFields!=null) return specialFields;
 
     const curScore: {score:number, field:any} = {score:-1, field:null}
@@ -74,10 +74,10 @@ export class XtStoreProviderHelper {
     if (curScore.score>0) {
       specialFields.idField=curScore.field;
     }
-    XtStoreProviderHelper.specialFieldsCache.set(position, specialFields);
+    XtStoreProviderHelper.specialFieldsCache.set(name, specialFields);
 
     // eslint-disable-next-line no-restricted-syntax
-    console.debug("Found special fields for entity at position "+position, specialFields);
+    //console.debug("Found special fields for entity at position "+name, specialFields);
     return specialFields;
   }
 

@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, resource, ResourceRef, ResourceStatus, signal } from '@angular/core';
 import { XtResolverService } from 'xt-components';
-import { registerSamplePlugin } from 'xt-plugin-sample';
+
+import { registerDefaultPlugin} from 'xt-plugin-default';
 
 @Injectable({
   providedIn: 'root'
@@ -111,7 +112,7 @@ export class AppConfigService {
   });
 
   async loadPlugins (config:any): Promise< boolean> {
-    registerSamplePlugin(this.resolverService);
+    registerDefaultPlugin(this.resolverService);
     return Promise.resolve(true);
   }
 

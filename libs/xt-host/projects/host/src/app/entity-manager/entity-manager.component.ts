@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { StoreManagerService } from '../store-manager/store-manager.service';
+import { StoreManagerService } from '../store/store-manager.service';
 
 @Component({
   selector: 'app-entity-manager',
@@ -16,7 +16,12 @@ export class EntityManagerComponent {
 
   entityName = signal<string|null>(null);
   store = computed(() => {
-    return this.storeMgr.getStoreFor(this.entityName());
+    const entityName = this.entityName();
+    if (entityName!=null) {
+      return this.storeMgr.getStoreFor(entityName);
+    } else {
+      return undefined;
+    }
   })
 
   constructor() {

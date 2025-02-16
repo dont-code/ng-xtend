@@ -24,9 +24,13 @@ export class XtPluginRegistry {
   /**
    * The components can manage any composite javascript type. Default when no type has been defined and it's a user defined javascript object (not a data type)
    */
-    public static readonly ANY_OBJECT_TYPE="ANY_OBJECT_TYPE";
+  public static readonly ANY_OBJECT_TYPE="ANY_OBJECT_TYPE";
 
-    registerPlugin (info:XtPluginInfo) {
+  public static readonly ANY_PRIMITIVE_SET = "ANY_PRIMITIVE_SET";
+
+  public static readonly ANY_OBJECT_SET = "ANY_OBJECT_SET";
+
+  registerPlugin (info:XtPluginInfo) {
         this.pluginRegistry.set (info.name, info);
         if (info.components != null) {
             let updated=false;
@@ -63,6 +67,10 @@ export class XtPluginRegistry {
             valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
           } else if (value instanceof Date) {
             valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
+          }
+
+          if (Array.isArray(value)) {
+            valueType = (valueType===XtPluginRegistry.ANY_PRIMITIVE_TYPE)?XtPluginRegistry.ANY_PRIMITIVE_SET:XtPluginRegistry.ANY_OBJECT_SET;
           }
         }
       //console.debug('Type found is '+valueType);

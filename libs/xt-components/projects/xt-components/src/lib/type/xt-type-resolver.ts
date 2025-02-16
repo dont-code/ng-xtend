@@ -62,7 +62,20 @@ export class XtTypeHierarchyResolver<T> implements XtUpdatableTypeResolver<XtCon
       } else {
         // We will use the value to extract properties
         if (value!=null) {
-          ret = Object.keys(value);
+          if (Array.isArray(value)) {
+            if (value.length>0) {
+              const setOfKeys=new Set<string>();
+              for (const element of value) {
+                const elementKeys=Object.keys(element);
+                for (const key of elementKeys) {
+                  setOfKeys.add(key);
+                }
+              }
+              ret= Array.from(setOfKeys.values());
+            }
+          }else {
+            ret = Object.keys(value);
+          }
         }
       }
 

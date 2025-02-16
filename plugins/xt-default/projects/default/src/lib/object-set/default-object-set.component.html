@@ -1,0 +1,19 @@
+<table class="table-auto gap-6 outline-1 rounded-sm outline-neutral-500 p-3">
+  <thead>
+    <tr>
+      @for (subName of subNames(); track subName) {
+        <th>{{subName}}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (element of valueSet(); track element; let eltIndex=$index) {
+      @let eltContext=elementSetContext(eltIndex);
+      <tr>
+      @for (subName of subNames(); track subName) {
+        <td><xt-render-sub [context]="subElementContextForName(eltContext, subName)"></xt-render-sub> </td>
+      }
+      </tr>
+    }
+  </tbody>
+</table>

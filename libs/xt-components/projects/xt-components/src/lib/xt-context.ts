@@ -31,7 +31,9 @@ export type XtContext<T> = {
 
     subValue (subName?:string):T | null | undefined;
 
-    subContext(subName: string | undefined | null, subType?:string, typeResolver?: XtTypeResolver<XtContext<T>> | null): XtContext<T>;
+    subContext(subName: string | undefined | null, subType?:string, typeResolver?: XtTypeResolver<XtContext<T>> | null): XtContext<any>;
+
+    elementSetContext(subElement: any): XtContext<any>;
 
     displayValue: Signal<T|null>;
 
@@ -42,9 +44,10 @@ export type XtContext<T> = {
     valueType?:string;
 
     toString (): string;
+
 }
 
-export type XtDisplayMode = 'INLINE_VIEW'|'FULL_VIEW'|'FULL_EDITABLE';
+export type XtDisplayMode = 'INLINE_VIEW'|'FULL_VIEW'|'FULL_EDITABLE'|'LIST_VIEW';
 
 export class XtBaseContext<T> implements XtContext<T>{
     displayMode: XtDisplayMode = 'FULL_VIEW';
@@ -195,7 +198,20 @@ export class XtBaseContext<T> implements XtContext<T>{
     return ret;
   }
 
-    subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver<XtContext<T>> | null): XtContext<T> {
+  elementSetContext(elementIndex:number): XtContext<any> {
+    const value = this.value();
+
+    if (!Array.isArray(this.value())) {
+      throw new Error ("The value must be an Array / Set to create a subElement context.")
+    }
+
+    const ret = new XtBaseContext<T> (this.displayMode, undefined, undefined, this);
+    ret.setDisplayValue((value as any[])[elementIndex]);
+    ret.valueType=this.valueType;
+    return ret;
+  }
+
+    subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver<XtContext<T>> | null): XtContext<any> {
         if ((subName==null) || (subName.length==0)) {
             return this;
         } else if (this.childContexts?.has(subName)) {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { signalStore, withState } from '@ngrx/signals';
+import { signalStore } from '@ngrx/signals';
 import { withXtStoreProvider, XtSignalStore } from './store-entity-feature/store-entity-feature';
-import { XtStoreManager } from 'xt-store';
-
+import { ManagedData } from 'xt-type';
+import { XtMemoryStoreProvider, XtStoreManager } from 'xt-store';
 
 @Injectable({
   providedIn: 'root'

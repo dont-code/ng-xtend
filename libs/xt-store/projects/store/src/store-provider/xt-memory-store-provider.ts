@@ -5,7 +5,7 @@ import { UploadedDocumentInfo } from '../xt-document';
 export class XtMemoryStoreProvider<T extends {_id:string}> extends AbstractXtStoreProvider<T> {
   protected storage=new Map<string, Map<string, T>>();
 
-  canStoreDocument(): boolean {
+  override canStoreDocument(): boolean {
     return false;
   }
 
@@ -39,7 +39,7 @@ export class XtMemoryStoreProvider<T extends {_id:string}> extends AbstractXtSto
     return Promise.resolve(entity);
   }
 
-  storeDocuments(toStore: File[], position: string | undefined): Observable<UploadedDocumentInfo> {
+  override storeDocuments(toStore: File[]): Observable<UploadedDocumentInfo> {
     return throwError (() => {
       throw new Error ("Not implemented.");
     });

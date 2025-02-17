@@ -6,12 +6,12 @@ import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provid
 import { XtDataTransformer } from '../store-provider/xt-data-transformer';
 
 export class XtStoreManager {
-  private _default?: XtStoreProvider<never>;
-  private providerByPosition = new Map<string, XtStoreProvider<never>>();
-  private providerByType = new Map<string, XtStoreProvider<never>>();
+  private _default?: XtStoreProvider<any>;
+  private providerByPosition = new Map<string, XtStoreProvider<any>>();
+  private providerByType = new Map<string, XtStoreProvider<any>>();
 
   constructor(
-    provider?: XtStoreProvider<never>
+    provider?: XtStoreProvider<any>
   ) {
     this._default = provider;
     this.reset();
@@ -22,7 +22,7 @@ export class XtStoreManager {
     this.providerByType.clear();
   }
 
-  getProvider<T>(name?: string): XtStoreProvider<T> | undefined {
+  getProvider<T=never>(name?: string): XtStoreProvider<T> | undefined {
     if (name == null) {
       return this._default;
     } else {
@@ -59,21 +59,21 @@ export class XtStoreManager {
     return this.getProviderSafe();
   }
 
-  setProvider(value: XtStoreProvider<never>, name?: string): void {
+  setProvider<T=never>(value: XtStoreProvider<T>, name?: string): void {
     if (name == null) this._default = value;
     else {
       this.providerByPosition.set(name, value);
     }
   }
 
-  setProviderForSourceType(
-    value: XtStoreProvider<never>,
+  setProviderForSourceType<T=never>(
+    value: XtStoreProvider<T>,
     srcType: string
   ): void {
     this.providerByType.set(srcType, value);
   }
 
-  setDefaultProvider(value: XtStoreProvider<never>): void {
+  setDefaultProvider<T=never>(value: XtStoreProvider<T>): void {
     this.setProvider(value);
   }
 

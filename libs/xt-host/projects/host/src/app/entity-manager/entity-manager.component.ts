@@ -2,10 +2,12 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } 
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { StoreManagerService } from '../store/store-manager.service';
+import { XtRenderComponent } from 'xt-components';
 
 @Component({
   selector: 'app-entity-manager',
-  imports: [],
+  imports: [XtRenderComponent],
+  providers: [],
   templateUrl: './entity-manager.component.html',
   styleUrl: './entity-manager.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

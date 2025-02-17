@@ -90,7 +90,7 @@ export class XtApiStoreProvider<T=never> extends AbstractXtStoreProvider<T> impl
     return true;
   }
 
-  storeDocuments(toStore: File[], position?: string): Observable<UploadedDocumentInfo> {
+  storeDocuments(toStore: File[]): Observable<UploadedDocumentInfo> {
     const myFormData = new FormData();
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');

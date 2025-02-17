@@ -12,6 +12,7 @@ import { StoreState } from '../store-manager.service';
 import { XtStoreProvider } from 'xt-store';
 import { finalize, map, Observable } from 'rxjs';
 import { Signal } from '@angular/core';
+import { ManagedData } from 'xt-type';
 
 const selectId: SelectEntityId<ManagedData> = (data) => data._id;
 
@@ -25,6 +26,7 @@ export type XtSignalStore<T> = {
   loading: Signal<boolean>;
   entityMap: Signal<EntityMap<T>>;
   ids: Signal<EntityId[]>;
+  entities: Signal<T[]>;
 
   listEntities ():Observable<T[]>;
   loadEntity (id:string): Promise<T|undefined>;

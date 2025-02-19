@@ -10,6 +10,8 @@ export class XtStoreManager {
   private providerByPosition = new Map<string, XtStoreProvider<any>>();
   private providerByType = new Map<string, XtStoreProvider<any>>();
 
+  protected static testProvider:XtStoreProvider<any>|null = null;
+
   constructor(
     provider?: XtStoreProvider<any>
   ) {
@@ -23,6 +25,9 @@ export class XtStoreManager {
   }
 
   getProvider<T=never>(name?: string): XtStoreProvider<T> | undefined {
+    // Override for testing
+    if( XtStoreManager.testProvider!=null) return XtStoreManager.testProvider;
+
     if (name == null) {
       return this._default;
     } else {
@@ -137,6 +142,10 @@ export class XtStoreManager {
     name?: string
   ): Observable<UploadedDocumentInfo> {
     return this.getProviderSafe(name).storeDocuments(toStore);
+  }
+
+  public static setTestMode (testProvider:XtStoreProvider<any>) {
+    this.testProvider=testProvider;
   }
 
 }

@@ -1,8 +1,9 @@
 import { AbstractXtStoreProvider } from './xt-store-provider';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { UploadedDocumentInfo } from '../xt-document';
+import { ManagedData } from 'xt-type/src';
 
-export class XtMemoryStoreProvider<T extends {_id:string}> extends AbstractXtStoreProvider<T> {
+export class XtMemoryStoreProvider<T extends ManagedData> extends AbstractXtStoreProvider<T> {
   protected storage=new Map<string, Map<string, T>>();
 
   override canStoreDocument(): boolean {
@@ -10,12 +11,12 @@ export class XtMemoryStoreProvider<T extends {_id:string}> extends AbstractXtSto
   }
 
   getSafeStore (name:string):Map<string,T> {
-    const ret = this.storage.get(name);
+    let ret = this.storage.get(name);
     if (ret==null) {
-      throw new Error(`Cannot get store stored with name "${name}".`);
-    }else {
-      return ret;
+      ret = new Map<string, T>();
+      this.storage.set(name, ret);
     }
+    return ret;
   }
 
   deleteEntity(name: string, key: any): Promise<boolean> {
@@ -28,6 +29,11 @@ export class XtMemoryStoreProvider<T extends {_id:string}> extends AbstractXtSto
     return Promise.resolve(store.get(key));
   }
 
+  override listEntities(name: string): Observable<T[]> {
+    const store = this.getSafeStore (name);
+    console.debug("Listing entities for "+name+" with ",store);
+    return of (Array.from(store.values()));
+  }
 
   storeEntity(name: string, entity: T): Promise<T> {
     const store = this.getSafeStore (name);

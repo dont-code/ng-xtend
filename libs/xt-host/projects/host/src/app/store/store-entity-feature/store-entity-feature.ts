@@ -10,11 +10,14 @@ import {
 import { patchState, signalStoreFeature, type, withMethods, withProps, withState } from '@ngrx/signals';
 import { StoreState } from '../store-manager.service';
 import { XtStoreProvider } from 'xt-store';
-import { finalize, map, Observable } from 'rxjs';
+import { finalize, firstValueFrom, lastValueFrom, map, Observable } from 'rxjs';
 import { Signal } from '@angular/core';
 import { ManagedData } from 'xt-type';
 
-const selectId: SelectEntityId<ManagedData> = (data) => data._id;
+const selectId: SelectEntityId<ManagedData> = (data) => {
+  if (data._id==null) throw new Error("ManagedData with no entity Id used in the store.", { cause: data });
+  return data._id;
+}
 
 const xtStoreEntityConfig = entityConfig ({
   entity: type<ManagedData>(),
@@ -28,7 +31,8 @@ export type XtSignalStore<T> = {
   ids: Signal<EntityId[]>;
   entities: Signal<T[]>;
 
-  listEntities ():Observable<T[]>;
+  //listEntities ():Observable<T[]>;
+  fetchEntities (): Promise<void>;
   loadEntity (id:string): Promise<T|undefined>;
   safeLoadEntity (id:string): Promise<T>;
   storeEntity (toStore:T):Promise<T>;
@@ -53,7 +57,16 @@ export function withXtStoreProvider (entityName:string, storeProvider:XtStorePro
         });
       },
 
-      listEntities (): Observable<ManagedData[]> {
+      fetchEntities (): Promise<void> {
+        patchState(store, {loading:true});
+        return lastValueFrom(store._storeProvider.searchEntities(entityName).pipe (map( (entities: ManagedData[]) => {
+          patchState(store, setEntities (entities, xtStoreEntityConfig));
+        }),finalize(() => {
+          patchState(store, {loading:false});
+        })));
+      },
+
+    /*  listEntities (): Observable<ManagedData[]> {
         patchState(store, {loading:true});
         return store._storeProvider.searchEntities(entityName).pipe (map( (entities: ManagedData[]) => {
           patchState(store, setEntities (entities, xtStoreEntityConfig));
@@ -61,7 +74,7 @@ export function withXtStoreProvider (entityName:string, storeProvider:XtStorePro
         }),finalize(() => {
           patchState(store, {loading:false});
         }));
-      },
+      },*/
 
       async loadEntity (id:string): Promise<ManagedData|undefined> {
         patchState(store, {loading:true});

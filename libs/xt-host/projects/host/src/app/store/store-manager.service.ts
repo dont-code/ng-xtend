@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { signalStore } from '@ngrx/signals';
 import { withXtStoreProvider, XtSignalStore } from './store-entity-feature/store-entity-feature';
 import { ManagedData } from 'xt-type';
-import { XtMemoryStoreProvider, XtStoreManager } from 'xt-store';
+import { XtStoreManager } from 'xt-store';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,6 @@ export class StoreManagerService {
   protected entityToStoreMap = new Map<string, XtSignalStore<ManagedData>>();
 
   constructor() {
-    this.storeManager.setDefaultProvider(new XtMemoryStoreProvider<ManagedData>())
   }
 
   getStoreFor(entityName: string): XtSignalStore<ManagedData> {

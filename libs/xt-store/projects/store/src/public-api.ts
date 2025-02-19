@@ -10,3 +10,5 @@ export * from './store-provider/xt-memory-store-provider';
 export * from './xt-store-parameters';
 export * from './xt-document';
 export * from './xt-reporting';
+
+export * from './test/store-test-bed';

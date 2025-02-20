@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectLoadComponent } from './project-load.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from '../app.routes';
 
 describe('ProjectLoadComponent', () => {
   let component: ProjectLoadComponent;
@@ -10,7 +12,7 @@ describe('ProjectLoadComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProjectLoadComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes)]
     })
     .compileComponents();
 

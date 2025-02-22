@@ -1,6 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { XtTypeResolver } from './type/xt-type-resolver';
 import { computed, Signal, signal, WritableSignal } from '@angular/core';
+import { XtComponentOutput } from './xt-component';
 
 /**
  * A XtContext provides all the necessary information for an ng-extended component to operate. It is passed from parent to child component and pass
@@ -43,6 +44,8 @@ export type XtContext<T> = {
 
     valueType?:string;
 
+    outputs:XtComponentOutput;
+
     toString (): string;
 
 }
@@ -79,6 +82,11 @@ export class XtBaseContext<T> implements XtContext<T>{
     nonFormValue?: WritableSignal<T|null>;
 
     valueType?:string;
+
+  /**
+   * Output values of the component are managed here
+   */
+    outputs = new XtComponentOutput ();
 
     /**
      *

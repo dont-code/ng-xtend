@@ -1,6 +1,6 @@
-import { Component, computed, inject, input, model, Signal, Type } from '@angular/core';
+import { Component, computed, inject, input, model, output, Signal, Type } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
-import { XtComponent } from '../xt-component';
+import { XtComponent, XtComponentOutput } from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtResolverService } from '../angular/xt-resolver.service';
@@ -37,6 +37,10 @@ export class XtRenderComponent<T> {
 
   }
 
+  outContext = output<XtContext<any>>();
+
+  outputs = output<XtComponentOutput> ();
+
   context: Signal<XtContext<any>> = computed(() => {
     let form = this.formGroup();
 
@@ -51,6 +55,8 @@ export class XtRenderComponent<T> {
         ret.setDisplayValue(value[subName as keyof typeof value]);
       }
     }
+    this.outContext.emit(ret);
+    this.outputs.emit(ret.outputs);
     return ret as XtContext<T>;
   });
 

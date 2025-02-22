@@ -1,8 +1,8 @@
-import { Component, computed, inject, input, signal, Signal, Type } from '@angular/core';
+import { Component, computed, inject, input, OnInit, output, signal, Signal, Type } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { XtContext } from '../xt-context';
-import { XtComponent } from '../xt-component';
+import { XtComponent, XtComponentOutput } from '../xt-component';
 import { XtResolverService } from '../angular/xt-resolver.service';
 
 /**
@@ -19,9 +19,11 @@ import { XtResolverService } from '../angular/xt-resolver.service';
   templateUrl: './xt-render-sub.component.html',
   styleUrl: './xt-render-sub.component.css'
 })
-export class XtRenderSubComponent<T> {
+export class XtRenderSubComponent<T> implements OnInit {
   context = input.required<XtContext<T>> ();
   componentType = input<Type<XtComponent<T>>> ();
+
+  outputs = output<XtComponentOutput> ();
 
   resolverService = inject(XtResolverService);
 
@@ -36,4 +38,8 @@ export class XtRenderSubComponent<T> {
     const compFound= this.resolverService.findBestComponent(this.context());
     return compFound.componentClass;
   });
+
+  ngOnInit() {
+    this.outputs.emit(this.context().outputs);
+  }
 }

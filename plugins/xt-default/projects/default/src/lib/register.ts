@@ -19,7 +19,8 @@ export function registerDefaultPlugin (resolverService:XtResolverService):boolea
           },{
             componentName:'DefaultObjectSet',
             componentClass:DefaultObjectSetComponent,
-            typesHandled: [XtPluginRegistry.ANY_OBJECT_SET]
+            typesHandled: [XtPluginRegistry.ANY_OBJECT_SET],
+            outputs: ['valueSelected']
           }
         ]
     });

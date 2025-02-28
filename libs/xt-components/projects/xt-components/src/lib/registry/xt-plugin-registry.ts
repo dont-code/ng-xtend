@@ -1,5 +1,6 @@
 import { XtComponentInfo, XtPluginInfo } from "../plugin/xt-plugin-info";
-import { signal } from '@angular/core';
+import { signal, Type } from '@angular/core';
+import { XtComponent } from '../xt-component';
 
 export class XtPluginRegistry {
 
@@ -42,7 +43,7 @@ export class XtPluginRegistry {
         }
     }
 
-    registerComponent<T> (info:XtComponentInfo<T>) {
+  registerComponent<T> (info:XtComponentInfo<T>) {
         this.componentRegistry.set (info.componentName, info);
         this.listComponents.update((array) => {
           let found=false;
@@ -92,6 +93,17 @@ export class XtPluginRegistry {
     public static registry (): XtPluginRegistry {
         return XT_REGISTRY;
     }
+
+  findComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any> {
+    // Search for the component registered with this class
+    for (const info of this.componentRegistry.values()) {
+      if (info.componentClass==type) {
+        return info;
+      }
+    }
+    // We don't support unknown component
+    throw new Error ("No component found with class "+type);
+  }
 }
 
 export const XT_REGISTRY=new XtPluginRegistry ();

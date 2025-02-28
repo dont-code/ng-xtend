@@ -1,7 +1,8 @@
-import { Component, computed, input, InputSignal, output } from '@angular/core';
+import { Component, computed, input, InputSignal, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
-import { XtComponent, XtComponentOutput } from '../xt-component';
+import { XtComponent, XtComponentOutput, XtOutputType } from '../xt-component';
+import { XtBaseOutput } from '../output/xt-base-output';
 
 /**
  * An XtSimpleComponent just displays the given value or element in a form.
@@ -14,6 +15,14 @@ import { XtComponent, XtComponentOutput } from '../xt-component';
 })
 export class XtSimpleComponent<T = any> implements XtComponent<T>{
   context = input.required<XtContext<T>>();
+  outputs = output<XtComponentOutput> ();
+  /**
+   * Does the component provides Output or not ?
+   * @protected
+   */
+  hasOutputs= false;
+
+  protected outputElement?: XtBaseOutput
 
   isInForm = computed<boolean> ( () => {
     return this.context()?.isInForm()??false;
@@ -39,6 +48,14 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
   componentNameInForm=computed<string> ( () => {
     return this.safelyGetSubName();
   });
+
+  constructor() {
+    if (this.hasOutputs) {
+      if (this.outputElement == null) {
+        this.outputElement = new XtBaseOutput();
+      }
+    }
+  }
 
   manageFormControl<T> (ctrlName:string): AbstractControl<T>|undefined {
     const formGroup = this.formGroupIfAny();
@@ -90,5 +107,22 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
   displayValue = computed (() => {
     return this.context().displayValue();
   });
+
+  protected emitOutput(outputName: XtOutputType, newValue: any) {
+    if (!this.hasOutputs) {
+      throw new Error ("Component without outputs cannot emit output");
+    }
+
+    let newOutput = false;
+    if (this.outputElement==null) {
+      this.outputElement = new XtBaseOutput();
+      newOutput=true;
+    }
+
+    newOutput = this.outputElement.setNewOutput(outputName, newValue) || newOutput;
+    if (newOutput) {
+      this.outputs?.emit(this.outputElement);
+    }
+  }
 
 }

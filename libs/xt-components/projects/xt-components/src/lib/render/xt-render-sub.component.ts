@@ -40,6 +40,5 @@ export class XtRenderSubComponent<T> implements OnInit {
   });
 
   ngOnInit() {
-    this.outputs.emit(this.context().outputs);
   }
 }

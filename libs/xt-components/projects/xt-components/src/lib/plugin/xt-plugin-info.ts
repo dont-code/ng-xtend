@@ -1,8 +1,10 @@
+import { XtOutputType } from '../xt-component';
+
 export type XtComponentInfo<T> = {
     componentName: string;
     componentClass: T;
     typesHandled: string[];
-
+    outputs?: XtOutputType[]
 }
 
 export type XtPluginInfo ={

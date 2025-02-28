@@ -17,7 +17,7 @@ export class XtRegistryResolver implements XtResolver {
     resolve<T>(baseContext: XtContext<T>, subName?:string): XtResolvedComponent | null {
         const ret= this.registry.findComponentsForType (this.typeResolver.findType(baseContext, subName), baseContext.subValue(subName));
         if (ret!=null && ret.length>0) {
-            return ret[0];
+            return XtResolvedComponent.from( ret[0]);
         }
         return null;
     }

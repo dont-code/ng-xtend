@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DefaultObjectSetComponent } from './default-object-set.component';
-import { inject, provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { XtBaseContext , XtDisplayMode, XtResolverService} from 'xt-components';
-import { beforeAll, expect } from '@jest/globals';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { XtBaseContext, XtResolverService } from 'xt-components';
+import { expect } from '@jest/globals';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
 
@@ -87,5 +87,42 @@ describe('DefaultObjectSetComponent', () => {
     });
 
     expect(secondElementValues).toEqual(['hola',new Date(1972, 2, 2).toString(), "12", "true"]);
+  }),
+
+  it('should enable element selection', () => {
+    let component: DefaultObjectSetComponent<TestData>;
+    let fixture: ComponentFixture<DefaultObjectSetComponent<TestData>>;
+
+    fixture = TestBed.createComponent(DefaultObjectSetComponent<TestData>);
+    let context = new XtBaseContext<TestData[]>("INLINE_VIEW");
+    context.setDisplayValue([{
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }, {
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }]);
+
+    fixture.componentRef.setInput("context", context);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component).toBeTruthy();
+    const rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    rows[1].nativeElement.click();
+    fixture.detectChanges();
+
+    expect(component.selectedElement()).toBeTruthy();
+    expect(component.selectedElement()?.simpleNumber).toEqual(12);
+
   });
 });

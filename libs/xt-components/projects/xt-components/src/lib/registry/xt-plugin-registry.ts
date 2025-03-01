@@ -94,15 +94,20 @@ export class XtPluginRegistry {
         return XT_REGISTRY;
     }
 
-  findComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any> {
+  findComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any>|null {
     // Search for the component registered with this class
     for (const info of this.componentRegistry.values()) {
       if (info.componentClass==type) {
         return info;
       }
     }
-    // We don't support unknown component
-    throw new Error ("No component found with class "+type);
+    return null;
+  }
+
+  getComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any> {
+    const ret= this.findComponentInfo(type);
+    if (ret==null) {throw new Error ("No component found with class "+type);}
+    return ret;
   }
 }
 

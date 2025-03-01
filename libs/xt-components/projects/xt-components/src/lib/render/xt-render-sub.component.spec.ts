@@ -9,6 +9,9 @@ import { XtCompositeComponent } from '../xt-composite/xt-composite.component';
 import { expect } from '@jest/globals';
 import { HostTestTypedComponent, HostTestTypedFormComponent } from '../test/xt-test-helper-components';
 import { XtResolverService } from '../angular/xt-resolver.service';
+import { Button } from 'primeng/button';
+import { By } from '@angular/platform-browser';
+import { XtPluginRegistry } from '../registry/xt-plugin-registry';
 
 describe('XtRenderSubComponent', () => {
 
@@ -161,6 +164,49 @@ describe('XtRenderSubComponent', () => {
 
   });
 
+  it('should support outputs', (done) => {
+
+    XtPluginRegistry.registry().registerComponent({
+      componentName:'TestOutputComponent',
+      componentClass: TestOutputComponent,
+      typesHandled: ['TestOutput']
+    });
+
+    const hostFixture = TestBed.createComponent(HostTestTypedComponent);
+    hostFixture.componentRef.setInput('value', 1);
+    hostFixture.componentRef.setInput('valueType', 'TestOutput');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    const buttonFixture = hostFixture.debugElement.query(By.directive(Button));
+    const buttonComp = buttonFixture.componentInstance as Button;
+
+    const renderFixture=hostFixture.debugElement.query(By.directive(XtRenderSubComponent));
+    const renderComponent = renderFixture.componentInstance as XtRenderSubComponent<any>
+    expect (renderComponent.hasOutputs).toBeTruthy();
+    renderComponent.outputs.subscribe((newValue) => {
+      try {
+        expect (newValue.valueSelected).toBeDefined();
+        // The value increase has been well sent through the output
+        expect (newValue.valueSelected!()).toEqual(2);
+        done();
+      } catch (error){
+        done (error);
+      }
+    });
+
+    // Click on the button HTML component
+    expect(buttonComp).toBeTruthy();
+    expect(buttonFixture.nativeElement.textContent).toBe('Increase 1');
+
+    buttonFixture.nativeElement.children[0].click();
+    hostFixture.detectChanges();
+
+    expect(buttonFixture.nativeElement.textContent).toBe('Increase 2');
+  });
+
 });
 
 
@@ -189,6 +235,22 @@ export class TestCurrencyComponent extends XtSimpleComponent<string> {
 
 })
 export class TestMoneyDynamicComponent extends XtCompositeComponent<TestMoney> {
+}
+
+@Component({
+  selector: 'test-output',
+  standalone: true,
+  imports: [CommonModule, Button],
+  template: '<p-button id="sendOutput" label="Increase {{context().displayValue()}}" (onClick)="incrementValue()"></p-button>',
+})
+export class TestOutputComponent extends XtSimpleComponent<number> {
+  override hasOutputs=true;
+
+  incrementValue (): void {
+    const value = this.displayValue();
+    this.context().setDisplayValue(value?value+1:1);
+    this.emitOutput('valueSelected', this.displayValue());
+  }
 }
 
 type TestMoney= {

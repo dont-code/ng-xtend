@@ -62,7 +62,13 @@ export class XtResolverService {
   }
 
   getComponentInfo<T>(type: Type<XtComponent<T>>):XtResolvedComponent {
-    return XtResolvedComponent.from(this.pluginRegistry.findComponentInfo (type));
+    return XtResolvedComponent.from(this.pluginRegistry.getComponentInfo (type));
+  }
+
+  findComponentInfo<T>(type: Type<XtComponent<T>>):XtResolvedComponent|null {
+    const ret=this.pluginRegistry.findComponentInfo (type);
+    if (ret==null) return null;
+    else return XtResolvedComponent.from(ret);
   }
 
   public listComponents = computed<Array<XtComponentInfo<any>>>(() => {

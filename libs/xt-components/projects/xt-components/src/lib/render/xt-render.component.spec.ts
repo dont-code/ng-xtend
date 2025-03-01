@@ -6,8 +6,17 @@ import { CommonModule } from '@angular/common';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HostTestFormComponent, HostTestSimpleComponent } from '../test/xt-test-helper-components';
+import { beforeAll } from '@jest/globals';
+import { XtPluginRegistry } from '../registry/xt-plugin-registry';
 
 describe('XtRenderComponent', () => {
+
+  beforeAll( () => {
+    XtPluginRegistry.registry().registerComponent({
+      componentName:"TestCurrency",
+    componentClass:TestCurrencyComponent,
+    typesHandled:['TestCurrencyType']})
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

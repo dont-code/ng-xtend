@@ -48,4 +48,5 @@ export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
     this.formGroupIfAny();  // Ensure the context is properly initialized
     return this.context().subContext(subName, subType, this.resolverService.typeResolver);
   }
+
 }

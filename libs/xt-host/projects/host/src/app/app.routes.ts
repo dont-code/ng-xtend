@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { TestComponent } from './test-component/test.component';
 import { ProjectLoadComponent } from './project-load/project-load.component';
 import { EntityManagerComponent } from './entity-manager/entity-manager.component';
 

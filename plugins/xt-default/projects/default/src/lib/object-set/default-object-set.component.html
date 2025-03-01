@@ -1,0 +1,18 @@
+@let allSubNames=subNames();
+<p-table [columns]="allSubNames" [value]="valueSet()" selectionMode="single" [selection]="selectedElement" (selectionChange)="selectionChange($event)">
+  <ng-template #header>
+    <tr>
+      @for (subName of allSubNames; track subName) {
+        <th>{{subName}}</th>
+      }
+    </tr>
+  </ng-template>
+  <ng-template #body let-element let-eltIndex='rowIndex'>
+    @let eltContext=elementSetContext(eltIndex);
+    <tr [pSelectableRow]="element">
+    @for (subName of allSubNames; track subName) {
+      <td><xt-render-sub [context]="subElementContextForName(eltContext, subName)"></xt-render-sub> </td>
+    }
+    </tr>
+  </ng-template>
+</p-table>

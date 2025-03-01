@@ -1,6 +1,7 @@
 import { XtPluginRegistry, XtResolverService } from 'xt-components';
 import { DefaultPrimitiveComponent } from './primitive/default-primitive.component';
 import { DefaultObjectComponent } from './object/default-object.component';
+import { DefaultObjectSetComponent } from './object-set/default-object-set.component';
 
 export function registerDefaultPlugin (resolverService:XtResolverService):boolean {
     console.info ('Registering Plugin Default');
@@ -15,6 +16,11 @@ export function registerDefaultPlugin (resolverService:XtResolverService):boolea
             componentName:'DefaultObject',
             componentClass:DefaultObjectComponent,
             typesHandled: [XtPluginRegistry.ANY_OBJECT_TYPE]
+          },{
+            componentName:'DefaultObjectSet',
+            componentClass:DefaultObjectSetComponent,
+            typesHandled: [XtPluginRegistry.ANY_OBJECT_SET],
+            outputs: ['valueSelected']
           }
         ]
     });

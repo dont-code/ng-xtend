@@ -1,7 +1,8 @@
 {
   "name": "xt-type",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/out-tsc/lib/index.js",
+  "types": "dist/out-tsc/lib/index.d.ts",
   "scripts": {
     "test": "jest",
     "build": "rm -rf ./dist/out-tsc/lib && tsc -p tsconfig.lib.json"
@@ -9,7 +10,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "description": "",
   "devDependencies": {
     "@types/jest": "^29.5.14",

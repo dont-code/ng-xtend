@@ -8,6 +8,11 @@
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/store && ../../node_modules/.bin/jest"
   },
+  "publishConfig": {
+    "directory": "dist/store",
+    "linkDirectory": true
+  },
+
   "private": false,
   "dependencies": {
     "@angular/animations": "^19.1.3",

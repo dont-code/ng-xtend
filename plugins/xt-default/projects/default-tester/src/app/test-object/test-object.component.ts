@@ -12,7 +12,8 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule }
 import { JsonPipe } from '@angular/common';
 import { XtRenderComponent } from 'xt-components';
 import { Subscription } from 'rxjs';
-import { DefaultObjectComponent } from '../../../../default/src/lib/object/default-object.component';
+import { DefaultObjectComponent } from 'xt-plugin-default';
+import { updateFormGroupWithValue } from 'xt-components';
 
 @Component({
   selector: 'app-test-object',
@@ -42,7 +43,7 @@ export class TestObjectComponent implements OnInit, OnDestroy {
 
   constructor() {
     const newForm = new FormGroup({'TestObject': new FormGroup({})});
-    this.updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
+    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
     this.mainForm.set(newForm);
   }
 
@@ -54,54 +55,8 @@ export class TestObjectComponent implements OnInit, OnDestroy {
     this.selectedObject.set($event.value);
     this.value.set(this.loadObject ($event.value));
     const newForm = new FormGroup({'TestObject': new FormGroup({})});
-    this.updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
+    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
     this.mainForm.set(newForm);
-  }
-
-  updateFormGroupWithValue(formGroup: FormGroup, value:{[key:string]:any}) {
-
-    const toDelete = new Set<string>(Object.keys(formGroup.controls));
-
-    for (const valueKey in value) {
-      const primitive = this.isPrimitive (value[valueKey]);
-      if (toDelete.delete(valueKey)) {
-        // Already a control
-        const oldControl = formGroup.get(valueKey)!;
-        // Is it the right type ?
-        if (primitive) {
-          // Must be an FormControl2
-          if ((oldControl as any).controls===undefined) {
-            // It's ok, just set the value
-            oldControl.setValue(value[valueKey]);
-          }else {
-            formGroup.setControl(valueKey, new FormControl(value[valueKey]));
-          }
-        } else {
-          // Must be a FormGroup
-          if ((oldControl as any).controls===undefined) {
-            const newFormGroup = new FormGroup({});
-            formGroup.setControl(valueKey, newFormGroup);
-            this.updateFormGroupWithValue(newFormGroup, value[valueKey]);
-          } else {
-            // It was already a formgroup, so just update it
-            this.updateFormGroupWithValue(oldControl as FormGroup, value[valueKey]);
-          }
-        }
-      } else {
-        if (primitive) {
-          formGroup.addControl(valueKey, new FormControl(value[valueKey]));
-        } else {
-          const newFormGroup = new FormGroup({});
-          formGroup.addControl(valueKey, newFormGroup);
-          this.updateFormGroupWithValue(newFormGroup, value[valueKey]);
-        }
-      }
-    }
-
-    // Delete controls that are no more used
-    for (const delName of toDelete) {
-      formGroup.removeControl(delName);
-    }
   }
 
   loadObject (objName:string) :any {
@@ -151,12 +106,4 @@ export class TestObjectComponent implements OnInit, OnDestroy {
     return DefaultObjectComponent;
   }
 
-  protected isPrimitive(valueElement: any): boolean {
-    if (typeof valueElement == 'object') {
-      if (valueElement==null) return true;
-      else {
-        return valueElement instanceof Date;
-      }
-    } else return true;
-  }
 }

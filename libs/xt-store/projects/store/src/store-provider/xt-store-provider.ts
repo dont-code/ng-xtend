@@ -110,7 +110,7 @@ export abstract class AbstractXtStoreProvider<T=never> implements XtStoreProvide
     );
   }
 
-  abstract storeDocuments(toStore: File[], position?: string): Observable<UploadedDocumentInfo>;
+  abstract storeDocuments(toStore: File[]): Observable<UploadedDocumentInfo>;
 
   abstract storeEntity(position: string, entity: T): Promise<T>;
 

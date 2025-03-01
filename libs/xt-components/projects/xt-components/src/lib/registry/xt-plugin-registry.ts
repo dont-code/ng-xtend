@@ -1,5 +1,6 @@
 import { XtComponentInfo, XtPluginInfo } from "../plugin/xt-plugin-info";
-import { signal } from '@angular/core';
+import { signal, Type } from '@angular/core';
+import { XtComponent } from '../xt-component';
 
 export class XtPluginRegistry {
 
@@ -24,9 +25,13 @@ export class XtPluginRegistry {
   /**
    * The components can manage any composite javascript type. Default when no type has been defined and it's a user defined javascript object (not a data type)
    */
-    public static readonly ANY_OBJECT_TYPE="ANY_OBJECT_TYPE";
+  public static readonly ANY_OBJECT_TYPE="ANY_OBJECT_TYPE";
 
-    registerPlugin (info:XtPluginInfo) {
+  public static readonly ANY_PRIMITIVE_SET = "ANY_PRIMITIVE_SET";
+
+  public static readonly ANY_OBJECT_SET = "ANY_OBJECT_SET";
+
+  registerPlugin (info:XtPluginInfo) {
         this.pluginRegistry.set (info.name, info);
         if (info.components != null) {
             let updated=false;
@@ -38,7 +43,7 @@ export class XtPluginRegistry {
         }
     }
 
-    registerComponent<T> (info:XtComponentInfo<T>) {
+  registerComponent<T> (info:XtComponentInfo<T>) {
         this.componentRegistry.set (info.componentName, info);
         this.listComponents.update((array) => {
           let found=false;
@@ -64,6 +69,10 @@ export class XtPluginRegistry {
           } else if (value instanceof Date) {
             valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
           }
+
+          if (Array.isArray(value)) {
+            valueType = (valueType===XtPluginRegistry.ANY_PRIMITIVE_TYPE)?XtPluginRegistry.ANY_PRIMITIVE_SET:XtPluginRegistry.ANY_OBJECT_SET;
+          }
         }
       //console.debug('Type found is '+valueType);
 
@@ -84,6 +93,17 @@ export class XtPluginRegistry {
     public static registry (): XtPluginRegistry {
         return XT_REGISTRY;
     }
+
+  findComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any> {
+    // Search for the component registered with this class
+    for (const info of this.componentRegistry.values()) {
+      if (info.componentClass==type) {
+        return info;
+      }
+    }
+    // We don't support unknown component
+    throw new Error ("No component found with class "+type);
+  }
 }
 
 export const XT_REGISTRY=new XtPluginRegistry ();

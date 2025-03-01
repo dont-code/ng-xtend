@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  linkedSignal,
-  OnInit,
-  resource,
-  ResourceStatus
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, linkedSignal, OnInit, resource } from '@angular/core';
 import { AppConfigService } from '../shared/app-config/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';

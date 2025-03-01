@@ -1,9 +1,22 @@
-import { Component, computed, inject, input, model, Signal, Type } from '@angular/core';
+import {
+  AfterContentInit, AfterViewInit,
+  Component,
+  computed,
+  inject,
+  input,
+  model,
+  OnInit,
+  output,
+  Signal,
+  Type,
+  viewChild
+} from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
-import { XtComponent } from '../xt-component';
+import { XtComponent, XtComponentOutput } from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtResolverService } from '../angular/xt-resolver.service';
+import { XtResolvedComponent } from '../xt-resolved-component';
 
 /**
  * Offers a nice and easy to dynamically embed a component.
@@ -20,7 +33,7 @@ import { XtResolverService } from '../angular/xt-resolver.service';
   templateUrl: './xt-render.component.html',
   styleUrl: './xt-render.component.css'
 })
-export class XtRenderComponent<T> {
+export class XtRenderComponent<T> implements AfterViewInit {
   resolverService = inject(XtResolverService);
 
   componentType = input<Type<XtComponent<T>>> ();
@@ -33,9 +46,15 @@ export class XtRenderComponent<T> {
   formGroup=input<FormGroup>();
   subName= input<string>();
 
+  outputs = output<XtComponentOutput> ();
+  hasOutput:boolean = false;
+
+  outlet = viewChild.required(NgComponentOutlet);
+
   constructor() {
 
   }
+
 
   context: Signal<XtContext<any>> = computed(() => {
     let form = this.formGroup();
@@ -57,16 +76,31 @@ export class XtRenderComponent<T> {
   type:Signal<Type<XtComponent<T>>|null> = computed( () => {
     //console.debug("Calculating type in XtRenderSubComponent");
 
-    const type=this.componentType();
+    let type=this.componentType();
+    let compFound:XtResolvedComponent|null = null;
     if (type!=null) {
-      console.debug('XtRender, using component set '+ type);
-      return type;
+      //console.debug('XtRender, using component set '+ type);
+      compFound = this.resolverService.getComponentInfo (type);
+    } else {
+      compFound= this.resolverService.findBestComponent(this.context());
+      //console.debug('XtRender, found component ',compFound.componentName);
+      type= compFound.componentClass;
     }
 
-    const compFound= this.resolverService.findBestComponent(this.context());
-    console.debug('XtRender, found component ',compFound.componentName);
-
-    return compFound.componentClass;
+    if (compFound.outputs) {
+      this.hasOutput=true;
+    }
+    return type??null;
   });
+
+  ngAfterViewInit() {
+    if (this.hasOutput) {
+      const instance=this.outlet().componentInstance as XtComponent;
+      if ((instance != null) && (instance.outputs!=null)) {
+        instance.outputs.subscribe ((out) => this.outputs.emit(out));
+      }
+    }
+
+  }
 
 }

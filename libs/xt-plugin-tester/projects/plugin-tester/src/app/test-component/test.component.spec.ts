@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
-import { inject, provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { SampleCurrencyComponent, SampleHelloComponent, registerSamplePlugin } from 'xt-plugin-sample';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { registerSamplePlugin, SampleHelloComponent } from 'xt-plugin-sample';
 import { XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { expect } from '@jest/globals';

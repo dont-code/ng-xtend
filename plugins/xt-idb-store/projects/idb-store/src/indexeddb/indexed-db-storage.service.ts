@@ -1,10 +1,10 @@
 /**
  * Allow storing of entities in the browser local database
  */
-import {from, map, Observable, Subscription} from "rxjs";
-import Dexie, {Table} from "dexie";
-import {Injectable, OnDestroy, Optional} from "@angular/core";
-import {AbstractXtStoreProvider, UploadedDocumentInfo, XtStoreCriteria, XtStoreProviderHelper} from "xt-store";
+import { from, Observable, Subscription } from 'rxjs';
+import Dexie, { Table } from 'dexie';
+import { Injectable, OnDestroy } from '@angular/core';
+import { AbstractXtStoreProvider, UploadedDocumentInfo, XtStoreCriteria, XtStoreProviderHelper } from 'xt-store';
 
 
 @Injectable({

@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, linkedSignal, OnInit, resou
 import { AppConfigService } from '../shared/app-config/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
+import { StoreManagerService } from '../store/store-manager.service';
+import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 
 @Component({
   selector: 'app-project-load',
@@ -11,12 +13,14 @@ import { ApplicationModelManagerService } from '../application-model-manager/app
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectLoadComponent implements OnInit {
-
   protected readonly route = inject(ActivatedRoute);
   protected readonly router = inject(Router);
 
   protected readonly appMgr=inject(ApplicationModelManagerService);
   protected readonly appConfig = inject(AppConfigService);
+  protected readonly storeMgr = inject(StoreManagerService);
+
+  protected readonly apiProvider = inject(XtApiStoreProvider);
 
   ngOnInit() {
     const projectName = this.route.snapshot.paramMap.get('projectName');
@@ -49,6 +53,7 @@ export class ProjectLoadComponent implements OnInit {
     loader: ((option) => {
       if (option.request==true) {
         this.appMgr.setModel (this.appConfig.project.value());
+        this.updateDefaultStore (this.appMgr.getDefaultSharing());
         const entityName = this.appMgr.retrieveFirstEntity();
         if (entityName != null)
           return this.router.navigate(['entity', entityName]);
@@ -56,5 +61,18 @@ export class ProjectLoadComponent implements OnInit {
       return Promise.resolve(false);
   })
 });
+
+  updateDefaultStore(sharingMode: string | undefined) {
+    if( sharingMode == 'Dont-code users') {
+      const apiUrl = this.appConfig.config.value().storeApiUrl;
+      if (apiUrl != null) {
+        this.apiProvider.apiUrl = apiUrl;
+        this.storeMgr.setDefaultStoreProvider(this.apiProvider);
+      }
+    } else {
+      // For now, just memory
+      this.storeMgr.setDefaultStoreProvider(new XtMemoryStoreProvider());
+    }
+  }
 
 }

@@ -2,9 +2,9 @@
 
 @if (entName!=null) {
 
-<h1>Editing the entity {{entName}}</h1>
+<h1>{{entName}}</h1>
 <h2>List</h2>
-<xt-render displayMode="INLINE_VIEW" [value]="store?.entities()" ></xt-render>
+<xt-render displayMode="LIST_VIEW" [value]="store?.entities()" ></xt-render>
 
 <h2>Edit</h2>
 <div [formGroup]="editForm()">

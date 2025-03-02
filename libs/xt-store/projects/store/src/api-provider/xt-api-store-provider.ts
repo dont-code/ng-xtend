@@ -1,6 +1,6 @@
 import {lastValueFrom, Observable, Subscription, throwError} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Injectable, OnDestroy, Optional} from "@angular/core";
+import {inject, Injectable, OnDestroy, Optional} from "@angular/core";
 import {map, mergeAll} from "rxjs/operators";
 import { AbstractXtStoreProvider } from '../store-provider/xt-store-provider';
 import { XtStoreProviderHelper } from '../store-provider/xt-store-provider-helper';
@@ -15,11 +15,13 @@ import { UploadedDocumentInfo } from '../xt-document';
 })
 export class XtApiStoreProvider<T=never> extends AbstractXtStoreProvider<T> implements OnDestroy {
 
+  protected http = inject (HttpClient);
+
   apiUrl: string;
   docUrl: string;
   subscriptions = new Subscription();
 
-  constructor(protected http: HttpClient,/* protected configService: CommonConfigService*/) {
+  constructor(/* protected configService: CommonConfigService*/) {
     super();
     this.apiUrl = 'https://test.dont-code.net/data';
     this.docUrl = 'https://test.dont-code.net/documents';

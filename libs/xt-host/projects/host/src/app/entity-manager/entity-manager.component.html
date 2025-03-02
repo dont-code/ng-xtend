@@ -3,13 +3,31 @@
 @if (entName!=null) {
 
 <h1>{{entName}}</h1>
-<h2>List</h2>
-<xt-render displayMode="LIST_VIEW" [value]="store?.entities()" ></xt-render>
+  <p-toolbar>
+    <ng-template #center>
+      <p-button icon="pi pi-plus" (onClick)="newEntity()"></p-button>
+      <p-button icon="pi pi-trash" [disabled]="!selectedEntity()" (onClick)="deleteSelected()"></p-button>
+      <p-button icon="pi pi-save" [disabled]="!canSave()" (onClick)="save()"></p-button>
+    </ng-template>
+  </p-toolbar>
+  <p-tabs value="list">
+    <p-tablist>
+      <p-tab value="list">List</p-tab>
+      <p-tab value="edit">Edit</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="list">
+        <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="selectionChanged($event)" ></xt-render>
+      </p-tabpanel>
 
-<h2>Edit</h2>
-<div [formGroup]="editForm()">
-  <xt-render displayMode="FULL_EDITABLE" [formGroup]="editForm()" subName="editor"></xt-render>
-</div>
+      <p-tabpanel value="edit">
+        @let mainForm=editForm();
+        <div [formGroup]="mainForm">
+          <xt-render displayMode="FULL_EDITABLE" [formGroup]="mainForm" subName="editor" ></xt-render>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 
 } @else {
   <h1>No entity to manage.</h1>

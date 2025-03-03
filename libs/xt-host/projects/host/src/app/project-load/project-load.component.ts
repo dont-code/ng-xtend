@@ -3,6 +3,7 @@ import { AppConfigService } from '../shared/app-config/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
 import { StoreManagerService } from '../store/store-manager.service';
+import { HttpClient } from '@angular/common/http';
 import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 
 @Component({
@@ -20,7 +21,7 @@ export class ProjectLoadComponent implements OnInit {
   protected readonly appConfig = inject(AppConfigService);
   protected readonly storeMgr = inject(StoreManagerService);
 
-  protected readonly apiProvider = inject(XtApiStoreProvider);
+  private readonly http = inject(HttpClient);
 
   ngOnInit() {
     const projectName = this.route.snapshot.paramMap.get('projectName');
@@ -66,8 +67,9 @@ export class ProjectLoadComponent implements OnInit {
     if( sharingMode == 'Dont-code users') {
       const apiUrl = this.appConfig.config.value().storeApiUrl;
       if (apiUrl != null) {
-        this.apiProvider.apiUrl = apiUrl;
-        this.storeMgr.setDefaultStoreProvider(this.apiProvider);
+        const apiProvider = new XtApiStoreProvider(this.http);
+        apiProvider.apiUrl = apiUrl;
+        this.storeMgr.setDefaultStoreProvider(apiProvider);
       }
     } else {
       // For now, just memory

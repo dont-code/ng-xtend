@@ -15,14 +15,21 @@ import { UploadedDocumentInfo } from '../xt-document';
 })
 export class XtApiStoreProvider<T=never> extends AbstractXtStoreProvider<T> implements OnDestroy {
 
-  protected http = inject (HttpClient);
+  protected http: HttpClient = inject (HttpClient, {optional:true}) as any;
 
   apiUrl: string;
   docUrl: string;
   subscriptions = new Subscription();
 
-  constructor(/* protected configService: CommonConfigService*/) {
+  constructor(http?:HttpClient/* protected configService: CommonConfigService*/) {
     super();
+    if (http!=null) {
+      this.http=http;
+    }
+
+    if (this.http==null) {
+      throw new Error ("You must provide an HttpClient, either through constructor or injection.");
+    }
     this.apiUrl = 'https://test.dont-code.net/data';
     this.docUrl = 'https://test.dont-code.net/documents';
 

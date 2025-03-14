@@ -125,7 +125,7 @@ describe('DefaultObjectSetComponent', () => {
     fixture.detectChanges();
 
     expect(component.selectedElement()).toBeTruthy();
-    expect(component.selectedElement()?.simpleNumbkeer).toEqual(12);
+    expect(component.selectedElement()?.simpleNumbeer).toEqual(12);
 
   });
 

@@ -12,7 +12,10 @@ type TestData= {
   simpleDate:Date,
   simpleNumber:number,
   simpleBoolean:boolean
+}
 
+type IdentifiedTestData = TestData & {
+  _id:string;
 }
 
 describe('DefaultObjectSetComponent', () => {
@@ -94,7 +97,7 @@ describe('DefaultObjectSetComponent', () => {
     let fixture: ComponentFixture<DefaultObjectSetComponent<TestData>>;
 
     fixture = TestBed.createComponent(DefaultObjectSetComponent<TestData>);
-    let context = new XtBaseContext<TestData[]>("INLINE_VIEW");
+    let context = new XtBaseContext<TestData[]>("LIST_VIEW");
     context.setDisplayValue([{
       simpleText: 'bonjour',
       simpleDate: new Date(1971, 1, 1),
@@ -122,7 +125,88 @@ describe('DefaultObjectSetComponent', () => {
     fixture.detectChanges();
 
     expect(component.selectedElement()).toBeTruthy();
-    expect(component.selectedElement()?.simpleNumber).toEqual(12);
+    expect(component.selectedElement()?.simpleNumbkeer).toEqual(12);
 
   });
+
+  it('should keep element selection if possible', () => {
+    let component: DefaultObjectSetComponent<IdentifiedTestData>;
+    let fixture: ComponentFixture<DefaultObjectSetComponent<IdentifiedTestData>>;
+
+    fixture = TestBed.createComponent(DefaultObjectSetComponent<IdentifiedTestData>);
+    let context = new XtBaseContext<IdentifiedTestData[]>("LIST_VIEW");
+    context.setDisplayValue([{
+      _id:'11',
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      _id:'12',
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }, {
+      _id:'13',
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }]);
+
+    fixture.componentRef.setInput("context", context);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component).toBeTruthy();
+    const rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    rows[1].nativeElement.click();
+    fixture.detectChanges();
+
+    expect(component.selectedElement()).toBeTruthy();
+    expect(component.selectedElement()?.simpleNumber).toEqual(12);
+
+    // Now refresh the display values, did he keep the element selected ?
+    context.setDisplayValue([{
+      _id:'11',
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      _id:'13',
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }, {
+      _id:'12',
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }]);
+
+    expect(component.selectedElement()).toBeTruthy();
+    expect(component.selectedElement()?.simpleNumber).toEqual(12);
+
+      // Now refresh the values without the selected element, is it now null ?
+    context.setDisplayValue([{
+      _id:'11',
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      _id:'13',
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }]);
+
+    expect(component.selectedElement()).toBeNull();
+  });
+
 });

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, signal, Signal } from '@angular/core';
 import { XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
 import { TableModule } from 'primeng/table';
 
@@ -12,15 +12,6 @@ import { TableModule } from 'primeng/table';
 export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   resolver = inject(XtResolverService);
   override hasOutputs = true;
-
-  selectedElement = linkedSignal<T|null> (
-    () => {
-      const list= this.valueSet();
-      if (list.length>0) {
-        return list[0];
-      } else return null;
-    }
-  );
 
   debugValue=false;
   debugSelectedElement:Signal<boolean> = computed<boolean>(() => {
@@ -36,6 +27,18 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     } else if (ret!=null) {
       return [ret] as T[];
     } else return [];
+  });
+
+  selectedElement = linkedSignal<T[]|null, T|null> ({
+    source: this.valueSet,
+    computation: (source, previous) => {
+      if ((source!=null) && (previous?.value!=null)) {
+        return source.find((toCheck) => {
+          return (toCheck as any)._id==(previous.value as any)._id;
+        })??null;
+      } else
+        return null;
+    }
   });
 
   subNames = computed(() => {

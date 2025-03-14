@@ -19,6 +19,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Toolbar } from 'primeng/toolbar';
 import { Button } from 'primeng/button';
 import { Subscription } from 'rxjs';
+import { ErrorHandlerService } from '../error-handler/error-handler.service';
 
 @Component({
   selector: 'app-entity-manager',
@@ -32,6 +33,7 @@ export class EntityManagerComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   protected readonly storeMgr = inject(StoreManagerService);
   protected readonly formBuilder = inject(FormBuilder);
+  protected readonly errorHandler = inject(ErrorHandlerService);
 
   /**
    * Support for setting entity name as an input and as a route.
@@ -53,6 +55,15 @@ export class EntityManagerComponent implements OnDestroy {
     this.listenToFormEvent (form);
     return this.formBuilder.group ({ editor: form });
   });
+
+  listOutputs = signal<XtComponentOutput|null>(null);
+
+  selectedEntity = linkedSignal<ManagedData|null>( () => {
+      const outputs = this.listOutputs?this.listOutputs()?.valueSelected:null;
+      return outputs?outputs():null;
+    }
+  );
+
   private subscriptions=new Subscription();
 
   constructor() {
@@ -70,20 +81,15 @@ export class EntityManagerComponent implements OnDestroy {
     const entityName = this.entityName();
     if (entityName!=null) {
       this.store = this.storeMgr.getStoreFor(entityName);
-      this.store.fetchEntities();//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
+      this.store.fetchEntities().catch((error) => {
+        this.errorHandler.errorOccured(error, "Error loading entities "+entityName);
+      });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
     } else {
       this.store = null;
     }
   }
 
-  selectedEntity = linkedSignal(() => {
-    const outputs=this.listOutputs();
-    return outputs?.valueSelected?outputs.valueSelected() as ManagedData:null;
-  });
-
-  listOutputs = signal<XtComponentOutput|null>(null);
-
-  selectionChanged(newValue: XtComponentOutput | null) {
+  outputChanged(newValue: XtComponentOutput | null) {
     this.listOutputs.set(newValue);
   }
 
@@ -95,9 +101,13 @@ export class EntityManagerComponent implements OnDestroy {
       throw new Error ("Trying to save an entity that is not bind to form");
     }
 
-    const savedValue = await this.safeStore().storeEntity (toSave);
-    this.selectedEntity.set(savedValue);
-    this.canSave.set(false);
+    try {
+      const savedValue = await this.safeStore().storeEntity (toSave);
+      this.selectedEntity.set(savedValue);
+      this.canSave.set(false);
+    } catch (error) {
+      this.errorHandler.errorOccured(error, "Error saving entity with id "+ toSave._id);
+    }
   }
 
   private listenToFormEvent(form: FormGroup) {
@@ -120,14 +130,18 @@ export class EntityManagerComponent implements OnDestroy {
     }
     let deleted=false;
     if (toTrash._id!=null) {
-      deleted = await this.safeStore().deleteEntity (toTrash._id);
+      try {
+        deleted = await this.safeStore().deleteEntity (toTrash._id);
+      } catch (error) {
+        this.errorHandler.errorOccured(error, "Deleting entity with id "+toTrash._id);
+      }
     } else {
       deleted=true;
     }
     if (deleted) {
       this.selectedEntity.set(null);
     }
-  }
+    }
 
   newEntity() {
 
@@ -139,5 +153,18 @@ export class EntityManagerComponent implements OnDestroy {
     }else {
       throw new Error ("Not store available");
     }
+  }
+
+  canReload = computed(() => {
+    if (this.store!=null) {
+      return ! this.store.loading();
+    }else {
+      return false;
+    }
+
+  })
+
+  reloadList() {
+    this.updateStore();
   }
 }

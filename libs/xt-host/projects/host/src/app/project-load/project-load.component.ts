@@ -1,9 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, linkedSignal, OnInit, resource } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Injector,
+  linkedSignal,
+  OnInit,
+  resource,
+  runInInjectionContext
+} from '@angular/core';
 import { AppConfigService } from '../shared/app-config/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
 import { StoreManagerService } from '../store/store-manager.service';
-import { HttpClient } from '@angular/common/http';
 import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 
 @Component({
@@ -21,7 +29,7 @@ export class ProjectLoadComponent implements OnInit {
   protected readonly appConfig = inject(AppConfigService);
   protected readonly storeMgr = inject(StoreManagerService);
 
-  private readonly http = inject(HttpClient);
+  private readonly injector = inject(Injector);
 
   ngOnInit() {
     const projectName = this.route.snapshot.paramMap.get('projectName');
@@ -67,9 +75,16 @@ export class ProjectLoadComponent implements OnInit {
     if( sharingMode == 'Dont-code users') {
       const apiUrl = this.appConfig.config.value().storeApiUrl;
       if (apiUrl != null) {
-        const apiProvider = new XtApiStoreProvider(this.http);
-        apiProvider.apiUrl = apiUrl;
-        this.storeMgr.setDefaultStoreProvider(apiProvider);
+          runInInjectionContext(this.injector, () => {
+          try {
+          const apiProvider = inject(XtApiStoreProvider);
+          apiProvider.apiUrl = apiUrl;
+          this.storeMgr.setDefaultStoreProvider(apiProvider);
+          } catch(err) {
+            console.error (err);
+          }
+
+          });
       }
     } else {
       // For now, just memory

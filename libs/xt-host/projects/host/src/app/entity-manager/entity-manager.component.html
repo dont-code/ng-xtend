@@ -6,6 +6,7 @@
   <p-toolbar>
     <ng-template #center>
       <p-button icon="pi pi-plus" (onClick)="newEntity()"></p-button>
+      <p-button icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()"></p-button>
       <p-button icon="pi pi-trash" [disabled]="!selectedEntity()" (onClick)="deleteSelected()"></p-button>
       <p-button icon="pi pi-save" [disabled]="!canSave()" (onClick)="save()"></p-button>
     </ng-template>
@@ -17,7 +18,7 @@
     </p-tablist>
     <p-tabpanels>
       <p-tabpanel value="list">
-        <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="selectionChanged($event)" ></xt-render>
+        <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="outputChanged($event)" ></xt-render>
       </p-tabpanel>
 
       <p-tabpanel value="edit">

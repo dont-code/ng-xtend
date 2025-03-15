@@ -1,5 +1,5 @@
 @let allSubNames=subNames();
-<p-table [columns]="allSubNames" [scrollable]="true" scrollHeight="800px" [value]="valueSet()" selectionMode="single" [selection]="selectedElement()" (selectionChange)="selectionChange($event)">
+<p-table [columns]="allSubNames" [scrollable]="true" scrollHeight="flex" [value]="valueSet()" selectionMode="single" [selection]="selectedElement()" (selectionChange)="selectionChange($event)">
   <ng-template #header>
     <tr>
       @for (subName of allSubNames; track subName) {

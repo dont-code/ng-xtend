@@ -4,6 +4,7 @@ import { JsonPipe } from '@angular/common';
 import { XtComponentOutput, XtRenderComponent } from 'xt-components';
 import { DefaultObjectSetComponent } from 'xt-plugin-default';
 import { FormsModule } from '@angular/forms';
+import { Panel } from 'primeng/panel';
 
 @Component({
   selector: 'app-test-object-set',
@@ -11,7 +12,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     AutoComplete,
     JsonPipe,
-    XtRenderComponent
+    XtRenderComponent,
+    Panel
   ],
   templateUrl: './test-object-set.component.html',
   styleUrl: './test-object-set.component.css',
@@ -23,7 +25,7 @@ export class TestObjectSetComponent {
   value = signal<any>(this.loadObject('simple') );
 
   listOfObjects() {
-    return ['simple', 'complex'];
+    return ['simple', 'long', 'complex'];
   }
 
   objectSwitch($event: AutoCompleteSelectEvent) {
@@ -32,7 +34,17 @@ export class TestObjectSetComponent {
   }
 
   loadObject (objName:string) :any {
-    return {
+    if (objName=='long') {
+      const ret = [];
+      for (let i = 0;i<50;i++) {
+        ret.push({
+          prop1:'Value'+i,
+          prop2: i*12,
+          prop3: new Date (i*134005)
+        })
+      }
+      return ret;
+    } else return {
       simple: [{
         prop1:'Value1',
         prop2:1234,

@@ -18,13 +18,13 @@
     </p-tablist>
     <p-tabpanels>
       <p-tabpanel value="list">
-        <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="outputChanged($event)" ></xt-render>
+        <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="outputChanged($event)" [valueType]="entityName()" ></xt-render>
       </p-tabpanel>
 
       <p-tabpanel value="edit">
         @let mainForm=editForm();
         <div [formGroup]="mainForm">
-          <xt-render displayMode="FULL_EDITABLE" [formGroup]="mainForm" subName="editor" ></xt-render>
+          <xt-render displayMode="FULL_EDITABLE" [formGroup]="mainForm" subName="editor" [valueType]="entityName()" ></xt-render>
         </div>
       </p-tabpanel>
     </p-tabpanels>

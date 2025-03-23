@@ -1,9 +1,26 @@
-<h1>Application {{title}}</h1>
 <p-toolbar>
-    <div class="p-toolbar-group-center">
-        <a href="/"><p-button icon="pi pi-equals" ></p-button> </a>
-        <a href="/form"><p-button icon="pi pi-file-edit" ></p-button></a>
-        <a href="/hierarchy"><p-button icon="pi pi-sitemap" ></p-button></a>
-    </div>
+  <ng-template #start>
+    <a routerLink="/"><img src="assets/images/logo-xtend-transparent.png" class="size-16 md:size-32"/></a>
+    <p-button class="md:hidden" rounded="true" variant="outlined" icon="pi pi-bars" (click)="invertSidePanelVisibility()"></p-button>
+  </ng-template>
+  <ng-template #center>
+    <div class="text-3xl [text-shadow:_2px_2px_4px_rgba(128,128,128,0.5)]">Application {{title}}</div>
+  </ng-template>
+  <ng-template #end></ng-template>
 </p-toolbar>
-<router-outlet />
+<div class="md:hidden">
+  <p-drawer id="mainLeftDrawer" [style]="{width:'15em'}" [(visible)]="leftDrawerVisible" [modal]="false" [closeOnEscape]="true" [closable]="true">
+    <ng-template #header>
+      <a routerLink="/"><img src="assets/images/logo-xtend-transparent.png" class="size-16" /></a>
+    </ng-template>
+    <app-host-menu (menuClick)="onMenuClick()"></app-host-menu>
+  </p-drawer>
+</div>
+<div class="grid grid-cols-[auto_1fr] gap-4">
+  <div class="hidden md:block">
+    <app-host-menu></app-host-menu>
+  </div>
+  <div>
+    <router-outlet> </router-outlet>
+  </div>
+</div>

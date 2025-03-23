@@ -1,8 +1,31 @@
-<div class="grid grid-cols-1 gap-6 outline-1 rounded-sm outline-neutral-500 p-3">
-  @for (subName of subNames(); track subName) {
-    <div class="flex flex-nowrap gap-3 place-items-center">
-      <div class="flex-none">{{subName}}</div>
-      <div class="flex-auto"><xt-render-sub [context]="subContext(subName)"></xt-render-sub></div>
-    </div>
+@let allSubNames=subNames();
+
+@if (displayInline()) {
+  <p-table [columns]="allSubNames" [value]="[{}]">
+    <ng-template #header>
+      <tr>
+        @for (subName of allSubNames; track subName) {
+          <th>{{subName}}</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template #body>
+      <tr>
+      @for (subName of allSubNames; track subName) {
+        <td><xt-render-sub [context]="subContext(subName)"></xt-render-sub></td>
+      }
+      </tr>
+    </ng-template>
+  </p-table>
+
+} @else {
+  <p-panel>
+    @for (subName of allSubNames; track subName) {
+      <div class="flex flex-nowrap gap-3">
+        <div class="flex-none">{{subName}}</div>
+        <div class="flex-auto"><xt-render-sub [context]="subContext(subName)"></xt-render-sub></div>
+      </div>
+    }
+  </p-panel>
+
 }
-</div>

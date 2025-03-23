@@ -33,11 +33,24 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     source: this.valueSet,
     computation: (source, previous) => {
       if ((source!=null) && (previous?.value!=null)) {
-        return source.find((toCheck) => {
-          return (toCheck as any)._id==(previous.value as any)._id;
-        })??null;
-      } else
-        return null;
+        // Detect if a new element has just been added, then selects it.
+        if ((previous.source!=null) && (previous.source.length==source.length+1)) {
+          for (const newElem of source.reverse()) {
+            const findIt=previous.source.find((toCheck) => {
+              return (toCheck as any)._id==(newElem as any)._id;
+            });
+            if (findIt==null) {
+              return newElem;
+            }
+          }
+        } else {
+            // Otherwise reselect the element if still there
+          return source.find((toCheck) => {
+            return (toCheck as any)._id==(previous.value as any)._id;
+          })??null;
+        }
+      }
+      return null;
     }
   });
 

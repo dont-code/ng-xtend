@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
 import { StoreManagerService } from '../store/store-manager.service';
 import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
+import { XtResolverService } from 'xt-components';
 
 @Component({
   selector: 'app-project-load',
@@ -28,6 +29,7 @@ export class ProjectLoadComponent implements OnInit {
   protected readonly appMgr=inject(ApplicationModelManagerService);
   protected readonly appConfig = inject(AppConfigService);
   protected readonly storeMgr = inject(StoreManagerService);
+  protected readonly resolver=inject(XtResolverService);
 
   private readonly injector = inject(Injector);
 
@@ -63,6 +65,11 @@ export class ProjectLoadComponent implements OnInit {
       if (option.request==true) {
         this.appMgr.setModel (this.appConfig.project.value());
         this.updateDefaultStore (this.appMgr.getDefaultSharing());
+        // Register the types defined in the project
+        const newTypes = this.appMgr.getApplicationTypes ();
+        if (newTypes!=null)
+          this.resolver.registerTypes(newTypes);
+
         const entityName = this.appMgr.retrieveFirstEntity();
         if (entityName != null)
           return this.router.navigate(['entity', entityName]);

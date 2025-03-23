@@ -143,8 +143,13 @@ export class EntityManagerComponent implements OnDestroy {
     }
     }
 
-  newEntity() {
-
+  async newEntity() {
+    try {
+      const newOne = await this.safeStore().storeEntity({} as ManagedData);
+      this.selectedEntity.set(newOne);
+    } catch (error) {
+      this.errorHandler.errorOccured(error, "Error creating and storing new Entity")
+    }
   }
 
   protected safeStore(): XtSignalStore<ManagedData> {

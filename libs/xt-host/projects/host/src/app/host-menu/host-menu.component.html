@@ -1,0 +1,5 @@
+<p-menu [model]="menus()" (click)="menuClicked($event)">
+  <ng-template #submenuheader let-item>
+    <span [class]="item.icon"></span><span class="text-primary font-bold">  {{ item.label }}</span>
+  </ng-template>
+</p-menu>

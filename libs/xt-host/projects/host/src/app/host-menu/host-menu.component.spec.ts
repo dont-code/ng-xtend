@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HostMenuComponent } from './host-menu.component';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('HostMenuComponent', () => {
   let component: HostMenuComponent;
@@ -8,7 +10,8 @@ describe('HostMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HostMenuComponent]
+      imports: [HostMenuComponent],
+      providers: [provideExperimentalZonelessChangeDetection(), provideNoopAnimations()]
     })
     .compileComponents();
 

@@ -10,6 +10,7 @@ import { registerDefaultPlugin } from 'xt-plugin-default';
 import { XtResolverService } from 'xt-components';
 import { StoreTestBed } from 'xt-store';
 import { By } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('EntityManagerComponent', () => {
   let component: EntityManagerComponent;
@@ -19,7 +20,7 @@ describe('EntityManagerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EntityManagerComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes)]
+      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations()]
     })
     .compileComponents();
 

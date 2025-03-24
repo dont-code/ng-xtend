@@ -5,20 +5,24 @@
 <h1>{{entName}}</h1>
   <p-toolbar>
     <ng-template #center>
-      <p-button icon="pi pi-plus" (onClick)="newEntity()"></p-button>
+      <p-button [icon]="newIcon()" (onClick)="newEntity()"></p-button>
       <p-button icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()"></p-button>
-      <p-button icon="pi pi-trash" [disabled]="!selectedEntity()" (onClick)="deleteSelected()"></p-button>
-      <p-button icon="pi pi-save" [disabled]="!canSave()" (onClick)="save()"></p-button>
+      <p-button [icon]="deleteIcon()" [disabled]="!selectedEntity()" (onClick)="deleteSelected()"></p-button>
+      <p-button [icon]="saveIcon()" [disabled]="!canSave()" (onClick)="save()"></p-button>
     </ng-template>
   </p-toolbar>
-  <p-tabs value="list">
-    <p-tablist>
+  <p-tabs [value]="viewMode()" >
+    <p-tablist >
       <p-tab value="list">List</p-tab>
-      <p-tab value="edit">Edit</p-tab>
+      <p-tab value="edit" [disabled]="!canEdit()">Edit</p-tab>
     </p-tablist>
     <p-tabpanels>
-      <p-tabpanel value="list">
-        <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="outputChanged($event)" [valueType]="entityName()" ></xt-render>
+      <p-tabpanel value="list" >
+        @if (store?.loading()) {
+          <p-progress-spinner />
+        } @else {
+          <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="outputChanged($event)" [valueType]="entityName()" ></xt-render>
+        }
       </p-tabpanel>
 
       <p-tabpanel value="edit">

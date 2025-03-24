@@ -20,10 +20,12 @@ import { Toolbar } from 'primeng/toolbar';
 import { Button } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { PrimeIcons } from 'primeng/api';
 
 @Component({
   selector: 'app-entity-manager',
-  imports: [XtRenderComponent, ReactiveFormsModule, TabPanel, TabPanels, Tab, TabList, Tabs, Toolbar, Button],
+  imports: [XtRenderComponent, ReactiveFormsModule, TabPanel, TabPanels, Tab, TabList, Tabs, Toolbar, Button, ProgressSpinner],
   providers: [],
   templateUrl: './entity-manager.component.html',
   styleUrl: './entity-manager.component.css',
@@ -64,6 +66,24 @@ export class EntityManagerComponent implements OnDestroy {
     }
   );
 
+  canEdit= computed(()=> {
+    if (this.selectedEntity()!=null)
+      return true;
+    return false;
+  });
+
+  viewMode = linkedSignal( () => {
+    const selection = this.selectedEntity();
+    if (selection!=null) {
+      return "edit";
+    }else return "list";
+  });
+
+  canSave=signal (false);
+  saveIcon = signal( PrimeIcons.SAVE);
+  deleteIcon = signal(PrimeIcons.TRASH);
+  newIcon = signal(PrimeIcons.PLUS);
+
   private subscriptions=new Subscription();
 
   constructor() {
@@ -93,8 +113,6 @@ export class EntityManagerComponent implements OnDestroy {
     this.listOutputs.set(newValue);
   }
 
-  canSave=signal (false);
-
   async save() {
     const toSave = this.editForm().value.editor as ManagedData;
     if (toSave==null) {
@@ -102,11 +120,15 @@ export class EntityManagerComponent implements OnDestroy {
     }
 
     try {
+      this.saveIcon.set(PrimeIcons.SPINNER);
       const savedValue = await this.safeStore().storeEntity (toSave);
       this.selectedEntity.set(savedValue);
       this.canSave.set(false);
+      this.viewMode.set("list");
     } catch (error) {
       this.errorHandler.errorOccured(error, "Error saving entity with id "+ toSave._id);
+    } finally {
+      this.saveIcon.set(PrimeIcons.SAVE);
     }
   }
 
@@ -131,24 +153,33 @@ export class EntityManagerComponent implements OnDestroy {
     let deleted=false;
     if (toTrash._id!=null) {
       try {
+        this.deleteIcon.set(PrimeIcons.SPINNER);
         deleted = await this.safeStore().deleteEntity (toTrash._id);
       } catch (error) {
         this.errorHandler.errorOccured(error, "Deleting entity with id "+toTrash._id);
+      } finally {
+        this.deleteIcon.set(PrimeIcons.TRASH);
       }
     } else {
       deleted=true;
     }
     if (deleted) {
       this.selectedEntity.set(null);
+      this.viewMode.set("list");
     }
     }
 
   async newEntity() {
     try {
+      this.newIcon.set(PrimeIcons.SPINNER);
       const newOne = await this.safeStore().storeEntity({} as ManagedData);
       this.selectedEntity.set(newOne);
+      this.viewMode.set("edit");
+
     } catch (error) {
       this.errorHandler.errorOccured(error, "Error creating and storing new Entity")
+    } finally {
+      this.newIcon.set(PrimeIcons.PLUS);
     }
   }
 
@@ -172,4 +203,5 @@ export class EntityManagerComponent implements OnDestroy {
   reloadList() {
     this.updateStore();
   }
+
 }

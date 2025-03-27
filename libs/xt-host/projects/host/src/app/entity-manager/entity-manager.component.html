@@ -2,14 +2,37 @@
 
 @if (entName!=null) {
 
-<h1>Editing the entity {{entName}}</h1>
-<h2>List</h2>
-<xt-render displayMode="INLINE_VIEW" [value]="store?.entities()" ></xt-render>
+<h1>{{entName}}</h1>
+  <p-toolbar>
+    <ng-template #center>
+      <p-button [icon]="newIcon()" (onClick)="newEntity()"></p-button>
+      <p-button icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()"></p-button>
+      <p-button [icon]="deleteIcon()" [disabled]="!selectedEntity()" (onClick)="deleteSelected()"></p-button>
+      <p-button [icon]="saveIcon()" [disabled]="!canSave()" (onClick)="save()"></p-button>
+    </ng-template>
+  </p-toolbar>
+  <p-tabs [value]="viewMode()" >
+    <p-tablist >
+      <p-tab value="list">List</p-tab>
+      <p-tab value="edit" [disabled]="!canEdit()">Edit</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="list" >
+        @if (store?.loading()) {
+          <p-progress-spinner />
+        } @else {
+          <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="outputChanged($event)" [valueType]="entityName()" ></xt-render>
+        }
+      </p-tabpanel>
 
-<h2>Edit</h2>
-<div [formGroup]="editForm()">
-  <xt-render displayMode="FULL_EDITABLE" [formGroup]="editForm()" subName="editor"></xt-render>
-</div>
+      <p-tabpanel value="edit">
+        @let mainForm=editForm();
+        <div [formGroup]="mainForm">
+          <xt-render displayMode="FULL_EDITABLE" [formGroup]="mainForm" subName="editor" [valueType]="entityName()" ></xt-render>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 
 } @else {
   <h1>No entity to manage.</h1>

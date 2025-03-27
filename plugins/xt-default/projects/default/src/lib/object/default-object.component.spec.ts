@@ -6,13 +6,14 @@ import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
 import { expect } from '@jest/globals';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('DefaultObjectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DefaultObjectComponent],
-      providers:[provideExperimentalZonelessChangeDetection()]
+      providers:[provideExperimentalZonelessChangeDetection(), provideNoopAnimations()]
     })
     .compileComponents();
 

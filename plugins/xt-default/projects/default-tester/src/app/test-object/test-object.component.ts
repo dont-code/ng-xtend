@@ -14,6 +14,7 @@ import { XtRenderComponent } from 'xt-components';
 import { Subscription } from 'rxjs';
 import { DefaultObjectComponent } from 'xt-plugin-default';
 import { updateFormGroupWithValue } from 'xt-components';
+import { Panel } from 'primeng/panel';
 
 @Component({
   selector: 'app-test-object',
@@ -22,7 +23,8 @@ import { updateFormGroupWithValue } from 'xt-components';
     FormsModule,
     ReactiveFormsModule,
     JsonPipe,
-    XtRenderComponent
+    XtRenderComponent,
+    Panel
   ],
   templateUrl: './test-object.component.html',
   styleUrl: './test-object.component.css',

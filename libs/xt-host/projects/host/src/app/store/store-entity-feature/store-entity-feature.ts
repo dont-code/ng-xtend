@@ -50,8 +50,8 @@ export function withXtStoreProvider (entityName:string, storeProvider:XtStorePro
       async storeEntity (toStore:ManagedData): Promise<ManagedData> {
         patchState(store, {loading:true});
         return store._storeProvider.storeEntity(entityName, toStore).then ( (stored)=> {
-          patchState(store, addEntity(toStore, xtStoreEntityConfig));
-          return toStore;
+          patchState(store, setEntity(stored, xtStoreEntityConfig));
+          return stored;
         }).finally(() => {
           patchState(store, {loading:false});
         });

@@ -198,6 +198,11 @@ export class XtBaseContext<T> implements XtContext<T>{
     return ret;
   }
 
+  /**
+   * Returns the context associated with a specific element in a set.
+   * Value must be an array.
+   * @param elementIndex
+   */
   elementSetContext(elementIndex:number): XtContext<any> {
     const value = this.value();
 
@@ -207,7 +212,10 @@ export class XtBaseContext<T> implements XtContext<T>{
 
     const ret = new XtBaseContext<T> (this.displayMode, undefined, undefined, this);
     ret.setDisplayValue((value as any[])[elementIndex]);
-    ret.valueType=this.valueType;
+    if (this.valueType!=null) {
+        // Convert potential array type into single type
+      ret.valueType=this.valueType.endsWith('[]')?this.valueType.substring(0, this.valueType.length-2):this.valueType;
+    }
     return ret;
   }
 

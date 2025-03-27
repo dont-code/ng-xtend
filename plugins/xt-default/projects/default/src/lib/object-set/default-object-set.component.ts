@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, signal, Signal } from '@angular/core';
 import { XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
 import { TableModule } from 'primeng/table';
 
@@ -12,15 +12,6 @@ import { TableModule } from 'primeng/table';
 export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   resolver = inject(XtResolverService);
   override hasOutputs = true;
-
-  selectedElement = linkedSignal<T|null> (
-    () => {
-      const list= this.valueSet();
-      if (list.length>0) {
-        return list[0];
-      } else return null;
-    }
-  );
 
   debugValue=false;
   debugSelectedElement:Signal<boolean> = computed<boolean>(() => {
@@ -36,6 +27,31 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     } else if (ret!=null) {
       return [ret] as T[];
     } else return [];
+  });
+
+  selectedElement = linkedSignal<T[]|null, T|null> ({
+    source: this.valueSet,
+    computation: (source, previous) => {
+      if ((source!=null) && (previous?.value!=null)) {
+        // Detect if a new element has just been added, then selects it.
+        if ((previous.source!=null) && (previous.source.length==source.length+1)) {
+          for (const newElem of source.reverse()) {
+            const findIt=previous.source.find((toCheck) => {
+              return (toCheck as any)._id==(newElem as any)._id;
+            });
+            if (findIt==null) {
+              return newElem;
+            }
+          }
+        } else {
+            // Otherwise reselect the element if still there
+          return source.find((toCheck) => {
+            return (toCheck as any)._id==(previous.value as any)._id;
+          })??null;
+        }
+      }
+      return null;
+    }
   });
 
   subNames = computed(() => {

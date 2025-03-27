@@ -31,7 +31,7 @@ export class XtMemoryStoreProvider<T extends ManagedData> extends AbstractXtStor
 
   override listEntities(name: string): Observable<T[]> {
     const store = this.getSafeStore (name);
-    console.debug("Listing entities for "+name+" with ",store);
+    //console.debug("Listing entities for "+name+" with ",store);
     return of (Array.from(store.values()));
   }
 

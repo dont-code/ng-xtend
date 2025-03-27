@@ -1,11 +1,10 @@
 import {
-  AfterContentInit, AfterViewInit,
+  AfterViewInit,
   Component,
   computed,
   inject,
   input,
   model,
-  OnInit,
   output,
   Signal,
   Type,
@@ -47,7 +46,7 @@ export class XtRenderComponent<T> implements AfterViewInit {
   subName= input<string>();
 
   outputs = output<XtComponentOutput> ();
-  hasOutput:boolean = false;
+  hasOutputs:boolean = false;
 
   outlet = viewChild.required(NgComponentOutlet);
 
@@ -78,27 +77,23 @@ export class XtRenderComponent<T> implements AfterViewInit {
 
     let type=this.componentType();
     let compFound:XtResolvedComponent|null = null;
-    if (type!=null) {
+    if (type==null) {
       //console.debug('XtRender, using component set '+ type);
-      compFound = this.resolverService.getComponentInfo (type);
-    } else {
+      //compFound = this.resolverService.findComponentInfo (type);
+    //} else {
       compFound= this.resolverService.findBestComponent(this.context());
       //console.debug('XtRender, found component ',compFound.componentName);
       type= compFound.componentClass;
     }
 
-    if (compFound.outputs) {
-      this.hasOutput=true;
-    }
     return type??null;
   });
 
   ngAfterViewInit() {
-    if (this.hasOutput) {
-      const instance=this.outlet().componentInstance as XtComponent;
-      if ((instance != null) && (instance.outputs!=null)) {
-        instance.outputs.subscribe ((out) => this.outputs.emit(out));
-      }
+    const instance=this.outlet().componentInstance as XtComponent;
+    if ((instance != null) && (instance.hasOutputs) && (instance.outputs!=null)) {
+      instance.outputs.subscribe ((out) => this.outputs.emit(out));
+      this.hasOutputs=true;
     }
 
   }

@@ -60,7 +60,9 @@ export class XtTypeHierarchyResolver<T> implements XtUpdatableTypeResolver<XtCon
         if( typeInfo?.children!=null) {
           ret = Object.keys(typeInfo.children);
         }
-      } else {
+      }
+
+      if (ret.length==0){
         // We will use the value to extract properties
         if (value!=null) {
           if (Array.isArray(value)) {

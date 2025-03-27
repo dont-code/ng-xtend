@@ -102,7 +102,7 @@ export class EntityManagerComponent implements OnDestroy {
     if (entityName!=null) {
       this.store = this.storeMgr.getStoreFor(entityName);
       this.store.fetchEntities().catch((error) => {
-        this.errorHandler.errorOccured(error, "Error loading entities "+entityName);
+        this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
       });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
     } else {
       this.store = null;
@@ -126,7 +126,7 @@ export class EntityManagerComponent implements OnDestroy {
       this.canSave.set(false);
       this.viewMode.set("list");
     } catch (error) {
-      this.errorHandler.errorOccured(error, "Error saving entity with id "+ toSave._id);
+      this.errorHandler.errorOccurred(error, "Error saving entity with id "+ toSave._id);
     } finally {
       this.saveIcon.set(PrimeIcons.SAVE);
     }
@@ -156,7 +156,7 @@ export class EntityManagerComponent implements OnDestroy {
         this.deleteIcon.set(PrimeIcons.SPINNER);
         deleted = await this.safeStore().deleteEntity (toTrash._id);
       } catch (error) {
-        this.errorHandler.errorOccured(error, "Deleting entity with id "+toTrash._id);
+        this.errorHandler.errorOccurred(error, "Deleting entity with id "+toTrash._id);
       } finally {
         this.deleteIcon.set(PrimeIcons.TRASH);
       }
@@ -177,7 +177,7 @@ export class EntityManagerComponent implements OnDestroy {
       this.viewMode.set("edit");
 
     } catch (error) {
-      this.errorHandler.errorOccured(error, "Error creating and storing new Entity")
+      this.errorHandler.errorOccurred(error, "Error creating and storing new Entity")
     } finally {
       this.newIcon.set(PrimeIcons.PLUS);
     }

@@ -4,12 +4,14 @@ import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { MessageService } from 'primeng/api';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations()],
+      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations(),
+      MessageService],
     }).compileComponents();
   });
 

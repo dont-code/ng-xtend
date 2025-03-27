@@ -7,6 +7,7 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
 import { definePreset } from '@primeuix/styled';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
       }
     }),
     provideRouter(routes),
-  provideHttpClient()
+    provideHttpClient(),
+    MessageService
   ]
 };

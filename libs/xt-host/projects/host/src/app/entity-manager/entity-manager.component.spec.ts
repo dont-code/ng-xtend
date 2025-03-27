@@ -11,6 +11,7 @@ import { XtResolverService } from 'xt-components';
 import { StoreTestBed } from 'xt-store';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { MessageService } from 'primeng/api';
 
 describe('EntityManagerComponent', () => {
   let component: EntityManagerComponent;
@@ -20,7 +21,7 @@ describe('EntityManagerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EntityManagerComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations()]
+      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations(), MessageService]
     })
     .compileComponents();
 

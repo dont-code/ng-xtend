@@ -5,6 +5,7 @@ import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from '../app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
 describe('ProjectLoadComponent', () => {
   let component: ProjectLoadComponent;
@@ -13,7 +14,8 @@ describe('ProjectLoadComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProjectLoadComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideHttpClient()]
+      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideHttpClient(),
+        MessageService]
     })
     .compileComponents();
 

@@ -14,10 +14,13 @@ import { ApplicationModelManagerService } from '../application-model-manager/app
 import { StoreManagerService } from '../store/store-manager.service';
 import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 import { XtResolverService } from 'xt-components';
+import { ErrorHandlerService } from '../error-handler/error-handler.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-project-load',
   imports: [],
+  providers: [],
   templateUrl: './project-load.component.html',
   styleUrl: './project-load.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,6 +33,7 @@ export class ProjectLoadComponent implements OnInit {
   protected readonly appConfig = inject(AppConfigService);
   protected readonly storeMgr = inject(StoreManagerService);
   protected readonly resolver=inject(XtResolverService);
+  protected readonly errorHandler = inject(ErrorHandlerService);
 
   private readonly injector = inject(Injector);
 

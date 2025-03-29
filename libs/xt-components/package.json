@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build xt-components && ng build tester-app",
+    "build": "ng build xt-components --configuration=development && ng build tester-app --configuration=development ",
+    "build-deploy": "APP=xt-components && ng build $APP --configuration=$BUILD",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/xt-components && ../../node_modules/.bin/jest && cd ../../projects/tester-app && ../../node_modules/.bin/jest "
   },

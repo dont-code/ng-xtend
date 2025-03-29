@@ -26,7 +26,25 @@
       "description": "Run unit tests",
       "enableParallelism": true,
       "allowWarningsInSuccessfulBuild": true
-    }
+    },
+    {
+      "commandKind": "bulk",
+      "name": "build-deploy-next",
+      "shellCommand": "BUILD=development STAGE=next npm run build-deploy",
+      "summary": "Deploy next stage",
+      "description": "Deploy next stage",
+      "enableParallelism": true,
+      "allowWarningsInSuccessfulBuild": true
+    },
+    {
+      "commandKind": "bulk",
+      "name": "build-deploy-latest",
+      "shellCommand": "BUILD=production STAGE=latest npm run build-deploy",
+      "summary": "Deploy latest production stage",
+      "description": "Deploy latest production stage",
+      "enableParallelism": true,
+      "allowWarningsInSuccessfulBuild": true
+    },
     // {
     //   /**
     //    * (Required) Determines the type of custom command.

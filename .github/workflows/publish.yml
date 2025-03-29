@@ -1,0 +1,184 @@
+name: Publish libraries and plugins
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: The version of the release, if needed (x.y.z-p)
+        required: false
+        type: string
+      next:
+        description: Is it a dev / next release ?
+        required: true
+        type: boolean
+jobs:
+  build:
+    env:
+      branch: ${{ inputs.next == true && 'Development' || 'main' }}
+      stage: ${{ inputs.next == true && 'next' || 'latest' }}
+      build: ${{ inputs.next == true && 'next' || 'production' }}
+      version: ${{ inputs.next == true && 'patch' || 'minor' }}
+      ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browser: [chromium, chrome]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ env.branch }}
+          token: ${{secrets.DONTCODE_ACTIONS_TOKEN}}
+
+      - name: Git config user
+        uses: snow-actions/git-config-user@v1.0.0
+        with:
+          name: Dont-code
+          email: developer@dont-code.net
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+      - name: Set libs & plugins versions
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version != '') }}
+        run: |
+          PACKAGE_VERSION=${{inputs.version}}
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          cd libs/core/packages/core
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../ng-common
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd libs/common
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../ng-sandbox
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd libs/sandbox
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../../plugins/standard
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd libs/std
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../seed
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd libs/seed
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../rest
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd libs/rest
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../report
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd libs/report
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../commerce
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd libs/commerce
+          npm version $PACKAGE_VERSION --allow-same-version
+
+      - name: Increase Core version
+        if: ${{ success() && ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view @dontcode/core versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{env.version}}
+        working-directory: 'libs/core/packages/core'
+
+      - name: Increase Common & Sandbox versions
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view @dontcode/plugin-common versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          cd libs/ng-common
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{env.version}}
+          cd libs/common
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+          cd ../../../ng-sandbox
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{env.version}}
+          cd libs/sandbox
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+
+      - name: Increase Standard version
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view @dontcode/plugin-std versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          cd plugins/standard
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{env.version}}
+          cd libs/std
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+
+      - name: Increase Seed version
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view @dontcode/plugin-seed versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          cd plugins/seed
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+          cd libs/seed
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+
+      - name: Increase Rest version
+        if: ${{ ( matrix.browser == 'chcd .romium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view @dontcode/plugin-rest versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          cd plugins/rest
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+          cd libs/rest
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+
+      - name: Increase Commerce version
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view @dontcode/plugin-commerce versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          cd plugins/commerce
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+          cd libs/commerce
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+
+      - name: Increase Report version
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view @dontcode/plugin-report versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          cd plugins/report
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+          cd libs/report
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{ env.version }}
+      - name: Install
+        run: |
+          node common/scripts/install-run-rush.js install
+      - name: Build
+        run: |
+          node common/scripts/install-run-rush.js build-deploy-${{ env.stage }}
+      - name: Publish libraries to ${{env.stage}}
+        if: ${{ success() && ( matrix.browser == 'chromium' ) }}
+        run: |
+          npm publish libs/core/dist/packages/core --access public --tag ${{env.stage}}
+          npm publish libs/ng-common/dist/libs/common --access public --tag ${{env.stage}}
+          npm publish libs/ng-sandbox/dist/libs/sandbox --access public --tag ${{env.stage}}
+          npm publish plugins/standard/dist/libs/std --access public --tag ${{env.stage}}
+          npm publish plugins/seed/dist/libs/seed --access public --tag ${{env.stage}}
+          npm publish plugins/rest/dist/libs/rest --access public --tag ${{env.stage}}
+          npm publish plugins/report/dist/libs/report --access public --tag ${{env.stage}}
+          npm publish plugins/commerce/dist/libs/commerce --access public --tag ${{env.stage}}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

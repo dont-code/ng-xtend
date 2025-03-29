@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build plugin-tester",
+    "build": "ng build plugin-tester --configuration=development",
+    "build-deploy": "APP=plugin-tester && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\"",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/plugin-tester && ../../node_modules/.bin/jest"
   },

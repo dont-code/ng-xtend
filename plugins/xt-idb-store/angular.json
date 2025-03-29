@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "store": {
+    "idb-store": {
       "projectType": "library",
       "root": "projects/idb-store",
       "sourceRoot": "projects/idb-store/src",

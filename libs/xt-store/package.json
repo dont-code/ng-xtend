@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-deploy": "APP=store && ng build $APP --configuration=$BUILD",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/store && ../../node_modules/.bin/jest"
   },

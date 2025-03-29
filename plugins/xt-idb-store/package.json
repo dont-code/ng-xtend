@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration=development",
+    "build-deploy": "APP=idb-store && ng build $APP --configuration=$BUILD",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/idb-store && ../../node_modules/.bin/jest"
   },

@@ -5,7 +5,8 @@
   "types": "dist/out-tsc/lib/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "rm -rf ./dist/out-tsc/lib && tsc -p tsconfig.lib.json"
+    "build": "rm -rf ./dist/out-tsc/lib && tsc -p tsconfig.lib.json",
+    "build-deploy": "APP=xt-type && rm -rf ./dist/$STAGE/$APP && tsc -p tsconfig.prod.json -outDir ./dist/$STAGE/$APP"
   },
   "keywords": [],
   "author": "",

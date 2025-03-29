@@ -4,8 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build sample",
-    "watch": "ng build --watch --configuration development",
+    "build": "ng build sample --configuration=development",
+    "build-deploy": "APP=sample-tester && MAIN_LIB=sample && ng build $MAIN_LIB --configuration=$BUILD && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\"",
+    "watch": "ng build --watch --configuration=development",
     "test": "cd projects/sample && ../../node_modules/.bin/jest"
 
   },

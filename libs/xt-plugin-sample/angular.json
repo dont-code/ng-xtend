@@ -23,7 +23,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/sample/tconfig.lib.prod.json"
+              "tsConfig": "projects/sample/tsconfig.lib.prod.json"
             },
             "development": {
               "tsConfig": "projects/sample/tsconfig.lib.json"

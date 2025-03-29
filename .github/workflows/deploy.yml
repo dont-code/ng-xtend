@@ -1,0 +1,58 @@
+name: Deploy websites
+on:
+  workflow_dispatch:
+    inputs:
+      next:
+        description: Is it a dev / next release ?
+        required: true
+        type: boolean
+      deploy:
+        description: Deploy to public website?
+        required: true
+        type: boolean
+jobs:
+  build:
+    env:
+      branch: ${{ inputs.next == true && 'Development' || 'main' }}
+      stage: ${{ inputs.next == true && 'next' || 'latest' }}
+      build: ${{ inputs.next == true && 'next' || 'production' }}
+      ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browser: [chromium]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ env.branch }}
+          token: ${{secrets.DONTCODE_ACTIONS_TOKEN}}
+          
+      - name: Git config user
+        uses: snow-actions/git-config-user@v1.0.0
+        with:
+          name: Dont-code
+          email: developer@dont-code.net
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install
+        run: |
+          node common/scripts/install-run-rush.js install
+      - name: Build
+        run: |
+          node common/scripts/install-run-rush.js build-deploy-${{ env.stage }}
+      - name: Deploy to test.dont-code.net apps with ${{env.stage}}
+        if: ${{ success() && (matrix.browser == 'chromium') && ( inputs.deploy == true ) }}
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+        with:
+          username: ${{secrets.DONTCODE_APPS_WEBSITE_USER}}
+          password: ${{secrets.DONTCODE_APPS_WEBSITE_PASSWORD}}
+          local_path: './dist/*'
+          remote_path: '/www'
+          server: 'test.dont-code.net'
+          sftp_only: 'true'

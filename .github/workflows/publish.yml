@@ -1,4 +1,4 @@
-name: Publish libraries and plugins
+name: Publish libraries
 on:
   workflow_dispatch:
     inputs:

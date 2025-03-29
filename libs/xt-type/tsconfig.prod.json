@@ -3,7 +3,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/out-tsc/xt-type"
+    "outDir": "./dist/out-tsc/lib"
   },
   "exclude": [
     "**/*.spec.ts"

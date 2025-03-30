@@ -52,8 +52,8 @@ jobs:
         with:
           username: ${{secrets.DONTCODE_APPS_WEBSITE_USER}}
           password: ${{secrets.DONTCODE_APPS_WEBSITE_PASSWORD}}
-          local_path: './dist/*'
+          local_path: './dist/${{env.stage}}/*'
           remote_path: '/www/${{env.stage}}'
           server: 'test.dont-code.net'
-          sftp_only: 'false'
+          sftp_only: 'true'
           delete_remote_files: 'true'

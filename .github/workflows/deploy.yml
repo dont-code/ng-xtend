@@ -56,4 +56,4 @@ jobs:
           remote_path: '/www/${{env.stage}}'
           server: 'test.dont-code.net'
           sftp_only: 'true'
-          delete_remote_files: 'true'
+          delete_remote_files: 'false'

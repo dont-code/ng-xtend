@@ -53,6 +53,7 @@ jobs:
           username: ${{secrets.DONTCODE_APPS_WEBSITE_USER}}
           password: ${{secrets.DONTCODE_APPS_WEBSITE_PASSWORD}}
           local_path: './dist/*'
-          remote_path: '/www'
+          remote_path: '/www/${{env.stage}}'
           server: 'test.dont-code.net'
-          sftp_only: 'true'
+          sftp_only: 'false'
+          delete_remote_files: 'true'

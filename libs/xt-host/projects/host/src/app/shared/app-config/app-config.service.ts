@@ -2,6 +2,7 @@ import { computed, inject, Injectable, resource, ResourceRef, ResourceStatus, si
 import { XtResolverService } from 'xt-components';
 
 import { registerDefaultPlugin} from 'xt-plugin-default';
+import { DcRepositoryModel } from '../models/dc-repository-model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { registerDefaultPlugin} from 'xt-plugin-default';
 export class AppConfigService {
 
   protected configResources = {
-    configUrl: signal<string|undefined>(undefined),
+    configName: signal<string|undefined>(undefined),
     projectName: signal<string|undefined>(undefined)
   }
 
@@ -61,15 +62,20 @@ export class AppConfigService {
   // First we load the config
   config = resource ({
     request: () => {
-      return this.configResources.configUrl();
+      return this.configResources.configName();
     },
-    loader: (configUrl) => {
-      return fetch (configUrl.request).then(response => {
-        return response.json();
-      }).then ((config) => {
-        console.debug("Config read", config);
-        return config;
-      });
+    loader: (configName) => {
+      if (configName.request!=null) {
+        const configUrl = 'assets/config/'+configName.request+'.json'
+        return fetch (configUrl).then(response => {
+          return response.json();
+        }).then ((config) => {
+          console.debug("Config read", config);
+          return config as DcRepositoryModel;
+        });
+      } else {
+        return Promise.resolve(undefined);
+      }
     }
   });
 
@@ -100,7 +106,7 @@ export class AppConfigService {
         if (projectUrl==null) {
           projectUrl='assets/projects/'+encodeURIComponent (options.request.projectName)+'.json';
         } else {
-          projectUrl = new URL (options.request.projectName, projectUrl).toString();
+          projectUrl = new URL (options.request.projectName, projectUrl.endsWith('/')?projectUrl:projectUrl+'/').toString();
         }
         return fetch(projectUrl).then ((response) => {
           return response.json();
@@ -111,13 +117,13 @@ export class AppConfigService {
     }
   });
 
-  async loadPlugins (config:any): Promise< boolean> {
+  async loadPlugins (config:DcRepositoryModel): Promise< boolean> {
     registerDefaultPlugin(this.resolverService);
     return Promise.resolve(true);
   }
 
-  updateConfigUrl (newUrl:string ) {
-    this.configResources.configUrl.set(newUrl);
+  updateConfigName (newUrl:string ) {
+    this.configResources.configName.set(newUrl);
   }
 
   updateProjectName (newName:string) {

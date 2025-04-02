@@ -6,7 +6,9 @@ export const routes: Routes = [{
     path:'', redirectTo:'project/Coffee Beans Evaluation', pathMatch: 'full'
 }, {
     path:'project/:projectName', component:ProjectLoadComponent
-}, {
+} , {
+  path:'repository/:repoName/:projectName', component:ProjectLoadComponent
+},{
   path:'entity/:entityName', component: EntityManagerComponent
 }
 ];

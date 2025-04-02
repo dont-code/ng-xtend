@@ -38,12 +38,10 @@ export class ProjectLoadComponent implements OnInit {
   private readonly injector = inject(Injector);
 
   ngOnInit() {
-    const projectName = this.route.snapshot.paramMap.get('projectName');
-    this.appConfig.updateConfigUrl('assets/config/default.json'); // Load the default config
-    if (projectName!=null)
-      this.appConfig.updateProjectName(projectName);
-    else
-      this.appConfig.updateProjectName('Coffee Beans Evaluation');
+    const projectName = this.route.snapshot.paramMap.get('projectName')??'Coffee Beans Evaluation';
+    const repoName = this.route.snapshot.paramMap.get('repoName') ?? 'default';
+    this.appConfig.updateConfigName(repoName); // Load the default config
+    this.appConfig.updateProjectName(projectName);
   }
 
   combinedloadingStatus = linkedSignal( () => {
@@ -84,7 +82,7 @@ export class ProjectLoadComponent implements OnInit {
 
   updateDefaultStore(sharingMode: string | undefined) {
     if( sharingMode == 'Dont-code users') {
-      const apiUrl = this.appConfig.config.value().storeApiUrl;
+      const apiUrl = this.appConfig.config.value()?.storeApiUrl;
       if (apiUrl != null) {
           runInInjectionContext(this.injector, () => {
           try {

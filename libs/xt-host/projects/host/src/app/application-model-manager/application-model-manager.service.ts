@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { DcApplicationModel, DcFieldModel } from '../shared/application-model/dc-application-model';
+import { DcApplicationModel, DcFieldModel } from '../shared/models/dc-application-model';
 import { XtTypeInfo } from 'xt-components';
 
 @Injectable({

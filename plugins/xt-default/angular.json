@@ -93,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "DefaultTester:build:production"
+              "buildTarget": "default-tester:build:production"
             },
             "development": {
-              "buildTarget": "DefaultTester:build:development"
+              "buildTarget": "default-tester:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -1,24 +1,9 @@
-# XtComponents
+![image](../../docs/logos/logo-xtend-angular-red-small.png)
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.0.
+# XT-Components
 
-## Code scaffolding
+This is the core of ng-xtend framework, where xt-components are defined.
 
-Run `ng generate component component-name --project xt-components` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project xt-components`.
-> Note: Don't forget to add `--project xt-components` or else it will be added to the default project in your `angular.json` file. 
+Include this library in all your projects using ng-xtend.
 
-## Build
 
-Run `ng build xt-components` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build xt-components`, go to the dist folder `cd dist/xt-components` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test xt-components` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

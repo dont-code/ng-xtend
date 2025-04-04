@@ -1,24 +1,15 @@
-# Default
+![image](../../../../docs/logos/logo-xtend-angular-red-small.png)
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+# Plugin xt-default
 
-## Code scaffolding
+This plugin enable [xt-components](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-components) to
 
-Run `ng generate component component-name --project default` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project default`.
-> Note: Don't forget to add `--project default` or else it will be added to the default project in your `angular.json` file. 
+- Display and edit any primitive value
+![Primitive Editor](../../../../docs/screenshots/plugin-default-primitive.png)
+- or complex object
+![Object Editor](../../../../docs/screenshots/plugin-default-object.png)
+- or list of objects
+![List Viewer](../../../../docs/screenshots/plugin-default-list.png)
 
-## Build
+With it you are sure you can display / edit any type within any xt-components application like [xt-host](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-host).
 
-Run `ng build default` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build default`, go to the dist folder `cd dist/default` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test default` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

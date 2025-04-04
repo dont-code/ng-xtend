@@ -50,7 +50,7 @@ jobs:
           npm version $PACKAGE_VERSION --allow-same-version
           cd ../xt-store
           npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/store
+          cd projects/store
           npm version $PACKAGE_VERSION --allow-same-version
           cd ../../../xt-components
           npm version $PACKAGE_VERSION --allow-same-version

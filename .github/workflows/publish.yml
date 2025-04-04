@@ -1,15 +1,15 @@
-name: Publish libraries
+name: Publish to npm
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: The version of the release, if needed (x.y.z-p)
-        required: false
-        type: string
       next:
         description: Is it a dev / next release ?
         required: true
         type: boolean
+      version:
+        description: The version of the release, if needed (x.y.z-p)
+        required: false
+        type: string
 jobs:
   build:
     env:
@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        browser: [chromium, chrome]
+        browser: [chromium]
 
     steps:
       - uses: actions/checkout@v4
@@ -39,146 +39,108 @@ jobs:
           email: developer@dont-code.net
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           registry-url: 'https://registry.npmjs.org'
       - name: Set libs & plugins versions
         if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version != '') }}
         run: |
           PACKAGE_VERSION=${{inputs.version}}
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd libs/core/packages/core
+          cd libs/xt-type
           npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../ng-common
+          cd ../xt-store
           npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/common
+          cd libs/store
           npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../ng-sandbox
+          cd ../../../xt-components
           npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/sandbox
+          cd projects/xt-components
           npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../../plugins/standard
+          cd ../../../xt-plugin-sample
           npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/std
+          cd projects/sample
           npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../seed
+          cd ../../../../plugins/xt-idb-store
           npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/seed
+          cd projects/idb-store
           npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../rest
+          cd ../../../xt-default
           npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/rest
+          cd projects/default
           npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../report
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/report
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../commerce
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd libs/commerce
-          npm version $PACKAGE_VERSION --allow-same-version
-
-      - name: Increase Core version
-        if: ${{ success() && ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+      - name: Increase xt-type version
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
         run: |
-          PACKAGE_VERSION=$(npm view @dontcode/core versions --json | jq -r '.[-1]')
+          PACKAGE_VERSION=$(npm view xt-type versions --json | jq -r '.[-1]')
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
           npm version $PACKAGE_VERSION --allow-same-version
           npm version ${{env.version}}
-        working-directory: 'libs/core/packages/core'
-
-      - name: Increase Common & Sandbox versions
+        working-directory: 'libs/xt-type'
+      - name: Increase xt-store version
         if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
         run: |
-          PACKAGE_VERSION=$(npm view @dontcode/plugin-common versions --json | jq -r '.[-1]')
+          PACKAGE_VERSION=$(npm view xt-store versions --json | jq -r '.[-1]')
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd libs/ng-common
           npm version $PACKAGE_VERSION --allow-same-version
           npm version ${{env.version}}
-          cd libs/common
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-          cd ../../../ng-sandbox
+        working-directory: 'libs/xt-store'
+      - name: Increase xt-components version
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view xt-components versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
           npm version $PACKAGE_VERSION --allow-same-version
           npm version ${{env.version}}
-          cd libs/sandbox
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-
-      - name: Increase Standard version
+        working-directory: 'libs/xt-components'
+      - name: Increase xt-idb-store version
         if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
         run: |
-          PACKAGE_VERSION=$(npm view @dontcode/plugin-std versions --json | jq -r '.[-1]')
+          PACKAGE_VERSION=$(npm view xt-idb-store versions --json | jq -r '.[-1]')
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd plugins/standard
           npm version $PACKAGE_VERSION --allow-same-version
           npm version ${{env.version}}
-          cd libs/std
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-
-      - name: Increase Seed version
+        working-directory: 'plugins/xt-idb-store'
+      - name: Increase xt-plugin-sample version
         if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
         run: |
-          PACKAGE_VERSION=$(npm view @dontcode/plugin-seed versions --json | jq -r '.[-1]')
+          PACKAGE_VERSION=$(npm view xt-plugin-sample versions --json | jq -r '.[-1]')
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd plugins/seed
           npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-          cd libs/seed
+          npm version ${{env.version}}
+          cd projects/sample
           npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-
-      - name: Increase Rest version
-        if: ${{ ( matrix.browser == 'chcd .romium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view @dontcode/plugin-rest versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd plugins/rest
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-          cd libs/rest
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-
-      - name: Increase Commerce version
+          npm version ${{env.version}}
+        working-directory: 'libs/xt-plugin-sample'
+      - name: Increase xt-plugin-default version
         if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
         run: |
-          PACKAGE_VERSION=$(npm view @dontcode/plugin-commerce versions --json | jq -r '.[-1]')
+          PACKAGE_VERSION=$(npm view xt-plugin-default versions --json | jq -r '.[-1]')
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd plugins/commerce
           npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-          cd libs/commerce
+          npm version ${{env.version}}
+          cd projects/default
           npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-
-      - name: Increase Report version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view @dontcode/plugin-report versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd plugins/report
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
-          cd libs/report
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{ env.version }}
+          npm version ${{env.version}}
+        working-directory: 'plugins/xt-default'
       - name: Install
         run: |
           node common/scripts/install-run-rush.js install
       - name: Build
         run: |
-          node common/scripts/install-run-rush.js build-deploy-${{ env.stage }}
+          node common/scripts/install-run-rush.js build-deploy-${{env.stage}}
       - name: Publish libraries to ${{env.stage}}
         if: ${{ success() && ( matrix.browser == 'chromium' ) }}
         run: |
-          npm publish libs/core/dist/packages/core --access public --tag ${{env.stage}}
-          npm publish libs/ng-common/dist/libs/common --access public --tag ${{env.stage}}
-          npm publish libs/ng-sandbox/dist/libs/sandbox --access public --tag ${{env.stage}}
-          npm publish plugins/standard/dist/libs/std --access public --tag ${{env.stage}}
-          npm publish plugins/seed/dist/libs/seed --access public --tag ${{env.stage}}
-          npm publish plugins/rest/dist/libs/rest --access public --tag ${{env.stage}}
-          npm publish plugins/report/dist/libs/report --access public --tag ${{env.stage}}
-          npm publish plugins/commerce/dist/libs/commerce --access public --tag ${{env.stage}}
+          npm publish libs/xt-type/dist/${{env.stage}} --access public --tag ${{env.stage}}
+          npm publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
+          npm publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}
+          npm publish libs/xt-plugin-sample/dist/xt-plugin-sample --access public --tag ${{env.stage}}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish plugins to ${{env.stage}}
+        if: ${{ success() && ( matrix.browser == 'chromium' ) }}
+        run: |
+          npm publish plugins/xt-idb-store/dist/store --access public --tag ${{env.stage}}
+          npm publish plugins/xt-default/dist/xt-plugin-default --access public --tag ${{env.stage}}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

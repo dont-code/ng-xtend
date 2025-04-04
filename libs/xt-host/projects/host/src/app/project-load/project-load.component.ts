@@ -38,8 +38,11 @@ export class ProjectLoadComponent implements OnInit {
   private readonly injector = inject(Injector);
 
   ngOnInit() {
-    const projectName = this.route.snapshot.paramMap.get('projectName')??'Coffee Beans Evaluation';
-    const repoName = this.route.snapshot.paramMap.get('repoName') ?? 'default';
+    let projectName = this.route.snapshot.paramMap.get('projectName');
+    if ((projectName==null) || (projectName.length==0)) {
+      projectName = this.route.snapshot.queryParamMap.get('project')??'Coffee Beans Evaluation';
+    }
+    const repoName = this.route.snapshot.paramMap.get('repoName') ?? this.route.snapshot.queryParamMap.get('repository')?? 'default';
     this.appConfig.updateConfigName(repoName); // Load the default config
     this.appConfig.updateProjectName(projectName);
   }

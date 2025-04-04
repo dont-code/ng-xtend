@@ -131,7 +131,7 @@ jobs:
       - name: Publish libraries to ${{env.stage}}
         if: ${{ success() && ( matrix.browser == 'chromium' ) }}
         run: |
-          npm publish libs/xt-type/dist/${{env.stage}} --access public --tag ${{env.stage}}
+#          npm publish libs/xt-type/dist/${{env.stage}}/xt-type --access public --tag ${{env.stage}}
           npm publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
           npm publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}
           npm publish libs/xt-plugin-sample/dist/xt-plugin-sample --access public --tag ${{env.stage}}

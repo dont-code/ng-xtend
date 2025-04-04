@@ -1,15 +1,19 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { DcApplicationModel, DcFieldModel } from '../shared/models/dc-application-model';
 import { XtTypeInfo } from 'xt-components';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApplicationModelManagerService {
 
+  titleMgr = inject (Title);
+
   protected model:DcApplicationModel|null = null;
 
   entityNames = signal<string[]>([]);
+  projectTitle = signal<string>("Test");
 
   constructor() { }
 
@@ -28,6 +32,10 @@ export class ApplicationModelManagerService {
       this.entityNames.set (Object.values(this.model?.content?.creation?.entities).map((entity) => entity.name));
     }else {
       this.entityNames.set([]);
+    }
+    if (this.model.name!=null) {
+      this.projectTitle.set(this.model.name);
+      this.titleMgr.setTitle(this.model.name);
     }
   }
 

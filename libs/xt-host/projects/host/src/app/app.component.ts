@@ -6,6 +6,8 @@ import { Drawer } from 'primeng/drawer';
 import { HostMenuComponent } from './host-menu/host-menu.component';
 import { Toast } from 'primeng/toast';
 import { ErrorHandlerService } from './error-handler/error-handler.service';
+import { AppConfigService } from './shared/app-config/app-config.service';
+import { ApplicationModelManagerService } from './application-model-manager/application-model-manager.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +18,8 @@ import { ErrorHandlerService } from './error-handler/error-handler.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'test';
   leftDrawerVisible = signal<boolean>(false);
-  errorHandler = inject(ErrorHandlerService);
+  appMgr = inject(ApplicationModelManagerService);
 
   constructor () {
   }

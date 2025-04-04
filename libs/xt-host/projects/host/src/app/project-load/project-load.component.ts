@@ -15,7 +15,6 @@ import { StoreManagerService } from '../store/store-manager.service';
 import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 import { XtResolverService } from 'xt-components';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-project-load',

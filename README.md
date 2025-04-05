@@ -2,7 +2,7 @@
 
 ## ng-xtend, what for ?
 
-The most successfull web applications have developed an eco-systems around them. Check Nextcloud, Drupal, Joomla! or Wordpress, it's so easy to add a plugin that meets your needs.
+The most successful web applications have developed an eco-systems around them. Check Nextcloud, Drupal, Joomla! or Wordpress, it's so easy to add a plugin that meets your needs.
 
 The technology they are using, PHP, makes it easy to develop and install new plugins. With additional efforts, these plugins are automatically installed, recognized and available.
 
@@ -13,22 +13,23 @@ That's why I am developing ng-xtend !
 ## What is ng-xtend concretely ?
 
 It's an Angular library allowing you to:
-- Dynamically select and display the right components into your Angular pages, even in Form.
+- Dynamically select and display the right components into your Angular pages, even in Forms.
 - Dynamically load and install plugins in your Angular application
 - Easily develops Plugins that will be automatically recognized and used at the right time and the right place.
 
-## What kind of plugins will be supported
+## What kind of plugins are supported ?
 
-3 types of plugins will be supported as a first step
+3 types of plugins are supported as a first step
 - Simple Component: With limited effort and intrusion in your code, you can transform a regular Angular component into a pluggable one. Ideal for providing view or display of a custom type.
 - Complex Component: With some additional effort, this type Angular Component can itself provide xtend-points, filled by ng-xtend with the right plugin. Ideal for displaying complex information, where you want to delegate actions or display.
 For example, think of a "Money" plugin that delegates the "Currency" management to another plugin, without even knowing it.
-- Action Components: Provides actionable services on types without User Interface elements.
+- List Component: Displays a list of any objects. It calls other plugins to manage the values inside the displayed list
 
-Then, we can think of more advanced components, like
+Then in the future, we'll support
+- Action Components: Provides actionable services on types without User Interface elements.
 - Workflow component: Enable pre-defined flow of pages (list to detail for example...) 
 
-## How will it work ?
+## How does it work ?
 
 As you can infer from the preceding descriptions, the ng-xtend framework heavily relies on types. Any data manipulated in a ng-xtendable application manipulates data with a type.
 
@@ -38,15 +39,16 @@ Upon loading, the plugin registers itself to ng-xtend and provides the list of t
 
 Whenever encountering a certain type, ng-xtend will look for the right plugin, select the right component, and call it with the proper context. This happens without the host knowing the plugin.
 
-The host only provides xtend-points in their application, like "here you can display buttons of all actions of this 'type'", or "here I need the user to enter this 'type', please find the right plugin".
+The host only needs to provide xt-render points in their application, like "here you can display buttons of all actions of this 'type'", or "here I need the user to enter this 'type', please find the right plugin".
 
-As well, plugins will be able to alter the application menus and some other customizations.
+As well, plugins will be able to alter the application menus and other customizations.
 
 ## What is the roadmap ?
 
 - [x] Insertion of simple component dynamically 
 - [x] Registry of plugins
-- [x] Easier support for complex components
+- [x] General support for complex components and lists
+- [ ] Strong type support
 - [ ] Dynamic loading of plugins
 - [ ] v1 !
 - [ ] Enhanced component selection criteria (xt-type, context)
@@ -56,11 +58,11 @@ As well, plugins will be able to alter the application menus and some other cust
 ## How to use it ?
 This is still work in progress, so you will have to get your hands a little bit dirty!
 
-1. Checkout this repository
+1. Checkout the repository [ng-xtend](https://github.com/dont-code/ng-xtend)
 2. It's a monorepo using [rush build system](https://rushjs.io/), so first run `npm install -g @microsoft/rush`, then `rush update`, and `rush build`
 2. Use a copy of [libs/xt-plugin-sample](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample) to develop your own plugins and components
-3. Unit test your components using Jest / Karma
-   1. ng-xtend provides pre-defined hosts for different cases (in a form or not) that will easily embed your component for testing
+3. Unit test your components using Jest
+   1. ng-xtend provides pre-defined test pages for different cases (in a form or not) that will easily embed your component for testing
    2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts)
    3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts)
 4. Test your components by

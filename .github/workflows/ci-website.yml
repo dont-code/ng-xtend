@@ -1,0 +1,41 @@
+name: Website update
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch name to update from ?
+        required: true
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+jobs:
+  build:
+    env:
+      branch: ${{ inputs.branch || github.head_ref || github.ref_name }}
+      ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.branch }}
+          token: ${{secrets.DONTCODE_ACTIONS_TOKEN}}
+          fetch-depth: 1
+      - name: Git config user
+        uses: snow-actions/git-config-user@v1.0.0
+        with:
+          name: Dont-code
+          email: developer@dont-code.net
+      - name: Update test.dont-code.net website from branch ${{env.branch}}
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+        with:
+          username: ${{secrets.DONTCODE_WEBSITE_USER}}
+          password: ${{secrets.DONTCODE_WEBSITE_PASSWORD}}
+          local_path: './docs/*'
+          remote_path: '/www/assets/images'
+          server: 'dont-code.net'
+          sftp_only: 'true'
+          delete_remote_files: 'false'

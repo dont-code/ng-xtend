@@ -17,6 +17,14 @@ It's an Angular library allowing you to:
 - Dynamically load and install plugins in your Angular application
 - Easily develops Plugins that will be automatically recognized and used at the right time and the right place.
 
+## Some examples ?
+Here are screenshots of an application automatically handling list, view and edition of complex data (evaluations of coffee beans) using ng-xtend, a [dont-code application](https://dont-code.net/), and the generic [default plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default)  
+
+![List view screenshot](https://dont-code.net/assets/images/screenshots/xt-host-list-view.png)
+![Edit object screenshot](https://dont-code.net/assets/images/screenshots/xt-host-edit-view.png)
+
+You can run and test the application here: [Coffee Bean Evaluation](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
+
 ## What kind of plugins are supported ?
 
 3 types of plugins are supported as a first step

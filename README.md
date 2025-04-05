@@ -1,4 +1,5 @@
-![image](docs/logos/logo-xtend-angular-red-small.png)
+![ng-xtend logo](https://dont-code.net/assets/images/logos/logo-xtend-angular-red-small.png)
+
 ## ng-xtend, what for ?
 
 The most successfull web applications have developed an eco-systems around them. Check Nextcloud, Drupal, Joomla! or Wordpress, it's so easy to add a plugin that meets your needs.

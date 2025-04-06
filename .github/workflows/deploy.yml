@@ -1,4 +1,4 @@
-name: Deploy websites
+name: Deploy Apps
 on:
   workflow_dispatch:
     inputs:

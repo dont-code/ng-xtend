@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { XtRenderSubComponent } from './xt-render-sub.component';
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, output, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
@@ -185,12 +185,12 @@ describe('XtRenderSubComponent', () => {
 
     const renderFixture=hostFixture.debugElement.query(By.directive(XtRenderSubComponent));
     const renderComponent = renderFixture.componentInstance as XtRenderSubComponent<any>
-    expect (renderComponent.hasOutputs).toBeTruthy();
-    renderComponent.outputs.subscribe((newValue) => {
+    expect(renderComponent.outputs.valueSelected).toBeTruthy();
+    renderComponent.outputs.valueSelected!.subscribe((newValue) => {
       try {
-        expect (newValue.valueSelected).toBeDefined();
+        expect (newValue).toBeDefined();
         // The value increase has been well sent through the output
-        expect (newValue.valueSelected!()).toEqual(2);
+        expect (newValue).toEqual(2);
         done();
       } catch (error){
         done (error);
@@ -223,7 +223,7 @@ export class TestCurrencyComponent extends XtSimpleComponent<string> {
 @Component({
   selector: 'test-money-dynamic',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent],
+  imports: [CommonModule, ReactiveFormsModule,XtRenderSubComponent],
   template: '@if (isInForm()) {' +
     '<ng-container [formGroup]="formGroup()">' +
       '<input id="amount_input" type="number" formControlName="amount" />' +
@@ -244,12 +244,16 @@ export class TestMoneyDynamicComponent extends XtCompositeComponent<TestMoney> {
   template: '<p-button id="sendOutput" label="Increase {{context().displayValue()}}" (onClick)="incrementValue()"></p-button>',
 })
 export class TestOutputComponent extends XtSimpleComponent<number> {
-  override hasOutputs=true;
+  selection=output<number>();
+
+  protected override setupInputOutput() {
+    this.outputs.valueSelected=this.selection;
+  }
 
   incrementValue (): void {
     const value = this.displayValue();
     this.context().setDisplayValue(value?value+1:1);
-    this.emitOutput('valueSelected', this.displayValue());
+    this.selection.emit( this.displayValue()!);
   }
 }
 

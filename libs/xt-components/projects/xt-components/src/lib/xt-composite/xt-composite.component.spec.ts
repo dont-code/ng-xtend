@@ -73,8 +73,9 @@ describe('XtCompositeComponent', () => {
   template: '@if (isInForm()) {<ng-container [formGroup]="formGroup()"><input id="text_input" name="TestManagedControl" type="text" formControlName="TestManagedControl" /></ng-container>} @else {<h2>Value is {{context().displayValue()?.TestManagedControl}}</h2>}'
 })
 export class TestManagedControlComponent extends XtCompositeComponent<string> implements OnInit {
-    ngOnInit(): void {
-        this.manageFormControl("TestManagedControl");
+    override ngOnInit (): void {
+      super.ngOnInit();
+      this.manageFormControl("TestManagedControl");
     }
 
 }

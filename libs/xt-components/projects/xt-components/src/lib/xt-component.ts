@@ -1,17 +1,12 @@
-import { InputSignal, OutputEmitterRef, Signal } from '@angular/core';
+import { input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
 import { XtContext } from './xt-context';
 import { FormGroup } from '@angular/forms';
 
 export type XtComponent<T=any> = {
     context: InputSignal<XtContext<T>>;
 
-    outputs?: OutputEmitterRef<XtComponentOutput>;
-
-  /**
-   * Does the component provides Output or not ?
-   * @protected
-   */
-    hasOutputs?: boolean;
+    inputs: XtComponentInput;
+    outputs: XtComponentOutput;
 
     isInForm (): boolean;
 
@@ -23,9 +18,12 @@ export type XtComponent<T=any> = {
 }
 
 export type XtOutputType = 'valueSelected';
+export type XtInputType = 'valueSelected';
 
 export type XtComponentOutput = {
-  [key in XtOutputType]: Signal<any | null> |undefined;
+  [key in XtOutputType]: OutputEmitterRef<any>|undefined;
 }
 
-
+export type XtComponentInput = {
+  [key in XtInputType]: InputSignal<any>|undefined;
+}

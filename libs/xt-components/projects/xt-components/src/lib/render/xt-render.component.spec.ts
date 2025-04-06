@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { XtRenderComponent } from './xt-render.component';
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, output, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -76,12 +76,11 @@ describe('XtRenderComponent', () => {
 
     const renderFixture=hostFixture.debugElement.query(By.directive(XtRenderComponent));
     const renderComponent = renderFixture.componentInstance as XtRenderComponent<any>
-    expect (renderComponent.hasOutputs).toBeTruthy();
-    renderComponent.outputs.subscribe((newValue) => {
+    expect (renderComponent.outputs.valueSelected).toBeTruthy();
+    renderComponent.outputs.valueSelected!.subscribe((newValue) => {
       try {
-        expect (newValue.valueSelected).toBeDefined();
         // The value increase has been well sent through the output
-        expect (newValue.valueSelected!()).toEqual(2);
+        expect (newValue).toEqual(2);
         done();
       } catch (error){
         done (error);
@@ -117,12 +116,17 @@ export class TestCurrencyComponent extends XtSimpleComponent<string> {
   template: '<p-button id="sendOutput" label="Increase {{context().displayValue()}}" (onClick)="incrementValue()"></p-button>',
 })
 export class TestOutputComponent extends XtSimpleComponent<number> {
-  override hasOutputs=true;
+
+  storeValue=output<number>();
+
+  override setupInputOutput (): void {
+    this.outputs.valueSelected=this.storeValue;
+  }
 
   incrementValue (): void {
     const value = this.displayValue();
     this.context().setDisplayValue(value?value+1:1);
-    this.emitOutput('valueSelected', this.displayValue());
+    this.storeValue.emit(this.displayValue()!);
   }
 }
 

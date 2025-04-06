@@ -1,8 +1,9 @@
-import { Component, computed, input, InputSignal, OnInit, output, OutputEmitterRef } from '@angular/core';
+import { Component, computed, input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
-import { XtComponent, XtComponentOutput, XtOutputType } from '../xt-component';
+import { XtComponent, XtOutputType } from '../xt-component';
 import { XtBaseOutput } from '../output/xt-base-output';
+import { XtBaseInput } from '../output/xt-base-input';
 
 /**
  * An XtSimpleComponent just displays the given value or element in a form.
@@ -13,16 +14,10 @@ import { XtBaseOutput } from '../output/xt-base-output';
   imports: [],
   template: ''
 })
-export class XtSimpleComponent<T = any> implements XtComponent<T>{
+export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
   context = input.required<XtContext<T>>();
-  outputs = output<XtComponentOutput> ();
-  /**
-   * Does the component provides Output or not ?
-   * @protected
-   */
-  hasOutputs= false;
-
-  protected outputElement?: XtBaseOutput
+  outputs = new XtBaseOutput();
+  inputs = new XtBaseInput();
 
   isInForm = computed<boolean> ( () => {
     return this.context()?.isInForm()??false;
@@ -50,12 +45,12 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
   });
 
   constructor() {
-    if (this.hasOutputs) {
-      if (this.outputElement == null) {
-        this.outputElement = new XtBaseOutput();
-      }
-    }
   }
+
+  ngOnInit(): void {
+    this.setupInputOutput();
+  }
+
 
   manageFormControl<T> (ctrlName:string): AbstractControl<T>|undefined {
     const formGroup = this.formGroupIfAny();
@@ -108,21 +103,11 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>{
     return this.context().displayValue();
   });
 
-  protected emitOutput(outputName: XtOutputType, newValue: any) {
-    if (!this.hasOutputs) {
-      throw new Error ("Component without outputs cannot emit output");
-    }
-
-    let newOutput = false;
-    if (this.outputElement==null) {
-      this.outputElement = new XtBaseOutput();
-      newOutput=true;
-    }
-
-    newOutput = this.outputElement.setNewOutput(outputName, newValue) || newOutput;
-    if (newOutput) {
-      this.outputs?.emit(this.outputElement);
-    }
+  /**
+   * This is where components can assign their output() and input() into the XtComponent inputs and outputs member
+   * @protected
+   */
+  protected setupInputOutput () {
+    // Nothing to do here
   }
-
 }

@@ -1,7 +1,7 @@
-import { Component, computed, input, OnInit } from '@angular/core';
+import { Component, computed, input, OnInit, output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
-import { XtComponent, XtOutputType } from '../xt-component';
+import { XtComponent, XtComponentOutput } from '../xt-component';
 import { XtBaseOutput } from '../output/xt-base-output';
 import { XtBaseInput } from '../output/xt-base-input';
 
@@ -16,8 +16,9 @@ import { XtBaseInput } from '../output/xt-base-input';
 })
 export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
   context = input.required<XtContext<T>>();
-  outputs = new XtBaseOutput();
-  inputs = new XtBaseInput();
+  outputsObject = new XtBaseOutput();
+  inputsObject = new XtBaseInput();
+  outputs=output<XtComponentOutput>();
 
   isInForm = computed<boolean> ( () => {
     return this.context()?.isInForm()??false;
@@ -49,6 +50,10 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
 
   ngOnInit(): void {
     this.setupInputOutput();
+    if (Object.keys(this.outputsObject).length > 0) {
+      // At least one output has been defined
+      this.outputs.emit(this.outputsObject);
+    }
   }
 
 

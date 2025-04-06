@@ -47,8 +47,10 @@ export class XtRenderComponent<T> implements AfterViewInit {
   formGroup=input<FormGroup>();
   subName= input<string>();
 
-  outputs = new XtBaseOutput();
-  inputs = new XtBaseInput();
+  outputsObject = new XtBaseOutput();
+
+  inputs = input<XtBaseInput>();
+  outputs = output<XtComponentOutput>();
 
   outlet = viewChild.required(NgComponentOutlet);
 
@@ -91,16 +93,25 @@ export class XtRenderComponent<T> implements AfterViewInit {
     return type??null;
   });
 
+  /**
+   * Transfers the input and outputs from the host to the rendered component
+   */
   ngAfterViewInit() {
     const instance=this.outlet().componentInstance as XtComponent;
-    if (instance?.outputs!=null) {
-      for (const key of Object.keys(instance.outputs) as XtOutputType[] ) {
-        this.outputs[key] = instance.outputs[key];
+    if (instance?.outputsObject!=null) {
+      let hasOneOutput = false;
+      for (const key of Object.keys(instance.outputsObject) as XtOutputType[] ) {
+        this.outputsObject[key] = instance.outputsObject[key];
+        hasOneOutput=true;
+      }
+      if (hasOneOutput) {
+        this.outputs.emit(this.outputsObject);
       }
     }
-    if (instance?.inputs!=null) {
-      for (const key of Object.keys(instance.inputs) as XtInputType[] ) {
-        this.inputs[key] = instance.inputs[key];
+    const inputs = this.inputs();
+    if ((inputs!=null) && (instance?.inputsObject!=null)) {
+      for (const key of Object.keys(inputs) as XtInputType[] ) {
+        instance.inputsObject[key] = inputs[key];
       }
 
     }

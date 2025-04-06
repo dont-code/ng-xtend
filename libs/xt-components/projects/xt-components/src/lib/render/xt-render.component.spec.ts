@@ -76,8 +76,8 @@ describe('XtRenderComponent', () => {
 
     const renderFixture=hostFixture.debugElement.query(By.directive(XtRenderComponent));
     const renderComponent = renderFixture.componentInstance as XtRenderComponent<any>
-    expect (renderComponent.outputs.valueSelected).toBeTruthy();
-    renderComponent.outputs.valueSelected!.subscribe((newValue) => {
+    expect (renderComponent.outputsObject.valueSelected).toBeTruthy();
+    renderComponent.outputsObject.valueSelected!.subscribe((newValue) => {
       try {
         // The value increase has been well sent through the output
         expect (newValue).toEqual(2);
@@ -120,7 +120,7 @@ export class TestOutputComponent extends XtSimpleComponent<number> {
   storeValue=output<number>();
 
   override setupInputOutput (): void {
-    this.outputs.valueSelected=this.storeValue;
+    this.outputsObject.valueSelected=this.storeValue;
   }
 
   incrementValue (): void {

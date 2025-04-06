@@ -185,8 +185,8 @@ describe('XtRenderSubComponent', () => {
 
     const renderFixture=hostFixture.debugElement.query(By.directive(XtRenderSubComponent));
     const renderComponent = renderFixture.componentInstance as XtRenderSubComponent<any>
-    expect(renderComponent.outputs.valueSelected).toBeTruthy();
-    renderComponent.outputs.valueSelected!.subscribe((newValue) => {
+    expect(renderComponent.outputsObject.valueSelected).toBeTruthy();
+    renderComponent.outputsObject.valueSelected!.subscribe((newValue) => {
       try {
         expect (newValue).toBeDefined();
         // The value increase has been well sent through the output
@@ -247,7 +247,7 @@ export class TestOutputComponent extends XtSimpleComponent<number> {
   selection=output<number>();
 
   protected override setupInputOutput() {
-    this.outputs.valueSelected=this.selection;
+    this.outputsObject.valueSelected=this.selection;
   }
 
   incrementValue (): void {

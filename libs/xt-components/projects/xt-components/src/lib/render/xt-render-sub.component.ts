@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, inject, input, Signal, Type, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, input, output, Signal, Type, viewChild } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { XtContext } from '../xt-context';
@@ -26,8 +26,10 @@ export class XtRenderSubComponent<T> implements AfterViewInit {
   context = input.required<XtContext<T>> ();
   componentType = input<Type<XtComponent<T>>> ();
 
-  outputs =new XtBaseOutput() as XtComponentOutput;
-  inputs = new XtBaseInput() as XtComponentInput;
+  outputsObject = new XtBaseOutput();
+
+  inputs = input<XtBaseInput>();
+  outputs = output<XtComponentOutput>();
 
   outlet = viewChild.required(NgComponentOutlet);
 
@@ -51,19 +53,29 @@ export class XtRenderSubComponent<T> implements AfterViewInit {
 
   });
 
+  /**
+   * Transfers the input and outputs from the host to the rendered component
+   */
   ngAfterViewInit() {
     const instance=this.outlet().componentInstance as XtComponent;
-    if (instance?.outputs!=null) {
-      for (const key of Object.keys(instance.outputs) as XtOutputType[] ) {
-        this.outputs[key] = instance.outputs[key];
+    if (instance?.outputsObject!=null) {
+      let hasOneOutput = false;
+      for (const key of Object.keys(instance.outputsObject) as XtOutputType[] ) {
+        this.outputsObject[key] = instance.outputsObject[key];
+        hasOneOutput=true;
+      }
+      if (hasOneOutput) {
+        this.outputs.emit(this.outputsObject);
       }
     }
-    if (instance?.inputs!=null) {
-      for (const key of Object.keys(instance.inputs) as XtInputType[] ) {
-        this.inputs[key] = instance.inputs[key];
+    const inputs = this.inputs();
+    if ((inputs!=null) && (instance?.inputsObject!=null)) {
+      for (const key of Object.keys(inputs) as XtInputType[] ) {
+        instance.inputsObject[key] = inputs[key];
       }
 
     }
+
 
   }
 

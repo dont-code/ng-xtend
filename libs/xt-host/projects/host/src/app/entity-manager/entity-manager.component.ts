@@ -58,13 +58,7 @@ export class EntityManagerComponent implements OnDestroy {
     return this.formBuilder.group ({ editor: form });
   });
 
-  listOutputs = signal<XtComponentOutput|null>(null);
-
-  selectedEntity = linkedSignal<ManagedData|null>( () => {
-      const outputs = this.listOutputs?this.listOutputs()?.valueSelected:null;
-      return outputs?outputs():null;
-    }
-  );
+  selectedEntity = signal<ManagedData|null>(null);
 
   canEdit= computed(()=> {
     if (this.selectedEntity()!=null)
@@ -110,7 +104,11 @@ export class EntityManagerComponent implements OnDestroy {
   }
 
   outputChanged(newValue: XtComponentOutput | null) {
-    this.listOutputs.set(newValue);
+    if (newValue?.valueSelected!=null) {
+      newValue?.valueSelected.subscribe (selected => {
+        this.selectedEntity.set(selected);
+      });
+    }
   }
 
   async save() {

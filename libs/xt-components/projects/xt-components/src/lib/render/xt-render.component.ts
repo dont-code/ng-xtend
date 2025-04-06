@@ -11,11 +11,13 @@ import {
   viewChild
 } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
-import { XtComponent, XtComponentOutput } from '../xt-component';
+import { XtComponent, XtComponentOutput, XtInputType, XtOutputType } from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtResolverService } from '../angular/xt-resolver.service';
 import { XtResolvedComponent } from '../xt-resolved-component';
+import { XtBaseOutput } from '../output/xt-base-output';
+import { XtBaseInput } from '../output/xt-base-input';
 
 /**
  * Offers a nice and easy to dynamically embed a component.
@@ -45,8 +47,10 @@ export class XtRenderComponent<T> implements AfterViewInit {
   formGroup=input<FormGroup>();
   subName= input<string>();
 
-  outputs = output<XtComponentOutput> ();
-  hasOutputs:boolean = false;
+  outputsObject = new XtBaseOutput();
+
+  inputs = input<XtBaseInput>();
+  outputs = output<XtComponentOutput>();
 
   outlet = viewChild.required(NgComponentOutlet);
 
@@ -89,11 +93,27 @@ export class XtRenderComponent<T> implements AfterViewInit {
     return type??null;
   });
 
+  /**
+   * Transfers the input and outputs from the host to the rendered component
+   */
   ngAfterViewInit() {
     const instance=this.outlet().componentInstance as XtComponent;
-    if ((instance != null) && (instance.hasOutputs) && (instance.outputs!=null)) {
-      instance.outputs.subscribe ((out) => this.outputs.emit(out));
-      this.hasOutputs=true;
+    if (instance?.outputsObject!=null) {
+      let hasOneOutput = false;
+      for (const key of Object.keys(instance.outputsObject) as XtOutputType[] ) {
+        this.outputsObject[key] = instance.outputsObject[key];
+        hasOneOutput=true;
+      }
+      if (hasOneOutput) {
+        this.outputs.emit(this.outputsObject);
+      }
+    }
+    const inputs = this.inputs();
+    if ((inputs!=null) && (instance?.inputsObject!=null)) {
+      for (const key of Object.keys(inputs) as XtInputType[] ) {
+        instance.inputsObject[key] = inputs[key];
+      }
+
     }
 
   }

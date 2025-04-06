@@ -42,7 +42,8 @@ export class SampleMoneyComponent extends XtCompositeComponent<SampleMoney> impl
     return this.context().displayValue()?.amount;
   })
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
+    super.ngOnInit();
 //    console.debug("XtMoneyComponent ngOnInit");
     const amountCtrl = this.manageFormControl('amount');
 

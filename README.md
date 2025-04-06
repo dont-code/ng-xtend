@@ -79,9 +79,13 @@ This is still work in progress, so you will have to get your hands a little bit 
    3. Run the xt-plugin-tester with `ng serve plugin-tester` in xt-plugin-tester directory
    4. Select your component in the screen, and play with it
 5. Use your component in your own Angular Application
-   1. Include the xt-components library in your package.json
-   2. Include your plugin library in your package.json
-   3. Sets insertion point in your angular pages
+  - Install xt-components and any plugins in your package.json
+   ```
+   npm install xt-components
+   npm install xt-plugin-default
+   ```
+  - Include your plugin library in your package.json
+  - Sets insertion point in your angular pages
       1. Either with `<xt-render [componentType]="YourComponentClass" [displayMode]="'FULL_VIEW' or 'INLINE_VIEW'" [value]="The value to display" ></xt-render>` if you already know the Component to use
       2. Or in a form `<xt-render [componentType]="YourComponentClass" [displayMode]="'FULL_EDITABLE'" [formGroup]="The FormGroup" [subName]="Component name in the form" ></xt-render>`
       3. If you don't know the component in advance, you can just set the value type, like this: `<xt-render [valueType]="A string with a register type name" [displayMode]="'FULL_VIEW' or 'INLINE_VIEW'" [value]="The value to display" ></xt-render>`, and ng-xtend will find the best component

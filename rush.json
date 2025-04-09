@@ -323,7 +323,7 @@
       "publishFolder": "dist/xt-plugin-default"
     },{
       "packageName": "xt-plugin-tester",
-      "projectFolder": "libs/xt-plugin-tester",
+      "projectFolder": "apps/xt-plugin-tester",
       "shouldPublish": false
     },
     {
@@ -340,7 +340,7 @@
     },
     {
       "packageName": "xt-host",
-      "projectFolder": "libs/xt-host",
+      "projectFolder": "apps/xt-host",
       "shouldPublish": false
     }
     // {

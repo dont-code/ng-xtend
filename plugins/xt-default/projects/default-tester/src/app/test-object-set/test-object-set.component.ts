@@ -103,21 +103,13 @@ export class TestObjectSetComponent {
     return DefaultObjectSetComponent;
   }
 
-  selectedValue = computed(() => {
-    return this.selectedValueSignal()();
-  })
+  selectedValue = signal<any>(null);
 
-  selectedValueSignal= computed( ()=> {
-    const outputs=this.componentOutputs();
-    if ((outputs!=null) && (outputs.valueSelected!=null)) {
-      return outputs.valueSelected;
+  componentOutputChange (newOutput:XtComponentOutput|null) {
+    if (newOutput?.valueSelected!=null) {
+      newOutput.valueSelected.subscribe ((value) => {
+        this.selectedValue.set(value);
+      })
     }
-    return signal<any>(null);
-  })
-
-  componentOutputs = signal<XtComponentOutput|null>(null);
-
-  componentOutputChange (newValue:XtComponentOutput|null) {
-    this.componentOutputs.set(newValue);
   }
 }

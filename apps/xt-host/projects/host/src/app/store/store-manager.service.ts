@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { signalStore } from '@ngrx/signals';
-import { withXtStoreProvider, XtSignalStore } from './store-entity-feature/store-entity-feature';
 import { ManagedData } from 'xt-type';
-import { XtStoreManager, XtStoreProvider } from 'xt-store';
+import { XtStoreManager, XtStoreProvider, withXtStoreProvider, XtSignalStore  } from 'xt-store';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +35,3 @@ setDefaultStoreProvider (provider: XtStoreProvider<ManagedData>) {
     this.storeManager.setDefaultProvider(provider);
   }
 }
-
-export type StoreState = {
-  entityName: string,
-  loading:boolean
-};

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { signalStore } from '@ngrx/signals';
 import { withXtStoreProvider, XtSignalStore } from './store-entity-feature';
-import { XtMemoryStoreProvider } from 'xt-store';
+import { XtMemoryStoreProvider } from '../store-provider/xt-memory-store-provider';
 import { ManagedData } from 'xt-type/src';
 import { expect } from '@jest/globals';
 

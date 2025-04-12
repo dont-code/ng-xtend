@@ -14,7 +14,6 @@ import { StoreManagerService } from '../store/store-manager.service';
 import { updateFormGroupWithValue, XtComponentOutput, XtRenderComponent } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
 import { ManagedData } from 'xt-type';
-import { XtSignalStore } from '../store/store-entity-feature/store-entity-feature';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Toolbar } from 'primeng/toolbar';
 import { Button } from 'primeng/button';
@@ -22,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { PrimeIcons } from 'primeng/api';
+import { XtSignalStore } from 'xt-store';
 
 @Component({
   selector: 'app-entity-manager',

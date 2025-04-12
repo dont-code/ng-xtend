@@ -1,6 +1,7 @@
 import {
-  addEntity,
-  entityConfig, EntityId, EntityMap,
+  entityConfig,
+  EntityId,
+  EntityMap,
   removeEntity,
   SelectEntityId,
   setEntities,
@@ -8,9 +9,8 @@ import {
   withEntities
 } from '@ngrx/signals/entities';
 import { patchState, signalStoreFeature, type, withMethods, withProps, withState } from '@ngrx/signals';
-import { StoreState } from '../store-manager.service';
-import { XtStoreProvider } from 'xt-store';
-import { finalize, firstValueFrom, lastValueFrom, map, Observable } from 'rxjs';
+import { XtStoreProvider } from '../store-provider/xt-store-provider';
+import { finalize, lastValueFrom, map } from 'rxjs';
 import { Signal } from '@angular/core';
 import { ManagedData } from 'xt-type';
 
@@ -23,6 +23,12 @@ const xtStoreEntityConfig = entityConfig ({
   entity: type<ManagedData>(),
   selectId:selectId
 });
+
+
+export type StoreState = {
+  entityName: string,
+  loading:boolean
+};
 
 export type XtSignalStore<T> = {
   entityName: Signal<string>;

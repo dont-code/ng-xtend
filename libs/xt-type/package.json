@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist/out-tsc/lib/index.js",
   "types": "dist/out-tsc/lib/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "build": "rm -rf ./dist/out-tsc/lib && tsc -p tsconfig.lib.json",
@@ -17,5 +18,8 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "~0.34.33"
   }
 }

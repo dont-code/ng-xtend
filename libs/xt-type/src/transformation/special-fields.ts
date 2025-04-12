@@ -1,3 +1,8 @@
+/**
+ * Keeps meta-data information about a ManagedData fields.
+ * Useful when manipulating list of ManagedData where you discover (and store) fields on the go.
+ */
+
 export class SpecialFields
 {
   dateFields:Array<string>|null=null;

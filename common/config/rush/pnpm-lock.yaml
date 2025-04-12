@@ -478,6 +478,10 @@ importers:
     publishDirectory: dist/store
 
   ../../libs/xt-type:
+    dependencies:
+      '@sinclair/typebox':
+        specifier: ~0.34.33
+        version: 0.34.33
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2723,6 +2727,9 @@ packages:
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
+
+  '@sinclair/typebox@0.34.33':
+    resolution: {integrity: sha512-5HAV9exOMcXRUxo+9iYB5n09XxzCXnfy4VTNW4xnDv+FgjzAGY989C28BIdljKqmF+ZltUwujE3aossvcVtq6g==}
 
   '@sindresorhus/merge-streams@2.3.0':
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
@@ -8487,6 +8494,8 @@ snapshots:
       '@sigstore/protobuf-specs': 0.3.2
 
   '@sinclair/typebox@0.27.8': {}
+
+  '@sinclair/typebox@0.34.33': {}
 
   '@sindresorhus/merge-streams@2.3.0': {}
 

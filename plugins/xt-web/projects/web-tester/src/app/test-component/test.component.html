@@ -1,0 +1,23 @@
+<h1 class="text-2xl">Testing Web Types</h1>
+
+<div class="flex flex-wrap mt-6 mb-6">
+  <p-panel header="Selection">
+    <label class="text-xl m-3" for="TypeSelector">Select the type to test</label>
+    <div class="m-3" id="TypeSelector">
+      <p-autocomplete [suggestions]="listOfSimpleTypes()" [ngModel]="selectedType()" (onSelect)="typeSwitch($event)" [dropdown]="true"></p-autocomplete>
+    </div>
+  </p-panel>
+  <p-panel header="Edit Mode">
+    <form class="m-3" id="editView" [formGroup]="mainForm">
+      <xt-render [valueType]="selectedType()" displayMode="FULL_EDITABLE" subName="TestType" [formGroup]="mainForm"></xt-render>
+    </form>
+    <span class="m-3 mt-6">Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
+    </span>
+  </p-panel>
+  <p-panel header="View Inline Mode">
+    <xt-render id="inlineView" [valueType]="selectedType()" displayMode="INLINE_VIEW" subName="TestType" [value]="value()" ></xt-render>
+  </p-panel>
+  <p-panel header="Full View Mode">
+    <xt-render id="fullView" [valueType]="selectedType()" displayMode="FULL_VIEW" subName="TestType" [value]="value()"></xt-render>
+  </p-panel>
+</div>

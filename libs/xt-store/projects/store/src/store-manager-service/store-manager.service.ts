@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { signalStore } from '@ngrx/signals';
 import { ManagedData } from 'xt-type';
-import { XtStoreManager } from '../store-manager/xt-store-manager';
+import { xtStoreManager } from '../store-manager/xt-store-manager';
 import { withXtStoreProvider, XtSignalStore } from '../store-entity/store-entity-feature';
 import { XtStoreProvider } from '../store-provider/xt-store-provider';
 
@@ -10,7 +10,7 @@ import { XtStoreProvider } from '../store-provider/xt-store-provider';
 })
 export class StoreManagerService {
 
-  protected storeManager = new XtStoreManager();
+  protected storeManager = xtStoreManager();
   protected entityToStoreMap = new Map<string, XtSignalStore<ManagedData>>();
 
   constructor() {

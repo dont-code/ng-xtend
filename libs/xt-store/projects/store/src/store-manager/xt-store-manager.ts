@@ -150,3 +150,11 @@ export class XtStoreManager {
 
 }
 
+/**
+ * The global store Mgr
+ */
+const XT_STORE_MGR = new XtStoreManager();
+
+export function xtStoreManager (): XtStoreManager {
+  return XT_STORE_MGR;
+}

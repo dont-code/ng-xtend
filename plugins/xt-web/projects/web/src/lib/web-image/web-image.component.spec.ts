@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WebImageComponent } from './web-image.component';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { XtBaseContext } from 'xt-components';
+import { StoreTestHelper, XtBaseContext } from 'xt-components';
 
 describe('WebImageComponent', () => {
   let component: WebImageComponent;
@@ -15,6 +15,8 @@ describe('WebImageComponent', () => {
       providers: [provideNoopAnimations(), provideExperimentalZonelessChangeDetection()]
     })
     .compileComponents();
+
+    StoreTestHelper.ensureTestProviderOnly();
 
     fixture = TestBed.createComponent(WebImageComponent);
     const context= new XtBaseContext<string>('FULL_VIEW');

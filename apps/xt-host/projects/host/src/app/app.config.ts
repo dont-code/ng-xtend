@@ -8,6 +8,7 @@ import Aura from '@primeng/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
 import { definePreset } from '@primeuix/styled';
 import { MessageService } from 'primeng/api';
+import { MessageHandler } from 'xt-components';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,6 @@ export const appConfig: ApplicationConfig = {
     }),
     provideRouter(routes),
     provideHttpClient(),
-    MessageService
+    { provide: MessageHandler, useClass:MessageService}
   ]
 };

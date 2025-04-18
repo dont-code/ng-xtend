@@ -1,5 +1,5 @@
 import {XtDataTransformer} from "./xt-data-transformer";
-import { map, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import { XtStoreCriteria, XtGroupBy, XtSortBy } from '../xt-store-parameters';
 import {
   DontCodeStoreGroupedByEntities,
@@ -39,6 +39,15 @@ export type XtStoreProvider<T=never>= {
   ): Observable<DontCodeStorePreparedEntities<T>>;
 
   canStoreDocument(): boolean;
+
+  /**
+   * Upload one document to a server store and returns the url or the id needed to retrieve them.
+   * @param toStore
+   * @param position
+   */
+  storeDocument(
+    toStore: File
+  ): Promise<UploadedDocumentInfo>;
 
   /**
    * Upload documents to a server store and returns the url or the id needed to retrieve them.
@@ -108,6 +117,10 @@ export abstract class AbstractXtStoreProvider<T=never> implements XtStoreProvide
         return new DontCodeStorePreparedEntities<T> (value, sort, groupedByValues);
       })
     );
+  }
+
+  storeDocument(toStore: File):Promise<UploadedDocumentInfo> {
+    return firstValueFrom(this.storeDocuments([toStore]));
   }
 
   abstract storeDocuments(toStore: File[]): Observable<UploadedDocumentInfo>;

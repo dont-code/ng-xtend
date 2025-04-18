@@ -1,4 +1,5 @@
 .inline-image {
   max-height: 5em;
   max-width: 10em;
+  display: inline-block;
 }

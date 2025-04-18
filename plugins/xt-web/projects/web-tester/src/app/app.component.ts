@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { XtResolverService } from 'xt-components';
+import { StoreTestHelper, XtResolverService } from 'xt-components';
 import { registerWebPlugin } from 'xt-plugin-web';
 
 @Component({
@@ -15,6 +15,8 @@ export class AppComponent {
   protected resolverService = inject (XtResolverService);
 
   constructor () {
+    // Let's use the Test Store Helper for Web Images
+    StoreTestHelper.ensureTestProviderOnly();
     registerWebPlugin(this.resolverService);
   }
 

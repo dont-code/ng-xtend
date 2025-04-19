@@ -11,7 +11,7 @@ export function registerDefaultPlugin (resolverService:XtResolverService):boolea
             {
               componentName:'DefaultPrimitive',
               componentClass:DefaultPrimitiveComponent,
-              typesHandled: [XtPluginRegistry.ANY_PRIMITIVE_TYPE, 'string', 'number', 'boolean', 'date'],
+              typesHandled: [XtPluginRegistry.ANY_PRIMITIVE_TYPE, 'string', 'number', 'boolean', 'date', 'time', 'date-time'],
             },{
             componentName:'DefaultObject',
             componentClass:DefaultObjectComponent,

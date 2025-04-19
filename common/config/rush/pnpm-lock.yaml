@@ -75,6 +75,9 @@ importers:
       xt-plugin-default:
         specifier: workspace:^
         version: link:../../plugins/xt-default/dist/xt-plugin-default
+      xt-plugin-web:
+        specifier: workspace:^
+        version: link:../../plugins/xt-web/dist/xt-plugin-web
       xt-store:
         specifier: workspace:^
         version: link:../../libs/xt-store/dist/store

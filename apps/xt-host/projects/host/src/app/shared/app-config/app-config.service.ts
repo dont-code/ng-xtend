@@ -2,6 +2,7 @@ import { computed, inject, Injectable, resource, ResourceRef, ResourceStatus, si
 import { XtResolverService } from 'xt-components';
 
 import { registerDefaultPlugin} from 'xt-plugin-default';
+import { registerWebPlugin} from 'xt-plugin-web';
 import { DcRepositoryModel } from '../models/dc-repository-model';
 
 @Injectable({
@@ -119,6 +120,7 @@ export class AppConfigService {
 
   async loadPlugins (config:DcRepositoryModel): Promise< boolean> {
     registerDefaultPlugin(this.resolverService);
+    registerWebPlugin(this.resolverService);
     return Promise.resolve(true);
   }
 

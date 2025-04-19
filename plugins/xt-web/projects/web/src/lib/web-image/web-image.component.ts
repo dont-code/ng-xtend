@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { IStoreProvider, MessageHandler, StoreSupport, XtSimpleComponent } from 'xt-components';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
@@ -24,6 +24,15 @@ export class WebImageComponent extends XtSimpleComponent{
   msgHandler= inject(MessageHandler);
 
   store?:IStoreProvider<any>;
+
+  displayIsInline = computed<boolean>( () => {
+    const displayMode=this.context().displayMode;
+    if ((displayMode == "INLINE_VIEW") || (displayMode == "LIST_VIEW")) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
   constructor() {
     super();

@@ -11,15 +11,15 @@ export function registerWebPlugin (resolverService:XtResolverService):boolean {
             {
               componentName:'WebImage',
               componentClass:WebImageComponent,
-              typesHandled: ['Image'],
+              typesHandled: ['image'],
             },{
             componentName:'WebLink',
             componentClass:WebLinkComponent,
-            typesHandled: ['Link']
+            typesHandled: ['link']
           },{
             componentName:'WebRating',
             componentClass:WebRatingComponent,
-            typesHandled: ['Rating']
+            typesHandled: ['rating']
           }
         ]
     });

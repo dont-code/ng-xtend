@@ -9,7 +9,7 @@
       </div>
     </div>
   </ng-container>
-} @else if (context().displayMode == "INLINE_VIEW") {
+} @else if (displayIsInline()) {
   <p-image class="inline-image" [src]="displayValue()" [preview]="true" />
 } @else {
   <p-image [src]="displayValue()" [preview]="true" />

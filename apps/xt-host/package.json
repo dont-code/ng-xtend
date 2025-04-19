@@ -21,6 +21,7 @@
     "@angular/router": "^19.2.4",
     "xt-components": "workspace:^",
     "xt-plugin-default": "workspace:^",
+    "xt-plugin-web": "workspace:^",
     "xt-type": "workspace:^",
     "xt-store": "workspace:^",
     "rxjs": "^7.8.2",

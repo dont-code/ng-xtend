@@ -21,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideRouter(routes),
     provideHttpClient(),
+    MessageService,
     { provide: MessageHandler, useClass:MessageService}
   ]
 };

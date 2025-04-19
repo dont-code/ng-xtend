@@ -153,8 +153,14 @@ export class XtStoreManager {
 /**
  * The global store Mgr
  */
-const XT_STORE_MGR = new XtStoreManager();
 
-export function xtStoreManager (): XtStoreManager {
-  return XT_STORE_MGR;
+declare global {
+  var XT_STORE_MGR: XtStoreManager;
+  var xtStoreManager: () => XtStoreManager;
 }
+export function xtStoreManager (): XtStoreManager {
+  return globalThis.XT_STORE_MGR;
+}
+
+globalThis.XT_STORE_MGR = new XtStoreManager();
+globalThis.xtStoreManager = xtStoreManager;

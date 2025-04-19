@@ -11,11 +11,11 @@ export class StoreSupport {
 
   static isStoreManagerAvailable () {
     if (this.testStoreManager!=null) return true;
-    return ((window as any).xtStoreManager!=undefined);
+    return ((globalThis as any).xtStoreManager!=undefined);
   }
 
   static getStoreManager (): IStoreManager {
-    return this.testStoreManager??((window as any).xtStoreManager());
+    return this.testStoreManager??((globalThis as any).xtStoreManager());
   }
 
   static setTestStoreManager (testStoreManager:IStoreManager): void {

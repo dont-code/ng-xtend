@@ -23,7 +23,7 @@ export class WebImageComponent extends XtSimpleComponent{
 
   msgHandler= inject(MessageHandler);
 
-  store:IStoreProvider<any>|undefined=StoreSupport.getStoreManager()?.getDefaultProvider();
+  store?:IStoreProvider<any>;
 
   constructor() {
     super();

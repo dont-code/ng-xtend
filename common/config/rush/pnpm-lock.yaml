@@ -145,6 +145,9 @@ importers:
       '@angular/router':
         specifier: ^19.2.4
         version: 19.2.4(@angular/common@19.2.4(@angular/core@19.2.4(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.4(rxjs@7.8.2))(@angular/platform-browser@19.2.4(@angular/animations@19.2.4(@angular/core@19.2.4(rxjs@7.8.2)))(@angular/common@19.2.4(@angular/core@19.2.4(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.4(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@ngrx/signals':
+        specifier: ^19.0.1
+        version: 19.0.1(@angular/core@19.2.4(rxjs@7.8.2))(rxjs@7.8.2)
       '@primeng/themes':
         specifier: ^19.0.10
         version: 19.0.10
@@ -178,9 +181,21 @@ importers:
       xt-components:
         specifier: workspace:^
         version: link:../../libs/xt-components/dist/xt-components
+      xt-plugin-default:
+        specifier: workspace:^
+        version: link:../../plugins/xt-default/dist/xt-plugin-default
       xt-plugin-sample:
         specifier: workspace:^
         version: link:../../libs/xt-plugin-sample/dist/xt-plugin-sample
+      xt-plugin-web:
+        specifier: workspace:^
+        version: link:../../plugins/xt-web/dist/xt-plugin-web
+      xt-store:
+        specifier: workspace:^
+        version: link:../../libs/xt-store/dist/store
+      xt-type:
+        specifier: workspace:^
+        version: link:../../libs/xt-type
     devDependencies:
       '@angular-builders/jest':
         specifier: ^19.0.0

@@ -1,5 +1,5 @@
 {
-  "name": "xt-plugin-default",
+  "name": "xt-plugin-web",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^19.0.5",

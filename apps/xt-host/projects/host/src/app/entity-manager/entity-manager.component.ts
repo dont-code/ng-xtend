@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { StoreManagerService } from '../store/store-manager.service';
 import { updateFormGroupWithValue, XtComponentOutput, XtRenderComponent } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
 import { ManagedData } from 'xt-type';
@@ -21,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { PrimeIcons } from 'primeng/api';
-import { XtSignalStore } from 'xt-store';
+import { XtSignalStore, StoreManagerService } from 'xt-store';
 
 @Component({
   selector: 'app-entity-manager',

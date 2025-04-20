@@ -325,6 +325,11 @@
       "packageName": "xt-plugin-tester",
       "projectFolder": "apps/xt-plugin-tester",
       "shouldPublish": false
+    }, {
+      "packageName": "xt-plugin-web",
+      "projectFolder": "plugins/xt-web",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-plugin-web"
     },
     {
       "packageName": "xt-store",

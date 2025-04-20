@@ -60,6 +60,10 @@ jobs:
           npm version $PACKAGE_VERSION --allow-same-version
           cd projects/sample
           npm version $PACKAGE_VERSION --allow-same-version
+          cd ../../../../plugins/xt-web
+          npm version $PACKAGE_VERSION --allow-same-version
+          cd projects/web
+          npm version $PACKAGE_VERSION --allow-same-version
           cd ../../../../plugins/xt-idb-store
           npm version $PACKAGE_VERSION --allow-same-version
           cd projects/idb-store
@@ -122,6 +126,17 @@ jobs:
           npm version $PACKAGE_VERSION --allow-same-version
           npm version ${{env.version}}
         working-directory: 'plugins/xt-default'
+      - name: Increase xt-plugin-web version
+        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
+        run: |
+          PACKAGE_VERSION=$(npm view xt-plugin-web versions --json | jq -r '.[-1]')
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{env.version}}
+          cd projects/web
+          npm version $PACKAGE_VERSION --allow-same-version
+          npm version ${{env.version}}
+        working-directory: 'plugins/xt-web'
       - name: Install
         run: |
           node common/scripts/install-run-rush.js install
@@ -141,5 +156,6 @@ jobs:
         run: |
           npm publish plugins/xt-idb-store/dist/store --access public --tag ${{env.stage}}
           npm publish plugins/xt-default/dist/xt-plugin-default --access public --tag ${{env.stage}}
+          npm publish plugins/xt-web/dist/xt-plugin-web --access public --tag ${{env.stage}}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

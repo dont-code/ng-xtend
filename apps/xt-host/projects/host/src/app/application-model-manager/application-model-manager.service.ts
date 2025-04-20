@@ -64,8 +64,19 @@ export class ApplicationModelManagerService {
   getEntityFields(fields: { [key:string]:DcFieldModel}): XtTypeInfo {
     const ret = {} as XtTypeInfo;
     for (const field of Object.values(fields)) {
-      ret[field.name]= field.type;
+      ret[field.name]= this.translate (field.type);
     }
     return ret;
+  }
+
+  protected translate(type: string): string {
+    switch (type) {
+      case 'Date & Time':
+        return 'date-time';
+      case 'Website (url)':
+        return 'link';
+      default:
+        return type.toLowerCase();
+    }
   }
 }

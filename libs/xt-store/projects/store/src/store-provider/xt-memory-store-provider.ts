@@ -1,13 +1,16 @@
 import { AbstractXtStoreProvider } from './xt-store-provider';
-import { Observable, of, throwError } from 'rxjs';
+import { from, Observable, of, Subject, throwError } from 'rxjs';
 import { UploadedDocumentInfo } from '../xt-document';
 import { ManagedData } from 'xt-type/src';
 
 export class XtMemoryStoreProvider<T extends ManagedData> extends AbstractXtStoreProvider<T> {
   protected storage=new Map<string, Map<string, T>>();
 
+  /**
+   * It supports storing documents in memory only, then use with care !
+   */
   override canStoreDocument(): boolean {
-    return false;
+    return true;
   }
 
   getSafeStore (name:string):Map<string,T> {
@@ -46,9 +49,12 @@ export class XtMemoryStoreProvider<T extends ManagedData> extends AbstractXtStor
   }
 
   override storeDocuments(toStore: File[]): Observable<UploadedDocumentInfo> {
-    return throwError (() => {
-      throw new Error ("Not implemented.");
-    });
+    const toSend = new Array<UploadedDocumentInfo>();
+    for (const file of toStore) {
+      const ret: UploadedDocumentInfo = { documentName: URL.createObjectURL(file), isUrl: true };
+      toSend.push(ret);
+    }
+    return from(toSend)
   }
 
 }

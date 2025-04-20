@@ -39,6 +39,8 @@ export type XtContext<T> = {
 
     setDisplayValue (newValue:T|null|undefined, type?:string): XtContext<T>;
 
+    setFormValue (newValue:T|null|undefined): boolean;
+
     value(): T | null | undefined;
 
     valueType?:string;
@@ -197,6 +199,20 @@ export class XtBaseContext<T> implements XtContext<T>{
     //console.debug("formControlValue of "+this.subName+ " is ",ret);
     return ret;
   }
+
+  setFormValue (newValue:T|null|undefined): boolean {
+    if (this.isInForm()) {
+      if (this.subName!=null) {
+        const control=this.parentFormGroup?.get(this.subName);
+        if (control!=null) {
+          control.setValue(newValue);
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
 
   /**
    * Returns the context associated with a specific element in a set.

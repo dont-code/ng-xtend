@@ -32,7 +32,7 @@ export class TestComponent implements OnInit, OnDestroy {
   protected subscriptions= new Subscription();
 
   listOfSimpleTypes() {
-    return ['string', 'number', 'bigint','boolean','undefined','null', 'date'];
+    return ['string', 'number', 'bigint','boolean','undefined','null', 'date', 'time', 'date-time'];
   }
 
   typeSwitch($event: AutoCompleteSelectEvent) {

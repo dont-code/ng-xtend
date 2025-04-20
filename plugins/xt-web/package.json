@@ -1,0 +1,54 @@
+{
+  "name": "xt-plugin-web",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build web",
+    "build-deploy": "APP=web-tester && MAIN_LIB=web && ng build $MAIN_LIB --configuration=$BUILD && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\"  && rm -f ../../dist/$STAGE/$APP/*.* && mv ../../dist/$STAGE/$APP/browser/* ../../dist/$STAGE/$APP",
+    "watch": "ng build --watch --configuration development",
+    "test": "cd projects/web && ../../node_modules/.bin/jest"
+  },
+  "publishConfig": {
+    "directory": "dist/xt-plugin-web",
+    "linkDirectory": true
+  },
+  "private": false,
+  "dependencies": {
+    "@angular/animations": "^19.2.4",
+    "@angular/common": "^19.2.4",
+    "@angular/compiler": "^19.2.4",
+    "@angular/core": "^19.2.4",
+    "@angular/forms": "^19.2.4",
+    "@angular/platform-browser": "^19.2.4",
+    "@angular/platform-browser-dynamic": "^19.2.4",
+    "@angular/router": "^19.2.4",
+    "@angular/cdk": "^19.1.1",
+    "xt-components": "workspace:^",
+    "rxjs": "^7.8.2",
+    "primeng": "^19.0.10",
+    "primeicons": "^7.0.0",
+    "@primeuix/utils": "^0.5.2",
+    "@primeuix/styled": "^0.5.0",
+    "@primeng/themes": "^19.0.10",
+    "tslib": "^2.8.1",
+    "@tailwindcss/postcss": "~4.0.17",
+    "postcss": "~8.5.3",
+    "tailwindcss": "~4.0.17"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.5",
+    "@angular/cli": "^19.2.5",
+    "@angular/compiler-cli": "^19.2.4",
+    "ng-packagr": "^19.2.0",
+    "typescript": "^5.7.3",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "jest-preset-angular": "^14.5.3",
+    "@happy-dom/jest-environment": "^17.4.4",
+    "happy-dom": "^17.4.4",
+    "@angular-builders/jest": "^19.0.0"
+  }
+}
+

@@ -11,7 +11,7 @@ import {
 import { AppConfigService } from '../shared/app-config/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
-import { StoreManagerService } from '../store/store-manager.service';
+import { StoreManagerService } from 'xt-store';
 import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 import { XtResolverService } from 'xt-components';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';

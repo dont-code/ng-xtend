@@ -44,7 +44,7 @@ export class TestObjectComponent implements OnInit, OnDestroy {
   protected subscriptions= new Subscription();
 
   constructor() {
-    const newForm = new FormGroup({'TestObject': new FormGroup({})});
+    const newForm = new FormGroup({'TestObject': new FormGroup({})}, {updateOn: 'change'});
     updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
     this.mainForm.set(newForm);
   }
@@ -56,9 +56,10 @@ export class TestObjectComponent implements OnInit, OnDestroy {
   objectSwitch($event: AutoCompleteSelectEvent) {
     this.selectedObject.set($event.value);
     this.value.set(this.loadObject ($event.value));
-    const newForm = new FormGroup({'TestObject': new FormGroup({})});
+    const newForm = new FormGroup({'TestObject': new FormGroup({})}, {updateOn: 'change'});
     updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
     this.mainForm.set(newForm);
+    this.listenToValueChanges();
   }
 
   loadObject (objName:string) :any {
@@ -66,7 +67,7 @@ export class TestObjectComponent implements OnInit, OnDestroy {
       simple: {
         prop1:'Value1',
         prop2:1234,
-        prop3:new Date()
+        prop3:new Date (2023, 11,6,12,34,56)
       },
       complex: {
         prop1:'Value1',
@@ -95,7 +96,8 @@ export class TestObjectComponent implements OnInit, OnDestroy {
   }
 
   protected listenToValueChanges() {
-    // this.subscriptions.unsubscribe();
+    this.subscriptions.unsubscribe();
+    this.subscriptions=new Subscription();
     this.subscriptions.add(this.mainForm().valueChanges.subscribe({
       next: newValue => {
         if (newValue.TestObject !== undefined)

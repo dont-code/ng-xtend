@@ -10,8 +10,14 @@
       @case ("boolean") {
         <p-checkbox [name]="componentNameInForm ()" [formControlName]="formControlName()" [binary]="true" />
       }
+      @case ("time") {
+        <p-datepicker [name]="componentNameInForm ()" [formControlName]="formControlName()" [timeOnly]="true" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+      }
       @case ("date") {
-        <p-datepicker [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+        <p-datepicker [name]="componentNameInForm ()" [formControlName]="formControlName()" [showTime]="false" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+      }
+      @case ("date-time") {
+        <p-datepicker [name]="componentNameInForm ()" [formControlName]="formControlName()" [showTime]="true" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
       }
       @default {
         <input type="text" pInputText [name]="componentNameInForm ()" [formControlName]="formControlName()" fluid="true" />

@@ -5,7 +5,8 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
     "types": ["jest"],
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "importHelpers": true
   },
   "include": ["**/*.spec.ts", "**/*.d.ts"]
 }

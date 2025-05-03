@@ -6,6 +6,8 @@
     "outDir": "./dist/out-tsc/lib"
   },
   "exclude": [
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "dist/**",
+    "tsup.config.ts"
   ]
 }

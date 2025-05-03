@@ -4,12 +4,13 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
+    "target": "es2016",
     "types": [
-      "jest"
+      "vitest/globals","node"
     ]
   },
   "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
   ]
 }

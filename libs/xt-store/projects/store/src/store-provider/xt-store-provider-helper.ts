@@ -1,4 +1,4 @@
-import { Counters, SpecialFields, XtSpecialFieldsHelper } from 'xt-type';
+import { Counters, ManagedData, XtTypeHandler, xtTypeManager } from 'xt-type';
 import {
   XtGroupBy,
   XtGroupByAggregate,
@@ -13,7 +13,7 @@ import {
  */
 export class XtStoreProviderHelper {
 
-  protected static Xt
+  protected static typeManager = xtTypeManager();
   /**
    * In case the provider source doesn't support search criteria, they can be applied here
    * @param list
@@ -40,18 +40,37 @@ export class XtStoreProviderHelper {
     return list;
   }
 
-  /**
+  /** Returns any field who is a date, in order to convert it from json. Keep the result in a cache map
+   *
+   * @param typeName
+   * @param typeResolver
+   * @protected
+   */
+  public static findTypeHandler (typeName:string, subName?:string, value?:ManagedData): { typeName?:string | null, handler?:XtTypeHandler<any>} {
+    return XtStoreProviderHelper.typeManager?.findTypeHandler(typeName, subName, value);
+  }
+
+    /**
    * Ensure _id is removed if necessary before saving the element
    * @param listToConvert
    * @param specialFields
    * @protected
    */
-  public static cleanUpDataBeforeSaving (listToConvert:Array<any>, specialFields:SpecialFields) : void {
-    if ((specialFields?.idField!=null)&&(specialFields?.idField!='_id')) {
+  public static cleanUpDataBeforeSaving (listToConvert:Array<ManagedData>, typeName:string, handler?:XtTypeHandler<any> | null) : void {
+      if (handler==null) handler=XtStoreProviderHelper.findTypeHandler
+          (typeName, undefined, (listToConvert.length>0)?listToConvert[0]:undefined)
+        .handler;
+
+      if (handler!=null) {
+        for (const toConvert of listToConvert) {
+          handler.toJson(toConvert)
+        }
+      }
+/*    if ((specialFields?.idField!=null)&&(specialFields?.idField!='_id')) {
       listToConvert.forEach(value => {
         delete value._id;
       })
-    }
+    }*/
   }
 
   /**
@@ -61,9 +80,16 @@ export class XtStoreProviderHelper {
    * @param specialFields
    * @protected
    */
-  public static cleanUpLoadedData (listToConvert:Array<any>, specialFields:SpecialFields) : void {
+  public static cleanUpLoadedData (listToConvert:Array<ManagedData>, typeName:string, handler?:XtTypeHandler<any> | null) : void {
 
-    if (specialFields!=null) {
+    if (handler==null) handler=XtStoreProviderHelper.findTypeHandler(typeName, undefined, (listToConvert.length>0)?listToConvert[0]:undefined).handler;
+
+    if (handler!=null) {
+      for (const toConvert of listToConvert) {
+        handler.fromJson(toConvert)
+      }
+    }
+      /*
       if( specialFields.idField==null) {
         XtSpecialFieldsHelper.findSpecialFieldsFromData (listToConvert, specialFields);
       }
@@ -93,7 +119,7 @@ export class XtStoreProviderHelper {
           }
         })
       })
-    }
+    }*/
   }
 
   /**

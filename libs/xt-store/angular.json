@@ -25,7 +25,7 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@analogjs/vitest-angular:test",
           "options": {
             "tsConfig": "projects/store/tsconfig.spec.json",
             "polyfills": [

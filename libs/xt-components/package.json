@@ -27,6 +27,7 @@
     "@angular/cdk": "^19.1.1",
     "rxjs": "^7.8.2",
     "primeng": "^19.0.10",
+    "xt-type": "workspace:^",
     "@primeng/themes": "^19.0.10",
     "@primeuix/utils": "^0.5.2",
     "@primeuix/styled": "^0.5.0",

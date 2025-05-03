@@ -1,6 +1,6 @@
-import {XtDataTransformer} from "./xt-data-transformer";
+import { XtDataTransformer } from './xt-data-transformer';
 import { firstValueFrom, map, Observable } from 'rxjs';
-import { XtStoreCriteria, XtGroupBy, XtSortBy } from '../xt-store-parameters';
+import { XtGroupBy, XtSortBy, XtStoreCriteria } from '../xt-store-parameters';
 import {
   DontCodeStoreGroupedByEntities,
   DontCodeStorePreparedEntities,
@@ -8,11 +8,12 @@ import {
 } from './xt-store-provider-helper';
 import { UploadedDocumentInfo } from '../xt-document';
 import { XtStoreSortBy } from '../xt-reporting';
+import { ManagedData } from 'xt-type';
 
 /**
  * The standard interface for any store provider
  */
-export type XtStoreProvider<T=never>= {
+export type XtStoreProvider<T extends ManagedData = ManagedData>= {
   storeEntity( name:string, entity: T): Promise<T>;
 
   /**
@@ -59,7 +60,7 @@ export type XtStoreProvider<T=never>= {
   ): Observable<UploadedDocumentInfo>;
 }
 
-export abstract class AbstractXtStoreProvider<T=never> implements XtStoreProvider<T> {
+export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedData> implements XtStoreProvider<T> {
   abstract canStoreDocument(): boolean;
 
   abstract deleteEntity(name:string, key: any): Promise<boolean>;

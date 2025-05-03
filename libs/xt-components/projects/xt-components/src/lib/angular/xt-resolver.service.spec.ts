@@ -3,6 +3,7 @@ import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { XtResolverService } from './xt-resolver.service';
 import { XtBaseContext } from '../xt-context';
 import { expect } from '@jest/globals';
+import { AbstractTypeHandler, XtTypeHandler } from 'xt-type';
 
 describe('XtResolverService', () => {
   let service: XtResolverService;
@@ -49,5 +50,42 @@ describe('XtResolverService', () => {
 
     expect(result).toEqual(['subType2', 'subType21']);
   });
+
+  it ('should properly set typeHandlers', () => {
+    service.registerPlugin({
+      name: 'resolverTest',
+      types: {
+        type1: {
+          subType1: 'testString',
+        },
+        type2: {
+          subType2: 'testType2',
+          subType21: 'testString'
+        }
+      },
+      typeHandlers: [
+        {
+          typesHandled: ['type1','testString'],
+          handlerClass: TestTypeHandler
+        },
+        {
+          typesHandled: ['type2','testType2'],
+          handlerClass: TestType2Handler
+        }
+      ]
+    });
+
+    const baseContext = new XtBaseContext('FULL_VIEW');
+    baseContext.valueType = 'type2';
+    const ret = service.findTypeHandlerOf(baseContext, undefined, null);
+    expect(ret?.handler).toBeTruthy();
+  });
+
 });
 
+class TestTypeHandler extends AbstractTypeHandler<any> {
+
+}
+class TestType2Handler extends AbstractTypeHandler<any> {
+
+}

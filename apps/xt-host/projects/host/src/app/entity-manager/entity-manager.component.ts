@@ -49,7 +49,7 @@ export class EntityManagerComponent implements OnDestroy {
 
   editForm = computed( () => {
     const entity = this.selectedEntity();
-    const form = this.formBuilder.group({});
+    const form = this.formBuilder.group({}, {updateOn: 'change'});
     if (entity!=null) {
       updateFormGroupWithValue(form, entity);
     }
@@ -130,6 +130,8 @@ export class EntityManagerComponent implements OnDestroy {
   }
 
   private listenToFormEvent(form: FormGroup) {
+    this.subscriptions.unsubscribe();
+    this.subscriptions = new Subscription();
     this.subscriptions.add(form.events.subscribe(event => {
       const pristine = (event as PristineChangeEvent).pristine??true;
       if (!pristine) {

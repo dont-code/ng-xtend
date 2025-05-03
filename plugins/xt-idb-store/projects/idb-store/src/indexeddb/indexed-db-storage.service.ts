@@ -5,12 +5,13 @@ import { from, Observable, Subscription } from 'rxjs';
 import Dexie, { Table } from 'dexie';
 import { Injectable, OnDestroy } from '@angular/core';
 import { AbstractXtStoreProvider, UploadedDocumentInfo, XtStoreCriteria, XtStoreProviderHelper } from 'xt-store';
+import { ManagedData } from 'xt-type';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class IndexedDbStorageService<T=never> extends AbstractXtStoreProvider<T> implements OnDestroy {
+export class IndexedDbStorageService<T extends ManagedData = ManagedData> extends AbstractXtStoreProvider<T> implements OnDestroy {
 
   protected static globalDb: Dexie|null;
 

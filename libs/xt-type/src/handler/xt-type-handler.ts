@@ -1,6 +1,7 @@
 import { ManagedData } from '../managed-data/managed-data';
 
 export type XtTypeHandler<Type> = {
+  init():void,
   idField():keyof Type|null,
 
   fromJson (json:any):void;
@@ -10,12 +11,17 @@ export type XtTypeHandler<Type> = {
   dateToJson (date:Date | null | undefined):string | null | undefined;
 }
 
-export class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
+export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
   protected _idField:keyof Type|undefined;
-  constructor(idField?:keyof Type) {
+  protected dateFields:Array<keyof Type>=[];
+
+  constructor(idField?:keyof Type, dateFields?:Array<keyof Type> ) {
     this._idField=idField;
+    this.dateFields=dateFields??[];
   }
+
+  abstract init ():void;
 
   fromJson(json: any): void {
     // Copy the storage id to _id field if it exists

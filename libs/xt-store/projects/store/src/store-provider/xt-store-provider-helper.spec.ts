@@ -1,16 +1,16 @@
 import {XtStoreProviderHelper} from './xt-store-provider-helper';
 import { XtStoreGroupByAggregate, XtStoreGroupBy } from '../xt-reporting';
 import { XtGroupByOperation } from '../xt-store-parameters';
-import { ManagedData, xtTypeManager } from 'xt-type';
+import { ManagedData, ManagedDataHandler, xtTypeManager } from 'xt-type';
 import { describe, expect, it } from 'vitest';
 
 describe('Store Provider Helper', () => {
   it('should correctly manage id fields', () => {
 
-    xtTypeManager().addType("EntityA", {
+    xtTypeManager().addRootType("EntityA", {
         "_id": "Text",
         "name": "Text"
-    });
+    }, new ManagedDataHandler("_id"));
 
     let result = XtStoreProviderHelper.findTypeHandler("EntityA");
 
@@ -27,12 +27,12 @@ describe('Store Provider Helper', () => {
     XtStoreProviderHelper.cleanUpDataBeforeSaving(toStore, result.typeName!, result.handler);
     expect(toStore[0]).toStrictEqual(listToTest[0]);
 
-    xtTypeManager().addType("EntityB", {
+    xtTypeManager().addRootType("EntityB", {
       "uniqueName": "Text",
       "firstName": "Text"
-    })
+    }, new ManagedDataHandler('uniqueName'));
     result = XtStoreProviderHelper.findTypeHandler("EntityB");
-    expect(result.handler?.idField()).toBeNull();
+    expect(result.handler?.idField()).toEqual("uniqueName");
 
     listToTest=[{
       uniqueName:"454545",
@@ -43,7 +43,7 @@ describe('Store Provider Helper', () => {
     }];
 
     XtStoreProviderHelper.cleanUpLoadedData(listToTest, result.typeName!, result.handler);
-    expect(listToTest[0]._id).toBeUndefined();
+    expect(listToTest[0]._id).toEqual (listToTest[0]['uniqueName']);
 
     toStore = new Array(...listToTest);
     XtStoreProviderHelper.cleanUpDataBeforeSaving(toStore, result.typeName!, result.handler);
@@ -54,10 +54,10 @@ describe('Store Provider Helper', () => {
 
   it('should correctly manage Date fields', () => {
 
-    xtTypeManager().addType("DateEntityB", {
+    xtTypeManager().addRootType("DateEntityB", {
       "_id":"Text",
-      "Date":"Date & Time"
-    });
+      "Date":"date-time"
+    }, new ManagedDataHandler(undefined, ["Date"]));
     let result = XtStoreProviderHelper.findTypeHandler("DateEntityB");
 
     expect(result.handler).toBeTruthy();

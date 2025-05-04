@@ -1,7 +1,9 @@
 import { ManagedData } from '../managed-data/managed-data';
+import { SpecialFields } from '../transformation/special-fields';
+import { XtTypeHierarchy } from '../resolver/xt-type-resolver';
 
 export type XtTypeHandler<Type> = {
-  init():void,
+  init(context:XtTypeHierarchy):void,
   idField():keyof Type|null,
 
   fromJson (json:any):void;
@@ -13,33 +15,44 @@ export type XtTypeHandler<Type> = {
 
 export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
-  protected _idField:keyof Type|undefined;
-  protected dateFields:Array<keyof Type>=[];
+  protected fields:SpecialFields<Type> = new SpecialFields<Type>();
 
   constructor(idField?:keyof Type, dateFields?:Array<keyof Type> ) {
-    this._idField=idField;
-    this.dateFields=dateFields??[];
+    this.fields.idField=idField;
+    this.fields.dateFields=dateFields;
   }
 
-  abstract init ():void;
+  abstract init (context:XtTypeHierarchy):void;
 
   fromJson(json: any): void {
     // Copy the storage id to _id field if it exists
-    if (this._idField!=null) {
-      json._id=json[this._idField];
+    if (this.fields.idField != null) {
+      json._id = json[this.fields.idField];
+    }
+
+    if (this.fields.dateFields != null) {
+      for (const dateTypeName of this.fields.dateFields) {
+        json[dateTypeName] = this.dateFromJson(json[dateTypeName]);
+      }
     }
   }
 
   toJson(value: Type): void {
       // Remove the _id field if another id field is defined
-    if (this._idField!=null) {
-      value[this._idField] = (value as ManagedData)._id as any;
+    if (this.fields.idField!=null) {
+      value[this.fields.idField] = (value as ManagedData)._id as any;
       delete (value as ManagedData)._id;
+    }
+
+    if (this.fields.dateFields != null) {
+      for (const dateTypeName of this.fields.dateFields) {
+        value[dateTypeName] = this.dateToJson(value[dateTypeName] as Date) as any;
+      }
     }
   }
 
   idField():keyof Type|null {
-    return this._idField??null;
+    return this.fields.idField??null;
   }
 
   dateFromJson(dateAsString: string | null | undefined): Date | null | undefined {

@@ -5,13 +5,13 @@ import {lastValueFrom} from "rxjs";
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 describe('DevTemplateManagerService', () => {
-  let service: IndexedDbStorageService<{_id:number,code:string}>;
+  let service: IndexedDbStorageService<{_id:string,code:string}>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideExperimentalZonelessChangeDetection()]
     });
-    service = TestBed.inject<IndexedDbStorageService<{_id:number,code:string}>>(IndexedDbStorageService<{_id:number,code:string}>);
+    service = TestBed.inject<IndexedDbStorageService<{_id:string,code:string}>>(IndexedDbStorageService<{_id:string,code:string}>);
   });
 
   it('should be created', () => {

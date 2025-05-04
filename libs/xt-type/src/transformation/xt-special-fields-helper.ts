@@ -5,12 +5,16 @@ import { SpecialFields } from './special-fields';
  */
 export class XtSpecialFieldsHelper {
 
-  static specialFieldsCache = new Map<string, SpecialFields>();
+  static specialFieldsCache = new Map<string, SpecialFields<any>>();
   /**
    * In case some entity definition has changed, clear the cache
    */
   public static clearConfigCache (): void {
     this.specialFieldsCache.clear();
+  }
+
+  public static isDateType (typeName:string|null|undefined):boolean {
+    return (typeName==='date')||(typeName==='date-time')||(typeName==='time');
   }
 
   /** Returns any field who is a date, in order to convert it from json. Keep the result in a cache map
@@ -19,7 +23,7 @@ export class XtSpecialFieldsHelper {
    * @param entity
    * @protected
    */
-  public static findSpecialFields (name:string, entity:any):SpecialFields {
+  public static findSpecialFields<Type> (name:string, entity:any):SpecialFields<Type> {
     let specialFields = XtSpecialFieldsHelper.specialFieldsCache.get(name);
     if (specialFields!=null) return specialFields;
 
@@ -48,7 +52,7 @@ export class XtSpecialFieldsHelper {
     return specialFields;
   }
 
-  static findSpecialFieldsFromData(data: Array<any>, existingFields: SpecialFields) {
+  static findSpecialFieldsFromData<Type>(data: Array<any>, existingFields: SpecialFields<Type>) {
     if( (existingFields.idField==null) && (data?.length>0)) {
       // We must guess the id field from data
       const first=data[0];

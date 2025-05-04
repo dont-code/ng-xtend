@@ -22,12 +22,7 @@
     "lib": [
       "ES2022",
       "dom"
-    ],
-    "paths": {
-      "xt-type": ["./node_modules/xt-type/src/index.ts"],
-      "xt-store": ["./node_modules/xt-store/public-api.d.ts"],
-      "tslib": ["./node_modules/tslib/tslib.d.ts"]
-    }
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

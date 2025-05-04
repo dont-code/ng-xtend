@@ -7,7 +7,7 @@ import {toArray} from "rxjs/operators";
 import { UploadedDocumentInfo } from '../xt-document';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../globalSetup';
+import { setupAngularTestBed } from '../../globalTestSetup';
 
 
 describe('DontCode Api Store Manager', () => {
@@ -35,16 +35,16 @@ describe('DontCode Api Store Manager', () => {
   });
 
 
-  it('should list item', () => new Promise<void>(done => {
+  it('should list item', () => new Promise<void>((resolve, reject) => {
     expect(storeProvider).toBeDefined();
     //dtcde.getModelManager().resetContent(EXEMPLE_TEMPLATE);
     storeProvider.searchEntities("Entity1").subscribe({
       next: (value) => {
         expect(value).toBeTruthy();
-        done();
+        resolve();
       },
       error: (error) => {
-        done(error);
+        reject(error);
     }});
     const call=httpTestingController.expectOne("/testData/Entity1");
     call.flush([{Field1:"Test"},{Field1:"Test2"}]);

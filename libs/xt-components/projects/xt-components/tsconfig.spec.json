@@ -4,9 +4,14 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": ["jest"],
-    "emitDecoratorMetadata": true,
-    "importHelpers": true
+    "target": "es2016",
+    "types": [
+      "vitest/globals","node"
+    ],
+    "emitDecoratorMetadata": true
   },
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
 }

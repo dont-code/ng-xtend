@@ -15,15 +15,21 @@ export type XtTypeResolver = {
 }
 
 export type XtUpdatableTypeResolver = XtTypeResolver & {
-  addType<Type> (typeName:string, type:XtTypeInfo|string, handler?:XtTypeHandler<Type>):void;
+  addRootType<Type> (typeName:string, type:XtTypeInfo|string, handler?:XtTypeHandler<Type>):void;
   setHandler<Type> (typeName:string, handler:XtTypeHandler<Type>):void;
 }
 
 export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     types= new Map<string, XtTypeHierarchy> ();
 
-    addType (typeName:string, type:XtTypeInfo|string, handler?:XtTypeHandler<any>):void {
-      this.types.set (typeName, fromDescription (type, handler));
+    addRootType<Type> (typeName:string, type:XtTypeInfo|string, handler?:XtTypeHandler<Type>):void {
+      if (handler==null) {
+          handler = this.findTypeHandler(typeName)?.handler;
+      }
+      const typeHierarchy = fromDescription (type, handler, typeName, undefined);
+      this.types.set (typeName, typeHierarchy);
+      typeHierarchy.initHandlers();
+
     }
 
     canUpdate(): boolean {
@@ -109,6 +115,7 @@ export type XtTypeHierarchy = {
     handler?:XtTypeHandler<any>;
 
     addChild (key:string, child:XtTypeHierarchy) : void;
+    initHandlers ():void;
 }
 
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
@@ -126,6 +133,18 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
     addChild (key:string, child:XtTypeHierarchy) : void {
         if (this.children==null) this.children= {};
         this.children[key]=child;
+    }
+
+    initHandlers ():void {
+      if (this.handler!=null) {
+        this.handler.init(this);
+      }
+
+      if (this.children!=null) {
+        for (const child of Object.values(this.children)) {
+          child.initHandlers();
+        }
+      }
     }
 
 }
@@ -148,6 +167,8 @@ export function fromDescription (typeHierarchy:XtTypeInfo|string, handler?:XtTyp
     parent.addChild(name, ret);
   else if ((parent!=null) && (name==null)) {
     throw new Error("Cannot add type to parent without a name.");
+  } else if (name!=null) {
+    ret.type= name;
   }
   return ret;
 }

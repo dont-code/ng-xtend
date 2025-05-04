@@ -9,6 +9,7 @@ import {
 import { UploadedDocumentInfo } from '../xt-document';
 import { XtStoreSortBy } from '../xt-reporting';
 import { ManagedData } from 'xt-type';
+import { Injectable } from '@angular/core';
 
 /**
  * The standard interface for any store provider

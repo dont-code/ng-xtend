@@ -10,7 +10,7 @@ declare global {
 export function initXtType () {
   if (globalThis.XT_TYPE_MGR==null) {
     globalThis.XT_TYPE_MGR = new XtTypeHierarchyResolver();
-    console.log("Global type manager is ", globalThis.XT_TYPE_MGR);
+    //console.debug("Global type manager is ", globalThis.XT_TYPE_MGR);
   }
 }
 

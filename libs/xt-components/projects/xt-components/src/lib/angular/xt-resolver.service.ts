@@ -3,7 +3,7 @@ import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
 import { XtResolvedComponent } from '../xt-resolved-component';
-import { XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
+import { ManagedDataHandler, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
 import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
@@ -54,26 +54,29 @@ export class XtResolverService {
 
   registerPlugin (info:XtPluginInfo) {
     this.pluginRegistry.registerPlugin (info);
-    this.registerTypes (info.types);
-    this.registerTypeHandlers (info.typeHandlers);
+    this.registerTypes (info.types, info.typeHandlers);
   }
 
-  registerTypes (types:XtTypeInfo|undefined) {
+  registerTypes (types:XtTypeInfo|undefined, handlers?:XtTypeHandlerInfo<any>[]): void {
     if ((types !=null) && (this.typeResolver.canUpdate())) {
       for (const newType in types) {
-        (this.typeResolver as XtUpdatableTypeResolver).addType (newType, types[newType]);
+        let handler=this.handlerDefinedFor (newType, handlers);
+        if (handler==null) {
+          handler = new ManagedDataHandler();
+        }
+        (this.typeResolver as XtUpdatableTypeResolver).addRootType (newType, types[newType], handler);
       }
     }
   }
 
-  registerTypeHandlers (handlers?:XtTypeHandlerInfo<any>[]): void {
-    for (const handler of handlers ?? []) {
-      const newHandler = new handler.handlerClass();
-      for (const type of handler.typesHandled) {
-        (this.typeResolver as XtUpdatableTypeResolver).setHandler(type, newHandler);
-      }
+  protected handlerDefinedFor(newType: string, handlers: XtTypeHandlerInfo<any>[] | undefined):any {
+        for (const handler of handlers ?? []) {
+          if (handler.typesHandled.includes(newType)) {
+            return new handler.handlerClass ();
+          }
+        }
+        return null;
     }
-  }
 
   getComponentInfo<T>(type: Type<XtComponent<T>>):XtResolvedComponent {
     return XtResolvedComponent.from(this.pluginRegistry.getComponentInfo (type));

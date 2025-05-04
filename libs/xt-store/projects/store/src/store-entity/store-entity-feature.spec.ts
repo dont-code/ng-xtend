@@ -7,7 +7,7 @@ import { signalStore } from '@ngrx/signals';
 import { withXtStoreProvider, XtSignalStore } from './store-entity-feature';
 import { XtMemoryStoreProvider } from '../store-provider/xt-memory-store-provider';
 import { ManagedData } from 'xt-type';
-import { setupAngularTestBed } from '../../globalSetup';
+import { setupAngularTestBed } from '../../globalTestSetup';
 
 describe('StoreEntityFeature', () => {
 

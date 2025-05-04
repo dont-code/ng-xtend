@@ -1,11 +1,12 @@
-import {lastValueFrom, Observable, Subscription, throwError} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {inject, Injectable, OnDestroy, Optional} from "@angular/core";
-import {map, mergeAll} from "rxjs/operators";
+import { lastValueFrom, Observable, Subscription } from 'rxjs';
+import { inject, Injectable, OnDestroy } from '@angular/core';
+import { map, mergeAll } from 'rxjs/operators';
 import { AbstractXtStoreProvider } from '../store-provider/xt-store-provider';
 import { XtStoreProviderHelper } from '../store-provider/xt-store-provider-helper';
 import { XtStoreCriteria } from '../xt-store-parameters';
 import { UploadedDocumentInfo } from '../xt-document';
+import { ManagedData, nonTemporaryId } from 'xt-type';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 /**
  * A Store Provider that uses the DontCode API to store / read application data
@@ -13,7 +14,7 @@ import { UploadedDocumentInfo } from '../xt-document';
 @Injectable({
   providedIn: 'root'
 })
-export class XtApiStoreProvider<T=never> extends AbstractXtStoreProvider<T> implements OnDestroy {
+export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends AbstractXtStoreProvider<T> implements OnDestroy {
 
   protected http: HttpClient = inject (HttpClient, {optional:true}) as any;
 
@@ -53,10 +54,9 @@ export class XtApiStoreProvider<T=never> extends AbstractXtStoreProvider<T> impl
 
   storeEntity(name: string, data: T): Promise<T> {
 
-    const id=(data as any)._id;
+    const id=nonTemporaryId(data);
     // Reconverts dates or Ids
-    const specialFields = XtStoreProviderHelper.findSpecialFields(name, { });
-    XtStoreProviderHelper.cleanUpDataBeforeSaving([data], specialFields);
+    XtStoreProviderHelper.cleanUpDataBeforeSaving([data],name);
 
     if( id != undefined) {
       return lastValueFrom(this.http.put<T>(this.apiUrl+'/'+name+'/'+id, data, {observe:"body", responseType:"json"}));
@@ -67,10 +67,9 @@ export class XtApiStoreProvider<T=never> extends AbstractXtStoreProvider<T> impl
 
   loadEntity(name: string, key: any): Promise<T|undefined> {
     const obs = this.http.get<T>(this.apiUrl+'/'+name+'/'+key, {observe:"body", responseType:"json"});
-    const specialFields = XtStoreProviderHelper.findSpecialFields(name, { });
 
     return lastValueFrom(obs).then((value) => {
-      XtStoreProviderHelper.cleanUpLoadedData([value], specialFields);
+      XtStoreProviderHelper.cleanUpLoadedData([value], name);
       return value;
     });
   }
@@ -83,10 +82,9 @@ export class XtApiStoreProvider<T=never> extends AbstractXtStoreProvider<T> impl
 
   override searchEntities(name: string, ...criteria: XtStoreCriteria[]): Observable<T[]> {
 
-    const specialFields = XtStoreProviderHelper.findSpecialFields(name, { });
     return this.http.get(this.apiUrl+'/'+name, {observe:"body", responseType:"json"}).pipe(
         map(value => {
-          XtStoreProviderHelper.cleanUpLoadedData(value as T [], specialFields);
+          XtStoreProviderHelper.cleanUpLoadedData(value as T [], name);
           return value as T[];
         }),map(value => {
           return XtStoreProviderHelper.applyFilters( value, ...criteria);

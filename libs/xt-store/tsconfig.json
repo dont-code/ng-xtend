@@ -22,16 +22,13 @@
     "lib": [
       "ES2022",
       "dom"
-    ],
-    "paths": {
-      "xt-type": ["./node_modules/xt-type/src/index.ts"],
-      "tslib": ["./node_modules/tslib/tslib.d.ts"]
-    }
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "exclude": ["dist/**"]
 }

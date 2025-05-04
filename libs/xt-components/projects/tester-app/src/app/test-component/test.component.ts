@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal, Type } from '@angular/core';
-import { XtContext, XtBaseContext, XtComponent, XtResolverService } from 'xt-components';
+import { XtBaseContext, XtComponent, XtContext, XtResolverService } from 'xt-components';
 import { NgComponentOutlet } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-plugin-tester-component',

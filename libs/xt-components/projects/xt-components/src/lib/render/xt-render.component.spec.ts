@@ -6,11 +6,17 @@ import { CommonModule } from '@angular/common';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HostTestFormComponent, HostTestSimpleComponent } from '../test/xt-test-helper-components';
-import { expect } from '@jest/globals';
 import { Button } from 'primeng/button';
 import { By } from '@angular/platform-browser';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
+
 
 describe('XtRenderComponent', () => {
+
+  beforeAll( () => {
+    setupAngularTestBed();
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,7 +67,7 @@ describe('XtRenderComponent', () => {
     expect (host.retrieveValue()).toEqual ("Third");
   });
 
-  it('should support outputs', (done) => {
+  it('should support outputs',  () => new Promise<void>((resolve, reject) => {
 
     const hostFixture = TestBed.createComponent(HostTestSimpleComponent);
     hostFixture.componentRef.setInput('value', 1);
@@ -81,9 +87,9 @@ describe('XtRenderComponent', () => {
       try {
         // The value increase has been well sent through the output
         expect (newValue).toEqual(2);
-        done();
+        resolve();
       } catch (error){
-        done (error);
+        reject (error);
       }
     });
 
@@ -95,7 +101,7 @@ describe('XtRenderComponent', () => {
     hostFixture.detectChanges();
 
     expect(buttonFixture.nativeElement.textContent).toBe('Increase 2');
-  });
+  }));
 
 
 });

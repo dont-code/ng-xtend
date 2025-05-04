@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { XtTypeResolver } from './type/xt-type-resolver';
+import { XtTypeResolver } from 'xt-type';
 import { computed, Signal, signal, WritableSignal } from '@angular/core';
 
 /**
@@ -31,7 +31,7 @@ export type XtContext<T> = {
 
     subValue (subName?:string):T | null | undefined;
 
-    subContext(subName: string | undefined | null, subType?:string, typeResolver?: XtTypeResolver<XtContext<T>> | null): XtContext<any>;
+    subContext(subName: string | undefined | null, subType?:string, typeResolver?: XtTypeResolver | null): XtContext<any>;
 
     elementSetContext(subElement: any): XtContext<any>;
 
@@ -235,7 +235,7 @@ export class XtBaseContext<T> implements XtContext<T>{
     return ret;
   }
 
-    subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver<XtContext<T>> | null): XtContext<any> {
+    subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver | null): XtContext<any> {
         if ((subName==null) || (subName.length==0)) {
             return this;
         } else if (this.childContexts?.has(subName)) {
@@ -262,7 +262,7 @@ export class XtBaseContext<T> implements XtContext<T>{
             if (subType!=null) {
               ret.valueType=subType;
             } else if ((this.valueType!=null) && (typeResolver!=null)) {
-                ret.valueType=typeResolver.findType(this, subName, this.value())??undefined;
+                ret.valueType=typeResolver.findTypeName(this.valueType, subName, this.value())??undefined;
             }
 
             if (this.childContexts==null) this.childContexts=new Map<string, XtBaseContext<any>>();

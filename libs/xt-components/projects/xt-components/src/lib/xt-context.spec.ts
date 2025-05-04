@@ -1,11 +1,26 @@
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../globalTestSetup';
+import { TestBed } from '@angular/core/testing';
+import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { XtBaseContext } from './xt-context';
-import { expect } from '@jest/globals';
-import { FormControl, FormGroup } from '@angular/forms';
-import { signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 describe('XtContext', () => {
-  beforeEach(async () => {
+
+  beforeAll( () => {
+    setupAngularTestBed();
   });
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TestDummyComponent],
+      providers: [provideExperimentalZonelessChangeDetection()]
+    })
+      .compileComponents();
+
+  });
+
 
   it('should calculate isInForm correctly', () => {
     let context= new XtBaseContext('FULL_VIEW');
@@ -16,6 +31,7 @@ describe('XtContext', () => {
     context = new XtBaseContext('FULL_EDITABLE', 'test', new FormGroup({test: new FormControl('')}));
     expect(context.isInForm()).toBe(true);
   });
+
 
   it('should calculate subContext correctly', () => {
     let context= new XtBaseContext('FULL_VIEW');
@@ -43,3 +59,18 @@ describe('XtContext', () => {
   });
 
 });
+
+
+/**
+ * It seems like for the test with ReactiveForm to work properly, one need to create a dummy component
+ *
+ */
+@Component({
+  selector: 'test-dummy-component',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  template: 'Empty Test'
+})
+export class TestDummyComponent {
+
+}

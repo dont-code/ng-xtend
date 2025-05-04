@@ -6,14 +6,19 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { XtCompositeComponent } from '../xt-composite/xt-composite.component';
-import { expect } from '@jest/globals';
 import { HostTestTypedComponent, HostTestTypedFormComponent } from '../test/xt-test-helper-components';
 import { XtResolverService } from '../angular/xt-resolver.service';
 import { Button } from 'primeng/button';
 import { By } from '@angular/platform-browser';
 import { XtPluginRegistry } from '../registry/xt-plugin-registry';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 
 describe('XtRenderSubComponent', () => {
+
+  beforeAll( () => {
+    setupAngularTestBed();
+  });
 
   let resolverService:XtResolverService;
 
@@ -164,7 +169,7 @@ describe('XtRenderSubComponent', () => {
 
   });
 
-  it('should support outputs', (done) => {
+  it('should support outputs',  () => new Promise<void>((resolve, reject) => {
 
     XtPluginRegistry.registry().registerComponent({
       componentName:'TestOutputComponent',
@@ -191,9 +196,9 @@ describe('XtRenderSubComponent', () => {
         expect (newValue).toBeDefined();
         // The value increase has been well sent through the output
         expect (newValue).toEqual(2);
-        done();
+        resolve();
       } catch (error){
-        done (error);
+        reject (error);
       }
     });
 
@@ -205,7 +210,7 @@ describe('XtRenderSubComponent', () => {
     hostFixture.detectChanges();
 
     expect(buttonFixture.nativeElement.textContent).toBe('Increase 2');
-  });
+  }));
 
 });
 
@@ -223,7 +228,7 @@ export class TestCurrencyComponent extends XtSimpleComponent<string> {
 @Component({
   selector: 'test-money-dynamic',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,XtRenderSubComponent],
+  imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent],
   template: '@if (isInForm()) {' +
     '<ng-container [formGroup]="formGroup()">' +
       '<input id="amount_input" type="number" formControlName="amount" />' +

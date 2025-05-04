@@ -1,13 +1,17 @@
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { XtSimpleComponent } from './xt-simple.component';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 
 describe('XtSimpleComponent', () => {
   let component: XtSimpleComponent;
   let fixture: ComponentFixture<XtSimpleComponent>;
+
+  beforeAll( () => {
+    setupAngularTestBed();
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

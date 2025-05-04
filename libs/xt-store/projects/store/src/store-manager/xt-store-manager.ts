@@ -4,6 +4,7 @@ import { UploadedDocumentInfo } from '../xt-document';
 import { XtStoreCriteria, XtGroupBy, XtSortBy } from '../xt-store-parameters';
 import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provider-helper';
 import { XtDataTransformer } from '../store-provider/xt-data-transformer';
+import { ManagedData } from 'xt-type';
 
 export class XtStoreManager {
   private _default?: XtStoreProvider<any>;
@@ -24,7 +25,7 @@ export class XtStoreManager {
     this.providerByType.clear();
   }
 
-  getProvider<T=never>(name?: string): XtStoreProvider<T> | undefined {
+  getProvider<T extends ManagedData = ManagedData>(name?: string): XtStoreProvider<T> | undefined {
     // Override for testing
     if( XtStoreManager.testProvider!=null) return XtStoreManager.testProvider;
 
@@ -47,7 +48,7 @@ export class XtStoreManager {
     }
   }
 
-  getProviderSafe<T=never>(name?: string): XtStoreProvider<T> {
+  getProviderSafe<T extends ManagedData = ManagedData>(name?: string): XtStoreProvider<T> {
     const ret = this.getProvider<T>(name);
     if (ret == null) {
       throw new Error('Trying to get an undefined or null provider');
@@ -56,29 +57,29 @@ export class XtStoreManager {
     }
   }
 
-  getDefaultProvider<T=never>(): XtStoreProvider<T> | undefined {
+  getDefaultProvider<T extends ManagedData = ManagedData>(): XtStoreProvider<T> | undefined {
     return this.getProvider();
   }
 
-  getDefaultProviderSafe<T=never>(): XtStoreProvider<T> {
+  getDefaultProviderSafe<T extends ManagedData = ManagedData>(): XtStoreProvider<T> {
     return this.getProviderSafe();
   }
 
-  setProvider<T=never>(value: XtStoreProvider<T>, name?: string): void {
+  setProvider<T extends ManagedData = ManagedData>(value: XtStoreProvider<T>, name?: string): void {
     if (name == null) this._default = value;
     else {
       this.providerByPosition.set(name, value);
     }
   }
 
-  setProviderForSourceType<T=never>(
+  setProviderForSourceType<T extends ManagedData = ManagedData>(
     value: XtStoreProvider<T>,
     srcType: string
   ): void {
     this.providerByType.set(srcType, value);
   }
 
-  setDefaultProvider<T=never>(value: XtStoreProvider<T>): void {
+  setDefaultProvider<T extends ManagedData = ManagedData>(value: XtStoreProvider<T>): void {
     this.setProvider(value);
   }
 
@@ -97,15 +98,15 @@ export class XtStoreManager {
     this.removeProvider();
   }
 
-  storeEntity<T=never>(name: string, entity: T): Promise<T> {
+  storeEntity<T extends ManagedData = ManagedData>(name: string, entity: T): Promise<T> {
     return this.getProviderSafe<T>(name).storeEntity(name, entity);
   }
 
-  loadEntity<T=never>(name: string, key: any): Promise<T|undefined> {
+  loadEntity<T extends ManagedData = ManagedData>(name: string, key: any): Promise<T|undefined> {
     return this.getProviderSafe<T>(name).loadEntity(name, key);
   }
 
-  safeLoadEntity<T=never>(name: string, key: any): Promise<T> {
+  safeLoadEntity<T extends ManagedData = ManagedData>(name: string, key: any): Promise<T> {
     return this.getProviderSafe<T>(name).safeLoadEntity(name, key);
   }
 
@@ -113,14 +114,14 @@ export class XtStoreManager {
     return this.getProviderSafe(name).deleteEntity(name, key);
   }
 
-  searchEntities<T=never>(
+  searchEntities<T extends ManagedData = ManagedData>(
     name: string,
     ...criteria: XtStoreCriteria[]
   ): Observable<Array<T>> {
     return this.getProviderSafe<T>(name).searchEntities(name, ...criteria);
   }
 
-  searchAndPrepareEntities<T=never>(
+  searchAndPrepareEntities<T extends ManagedData = ManagedData>(
     name: string,
     sort?:XtSortBy,
     groupBy?:XtGroupBy,

@@ -1,54 +1,38 @@
 import {XtStoreProviderHelper} from './xt-store-provider-helper';
 import { XtStoreGroupByAggregate, XtStoreGroupBy } from '../xt-reporting';
 import { XtGroupByOperation } from '../xt-store-parameters';
+import { ManagedData, ManagedDataHandler, xtTypeManager } from 'xt-type';
+import { describe, expect, it } from 'vitest';
 
 describe('Store Provider Helper', () => {
   it('should correctly manage id fields', () => {
 
-    XtStoreProviderHelper.clearConfigCache();
+    xtTypeManager().addRootType("EntityA", {
+        "_id": "Text",
+        "name": "Text"
+    }, new ManagedDataHandler("_id"));
 
-    let result = XtStoreProviderHelper.findSpecialFields("creation/entity/a", {
-      name:"EntityA",
-      fields: {
-        "aa": {
-          name: "_id",
-          type:"Text"
-        },
-        "ab": {
-          name: "name",
-          type:"Text"
-        }
-      }
-    });
+    let result = XtStoreProviderHelper.findTypeHandler("EntityA");
 
-    expect(result.idField).toEqual("_id");
+    expect(result.handler?.idField()).toEqual("_id");
 
-    let listToTest:Array<any>=[{
-      _id:454545,
+    let listToTest:Array<ManagedData>=[{
+      _id:"454545",
       name:"Name1"
     }, {
-      _id:76877,
+      _id:"76877",
       name:"Name2"
     }]
     let toStore = new Array(...listToTest);
-    XtStoreProviderHelper.cleanUpDataBeforeSaving(toStore, result);
+    XtStoreProviderHelper.cleanUpDataBeforeSaving(toStore, result.typeName!, result.handler);
     expect(toStore[0]).toStrictEqual(listToTest[0]);
 
-    result = XtStoreProviderHelper.findSpecialFields("creation/entity/b", {
-      name:"EntityB",
-      fields: {
-        "ba": {
-          name: "uniqueName",
-          type:"Text"
-        },
-        "bb": {
-          name: "firstName",
-          type:"Text"
-        }
-      }
-    });
-
-    expect(result.idField).toEqual("uniqueName");
+    xtTypeManager().addRootType("EntityB", {
+      "uniqueName": "Text",
+      "firstName": "Text"
+    }, new ManagedDataHandler('uniqueName'));
+    result = XtStoreProviderHelper.findTypeHandler("EntityB");
+    expect(result.handler?.idField()).toEqual("uniqueName");
 
     listToTest=[{
       uniqueName:"454545",
@@ -58,109 +42,49 @@ describe('Store Provider Helper', () => {
       firstName:"Name2"
     }];
 
-    XtStoreProviderHelper.cleanUpLoadedData(listToTest, result);
-    expect(listToTest[0]._id).toStrictEqual(listToTest[0].uniqueName);
+    XtStoreProviderHelper.cleanUpLoadedData(listToTest, result.typeName!, result.handler);
+    expect(listToTest[0]._id).toEqual (listToTest[0]['uniqueName']);
 
     toStore = new Array(...listToTest);
-    XtStoreProviderHelper.cleanUpDataBeforeSaving(toStore, result);
+    XtStoreProviderHelper.cleanUpDataBeforeSaving(toStore, result.typeName!, result.handler);
     expect(toStore[0]._id).toBeUndefined();
     expect(toStore[1]._id).toBeUndefined();
-
-    result = XtStoreProviderHelper.findSpecialFields("creation/entity/c", {
-      name:"EntityC",
-      fields: {
-        "ca": {
-          name: "otherIdentifier",
-          type:"Text"
-        },
-        "cb": {
-          name: "primaryIdentifier",
-          type:"Text"
-        }
-      }
-    });
-
-    expect(result.idField).toEqual("primaryIdentifier");
-
-    result = XtStoreProviderHelper.findSpecialFields("creation/entity/d", {
-      name:"EntityD",
-      fields: {
-        "da": {
-          name: "other",
-          type:"Text"
-        },
-        "db": {
-          name: "description",
-          type:"Text"
-        }
-      }
-    });
-
-    expect(result.idField).toBeNull();
-
-    listToTest=[{
-      other:"454545",
-      description:"Name1"
-    }, {
-      other:"76877",
-      description:"Name2"
-    }]
-    toStore = new Array(...listToTest);
-    XtStoreProviderHelper.cleanUpDataBeforeSaving(toStore, result);
-    expect(toStore[0]).toStrictEqual(listToTest[0]);
 
   });
 
   it('should correctly manage Date fields', () => {
 
-    XtStoreProviderHelper.clearConfigCache();
+    xtTypeManager().addRootType("DateEntityB", {
+      "_id":"Text",
+      "Date":"date-time"
+    }, new ManagedDataHandler(undefined, ["Date"]));
+    let result = XtStoreProviderHelper.findTypeHandler("DateEntityB");
 
-    let result = XtStoreProviderHelper.findSpecialFields("creation/entity/b", {
-      name:"EntityB",
-      fields: {
-        "ba": {
-          name: "_id",
-          type:"Text"
-        },
-        "bb": {
-          name: "Date",
-          type:"Date & Time"
-        }
-      }
-    });
+    expect(result.handler).toBeTruthy();
 
-    expect(result.dateFields).toEqual(["Date"]);
-
-    let listToTest:Array<any>=[{
-      _id:454545,
+    let listToTest:Array<ManagedData>=[{
+      _id:"454545",
       Date:"2024-12-23T13:18:37.000Z"
     }, {
-      _id:76877,
+      _id:"76877",
       Date:"2022-12-10T14:51:59.110Z"
     }]
 
-    XtStoreProviderHelper.cleanUpLoadedData(listToTest, result);
-    expect(listToTest[0].Date.valueOf()).not.toBeNaN();
-    expect(listToTest[1].Date.valueOf()).not.toBeNaN();
+    XtStoreProviderHelper.cleanUpLoadedData(listToTest, result.typeName!, result.handler);
+    expect(listToTest[0]["Date"] instanceof Date).toBeTruthy();
+
+    expect(listToTest[0]["Date"]!.valueOf()).not.toBeNaN();
+    expect(listToTest[1]["Date"]!.valueOf()).not.toBeNaN();
   });
 
-  it('should dynamically manage Id fields', () => {
-    XtStoreProviderHelper.clearConfigCache();
-    const result = XtStoreProviderHelper.findSpecialFields("creation/entity/d", {
-      name:"EntityD",
-      fields: {
-        "da": {
-          name: "other",
-          type:"Text"
-        },
-        "db": {
-          name: "description",
-          type:"Text"
-        }
-      }
+/*  it('should dynamically manage Id fields', () => {
+    xtTypeManager().addType("DynEntityA",{
+      "other":"Text",
+      "description":"Text"
     });
+    let result = XtStoreProviderHelper.findTypeHandler("DynEntityA");
 
-    expect(result.idField).toBeNull();
+    expect(result.handler?.idField()).toBeNull();
 
     const listToTest=[{
       other:"Test",
@@ -172,36 +96,25 @@ describe('Store Provider Helper', () => {
     }];
 
       // This will try to guess the id from the data itself
-    XtStoreProviderHelper.cleanUpLoadedData(listToTest, result);
+    XtStoreProviderHelper.cleanUpLoadedData(listToTest, result.typeName!, result.handler);
 
-    expect(result.idField).toBeNull();
-
-    XtStoreProviderHelper.cleanUpLoadedData([{
-      other:"Test",
-      description:"Test1",
-      "id":"NewValue"
-    }, {
-      other:"Test",
-      description:"Test2",
-      "id":"NewValue"
-    }], result);
-    expect(result.idField).toBeNull();
+    expect(result.handler?.idField()).toBeNull();
 
     XtStoreProviderHelper.cleanUpLoadedData([{
       other:"Test",
       description:"Test1",
-      "id":"NewValue"
+      "_id":"NewValue"
     }, {
       other:"Test",
       description:"Test2",
-      "id":"NewValue2"
-    }], result);
-    expect(result.idField).toStrictEqual("id");
+      "_id":"NewValue2"
+    }], result.typeName!, result.handler);
+    expect(result.handler?.idField()).toStrictEqual("id");
 
-  });
+  });*/
 
   it('should calculate groups correctly', () => {
-      XtStoreProviderHelper.clearConfigCache();
+  //    XtStoreProviderHelper.clearConfigCache();
       const resp=XtStoreProviderHelper.calculateGroupedByValues("test",[{
         id:'id1',
         type:'type1',

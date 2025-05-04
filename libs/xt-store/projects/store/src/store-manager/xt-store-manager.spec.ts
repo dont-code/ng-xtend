@@ -9,6 +9,8 @@ import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provid
 import { XtStoreManager } from './xt-store-manager';
 import { XtDataTransformer } from '../store-provider/xt-data-transformer';
 import { UploadedDocumentInfo } from '../xt-document';
+import { describe, expect, it } from 'vitest';
+import { ManagedData } from 'xt-type';
 
 describe('Store Manager', () => {
   it('should correctly return the default provider', () => {
@@ -65,7 +67,7 @@ describe('Store Manager', () => {
   });
 });
 
-class DummyStoreProvider<T> extends AbstractXtStoreProvider<T> {
+class DummyStoreProvider<T extends ManagedData = ManagedData> extends AbstractXtStoreProvider<T> {
   canStoreDocument(): boolean {
     return false;
   }

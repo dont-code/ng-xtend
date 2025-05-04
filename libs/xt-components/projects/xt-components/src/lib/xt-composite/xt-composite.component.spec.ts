@@ -5,10 +5,16 @@ import { Component, OnInit, provideExperimentalZonelessChangeDetection } from '@
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { XtBaseContext } from '../xt-context';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 
 describe('XtCompositeComponent', () => {
   let component: XtCompositeComponent;
   let fixture: ComponentFixture<XtCompositeComponent>;
+
+  beforeAll( () => {
+    setupAngularTestBed();
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,7 +78,7 @@ describe('XtCompositeComponent', () => {
   imports: [CommonModule, ReactiveFormsModule],
   template: '@if (isInForm()) {<ng-container [formGroup]="formGroup()"><input id="text_input" name="TestManagedControl" type="text" formControlName="TestManagedControl" /></ng-container>} @else {<h2>Value is {{context().displayValue()?.TestManagedControl}}</h2>}'
 })
-export class TestManagedControlComponent extends XtCompositeComponent<string> implements OnInit {
+export class TestManagedControlComponent extends XtCompositeComponent<any> implements OnInit {
     override ngOnInit (): void {
       super.ngOnInit();
       this.manageFormControl("TestManagedControl");

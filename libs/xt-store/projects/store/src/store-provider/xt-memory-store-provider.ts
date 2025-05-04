@@ -1,7 +1,7 @@
 import { AbstractXtStoreProvider } from './xt-store-provider';
 import { from, Observable, of, Subject, throwError } from 'rxjs';
 import { UploadedDocumentInfo } from '../xt-document';
-import { ManagedData } from 'xt-type/src';
+import { ManagedData } from 'xt-type';
 
 export class XtMemoryStoreProvider<T extends ManagedData> extends AbstractXtStoreProvider<T> {
   protected storage=new Map<string, Map<string, T>>();

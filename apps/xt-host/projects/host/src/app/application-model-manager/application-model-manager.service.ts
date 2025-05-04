@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { DcApplicationModel, DcFieldModel } from '../shared/models/dc-application-model';
-import { XtTypeInfo } from 'xt-components';
+import { XtTypeInfo } from 'xt-type';
 import { Title } from '@angular/platform-browser';
 
 @Injectable({

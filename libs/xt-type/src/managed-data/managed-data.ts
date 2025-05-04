@@ -12,3 +12,14 @@ export function isPrimitive(valueElement: any): boolean {
     }
   } else return true;
 }
+
+export function isTemporary (value: ManagedData | null | undefined): boolean {
+  if (value==null) return true;
+  if( value._id==null) return true;
+  return false;
+}
+
+export function nonTemporaryId (value: ManagedData | null | undefined): string | undefined {
+  if (value?._id==null) return value?._id;
+  return value._id;
+}

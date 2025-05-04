@@ -1,13 +1,20 @@
 import {TestBed} from '@angular/core/testing';
+
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {XtApiStoreProvider} from "./xt-api-store-provider";
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import {toArray} from "rxjs/operators";
 import { UploadedDocumentInfo } from '../xt-document';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../globalTestSetup';
 
 
 describe('DontCode Api Store Manager', () => {
+
+  beforeAll(() => {
+    setupAngularTestBed();
+  })
 
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
@@ -27,71 +34,71 @@ describe('DontCode Api Store Manager', () => {
     storeProvider.docUrl = '/testDocs';
   });
 
-  it('should list item', (done) => {
+
+  it('should list item', () => new Promise<void>((resolve, reject) => {
     expect(storeProvider).toBeDefined();
     //dtcde.getModelManager().resetContent(EXEMPLE_TEMPLATE);
     storeProvider.searchEntities("Entity1").subscribe({
       next: (value) => {
         expect(value).toBeTruthy();
-        done();
+        resolve();
       },
       error: (error) => {
-        done(error);
+        reject(error);
     }});
     const call=httpTestingController.expectOne("/testData/Entity1");
     call.flush([{Field1:"Test"},{Field1:"Test2"}]);
 
     httpTestingController.verify();
-  });
+  }));
 
-  it('should create, get, delete item', (done) => {
+  it('should create, get, delete item', () => new Promise<void>((resolve, reject) => {
     expect(storeProvider).toBeDefined();
     //dtcde.getModelManager().resetContent(EXEMPLE_TEMPLATE);
-      // Create the entity
+    // Create the entity
     storeProvider.storeEntity("Entity1", {
-      Field1:"Test12"
-    }).then (value => {
+      Field1: "Test12"
+    }).then(value => {
       expect(value).toBeTruthy();
       expect(value._id).toBeTruthy();
 
       // Update the entity
       storeProvider.storeEntity("Entity1", {
-        _id:"1343434",
-        Field1:"Test23"
-      }).then (value2 => {
+        _id: "1343434",
+        Field1: "Test23"
+      }).then(value2 => {
         expect(value2._id).toEqual(value._id);
         // Delete the entity
         storeProvider.deleteEntity("Entity1", value2._id).then(value3 => {
-          done();
+          resolve();
         });
-        call=httpTestingController.expectOne({method:'DELETE',url:"/testData/Entity1/1343434"});
-        call.flush({_id:"1343434", Field1:"Test23"});
+        call = httpTestingController.expectOne({ method: 'DELETE', url: "/testData/Entity1/1343434" });
+        call.flush({ _id: "1343434", Field1: "Test23" });
         httpTestingController.verify();
       });
-      call=httpTestingController.expectOne({method:'PUT',url:"/testData/Entity1/1343434"});
-      call.flush({_id:"1343434", Field1:"Test23"});
+      call = httpTestingController.expectOne({ method: 'PUT', url: "/testData/Entity1/1343434" });
+      call.flush({ _id: "1343434", Field1: "Test23" });
 
     }, error => {
-      done(error);
+      reject(error);
     });
-    let call=httpTestingController.expectOne({method:'POST',url: "/testData/Entity1"});
-    call.flush({_id:"1343434", Field1:"Test12"});
-
-  });
+    let call = httpTestingController.expectOne({ method: 'POST', url: "/testData/Entity1" });
+    call.flush({ _id: "1343434", Field1: "Test12" });
+  }));
 
   it('should manage Items not found properly', async () => {
     expect(storeProvider).toBeDefined();
     //dtcde.getModelManager().resetContent(EXEMPLE_TEMPLATE);
     // Try to get an entity from a not existing model
-/*    let call=httpTestingController.expectOne("/testData/UnknownEntity/First");
-    call.flush(null, { status: 404, statusText: "Entity Type not found"});
+//    let call=httpTestingController.expectOne("/testData/UnknownEntity/First");
+//    call.flush(null, { status: 404, statusText: "Entity Type not found"});
 
-    try {
-      await storeProvider.loadEntity("UnknownEntity", "First");
-      throw new Error ("No exception when getting an unknown entity");
-    } catch (error) {
-      httpTestingController.verify();
-    }*/
+//    try {
+//      await storeProvider.loadEntity("UnknownEntity", "First");
+//      throw new Error ("No exception when getting an unknown entity");
+//    } catch (error) {
+//      httpTestingController.verify();
+//    }
 
     let callPromise: Promise<any>=Promise.resolve(undefined);
     let inError = false;
@@ -127,7 +134,7 @@ describe('DontCode Api Store Manager', () => {
 
   });
 
-  it('can store documents', (done) => {
+  it('can store documents', () => new Promise<void>((resolve, reject) => {
     expect(storeProvider).toBeDefined();
 
     const toUpload = [
@@ -141,10 +148,10 @@ describe('DontCode Api Store Manager', () => {
         expect(responses).toHaveLength(2);
       }),
       complete: (() => {
-        done();
+        resolve();
       }),
       error: (err => {
-        done("Error ", err);
+        reject("Error "+ err.toString());
       })
     });
     let call=httpTestingController.expectOne("/testDocs");
@@ -153,7 +160,7 @@ describe('DontCode Api Store Manager', () => {
       {documentName: 'testFile2.txt', isUrl:true, documentId:'/testDoc/13445'} as UploadedDocumentInfo
     ]);
 
-  });
+  }));
 
 });
 
@@ -192,3 +199,4 @@ const EXEMPLE_TEMPLATE= {
     }
   }
 }
+

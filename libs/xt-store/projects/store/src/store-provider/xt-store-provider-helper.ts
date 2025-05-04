@@ -1,10 +1,11 @@
-import { SpecialFields, Counters } from 'xt-type';
+import { Counters, ManagedData, XtTypeHandler, xtTypeManager } from 'xt-type';
 import {
-  XtGroupByAggregate,
-  XtStoreCriteria,
-  XtStoreCriteriaOperator,
   XtGroupBy,
-  XtSortBy, XtGroupByOperation
+  XtGroupByAggregate,
+  XtGroupByOperation,
+  XtSortBy,
+  XtStoreCriteria,
+  XtStoreCriteriaOperator
 } from '../xt-store-parameters';
 
 /**
@@ -12,14 +13,7 @@ import {
  */
 export class XtStoreProviderHelper {
 
-  static specialFieldsCache = new Map<string, SpecialFields>();
-  /**
-   * In case some entity definition has changed, clear the cache
-   */
-  public static clearConfigCache (): void {
-    this.specialFieldsCache.clear();
-  }
-
+  protected static typeManager = xtTypeManager();
   /**
    * In case the provider source doesn't support search criteria, they can be applied here
    * @param list
@@ -48,103 +42,35 @@ export class XtStoreProviderHelper {
 
   /** Returns any field who is a date, in order to convert it from json. Keep the result in a cache map
    *
-   * @param name
-   * @param entity
+   * @param typeName
+   * @param typeResolver
    * @protected
    */
-  public static findSpecialFields (name:string, entity:any):SpecialFields {
-    let specialFields = XtStoreProviderHelper.specialFieldsCache.get(name);
-    if (specialFields!=null) return specialFields;
-
-    const curScore: {score:number, field:any} = {score:-1, field:null}
-
-    specialFields = new SpecialFields();
-    const fields = entity.fields;
-    if( fields!=null) {
-      let prop: keyof typeof fields;
-      for (prop in fields) {
-        // Finds the date fields that will need to be converted from json to javascript Date
-        if (fields[prop]?.type==='Date' || fields[prop]?.type==='Date & Time') {
-          specialFields.addDateField(fields[prop]?.name);
-        } else {
-          XtStoreProviderHelper.scoreIdFieldFromEntityField(fields[prop], curScore);
-        }
-      }
-    }
-    if (curScore.score>0) {
-      specialFields.idField=curScore.field;
-    }
-    XtStoreProviderHelper.specialFieldsCache.set(name, specialFields);
-
-    // eslint-disable-next-line no-restricted-syntax
-    //console.debug("Found special fields for entity at position "+name, specialFields);
-    return specialFields;
+  public static findTypeHandler (typeName:string, subName?:string, value?:ManagedData): { typeName?:string | null, handler?:XtTypeHandler<any>} {
+    return XtStoreProviderHelper.typeManager?.findTypeHandler(typeName, subName, value);
   }
 
-  protected static findSpecialFieldsFromData(data: Array<any>, existingFields: SpecialFields) {
-    if( (existingFields.idField==null) && (data?.length>0)) {
-      // We must guess the id field from data
-      const first=data[0];
-      const curScore: {score:number, field:any} = {score:-1, field:null}
-      let prop: keyof typeof first;
-
-      for (prop in first) {
-        XtStoreProviderHelper.scoreIdFieldFromProperty(prop, curScore);
-      }
-      if (curScore.score>0) {
-        const test=data.length>1?data[Math.floor((data.length+1)/2)]:null;
-        if ((test==null) || (test[curScore.field]!=first[curScore.field]))  // Just check that another element doesn't have the same value as an id should be unique
-          existingFields.idField=curScore.field;
-      }
-    }
-  }
-
-  protected static scoreIdFieldFromEntityField (prop:any, score:{score:number, field:any}): boolean {
-    return XtStoreProviderHelper.scoreIdFieldFromProperty(prop?.name, score);
-  }
-
-  protected static scoreIdFieldFromProperty (name:string, score:{score:number, field:any}): boolean {
-    if( name==null)
-      return false;
-    const propName=name.toLowerCase();
-    // Finds if the element is the id field
-    if( propName === "_id") {
-      score.field="_id";  // Don't need to process Id
-      score.score = 100;
-      return true;
-    } else {
-      if ((propName == "id")||(propName=="uniqueid")||(propName=="identifier") || (propName=='key') || (propName=='primaryKey')||(propName=='uniqueKey')) {
-        if (score.score<80) {
-          score.score=80;
-          score.field=name;
-        }
-      } else if (propName.includes("unique")||propName.includes("primary")) {
-        if (score.score<50) {
-          score.score = 50;
-          score.field=name;
-        }
-      }else if (propName.includes("id")||propName.includes('key')) {
-        if (score.score<30) {
-          score.score = 30;
-          score.field=name;
-        }
-      }
-      return false;
-    }
-
-  }
-  /**
+    /**
    * Ensure _id is removed if necessary before saving the element
    * @param listToConvert
    * @param specialFields
    * @protected
    */
-  public static cleanUpDataBeforeSaving (listToConvert:Array<any>, specialFields:SpecialFields) : void {
-    if ((specialFields?.idField!=null)&&(specialFields?.idField!='_id')) {
+  public static cleanUpDataBeforeSaving (listToConvert:Array<ManagedData>, typeName:string, handler?:XtTypeHandler<any> | null) : void {
+      if (handler==null) handler=XtStoreProviderHelper.findTypeHandler
+          (typeName, undefined, (listToConvert.length>0)?listToConvert[0]:undefined)
+        .handler;
+
+      if (handler!=null) {
+        for (const toConvert of listToConvert) {
+          handler.toJson(toConvert)
+        }
+      }
+/*    if ((specialFields?.idField!=null)&&(specialFields?.idField!='_id')) {
       listToConvert.forEach(value => {
         delete value._id;
       })
-    }
+    }*/
   }
 
   /**
@@ -154,11 +80,18 @@ export class XtStoreProviderHelper {
    * @param specialFields
    * @protected
    */
-  public static cleanUpLoadedData (listToConvert:Array<any>, specialFields:SpecialFields) : void {
+  public static cleanUpLoadedData (listToConvert:Array<ManagedData>, typeName:string, handler?:XtTypeHandler<any> | null) : void {
 
-    if (specialFields!=null) {
+    if (handler==null) handler=XtStoreProviderHelper.findTypeHandler(typeName, undefined, (listToConvert.length>0)?listToConvert[0]:undefined).handler;
+
+    if (handler!=null) {
+      for (const toConvert of listToConvert) {
+        handler.fromJson(toConvert)
+      }
+    }
+      /*
       if( specialFields.idField==null) {
-        XtStoreProviderHelper.findSpecialFieldsFromData (listToConvert, specialFields);
+        XtSpecialFieldsHelper.findSpecialFieldsFromData (listToConvert, specialFields);
       }
       listToConvert.forEach((val)=> {
         if ((specialFields.idField!=null)&&(specialFields.idField!="_id")) // We need to copy the id to the standard _id field
@@ -186,7 +119,7 @@ export class XtStoreProviderHelper {
           }
         })
       })
-    }
+    }*/
   }
 
   /**

@@ -5,13 +5,18 @@ import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { registerSamplePlugin, SampleHelloComponent } from 'xt-plugin-sample';
 import { XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
-import { expect } from '@jest/globals';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 import { AutoComplete } from 'primeng/autocomplete';
 
 describe('TestComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   let resolverService:XtResolverService;
+
+  beforeAll( () => {
+    setupAngularTestBed();
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

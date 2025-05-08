@@ -3,11 +3,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SampleCurrencyComponent } from './sample-currency.component';
 import {provideExperimentalZonelessChangeDetection} from "@angular/core";
 import { XtBaseContext,HostTestTypedComponent, HostTestTypedFormComponent, XtResolverService } from 'xt-components';
-import { expect } from '@jest/globals';
 import { registerSamplePlugin } from '../register';
 import { By } from '@angular/platform-browser';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 
 describe('XtCurrencyComponent', () => {
+
+  beforeAll(() => {
+    setupAngularTestBed();
+  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

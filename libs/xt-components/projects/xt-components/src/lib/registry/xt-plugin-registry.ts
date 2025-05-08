@@ -1,7 +1,6 @@
-import { XtComponentInfo, XtPluginInfo } from "../plugin/xt-plugin-info";
+import { XtComponentInfo, XtPluginInfo } from '../plugin/xt-plugin-info';
 import { signal, Type } from '@angular/core';
 import { XtComponent } from '../xt-component';
-import { A } from '@angular/cdk/keycodes';
 
 export class XtPluginRegistry {
 
@@ -134,4 +133,3 @@ export class XtPluginRegistry {
   }
 }
 
-export const XT_REGISTRY=new XtPluginRegistry ();

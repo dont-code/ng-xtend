@@ -4,12 +4,17 @@ import { SampleMoneyComponent } from './sample-money.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { HostTestTypedComponent, HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { registerSamplePlugin } from '../register';
-import { expect } from '@jest/globals';
 import { By } from '@angular/platform-browser';
 import { InputNumber } from 'primeng/inputnumber';
 import { SampleCurrencyComponent } from '../currency/sample-currency.component';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 
 describe('SampleMoneyComponent', () => {
+  beforeAll(() => {
+    setupAngularTestBed();
+  })
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SampleCurrencyComponent],

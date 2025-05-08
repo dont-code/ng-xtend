@@ -8,6 +8,7 @@ export * from './lib/xt-resolved-component';
 export * from './lib/resolver/xt-resolver';
 export * from './lib/registry/xt-plugin-registry'
 export * from './lib/plugin/xt-plugin-info'
+export * from './globals';
 
 export * from './lib/angular/xt-tokens';
 export * from './lib/angular/xt-resolver.service';

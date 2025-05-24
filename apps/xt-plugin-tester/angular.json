@@ -5,7 +5,7 @@
 		"packageManager": "pnpm",
 		"analytics": "cf875e2f-dffc-4763-9249-15d06cfa7c81",
 		"cache": {
-			"enabled": false
+			"enabled": true
 		}
 	},
 	"newProjectRoot": "projects",
@@ -23,7 +23,10 @@
 			"architect": {
 				"build": {
 					"builder": "@angular-architects/native-federation:build",
-					"options": {},
+					"options": {
+            "preserveSymlinks": true,
+            "verbose": true
+          },
 					"configurations": {
 						"production": {
 							"target": "plugin-tester:esbuild:production"
@@ -39,7 +42,9 @@
 				"serve": {
 					"builder": "@angular-architects/native-federation:build",
 					"options": {
-						"target": "plugin-tester:serve-original:development",
+            "verbose": true,
+            "preserveSymlinks": true,
+            "target": "plugin-tester:serve-original:development",
 						"rebuildDelay": 0,
 						"dev": true,
 						"port": 0

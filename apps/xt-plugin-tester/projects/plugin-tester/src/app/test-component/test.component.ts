@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, FormsModule, PristineChangeEvent, ReactiveForms
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { loadRemoteModule } from '@softarc/native-federation-runtime';
 
 @Component({
   selector: 'app-plugin-tester-component',
@@ -44,6 +45,12 @@ export class TestComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    loadRemoteModule({
+      remoteEntry: 'http://localhost:4201/remoteEntry.json',
+      exposedModule: './Register'
+    }).then ((module) => {
+      module.registerPlugin (this.xtResolver);
+    });
     this.listenToValueChanges();
   }
 

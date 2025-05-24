@@ -92,5 +92,8 @@ export class XtResolverService {
     return this.pluginRegistry.listComponents();
   });
 
+  public listPlugins = computed<Array<XtPluginInfo>>(() => {
+    return this.pluginRegistry.listPlugins();
+  });
 
 }

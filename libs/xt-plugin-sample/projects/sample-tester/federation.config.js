@@ -5,7 +5,9 @@ module.exports = withNativeFederation({
   name: 'sample-tester',
 
   exposes: {
-    './Component': './projects/sample-tester/src/app/app.component.ts',
+    './SampleHelloComponent': './projects/sample/src/lib/hello/sample-hello.component.ts',
+    './SampleCurrencyComponent': './projects/sample/src/lib/currency/sample-currency.component.ts',
+    './SampleMoneyComponent': './projects/sample/src/lib/money/sample-money.component.ts',
     './Register': './projects/sample/src/lib/register.ts'
   },
 

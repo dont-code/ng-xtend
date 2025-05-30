@@ -1,3 +1,17 @@
+<p-fieldset legend="Plugin Manager" [formGroup]="form">
+  <p class="text-lg font-medium">To load a new plugin, enter its url below:</p>
+  <div class="flex flex-row gap-2 items-center">
+    <label for="pluginUrl" class="flex-none ">Plugin Url</label>
+    <div class="w-xl flex-initial">
+      <p-autocomplete id="pluginUrl" [fluid]="true" formControlName="pluginUrl" [showEmptyMessage]="false" [suggestions]="suggestedUrls()" (completeMethod)="listSuggestions($event)">
+      </p-autocomplete>
+    </div>
+    <p-button class="flex-none" icon="pi pi-download" (onClick)="loadPlugin ()" [disabled]="!formValid()" label="Load" />
+  </div>
+  <app-form-error-displayer [form]="form"></app-form-error-displayer>
+</p-fieldset>
+
+<p-panel header="List of loaded plugins">
 <div class="inline-block">
   <div class="flex flex-row flex-nowrap gap-4 place-items-start">
      @for (plugin of listPlugins(); track plugin.name) {
@@ -45,3 +59,4 @@
      }
    </div>
 </div>
+</p-panel>

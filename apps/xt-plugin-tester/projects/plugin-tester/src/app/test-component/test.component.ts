@@ -45,12 +45,6 @@ export class TestComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    loadRemoteModule({
-      remoteEntry: 'http://localhost:4201/remoteEntry.json',
-      exposedModule: './Register'
-    }).then ((module) => {
-      module.registerPlugin (this.xtResolver);
-    });
     this.listenToValueChanges();
   }
 

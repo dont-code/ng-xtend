@@ -6,11 +6,12 @@ import { XtResolverService } from 'xt-components';
 import { registerDefaultPlugin } from 'xt-plugin-default';
 import { registerWebPlugin } from 'xt-plugin-web';
 import { XtMemoryStoreProvider, xtStoreManager } from 'xt-store';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToolbarModule, ButtonModule, RouterLink],
+  imports: [RouterOutlet, ToolbarModule, ButtonModule, RouterLink, Toast],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

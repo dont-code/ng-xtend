@@ -6,6 +6,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { MessageHandler } from 'xt-components';
 
 
 export const appConfig: ApplicationConfig = {
@@ -18,6 +20,9 @@ export const appConfig: ApplicationConfig = {
       }
     }),
     provideRouter(routes),
-    provideHttpClient()
+    provideHttpClient(),
+    MessageService,
+    { provide: MessageHandler, useClass:MessageService}
+
   ]
 };

@@ -1,10 +1,14 @@
+<p-toast></p-toast>
 <h1>Test your plugins here</h1>
 <p-toolbar>
-    <div class="p-toolbar-group-center">
-        <a routerLink="/"><p-button icon="pi pi-equals" ></p-button> </a>
-        <a routerLink="/plugins"><p-button icon="pi pi-wrench"></p-button></a>
-        <a routerLink="/form" ><p-button icon="pi pi-file-edit" [disabled]="true"></p-button></a>
-        <a routerLink="/hierarchy"><p-button icon="pi pi-sitemap" [disabled]="true"></p-button></a>
+  <ng-template #start>
+    <div class="flex items-center gap-2">
+      <a routerLink="/"><p-button icon="pi pi-wrench" ></p-button> </a>
+      <i class="pi pi-arrow-right"></i>
+      <a routerLink="/test"><p-button icon="pi pi-equals"></p-button></a>
+      <a routerLink="/form" ><p-button icon="pi pi-file-edit" [disabled]="true"></p-button></a>
+      <a routerLink="/hierarchy"><p-button icon="pi pi-sitemap" [disabled]="true"></p-button></a>
     </div>
+  </ng-template>
 </p-toolbar>
 <router-outlet />

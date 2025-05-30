@@ -5,9 +5,9 @@ import { HierarchyTestComponent } from './hierarchy-test/hierarchy-test.componen
 import { PluginManagerComponent } from './plugin-manager/plugin-manager.component';
 
 export const routes: Routes = [{
-    path:'', component:TestComponent
+    path:'', component:PluginManagerComponent
 }, {
-  path:'plugins', component:PluginManagerComponent
+  path:'test', component:TestComponent
 }, {
     path:'form', component:XtFormTestComponent
 }, {

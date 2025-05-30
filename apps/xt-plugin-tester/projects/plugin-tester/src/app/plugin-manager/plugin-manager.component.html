@@ -3,7 +3,7 @@
   <div class="flex flex-row gap-2 items-center">
     <label for="pluginUrl" class="flex-none ">Plugin Url</label>
     <div class="w-xl flex-initial">
-      <p-autocomplete id="pluginUrl" [fluid]="true" formControlName="pluginUrl" [showEmptyMessage]="false" [suggestions]="suggestedUrls()" (completeMethod)="listSuggestions($event)">
+      <p-autocomplete id="pluginUrl" [fluid]="true" (keydown.enter)="loadPlugin()" formControlName="pluginUrl" [showEmptyMessage]="false" [suggestions]="suggestedUrls()" (completeMethod)="listSuggestions($event)">
       </p-autocomplete>
     </div>
     <p-button class="flex-none" icon="pi pi-download" (onClick)="loadPlugin ()" [disabled]="!formValid()" label="Load" />

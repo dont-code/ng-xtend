@@ -87,24 +87,27 @@ export class PluginManagerComponent implements OnDestroy {
   }
 
   loadPlugin() {
-    let url = this.form.value['pluginUrl']!;
-    this.listUrls.update((oldList) => {
-      oldList.add(url);
-      return new Set(oldList.values());
-    });
-    if (!url.endsWith("remoteEntry.json")) {
-      url = url+(url.endsWith('/')?'':'/')+'remoteEntry.json';
+    if( !this.formValid()) {
+      this.errorHandler.errorOccurred(new Error("Form is not valid"), "Form is not valid");
+    } else {
+      let url = this.form.value['pluginUrl']!;
+      this.listUrls.update((oldList) => {
+        oldList.add(url);
+        return new Set(oldList.values());
+      });
+      if (!url.endsWith("remoteEntry.json")) {
+        url = url+(url.endsWith('/')?'':'/')+'remoteEntry.json';
+      }
+
+      loadRemoteModule({
+        remoteEntry: url,
+        exposedModule: './Register'
+      }).then ((module) => {
+        module.registerPlugin (this.resolverService);
+      }).catch((error) => {
+        this.errorHandler.errorOccurred(error, "Error while loading plugin.");
+      });
     }
-
-    loadRemoteModule({
-      remoteEntry: url,
-      exposedModule: './Register'
-    }).then ((module) => {
-      module.registerPlugin (this.resolverService);
-    }).catch((error) => {
-      this.errorHandler.errorOccurred(error, "Error while loading plugin.");
-    });
-
   }
 
 }

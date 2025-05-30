@@ -10,11 +10,13 @@ import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplet
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { loadRemoteModule } from '@softarc/native-federation-runtime';
+import { Fieldset } from 'primeng/fieldset';
+import { Panel } from 'primeng/panel';
 
 @Component({
   selector: 'app-plugin-tester-component',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, XtRenderComponent, AutoCompleteModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, XtRenderComponent, AutoCompleteModule, Fieldset, Panel],
   templateUrl: './test.component.html',
   styleUrl: './test.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -63,11 +65,23 @@ export class TestComponent implements OnInit, OnDestroy {
     return this.component()?.componentClass;
   });
 
-  suggestedComponents(): XtComponentInfo<any>[] {
-    return this.xtResolver.listComponents ().filter((value) => {
-      if ((this.query==null)||(this.query.length==0)) return true;
-      else return value.componentName.indexOf(this.query)!=-1;
-    });
+  suggestedComponents(): ComponentByPlugin[] {
+
+    const matchPlugin:ComponentByPlugin[] = [];
+    for (const plugin of this.xtResolver.listPlugins()) {
+      const matchComp=plugin.components?.filter((comp) => {
+        if ((this.query==null)||(this.query.length==0)) return true;
+        else return comp.componentName.indexOf(this.query)!=-1;
+      });
+
+      if((matchComp!=null) && (matchComp.length>0)) {
+        matchPlugin.push({
+          pluginName: plugin.name,
+          items: matchComp
+        });
+      }
+    }
+    return matchPlugin;
   }
 
   completeName($event: any) {
@@ -126,4 +140,9 @@ export class TestComponent implements OnInit, OnDestroy {
       }
     }));*/
   }
+}
+
+type ComponentByPlugin = {
+  pluginName: string,
+  items: XtComponentInfo<any>[]
 }

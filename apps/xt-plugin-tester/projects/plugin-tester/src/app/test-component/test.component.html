@@ -3,8 +3,8 @@
   <p class="text-lg font-medium">Select component to test</p>
   <div class="flex flex-row gap-2 items-center">
     <label for="switcher" class="flex-none">Component</label>
-    <div class="w-xl flex-initial">
-      <p-autocomplete id="switcher" [ngModel]="component()" [group]="true" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
+    <div class="w-lg flex-initial">
+      <p-autocomplete id="switcher" [ngModel]="component()" [group]="true" [fluid]="true" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
         <ng-template let-plugin #group>
           <div class="font-medium text-lg text-shadow-lg">{{ plugin.pluginName }}</div>
         </ng-template>

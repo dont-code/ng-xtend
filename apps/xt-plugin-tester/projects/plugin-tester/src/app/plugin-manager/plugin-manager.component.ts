@@ -99,12 +99,7 @@ export class PluginManagerComponent implements OnDestroy {
         url = url+(url.endsWith('/')?'':'/')+'remoteEntry.json';
       }
 
-      loadRemoteModule({
-        remoteEntry: url,
-        exposedModule: './Register'
-      }).then ((module) => {
-        module.registerPlugin (this.resolverService);
-      }).catch((error) => {
+      this.resolverService.loadPlugin(url).catch((error) => {
         this.errorHandler.errorOccurred(error, "Error while loading plugin.");
       });
     }

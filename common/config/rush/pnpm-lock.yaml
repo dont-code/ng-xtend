@@ -12,6 +12,9 @@ importers:
 
   ../../apps/xt-host:
     dependencies:
+      '@angular-architects/native-federation':
+        specifier: ^19.0.23
+        version: 19.0.23
       '@angular/animations':
         specifier: ^19.2.10
         version: 19.2.10(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.10(rxjs@7.8.2))
@@ -48,6 +51,9 @@ importers:
       '@primeuix/utils':
         specifier: ^0.5.3
         version: 0.5.3
+      '@softarc/native-federation-runtime':
+        specifier: ^3.0.2
+        version: 3.0.2
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
@@ -125,7 +131,7 @@ importers:
   ../../apps/xt-plugin-tester:
     dependencies:
       '@angular-architects/native-federation':
-        specifier: ~19.0.23
+        specifier: ^19.0.23
         version: 19.0.23
       '@angular/animations':
         specifier: ^19.2.10
@@ -245,6 +251,9 @@ importers:
 
   ../../libs/xt-components:
     dependencies:
+      '@angular-architects/native-federation':
+        specifier: ^19.0.23
+        version: 19.0.23
       '@angular/animations':
         specifier: ^19.2.10
         version: 19.2.10(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.10(rxjs@7.8.2))
@@ -281,6 +290,9 @@ importers:
       '@primeuix/utils':
         specifier: ^0.5.3
         version: 0.5.3
+      '@softarc/native-federation-runtime':
+        specifier: ^3.0.2
+        version: 3.0.2
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
@@ -338,7 +350,7 @@ importers:
   ../../libs/xt-plugin-sample:
     dependencies:
       '@angular-architects/native-federation':
-        specifier: ~19.0.23
+        specifier: ^19.0.23
         version: 19.0.23
       '@angular/animations':
         specifier: ^19.2.10

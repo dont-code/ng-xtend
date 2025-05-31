@@ -32,7 +32,9 @@
     "@primeuix/utils": "^0.5.3",
     "@primeuix/styled": "^0.6.4",
     "primeicons": "^7.0.0",
-    "tslib": "^2.8.1"
+    "tslib": "^2.8.1",
+    "@angular-architects/native-federation": "^19.0.23",
+    "@softarc/native-federation-runtime": "^3.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.11",

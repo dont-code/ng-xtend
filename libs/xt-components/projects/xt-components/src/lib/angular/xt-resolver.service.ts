@@ -7,6 +7,7 @@ import { ManagedDataHandler, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeRes
 import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
+import { loadRemoteModule } from '@angular-architects/native-federation';
 
 @Injectable({
   providedIn: 'root'
@@ -95,5 +96,22 @@ export class XtResolverService {
   public listPlugins = computed<Array<XtPluginInfo>>(() => {
     return this.pluginRegistry.listPlugins();
   });
+
+  /**
+   * Dynamically load a register a plugin from the given url
+   * The plugin must export at least a Register entrypoint that will be called right after loading..
+   * @param url
+   * @returns a Promise with the module loaded and already registered.
+   */
+  loadPlugin (url:URL|string):Promise<any> {
+    return loadRemoteModule({
+      remoteEntry: url.toString(),
+      exposedModule: './Register'
+    }).then((module:any) => {
+      module.registerPlugin(this);
+      return module;
+    });
+
+  }
 
 }

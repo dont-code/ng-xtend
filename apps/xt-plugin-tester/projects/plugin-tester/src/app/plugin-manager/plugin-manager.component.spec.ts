@@ -4,6 +4,8 @@ import { PluginManagerComponent } from './plugin-manager.component';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../../globalTestSetup';
 import { XtCompositeComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
+import { MessageService } from 'primeng/api';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('PluginManagerComponent', () => {
   let component: PluginManagerComponent;
@@ -16,7 +18,8 @@ describe('PluginManagerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PluginManagerComponent]
+      imports: [PluginManagerComponent],
+      providers: [MessageService, provideNoopAnimations()]
     })
     .compileComponents();
 

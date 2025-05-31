@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup, FormsModule, PristineChangeEvent, ReactiveForms
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { loadRemoteModule } from '@softarc/native-federation-runtime';
 import { Fieldset } from 'primeng/fieldset';
 import { Panel } from 'primeng/panel';
 

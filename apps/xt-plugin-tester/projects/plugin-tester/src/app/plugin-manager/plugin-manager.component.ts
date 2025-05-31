@@ -9,10 +9,10 @@ import { Panel } from 'primeng/panel';
 import { Fieldset } from 'primeng/fieldset';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { loadRemoteModule } from '@softarc/native-federation-runtime';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { Subscription } from 'rxjs';
 import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-displayer.component';
+import { loadRemoteModule } from '@angular-architects/native-federation';
 
 @Component({
   selector: 'app-plugin-manager',

@@ -147,5 +147,16 @@ export class XtPluginRegistry {
     if (ret==null) {throw new Error ("No component found with class "+type);}
     return ret;
   }
-}
 
+  /** loadPlugin (url:URL|string) {
+    return loadRemoteModule({
+      remoteEntry: url,
+      exposedModule: './Register'
+    }).then ((module) => {
+      module.registerPlugin (this.resolverService);
+    }).catch((error) => {
+      this.errorHandler.errorOccurred(error, "Error while loading plugin.");
+    });
+
+  }*/
+}

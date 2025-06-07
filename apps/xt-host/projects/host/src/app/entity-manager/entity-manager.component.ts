@@ -19,8 +19,7 @@ import { Button } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { PrimeIcons } from 'primeng/api';
-import { XtSignalStore, StoreManagerService } from 'xt-store';
+import { StoreManagerService, XtSignalStore } from 'xt-store';
 
 @Component({
   selector: 'app-entity-manager',
@@ -73,9 +72,11 @@ export class EntityManagerComponent implements OnDestroy {
   });
 
   canSave=signal (false);
-  saveIcon = signal( PrimeIcons.SAVE);
-  deleteIcon = signal(PrimeIcons.TRASH);
-  newIcon = signal(PrimeIcons.PLUS);
+
+  saving = signal (false);
+  newing = signal (false);
+  deleting = signal (false);
+  updating = signal (false);
 
   private subscriptions=new Subscription();
 
@@ -93,10 +94,17 @@ export class EntityManagerComponent implements OnDestroy {
   updateStore () {
     const entityName = this.entityName();
     if (entityName!=null) {
-      this.store = this.storeMgr.getStoreFor(entityName);
-      this.store.fetchEntities().catch((error) => {
-        this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
-      });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
+      try {
+        this.updating.set(true);
+        this.store = this.storeMgr.getStoreFor(entityName);
+        this.store.fetchEntities().catch((error) => {
+          this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
+        }).finally(() => {
+          this.updating.set(false);
+        });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
+      } catch (error) {
+        this.updating.set(false);
+      }
     } else {
       this.store = null;
     }
@@ -117,7 +125,7 @@ export class EntityManagerComponent implements OnDestroy {
     }
 
     try {
-      this.saveIcon.set(PrimeIcons.SPINNER);
+      this.saving.set(true);
       const savedValue = await this.safeStore().storeEntity (toSave);
       this.selectedEntity.set(savedValue);
       this.canSave.set(false);
@@ -125,7 +133,7 @@ export class EntityManagerComponent implements OnDestroy {
     } catch (error) {
       this.errorHandler.errorOccurred(error, "Error saving entity with id "+ toSave._id);
     } finally {
-      this.saveIcon.set(PrimeIcons.SAVE);
+      this.saving.set(false);
     }
   }
 
@@ -152,12 +160,12 @@ export class EntityManagerComponent implements OnDestroy {
     let deleted=false;
     if (toTrash._id!=null) {
       try {
-        this.deleteIcon.set(PrimeIcons.SPINNER);
+        this.deleting.set(true);
         deleted = await this.safeStore().deleteEntity (toTrash._id);
       } catch (error) {
         this.errorHandler.errorOccurred(error, "Deleting entity with id "+toTrash._id);
       } finally {
-        this.deleteIcon.set(PrimeIcons.TRASH);
+        this.deleting.set(false);
       }
     } else {
       deleted=true;
@@ -170,7 +178,7 @@ export class EntityManagerComponent implements OnDestroy {
 
   async newEntity() {
     try {
-      this.newIcon.set(PrimeIcons.SPINNER);
+      this.newing.set(true);
       const newOne = await this.safeStore().storeEntity({} as ManagedData);
       this.selectedEntity.set(newOne);
       this.viewMode.set("edit");
@@ -178,7 +186,7 @@ export class EntityManagerComponent implements OnDestroy {
     } catch (error) {
       this.errorHandler.errorOccurred(error, "Error creating and storing new Entity")
     } finally {
-      this.newIcon.set(PrimeIcons.PLUS);
+      this.newing.set(false);
     }
   }
 

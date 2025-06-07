@@ -5,10 +5,10 @@
 <h1>{{entName}}</h1>
   <p-toolbar>
     <ng-template #center>
-      <p-button [icon]="newIcon()" (onClick)="newEntity()"></p-button>
-      <p-button icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()"></p-button>
-      <p-button [icon]="deleteIcon()" [disabled]="!selectedEntity()" (onClick)="deleteSelected()"></p-button>
-      <p-button [icon]="saveIcon()" [disabled]="!canSave()" (onClick)="save()"></p-button>
+      <p-button icon="pi pi-plus" (onClick)="newEntity()" [loading]="newing()"></p-button>
+      <p-button icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()" [loading]="updating()"></p-button>
+      <p-button icon="pi pi-trash" [disabled]="!selectedEntity()" (onClick)="deleteSelected()" [loading]="deleting()"></p-button>
+      <p-button icon="pi pi-save" [disabled]="!canSave()" (onClick)="save()" [loading]="saving()"></p-button>
     </ng-template>
   </p-toolbar>
   <p-tabs [value]="viewMode()" >

@@ -1,0 +1,62 @@
+<p-fieldset legend="Plugin Manager" [formGroup]="form">
+  <p class="text-lg font-medium">To load a new plugin, enter its url below:</p>
+  <div class="flex flex-row gap-2 items-center">
+    <label for="pluginUrl" class="flex-none ">Plugin Url</label>
+    <div class="w-xl flex-initial">
+      <p-autocomplete id="pluginUrl" [fluid]="true" (keydown.enter)="loadPlugin()" formControlName="pluginUrl" [showEmptyMessage]="false" [suggestions]="suggestedUrls()" (completeMethod)="listSuggestions($event)">
+      </p-autocomplete>
+    </div>
+    <p-button class="flex-none" icon="pi pi-download" (onClick)="loadPlugin ()" [disabled]="!formValid()" label="Load" />
+  </div>
+  <app-form-error-displayer [form]="form"></app-form-error-displayer>
+</p-fieldset>
+
+<p-panel header="List of loaded plugins">
+<div class="inline-block">
+  <div class="flex flex-row flex-nowrap gap-4 place-items-start">
+     @for (plugin of listPlugins(); track plugin.name) {
+       <div class="flex-auto">
+       <p-card [header]="plugin.name" [style]="{width:'25rem'}" >
+         <ng-template #header>
+             <img
+               class="block xl:block mx-auto rounded-border w-full"
+               [src]="plugin.logoUrl"
+               [alt]="plugin.name"
+             />
+         </ng-template>
+         <ng-template #title>{{ plugin.name }}</ng-template>
+         <ng-template #subtitle>{{ plugin.category }}</ng-template>
+           <p-button
+             [icon]="detailButtonIcon(plugin)"
+             class="flex-auto md:flex-initial whitespace-nowrap"
+             (onClick)="detailButtonClicked(plugin)"
+             [link]="true"
+           />
+
+         @if (plugin.isOpen()) {
+           <div>Components:
+             @for (comp of plugin.details?.components; track comp.name) {
+               <div class="col-span-12">
+                 <div class="text-lg font-medium text-surface-900 dark:text-surface-0 mt-2">{{ comp.name }}</div>
+                 <span class="font-medium text-secondary text-sm">{{ comp.className }}</span>
+               </div>
+               <div class="col-span-12">
+                 <span class="font-small italic text-secondary text-xs">{{ comp.typesAsString() }}</span>
+               </div>
+             }
+           </div>
+           <div>Types:
+             @for (type of plugin.details?.types; track type.name) {
+               <div class="col-span-12">
+                 <div class="text-lg font-medium text-surface-900 dark:text-surface-0 mt-2">{{ type.name }}</div>
+                 <span class="font-medium text-secondary text-sm">{{ type.typeName | json}}</span>
+               </div>
+             }
+           </div>
+         }
+       </p-card>
+       </div>
+     }
+   </div>
+</div>
+</p-panel>

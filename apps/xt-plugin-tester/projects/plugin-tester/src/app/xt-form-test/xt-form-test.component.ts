@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { XtBaseContext, XtContext } from 'xt-components';
-import { SampleHelloComponent, SampleCurrencyComponent } from 'xt-plugin-sample';
+//import { SampleHelloComponent, SampleCurrencyComponent } from 'xt-plugin-sample';
 
 @Component({
   selector: 'app-xt-form-plugin-tester',
@@ -29,12 +29,13 @@ export class XtFormTestComponent {
   }
 
   currencyComponent () {
-    return SampleCurrencyComponent;
-    //return null;
+  //  return SampleCurrencyComponent;
+    return null;
   }
 
   otherComponent () {
-    return SampleHelloComponent;
+    //return SampleHelloComponent;
+    return null;
   }
 
   contextFor (subComponentName:string, inlineView:boolean, readOnly:boolean): XtContext<any> {

@@ -6,7 +6,7 @@ import { WebRatingComponent } from './web-rating/web-rating.component';
 export function registerWebPlugin (resolverService:XtResolverService):boolean {
     console.info ('Registering Plugin Web');
     resolverService.registerPlugin ({
-        name:'PluginDefault',
+        name:'PluginWeb',
         components: [
             {
               componentName:'WebImage',
@@ -24,4 +24,8 @@ export function registerWebPlugin (resolverService:XtResolverService):boolean {
         ]
     });
     return true;
+}
+
+export function registerPlugin (resolverService:XtResolverService):boolean {
+  return registerWebPlugin(resolverService);
 }

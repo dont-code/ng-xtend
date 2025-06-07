@@ -21,7 +21,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
   protected builder = inject(FormBuilder);
 
-  selectedType= signal<string>('Image');
+  selectedType= signal<string>('image');
 
   value = signal<any>({TestType:'string'});
   mainForm :FormGroup =this.builder.group ({
@@ -31,7 +31,7 @@ export class TestComponent implements OnInit, OnDestroy {
   protected subscriptions= new Subscription();
 
   listOfSimpleTypes() {
-    return ['Image','Link', 'Rating'];
+    return ['image','link', 'rating'];
   }
 
   typeSwitch($event: AutoCompleteSelectEvent) {

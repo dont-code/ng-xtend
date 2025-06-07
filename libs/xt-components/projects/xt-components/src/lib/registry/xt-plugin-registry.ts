@@ -1,7 +1,6 @@
-import { XtComponentInfo, XtPluginInfo } from "../plugin/xt-plugin-info";
+import { XtComponentInfo, XtPluginInfo } from '../plugin/xt-plugin-info';
 import { signal, Type } from '@angular/core';
 import { XtComponent } from '../xt-component';
-import { A } from '@angular/cdk/keycodes';
 
 export class XtPluginRegistry {
 
@@ -10,6 +9,7 @@ export class XtPluginRegistry {
     componentByTypeCache = new Map<string, XtComponentInfo<any>[]> ();
 
     listComponents = signal(new Array<XtComponentInfo<any>>());
+    listPlugins = signal(new Array<XtPluginInfo>());
 
   /**
    * The component can manage any standard javascript primitives types. That's usually the default whenever we don't know any particular type
@@ -33,15 +33,30 @@ export class XtPluginRegistry {
   public static readonly ANY_OBJECT_SET = "ANY_OBJECT_SET";
 
   registerPlugin (info:XtPluginInfo) {
-        this.pluginRegistry.set (info.name, info);
-        if (info.components != null) {
-            let updated=false;
-            for (const comp of info.components) {
-                updated=true;
-                this.registerComponent (comp);
+    this.pluginRegistry.set (info.name, info);
+
+    if (info.components != null) {
+      let updated=false;
+      for (const comp of info.components) {
+        updated=true;
+        this.registerComponent (comp);
+      }
+      if (updated) this.componentByTypeCache.clear(); // Force recalculation of type
+    }
+
+    this.listPlugins.update((array) => {
+          let found=false;
+          for (let i=0; i<array.length; i++) {
+            if (array[i].name==info.name) {
+              found=true;
+              array[i] = info;
             }
-            if (updated) this.componentByTypeCache.clear(); // Force recalculation of type
-        }
+          }
+          if( !found)
+            array.push(info);
+          return [...array]; // You have to send another value, not just update the existing one.
+        });
+
     }
 
   registerComponent<T> (info:XtComponentInfo<T>) {
@@ -132,6 +147,5 @@ export class XtPluginRegistry {
     if (ret==null) {throw new Error ("No component found with class "+type);}
     return ret;
   }
-}
 
-export const XT_REGISTRY=new XtPluginRegistry ();
+}

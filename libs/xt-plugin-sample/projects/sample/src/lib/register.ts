@@ -36,3 +36,7 @@ export function registerSamplePlugin (resolverService:XtResolverService):boolean
     });
     return true;
 }
+
+export function registerPlugin (resolverService:XtResolverService):boolean {
+  return registerSamplePlugin(resolverService);
+}

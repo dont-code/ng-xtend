@@ -1,126 +1,150 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "cli": {
-    "packageManager": "pnpm",
-    "analytics": "aa50d3e8-3b23-4c0b-886c-589e9f92b5bc",
-    "cache": {
-      "enabled": false
-    }
-  },
-  "newProjectRoot": "projects",
-  "projects": {
-    "sample": {
-      "projectType": "library",
-      "root": "projects/sample",
-      "sourceRoot": "projects/sample/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/sample/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/sample/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/sample/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "test": {
-          "builder": "@angular-builders/jest:run",
-          "options": {
-            "tsConfig": "projects/sample/tsconfig.spec.json",
-            "polyfills": [
-            ]
-          }
-        }
-      }
-    },
-    "sample-tester": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/sample-tester",
-      "sourceRoot": "projects/sample-tester/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "outputPath": "dist/xt-sample-tester",
-            "index": "projects/sample-tester/src/index.html",
-            "browser": "projects/sample-tester/src/main.ts",
-            "preserveSymlinks": true,
-            "polyfills": [
-            ],
-            "tsConfig": "projects/sample-tester/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/sample-tester/public"
-              }
-            ],
-            "styles": [
-              "projects/sample-tester/src/styles.scss"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "sample-tester:build:production"
-            },
-            "development": {
-              "buildTarget": "sample-tester:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"cli": {
+		"packageManager": "pnpm",
+		"analytics": "aa50d3e8-3b23-4c0b-886c-589e9f92b5bc",
+		"cache": {
+			"enabled": false
+		}
+	},
+	"newProjectRoot": "projects",
+	"projects": {
+		"sample": {
+			"projectType": "library",
+			"root": "projects/sample",
+			"sourceRoot": "projects/sample/src",
+			"prefix": "lib",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:ng-packagr",
+					"options": {
+						"project": "projects/sample/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "projects/sample/tsconfig.lib.prod.json"
+						},
+						"development": {
+							"tsConfig": "projects/sample/tsconfig.lib.json"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"test": {
+					"builder": "@analogjs/vitest-angular:test",
+					"options": {
+						"tsConfig": "projects/sample/tsconfig.spec.json",
+						"polyfills": []
+					}
+				}
+			}
+		},
+		"sample-tester": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "css"
+				}
+			},
+			"root": "projects/sample-tester",
+			"sourceRoot": "projects/sample-tester/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "sample-tester:esbuild:production"
+						},
+						"development": {
+							"target": "sample-tester:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "sample-tester:serve-original:development",
+						"rebuildDelay": 0,
+						"dev": true,
+						"port": 0
+					}
+				},
+				"esbuild": {
+					"builder": "@angular-devkit/build-angular:application",
+					"options": {
+						"outputPath": "dist/xt-sample-tester",
+						"index": "projects/sample-tester/src/index.html",
+						"browser": "projects/sample-tester/src/main.ts",
+						"preserveSymlinks": true,
+						"polyfills": [
+							"es-module-shims"
+						],
+						"tsConfig": "projects/sample-tester/tsconfig.app.json",
+						"inlineStyleLanguage": "css",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/sample-tester/public"
+							}
+						],
+						"styles": [
+							"projects/sample-tester/src/styles.css"
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kB",
+									"maximumError": "4kB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "sample-tester:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "sample-tester:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4201
+					}
+				},
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular-builders/jest:run",
+          "builder": "@analogjs/vitest-angular:test",
           "options": {
-            "polyfills": [
-            ],
+            "polyfills": [],
             "tsConfig": "projects/sample-tester/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
+            "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
@@ -128,12 +152,12 @@
               }
             ],
             "styles": [
-              "projects/sample-tester/src/styles.scss"
+              "projects/sample-tester/src/styles.css"
             ],
             "scripts": []
           }
         }
       }
-    }
-  }
+		}
+	}
 }

@@ -1,8 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../globalTestSetup';
 
 describe('AppComponent', () => {
+
+  beforeAll(() => {
+    setupAngularTestBed();
+  })
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
@@ -19,7 +26,7 @@ describe('AppComponent', () => {
   it(`should have the 'test' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('test');
+    expect(app.title).toEqual('SampleTester');
   });
 
   it('should render title', () => {

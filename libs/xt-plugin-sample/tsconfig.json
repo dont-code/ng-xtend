@@ -24,8 +24,8 @@
       "dom"
     ],
     "paths": {
-      "xt-components": ["./node_modules/xt-components/index.d.ts"]
     }
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

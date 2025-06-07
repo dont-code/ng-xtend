@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { DefaultPrimitiveComponent } from './default-primitive.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
@@ -6,9 +6,13 @@ import { registerDefaultPlugin } from '../register';
 import { HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { DatePicker } from 'primeng/datepicker';
-import { expect } from '@jest/globals';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 
 describe('DefaultPrimitiveComponent', () => {
+  beforeAll(() => {
+    setupAngularTestBed();
+  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

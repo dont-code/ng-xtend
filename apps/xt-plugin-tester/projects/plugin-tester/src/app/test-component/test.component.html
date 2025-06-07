@@ -1,29 +1,37 @@
-<h1>Testing components</h1>
-
-<label for="switcher">Select component :</label>
-<p-autocomplete id="switcher" [ngModel]="component()" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
-  <ng-template let-item pTemplate="item">
-    <div class="flex items-center gap-2">
-      <div>{{ item.componentName }}</div>
+<h1>This page allows you to test your component</h1>
+<p-fieldset legend="Component Selecter" >
+  <p class="text-lg font-medium">Select component to test</p>
+  <div class="flex flex-row gap-2 items-center">
+    <label for="switcher" class="flex-none">Component</label>
+    <div class="w-lg flex-initial">
+      <p-autocomplete id="switcher" [ngModel]="component()" [group]="true" [fluid]="true" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
+        <ng-template let-plugin #group>
+          <div class="font-medium text-lg text-shadow-lg">{{ plugin.pluginName }}</div>
+        </ng-template>
+        <ng-template let-component #item>
+          <div class="font-normal text-base px-4">{{ component.componentName }}</div>
+        </ng-template>
+        <ng-template #header>
+          <div class="font-light text-xs px-3 py-2">Loaded Components</div>
+        </ng-template>
+      </p-autocomplete>
     </div>
-  </ng-template>
-  <ng-template #header>
-    <div class="font-medium px-3 py-2">Available Components</div>
-  </ng-template>
-</p-autocomplete>
+  </div>
+</p-fieldset>
+<p-panel header="Interact with the selected component">
+  @if (!componentValid()) {
+    <h2>Component selected above will be displayed here.</h2>
+  } @else {
+  <h2>Edit Mode</h2>
+  <form id="editView" [formGroup]="mainForm">
+    <xt-render [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_EDITABLE" subName="TestComponent" [formGroup]="mainForm"></xt-render>
+  </form>
+    Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
 
-@if (!componentValid()) {
-  <h2>Component selected above will be displayed here.</h2>
-} @else {
-<h2>Edit Mode</h2>
-<form id="editView" [formGroup]="mainForm">
-  <xt-render [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_EDITABLE" subName="TestComponent" [formGroup]="mainForm"></xt-render>
-</form>
-  Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
+  <h2>View Inline Mode</h2>
+  <xt-render id="inlineView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="INLINE_VIEW" subName="TestComponent" [value]="value()" ></xt-render>
 
-<h2>View Inline Mode</h2>
-<xt-render id="inlineView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="INLINE_VIEW" subName="TestComponent" [value]="value()" ></xt-render>
-
-<h2>Full View Mode</h2>
-<xt-render id="fullView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_VIEW" subName="TestComponent" [value]="value()"></xt-render>
-}
+  <h2>Full View Mode</h2>
+  <xt-render id="fullView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_VIEW" subName="TestComponent" [value]="value()"></xt-render>
+  }
+</p-panel>

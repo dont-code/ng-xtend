@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { JsonPipe } from '@angular/common';
 import { XtComponentOutput, XtRenderComponent } from 'xt-components';
-import { DefaultObjectSetComponent } from 'xt-plugin-default';
 import { FormsModule } from '@angular/forms';
 import { Panel } from 'primeng/panel';
+import { DefaultObjectSetComponent } from '../../../../default/src/lib/object-set/default-object-set.component';
 
 @Component({
   selector: 'app-test-object-set',

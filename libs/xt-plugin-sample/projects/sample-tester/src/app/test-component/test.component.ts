@@ -12,7 +12,7 @@ import { JsonPipe } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, XtRenderComponent, InputText, FormsModule, JsonPipe],
   templateUrl: './test.component.html',
-  styleUrl: './test.component.scss',
+  styleUrl: './test.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestComponent {

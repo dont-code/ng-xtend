@@ -196,9 +196,6 @@ importers:
       xt-plugin-default:
         specifier: workspace:^
         version: link:../../plugins/xt-default/dist/xt-plugin-default
-      xt-plugin-web:
-        specifier: workspace:^
-        version: link:../../plugins/xt-web/dist/xt-plugin-web
       xt-store:
         specifier: workspace:^
         version: link:../../libs/xt-store/dist/store
@@ -594,12 +591,6 @@ importers:
       '@primeuix/utils':
         specifier: ^0.5.3
         version: 0.5.3
-      '@tailwindcss/postcss':
-        specifier: ~4.1.8
-        version: 4.1.8
-      postcss:
-        specifier: ~8.5.4
-        version: 8.5.4
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
@@ -619,9 +610,12 @@ importers:
         specifier: workspace:^
         version: link:../../libs/xt-components/dist/xt-components
     devDependencies:
-      '@angular-builders/jest':
-        specifier: ^19.0.0
-        version: 19.0.0(4b7a447fb792fb788ac76de210b72de8)
+      '@analogjs/vite-plugin-angular':
+        specifier: ^1.17.1
+        version: 1.17.1(183191612bf4c8bf5bdb5b88c27f1ffa)
+      '@analogjs/vitest-angular':
+        specifier: ^1.17.1
+        version: 1.17.1(@analogjs/vite-plugin-angular@1.17.1(183191612bf4c8bf5bdb5b88c27f1ffa))(@angular-devkit/architect@0.1902.11(chokidar@4.0.3))(vitest@3.1.4(@types/node@20.17.31)(happy-dom@17.5.6)(jiti@2.4.2)(jsdom@26.1.0)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0))
       '@angular-devkit/build-angular':
         specifier: ^19.2.11
         version: 19.2.11(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(@angular/compiler@19.2.10)(@types/node@20.17.31)(chokidar@4.0.3)(jest-environment-jsdom@29.7.0)(jest@29.7.0(@types/node@20.17.31)(ts-node@10.9.2(@types/node@20.17.31)(typescript@5.7.3)))(jiti@2.4.2)(lightningcss@1.30.1)(ng-packagr@19.2.2(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(tailwindcss@4.1.8)(tslib@2.8.1)(typescript@5.7.3))(tailwindcss@4.1.8)(typescript@5.7.3)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0))
@@ -631,30 +625,33 @@ importers:
       '@angular/compiler-cli':
         specifier: ^19.2.10
         version: 19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3)
-      '@happy-dom/jest-environment':
-        specifier: ^17.4.4
-        version: 17.4.4
-      '@jest/globals':
-        specifier: ^29.7.0
-        version: 29.7.0
-      '@types/jest':
-        specifier: ^29.5.14
-        version: 29.5.14
+      '@tailwindcss/postcss':
+        specifier: ~4.1.8
+        version: 4.1.8
       happy-dom:
         specifier: ^17.5.6
         version: 17.5.6
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@20.17.31)(ts-node@10.9.2(@types/node@20.17.31)(typescript@5.7.3))
-      jest-preset-angular:
-        specifier: ^14.5.3
-        version: 14.5.3(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(@angular/core@19.2.10(rxjs@7.8.2))(@angular/platform-browser-dynamic@19.2.10(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/compiler@19.2.10)(@angular/core@19.2.10(rxjs@7.8.2))(@angular/platform-browser@19.2.10(@angular/animations@19.2.10(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.10(rxjs@7.8.2)))(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.10(rxjs@7.8.2))))(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.10))(jest@29.7.0(@types/node@20.17.31)(ts-node@10.9.2(@types/node@20.17.31)(typescript@5.7.3)))(jsdom@26.1.0)(typescript@5.7.3)
+      jsdom:
+        specifier: ^26.1.0
+        version: 26.1.0
       ng-packagr:
         specifier: ^19.2.2
         version: 19.2.2(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(tailwindcss@4.1.8)(tslib@2.8.1)(typescript@5.7.3)
+      postcss:
+        specifier: ~8.5.4
+        version: 8.5.4
       typescript:
         specifier: ^5.7.3
         version: 5.7.3
+      vite:
+        specifier: ^6.3.5
+        version: 6.3.5(@types/node@20.17.31)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0)
+      vite-tsconfig-paths:
+        specifier: ~5.1.4
+        version: 5.1.4(typescript@5.7.3)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0))
+      vitest:
+        specifier: ^3.1.4
+        version: 3.1.4(@types/node@20.17.31)(happy-dom@17.5.6)(jiti@2.4.2)(jsdom@26.1.0)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0)
     publishDirectory: dist/xt-plugin-default
 
   ../../plugins/xt-idb-store:
@@ -747,6 +744,9 @@ importers:
 
   ../../plugins/xt-web:
     dependencies:
+      '@angular-architects/native-federation':
+        specifier: ^19.0.23
+        version: 19.0.23
       '@angular/animations':
         specifier: ^19.2.10
         version: 19.2.10(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.10(rxjs@7.8.2))
@@ -783,12 +783,12 @@ importers:
       '@primeuix/utils':
         specifier: ^0.5.3
         version: 0.5.3
-      '@tailwindcss/postcss':
-        specifier: ~4.1.8
-        version: 4.1.8
-      postcss:
-        specifier: ~8.5.4
-        version: 8.5.4
+      '@softarc/native-federation-runtime':
+        specifier: ^3.0.2
+        version: 3.0.2
+      es-module-shims:
+        specifier: ^2.5.1
+        version: 2.5.1
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
@@ -808,9 +808,12 @@ importers:
         specifier: workspace:^
         version: link:../../libs/xt-components/dist/xt-components
     devDependencies:
-      '@angular-builders/jest':
-        specifier: ^19.0.0
-        version: 19.0.0(4b7a447fb792fb788ac76de210b72de8)
+      '@analogjs/vite-plugin-angular':
+        specifier: ^1.17.1
+        version: 1.17.1(183191612bf4c8bf5bdb5b88c27f1ffa)
+      '@analogjs/vitest-angular':
+        specifier: ^1.17.1
+        version: 1.17.1(@analogjs/vite-plugin-angular@1.17.1(183191612bf4c8bf5bdb5b88c27f1ffa))(@angular-devkit/architect@0.1902.11(chokidar@4.0.3))(vitest@3.1.4(@types/node@20.17.31)(happy-dom@17.5.6)(jiti@2.4.2)(jsdom@26.1.0)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0))
       '@angular-devkit/build-angular':
         specifier: ^19.2.11
         version: 19.2.11(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(@angular/compiler@19.2.10)(@types/node@20.17.31)(chokidar@4.0.3)(jest-environment-jsdom@29.7.0)(jest@29.7.0(@types/node@20.17.31)(ts-node@10.9.2(@types/node@20.17.31)(typescript@5.7.3)))(jiti@2.4.2)(lightningcss@1.30.1)(ng-packagr@19.2.2(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(tailwindcss@4.1.8)(tslib@2.8.1)(typescript@5.7.3))(tailwindcss@4.1.8)(typescript@5.7.3)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0))
@@ -820,30 +823,33 @@ importers:
       '@angular/compiler-cli':
         specifier: ^19.2.10
         version: 19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3)
-      '@happy-dom/jest-environment':
-        specifier: ^17.4.4
-        version: 17.4.4
-      '@jest/globals':
-        specifier: ^29.7.0
-        version: 29.7.0
-      '@types/jest':
-        specifier: ^29.5.14
-        version: 29.5.14
+      '@tailwindcss/postcss':
+        specifier: ~4.1.8
+        version: 4.1.8
       happy-dom:
         specifier: ^17.5.6
         version: 17.5.6
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@20.17.31)(ts-node@10.9.2(@types/node@20.17.31)(typescript@5.7.3))
-      jest-preset-angular:
-        specifier: ^14.5.3
-        version: 14.5.3(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(@angular/core@19.2.10(rxjs@7.8.2))(@angular/platform-browser-dynamic@19.2.10(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/compiler@19.2.10)(@angular/core@19.2.10(rxjs@7.8.2))(@angular/platform-browser@19.2.10(@angular/animations@19.2.10(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.10(rxjs@7.8.2)))(@angular/common@19.2.10(@angular/core@19.2.10(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@19.2.10(rxjs@7.8.2))))(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.10))(jest@29.7.0(@types/node@20.17.31)(ts-node@10.9.2(@types/node@20.17.31)(typescript@5.7.3)))(jsdom@26.1.0)(typescript@5.7.3)
+      jsdom:
+        specifier: ^26.1.0
+        version: 26.1.0
       ng-packagr:
         specifier: ^19.2.2
         version: 19.2.2(@angular/compiler-cli@19.2.10(@angular/compiler@19.2.10)(typescript@5.7.3))(tailwindcss@4.1.8)(tslib@2.8.1)(typescript@5.7.3)
+      postcss:
+        specifier: ~8.5.4
+        version: 8.5.4
       typescript:
         specifier: ^5.7.3
         version: 5.7.3
+      vite:
+        specifier: ^6.3.5
+        version: 6.3.5(@types/node@20.17.31)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0)
+      vite-tsconfig-paths:
+        specifier: ~5.1.4
+        version: 5.1.4(typescript@5.7.3)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0))
+      vitest:
+        specifier: ^3.1.4
+        version: 3.1.4(@types/node@20.17.31)(happy-dom@17.5.6)(jiti@2.4.2)(jsdom@26.1.0)(less@4.2.2)(lightningcss@1.30.1)(sass@1.85.0)(terser@5.39.0)
     publishDirectory: dist/xt-plugin-web
 
 packages:

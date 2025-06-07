@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { StoreTestHelper, XtResolverService } from 'xt-components';
-import { registerWebPlugin } from 'xt-plugin-web';
+import { registerWebPlugin } from '../../../web/src/lib/register';
 
 @Component({
   selector: 'app-root',

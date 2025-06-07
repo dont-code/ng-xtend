@@ -5,10 +5,14 @@ import { HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
-import { expect } from '@jest/globals';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../../globalTestSetup';
 
 describe('DefaultObjectComponent', () => {
+  beforeAll(() => {
+    setupAngularTestBed();
+  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

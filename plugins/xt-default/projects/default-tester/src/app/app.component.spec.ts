@@ -1,12 +1,19 @@
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { setupAngularTestBed } from '../../globalTestSetup';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
+  beforeAll(() => {
+    setupAngularTestBed();
+  })
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideNoopAnimations(),provideExperimentalZonelessChangeDetection()]
     }).compileComponents();
   });
 
@@ -26,6 +33,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, DefaultTester');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Default Plugin Testing app');
   });
 });

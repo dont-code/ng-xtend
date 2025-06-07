@@ -25,3 +25,7 @@ export function registerWebPlugin (resolverService:XtResolverService):boolean {
     });
     return true;
 }
+
+export function registerPlugin (resolverService:XtResolverService):boolean {
+  return registerWebPlugin(resolverService);
+}

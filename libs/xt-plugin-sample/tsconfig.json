@@ -25,6 +25,7 @@
     ],
     "paths": {
     }
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -24,12 +24,6 @@
       "dom"
     ],
     "paths": {
-      "xt-components": [
-        "./node_modules/xt-components/index.d.ts"
-      ],
-      "xt-plugin-web": [
-        "./projects/web/src/public-api.ts"
-      ]
     }
 
   },

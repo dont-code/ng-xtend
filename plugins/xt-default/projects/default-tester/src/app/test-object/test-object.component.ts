@@ -12,9 +12,9 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule }
 import { JsonPipe } from '@angular/common';
 import { XtRenderComponent } from 'xt-components';
 import { Subscription } from 'rxjs';
-import { DefaultObjectComponent } from 'xt-plugin-default';
 import { updateFormGroupWithValue } from 'xt-components';
 import { Panel } from 'primeng/panel';
+import { DefaultObjectComponent } from '../../../../default/src/lib/object/default-object.component';
 
 @Component({
   selector: 'app-test-object',

@@ -1,6 +1,13 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "pnpm",
+    "analytics": "8440f8d0-3f6c-4758-b71e-f9ee11217c7f",
+    "cache": {
+      "enabled": false
+    }
+  },
   "newProjectRoot": "projects",
   "projects": {
     "web": {
@@ -25,7 +32,7 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-builders/jest:run",
+					"builder": "@analogjs/vitest-angular:test",
           "options": {
             "tsConfig": "projects/web/tsconfig.spec.json",
             "polyfills": [
@@ -46,12 +53,38 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {},
+          "configurations": {
+            "production": {
+              "target": "web-tester:esbuild:production"
+            },
+            "development": {
+              "target": "web-tester:esbuild:development",
+              "dev": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "web-tester:serve-original:development",
+            "rebuildDelay": 0,
+            "dev": true,
+            "port": 0
+          }
+        },
+        "esbuild": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/web-tester",
+            "outputPath": "dist/xt-web-tester",
             "index": "projects/web-tester/src/index.html",
             "browser": "projects/web-tester/src/main.ts",
-            "polyfills": [],
+            "preserveSymlinks": true,
+            "polyfills": [
+              "es-module-shims"
+            ],
             "tsConfig": "projects/web-tester/tsconfig.app.json",
             "inlineStyleLanguage": "css",
             "assets": [
@@ -87,25 +120,28 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+					"defaultConfiguration": "development"
         },
-        "serve": {
+				"serve-original": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "web-tester:build:production"
+              "buildTarget": "web-tester:esbuild:production"
             },
             "development": {
-              "buildTarget": "web-tester:build:development"
+              "buildTarget": "web-tester:esbuild:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4202
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@analogjs/vitest-angular:test",
           "options": {
             "polyfills": [],
             "tsConfig": "projects/web-tester/tsconfig.spec.json",
@@ -124,11 +160,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "cache": {
-      "enabled": false
-    },
-    "analytics": "8440f8d0-3f6c-4758-b71e-f9ee11217c7f"
   }
 }

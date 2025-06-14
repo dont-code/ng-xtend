@@ -12,7 +12,6 @@ import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { Subscription } from 'rxjs';
 import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-displayer.component';
-import { loadRemoteModule } from '@angular-architects/native-federation';
 
 @Component({
   selector: 'app-plugin-manager',

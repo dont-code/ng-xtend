@@ -54,6 +54,9 @@ importers:
       '@softarc/native-federation-runtime':
         specifier: ^3.0.2
         version: 3.0.2
+      es-module-shims:
+        specifier: ^2.5.1
+        version: 2.5.1
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
@@ -75,9 +78,6 @@ importers:
       xt-plugin-default:
         specifier: workspace:^
         version: link:../../plugins/xt-default/dist/xt-plugin-default
-      xt-plugin-web:
-        specifier: workspace:^
-        version: link:../../plugins/xt-web/dist/xt-plugin-web
       xt-store:
         specifier: workspace:^
         version: link:../../libs/xt-store/dist/store

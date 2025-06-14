@@ -1,1 +1,6 @@
-<p>web-link works!</p>
+@if (isInForm() ) {
+  <ng-container [formGroup]="formGroup()"><input [name]="componentNameInForm()" [formControlName]="formControlName()" pInputText [fluid]="true"/></ng-container>
+} @else if (displayValue()!=null) {
+  <a [pTooltip]="displayValue()" [href]="displayValue()" target="_blank">{{calculateUrl (displayValue())}}</a>
+}
+

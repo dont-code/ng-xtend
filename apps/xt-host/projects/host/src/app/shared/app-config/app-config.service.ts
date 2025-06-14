@@ -2,8 +2,7 @@ import { computed, inject, Injectable, resource, ResourceRef, ResourceStatus, si
 import { XtResolverService } from 'xt-components';
 
 import { registerDefaultPlugin} from 'xt-plugin-default';
-import { registerWebPlugin} from 'xt-plugin-web';
-import { DcRepositoryModel } from '../models/dc-repository-model';
+import { DcPluginModel, DcRepositoryModel } from '../models/dc-repository-model';
 
 @Injectable({
   providedIn: 'root'
@@ -120,8 +119,27 @@ export class AppConfigService {
 
   async loadPlugins (config:DcRepositoryModel): Promise< boolean> {
     registerDefaultPlugin(this.resolverService);
-    registerWebPlugin(this.resolverService);
+    if (config.plugins!=null) {
+      const errors=new Array();
+      for (const plugin of config.plugins) {
+        try {
+          await this.loadPlugin (plugin);
+        } catch (e) {
+          errors.push (e);
+        }
+      }
+      if (errors.length > 0) {
+        return Promise.reject(errors);
+      }
+    }
     return Promise.resolve(true);
+  }
+
+  async loadPlugin (plugin:DcPluginModel): Promise<boolean> {
+    const url=plugin.info['remote-entry'];
+    if (url==null) throw new Error ("No url for plugin "+ plugin['display-name']);
+    await this.resolverService.loadPlugin(url);
+    return true;
   }
 
   updateConfigName (newUrl:string ) {

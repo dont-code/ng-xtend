@@ -8,47 +8,11 @@
   "documentApiUrl": "https://collinfr.net/dont-code/documents",
   "plugins": [
     {
-      "id": "Basic",
-      "display-name": "Basic plugin for editing entities",
+      "id": "Web",
+      "display-name": "Web plugin",
       "version": "1.0.0",
       "info": {
-        "remote-entry":"https://run.dont-code.net/plugins/latest/remoteEntry.mjs"
-      },
-      "config": {}
-    },
-    {
-      "id": "Fields",
-      "display-name": "Additional editors for entity properties",
-      "version": "1.0.0",
-      "info": {
-        "remote-entry":"https://run.dont-code.net/plugins/latest/remoteEntry.mjs"
-      },
-      "config": {}
-    },
-    {
-      "id": "Rest",
-      "display-name": "Plugins to support datasources from Rest API",
-      "version": "1.0.0",
-      "info": {
-        "remote-entry":"https://run.dont-code.net/plugin-rest/latest/remoteEntry.mjs"
-      },
-      "config": {}
-    },
-    {
-      "id": "Report",
-      "display-name": "Plugins to generate and display reports",
-      "version": "1.0.0",
-      "info": {
-        "remote-entry":"https://run.dont-code.net/plugin-report/latest/remoteEntry.mjs"
-      },
-      "config": {}
-    },
-    {
-      "id": "Commerce",
-      "display-name": "Plugins to get prices from shops",
-      "version": "1.0.0",
-      "info": {
-        "remote-entry":"https://run.dont-code.net/plugin-commerce/latest/remoteEntry.mjs"
+        "remote-entry":"https://test.dont-code.net/apps/latest/web-tester/remoteEntry.json"
       },
       "config": {}
     }

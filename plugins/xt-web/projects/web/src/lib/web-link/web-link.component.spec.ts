@@ -5,6 +5,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { setupAngularTestBed } from '../../../globalTestSetup';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { XtBaseContext } from 'xt-components';
 
 describe('WebLinkComponent', () => {
   let component: WebLinkComponent;
@@ -22,6 +23,9 @@ describe('WebLinkComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(WebLinkComponent);
+    const context=new XtBaseContext('FULL_VIEW');
+    context.setDisplayValue("https://www.dont-code.net");
+    fixture.componentRef.setInput('context', context);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

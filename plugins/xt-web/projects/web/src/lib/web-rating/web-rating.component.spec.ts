@@ -5,6 +5,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { setupAngularTestBed } from '../../../globalTestSetup';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { XtBaseContext } from 'xt-components';
 
 describe('WebRatingComponent', () => {
   let component: WebRatingComponent;
@@ -23,6 +24,9 @@ describe('WebRatingComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(WebRatingComponent);
+    const context=new XtBaseContext('FULL_VIEW');
+    context.setDisplayValue(4);
+    fixture.componentRef.setInput('context', context);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -20,8 +20,8 @@ It's an Angular library allowing you to:
 ## Some examples ?
 Here are screenshots of an application automatically handling list, view and edition of complex data (evaluations of coffee beans) using ng-xtend, a [dont-code application](https://dont-code.net/), and the generic [default plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default)  
 
-![List view screenshot](https://dont-code.net/assets/images/screenshots/xt-host-list-view.png)
-![Edit object screenshot](https://dont-code.net/assets/images/screenshots/xt-host-edit-view.png)
+![List view screenshot](https://dont-code.net/assets/images/screenshots/xt-host-list-view-plugins.png)
+![Edit object screenshot](https://dont-code.net/assets/images/screenshots/xt-host-edit-view-plugins.png)
 
 You can run and test the application here: [Coffee Bean Evaluation](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
 
@@ -56,8 +56,8 @@ As well, plugins will be able to alter the application menus and other customiza
 - [x] Insertion of simple component dynamically 
 - [x] Registry of plugins
 - [x] General support for complex components and lists
-- [ ] Strong type support
-- [ ] Dynamic loading of plugins
+- [x] Strong type support
+- [x] Dynamic loading of plugins
 - [ ] v1 !
 - [ ] Enhanced component selection criteria (xt-type, context)
 - [ ] Support for action components
@@ -74,8 +74,8 @@ This is still work in progress, so you will have to get your hands a little bit 
    2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts)
    3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts)
 4. Test your components by
-   1. Adding your plugin project to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-tester/package.json)
-   2. Register your plugin in [xt-plugin-tester App Component](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-tester/projects/plugin-tester/src/app/app.component.ts)
+   1. Adding your plugin project to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/apps/xt-plugin-tester/package.json)
+   2. Register your plugin in [xt-plugin-tester App Component](https://github.com/dont-code/ng-xtend/blob/main/apps/xt-plugin-tester/projects/plugin-tester/src/app/app.component.ts)
    3. Run the xt-plugin-tester with `ng serve plugin-tester` in xt-plugin-tester directory
    4. Select your component in the screen, and play with it
 5. Use your component in your own Angular Application

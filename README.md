@@ -1,4 +1,9 @@
-![ng-xtend logo](https://dont-code.net/assets/images/logos/logo-xtend-angular-red-small.png)
+<center>
+# ![ng-xtend logo](https://dont-code.net/assets/images/logos/logo-xtend-angular-red-small.png) Ng-xtend Framework 
+Enable plugins in your Angular application ! 
+</center>
+
+
 
 ## ng-xtend, what for?
 
@@ -19,13 +24,13 @@ It's an Angular library allowing you to:
 - Save / Load / Update the data to any storage.
 
 ## Some examples ?
-Here are screenshots of an application automatically handling list, view and edition of complex data (evaluations of coffee beans) using ng-xtend, a [dont-code application](https://dont-code.net/), and the [default plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default) and [web plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-web)  
+Here are screenshots of an application automatically handling list, view and edition of complex data (evaluations of coffee beans) using ng-xtend, a [dont-code application](https://dont-code.net/){target="_blank"}, and the [default plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default) and [web plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-web)  
 You can see how the different plugins work together without knowing each other. Even the host application does not know them.
 
 ![List view screenshot](https://dont-code.net/assets/images/screenshots/xt-host-list-view-split.png)
 ![Edit object screenshot](https://dont-code.net/assets/images/screenshots/xt-host-edit-view-split.png)
 
-Curious ? You can run and test the application here: [Coffee Bean Evaluation](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
+Curious ? You can run and test the application here: [Coffee Bean Evaluation](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"}
 
 ## What kind of plugins are supported ?
 
@@ -68,44 +73,51 @@ As well, plugins will be able to alter the application menus and other customiza
 - [ ] v2 !
 
 ## How to use it ?
-This is still work in progress, but now it can support [real-life applications](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)!
+This is still work in progress, but now it can support [real-life applications](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"} !
 
 ### Developing a new plugin
-1. Checkout the repository [ng-xtend](https://github.com/dont-code/ng-xtend)
+1. Checkout the repository [ng-xtend](https://github.com/dont-code/ng-xtend){target="_blank"}
 2. It's a monorepo using [rush build system](https://rushjs.io/), so run
-   ```shell
+
+```bash
     npm install -g @microsoft/rush
     rush update
     rush build
-   ```
-2. Use a copy of [libs/xt-plugin-sample](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample) to develop your own plugins and components.
+```
+
+3. Use a copy of [libs/xt-plugin-sample](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample) to develop your own plugins and components.
 3. Unit test your components using vitest
    1. ng-xtend provides pre-defined test pages for different cases (in a form or not) that will easily embed your component for testing
-   2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts)
-   3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts)
+   2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts){target="_blank"}
+   3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts){target="_blank"}
 4. Test your components using plugin-tester
    4. Run your plugin tester application, for example `ng serve sample-tester` for the sample plugin
    5. Run the xt-plugin-tester with `ng serve plugin-tester` in xt-plugin-tester directory
    5. In the Plugin Tester app, load your plugin by entering its url (http://localhost:4201 for sample plugin) in the Plugin url field.
    4. Once loaded, go to the test screen, select your component in the second screen, and play with it
-   5. For easier debugging, you can statically add and register your plugin to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/apps/xt-plugin-tester/package.json)
+   5. For easier debugging, you can statically add and register your plugin to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/apps/xt-plugin-tester/package.json){target="_blank"}
 
 ### Use plugins in my application
-To use ng-xtend plugins in your own Angular Application, [xt-host project](https://github.com/dont-code/ng-xtend/tree/main/apps/xt-host) is a great example.
+To use ng-xtend plugins in your own Angular Application, [xt-host project](https://github.com/dont-code/ng-xtend/tree/main/apps/xt-host){target="_blank"} is a great example.
 It does:
   - Install xt-components and the default plugin in your package.json
-   ```shell
-   npm install xt-components
-   npm install xt-plugin-default
-   ```
+
+```bash
+    npm install xt-components
+    npm install xt-plugin-default
+```
+
   - Configure your application to load your plugins.
-    ```typescript
+
+```javascript
     protected resolverService = inject (XtResolverService);
     this.resolverService.loadPlugin(url);
-    ```
+```
+
     The plugins will register themselves automatically.
   - Describe the data type you want to manipulate
-    ```typescript
+
+```javascript
     this.resolverService.registerTypes ({
       money:{
         amount:'number',
@@ -118,24 +130,30 @@ It does:
         notation:'rating'  /** Type provided by the web plugin **/
       }    
     }); 
-    ```
+```
+
   - Sets insertion point in your angular pages
     - For example, to display a table of books
-    ```angular181html
+
+```html
         <h1>List of books</h1>
         <xt-render [displayMode]="LIST_VIEW" [valueType]="book" [value]="listOfBooks" ></xt-render>
-    ```
+```
+    
     - or allow editing a book information
-    ```angular181html
+
+```html
         <h1>Enter your book details</h1>
         <div form="bookForm">
           <xt-render [displayMode]="FULL_EDITABLE" [valueType]="book" [formGroup]="bookForm" subName="book"></xt-render>
         </div>
-    ```
+```
     - To support more complex scenario, use
-    ```angular181html
+
+```html
        <xt-render-sub [context]="context()"></xt-render-sub>
-    ```
+```
+
     with `context ()` returning type information necessary to select the right component.
 
 ## Thank you

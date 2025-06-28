@@ -1,7 +1,5 @@
-<p align="center">
 # ![ng-xtend logo](https://dont-code.net/assets/images/logos/logo-xtend-angular-red-small.png) Ng-xtend Framework 
 Enable plugins in your Angular application ! 
-</p>
 
 
 

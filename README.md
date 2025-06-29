@@ -88,15 +88,17 @@ This is still work in progress, but now it can support [real-life applications](
    1. ng-xtend provides pre-defined test pages for different cases (in a form or not) that will easily embed your component for testing
    2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts){target="_blank"}
    3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts){target="_blank"}
+   
 4. Test your components using plugin-tester
-   4. Run your plugin tester application, for example `ng serve sample-tester` for the sample plugin
+   4. Please check plugin-tester [user documentation](apps/xt-plugin-tester/README.md).
+   5. Run your plugin tester application, for example `ng serve sample-tester` for the sample plugin
    5. Run the xt-plugin-tester with `ng serve plugin-tester` in xt-plugin-tester directory
    5. In the Plugin Tester app, load your plugin by entering its url (http://localhost:4201 for sample plugin) in the Plugin url field.
    4. Once loaded, go to the test screen, select your component in the second screen, and play with it
    5. For easier debugging, you can statically add and register your plugin to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/apps/xt-plugin-tester/package.json){target="_blank"}
 
 ### Use plugins in my application
-To use ng-xtend plugins in your own Angular Application, [xt-host project](https://github.com/dont-code/ng-xtend/tree/main/apps/xt-host){target="_blank"} is a great example.
+To use ng-xtend plugins in your own Angular Application, [xt-host project](apps/xt-host/README.md) is a great example.
 It does:
   - Install xt-components and the default plugin in your package.json
 

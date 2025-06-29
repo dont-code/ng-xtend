@@ -33,7 +33,7 @@ jobs:
         with:
           username: ${{secrets.NG_XTEND_DEV_WEBSITE_USER}}
           password: ${{secrets.NG_XTEND_DEV_WEBSITE_PASSWORD}}
-          local_path: './docs/ng-xtend-website/*'
+          local_path: './dist/ng-xtend-website/*'
           remote_path: '/www'
           server: 'ng-xtend.dev'
           sftp_only: 'true'

@@ -23,7 +23,7 @@ jobs:
       - name: Install Pandoc
         uses: pandoc/actions/setup@v1
       - name: Run pandoc
-        run: pandoc -f markdown -t html --file-scope=true --standalone --highlight-style=espresso --metadata title-meta="Ng-xtend framework" -V maxwidth="80%" -V backgroundcolor="#000000" -V fontcolor="#FFFFFF" -V linkcolor="#FF0000" -V pagetitle="Ng-xtend" -H matomo-script.html -o ng-xtend-website/index.html README.md
+        run: pandoc -f markdown -t html --file-scope=true --standalone --highlight-style=espresso --metadata title-meta="Ng-xtend framework" -V maxwidth="80%" -V backgroundcolor="#000000" -V fontcolor="#FFFFFF" -V linkcolor="#FF0000" -V pagetitle="Ng-xtend" -H matomo-script.html -o ng-xtend-website/index.html ../README.md
         working-directory: docs
       - name: Update Ng-xtend.dev website from Readme
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6

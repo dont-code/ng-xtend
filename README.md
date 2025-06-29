@@ -1,4 +1,4 @@
-# ![ng-xtend logo](docs/logos/logo-xtend-angular-red-small.png) Ng-xtend Framework 
+# ![ng-xtend logo](docs/logos/logo-xtend-angular-red-small-transparent.png) ng-xtend Framework 
 Enable plugins in your Angular application ! 
 
 
@@ -101,7 +101,7 @@ It does:
   - Install xt-components and the default plugin in your package.json
 
 ```bash
-    npm install xt-components
+    npm install xt-components xt-type xt-store
     npm install xt-plugin-default
 ```
 
@@ -155,3 +155,5 @@ It does:
     with `context ()` returning type information necessary to select the right component.
 
 ## Thank you
+Please check my other project [Dont-code](https://dont-code.net){target="_blank"}, it will soon run using ng-xtend !
+Email: contact@ng-xtend.dev or developer@dont-code.net

@@ -34,8 +34,8 @@ jobs:
           cd dist/ng-xtend-website
           sed -i 's/README.md/index.html/g' index.html apps/xt-plugin-tester/index.html apps/xt-host/index.html
           cd ../../docs
-          cp -r logos dist/ng-xtend-website/docs
-          cp -r screenshots dist/ng-xtend-website/docs
+          cp -r logos ../dist/ng-xtend-website/docs
+          cp -r screenshots ../dist/ng-xtend-website/docs
       - name: Update Ng-xtend.dev website from Readme
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:

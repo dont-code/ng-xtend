@@ -1,4 +1,4 @@
-# ![ng-xtend logo](https://dont-code.net/assets/images/logos/logo-xtend-angular-red-small.png) Ng-xtend Framework 
+# ![ng-xtend logo](docs/logos/logo-xtend-angular-red-small.png) Ng-xtend Framework 
 Enable plugins in your Angular application ! 
 
 
@@ -25,8 +25,8 @@ It's an Angular library allowing you to:
 Here are screenshots of an application automatically handling list, view and edition of complex data (evaluations of coffee beans) using ng-xtend, a [dont-code application](https://dont-code.net/){target="_blank"}, and the [default plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default) and [web plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-web)  
 You can see how the different plugins work together without knowing each other. Even the host application does not know them.
 
-![List view screenshot](https://dont-code.net/assets/images/screenshots/xt-host-list-view-split.png)
-![Edit object screenshot](https://dont-code.net/assets/images/screenshots/xt-host-edit-view-split.png)
+![List view screenshot](docs/screenshots/xt-host-list-view-split.png)
+![Edit object screenshot](docs/screenshots/xt-host-edit-view-split.png)
 
 Curious ? You can run and test the application here: [Coffee Bean Evaluation](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"}
 

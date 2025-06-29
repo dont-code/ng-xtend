@@ -1,0 +1,37 @@
+name: Ng-xtend Website update
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'README.md'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.branch }}
+          token: ${{secrets.DONTCODE_ACTIONS_TOKEN}}
+          fetch-depth: 1
+      - name: Git config user
+        uses: snow-actions/git-config-user@v1.0.0
+        with:
+          name: Ng-xtend
+          email: developer@dont-code.net
+      - name: Install Pandoc
+        uses: pandoc/actions/setup@v1
+      - name: Run pandoc
+        run: pandoc -f markdown -t html --file-scope=true --standalone --highlight-style=espresso --metadata title-meta="Ng-xtend framework" -V maxwidth="80%" -V backgroundcolor="#000000" -V fontcolor="#FFFFFF" -V linkcolor="#FF0000" -V pagetitle="Ng-xtend" -H matomo-script.html -o ng-xtend-website/index.html README.md
+        working-directory: docs
+      - name: Update Ng-xtend.dev website from Readme
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          username: ${{secrets.NG_XTEND_DEV_WEBSITE_USER}}
+          password: ${{secrets.NG_XTEND_DEV_WEBSITE_PASSWORD}}
+          local_path: './docs/ng-xtend-website/*'
+          remote_path: '/www'
+          server: 'ng-xtend.dev'
+          sftp_only: 'true'
+          delete_remote_files: 'false'

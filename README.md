@@ -16,6 +16,7 @@ That's why I have developed ng-xtend !
 ## What is ng-xtend concretely?
 
 It's an Angular library allowing you to:
+
 - Define in a simple way the data you want to process in your application.
 - Use plugins together to render or edit this data.
 - Dynamically load and install plugins.
@@ -28,17 +29,20 @@ You can see how the different plugins work together without knowing each other. 
 ![List view screenshot](docs/screenshots/xt-host-list-view-split.png)
 ![Edit object screenshot](docs/screenshots/xt-host-edit-view-split.png)
 
-Curious ? You can run and test the application here: [Coffee Bean Evaluation](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"}
+Curious ? You can run and test the application here:
+[Coffee Bean Evaluation](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"}
 
 ## What kind of plugins are supported ?
 
 3 types of plugins are supported as a first step
+ 
 - Simple Components: With limited effort and intrusion in your code, you can transform a regular Angular component into a pluggable one. Ideal for providing view or display of a custom type.
 - Complex Components: With some additional effort, this type Angular Component can itself provide extension points, filled by ng-xtend with the right plugin. Ideal for displaying complex information, where you want to delegate actions or display.
 For example, think of a "Money" plugin that delegates the "Currency" management to another plugin, without even knowing it.
 - List Components: Displays a list of any objects. It calls other plugins to manage the values inside the displayed list
 
 Then in the future, we'll support
+
 - Action Components: Provides actionable services on types without User Interface elements.
 - Workflow components: Enable pre-defined flow of pages (list to detail for example...) 
 
@@ -85,21 +89,23 @@ This is still work in progress, but now it can support [real-life applications](
 
 3. Use a copy of [libs/xt-plugin-sample](https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample) to develop your own plugins and components.
 3. Unit test your components using vitest
-   1. ng-xtend provides pre-defined test pages for different cases (in a form or not) that will easily embed your component for testing
-   2. See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts){target="_blank"}
-   3. Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts){target="_blank"}
+   - ng-xtend provides pre-defined test pages for different cases (in a form or not) that will easily embed your component for testing
+   - See [currency simple component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts){target="_blank"}
+   - Or [money complex component test](https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts){target="_blank"}
    
 4. Test your components using plugin-tester
-   4. Please check plugin-tester [user documentation](apps/xt-plugin-tester/README.md).
-   5. Run your plugin tester application, for example `ng serve sample-tester` for the sample plugin
-   5. Run the xt-plugin-tester with `ng serve plugin-tester` in xt-plugin-tester directory
-   5. In the Plugin Tester app, load your plugin by entering its url (http://localhost:4201 for sample plugin) in the Plugin url field.
-   4. Once loaded, go to the test screen, select your component in the second screen, and play with it
-   5. For easier debugging, you can statically add and register your plugin to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/apps/xt-plugin-tester/package.json){target="_blank"}
+   - More details in plugin-tester [user documentation](apps/xt-plugin-tester/README.md).
+   - Run your plugin tester application, for example `ng serve sample-tester` for the sample plugin
+   - Run the xt-plugin-tester with `ng serve plugin-tester` in xt-plugin-tester directory
+   - In the Plugin Tester app, load your plugin by entering its url (http://localhost:4201 for sample plugin) in the Plugin url field.
+   - Once loaded, go to the test screen, select your component in the second screen, and play with it
+   - For easier debugging, you can statically add and register your plugin to [xt-plugin-tester/package.json](https://github.com/dont-code/ng-xtend/blob/main/apps/xt-plugin-tester/package.json){target="_blank"}
 
 ### Use plugins in my application
-To use ng-xtend plugins in your own Angular Application, [xt-host project](apps/xt-host/README.md) is a great example.
+To use ng-xtend plugins in your own Angular Application,
+[xt-host project](apps/xt-host/README.md) is a great example.
 It does:
+
   - Install xt-components and the default plugin in your package.json
 
 ```bash
@@ -132,15 +138,15 @@ It does:
     }); 
 ```
 
-  - Sets insertion point in your angular pages
-    - For example, to display a table of books
+   - Sets insertion point in your angular pages
+     - For example, to display a table of books
 
 ```html
         <h1>List of books</h1>
         <xt-render [displayMode]="LIST_VIEW" [valueType]="book" [value]="listOfBooks" ></xt-render>
 ```
-    
-    - or allow editing a book information
+
+     - or allow editing a book information
 
 ```html
         <h1>Enter your book details</h1>
@@ -148,7 +154,7 @@ It does:
           <xt-render [displayMode]="FULL_EDITABLE" [valueType]="book" [formGroup]="bookForm" subName="book"></xt-render>
         </div>
 ```
-    - To support more complex scenario, use
+     - To support more complex scenario, use
 
 ```html
        <xt-render-sub [context]="context()"></xt-render-sub>

@@ -11,3 +11,5 @@ sed -i 's/README.md/index.html/g' index.html apps/xt-plugin-tester/index.html ap
 cd ../../docs
 cp -r logos ../dist/ng-xtend-website/docs
 cp -r screenshots ../dist/ng-xtend-website/docs
+cd ../apps/xt-plugin-tester
+cp -r docs ../../dist/ng-xtend-website/apps/xt-plugin-tester

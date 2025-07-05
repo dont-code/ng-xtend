@@ -108,7 +108,15 @@ export class XtResolverService {
       remoteEntry: url.toString(),
       exposedModule: './Register'
     }).then((module:any) => {
-      module.registerPlugin(this);
+      const pluginName = module.registerPlugin(this);
+      // Transform the configured Uris to real urls
+      const pluginConfig=this.pluginRegistry.pluginRegistry.get(pluginName);
+      if (pluginConfig?.uriLogo!=null) {
+        let urlString = url.toString();
+        const lastSlash = urlString.lastIndexOf('/');
+        urlString = urlString.substring(0, lastSlash+1)+pluginConfig?.uriLogo;
+        pluginConfig.uriLogo=urlString;
+      }
       return module;
     });
 

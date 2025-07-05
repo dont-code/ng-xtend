@@ -15,6 +15,7 @@ export type XtTypeHandlerInfo<T> = {
 
 export type XtPluginInfo ={
     name: string;
+    uriLogo?: string;
     components?: XtComponentInfo<any>[];
     types?: XtTypeInfo;
     typeHandlers?: XtTypeHandlerInfo<any>[];

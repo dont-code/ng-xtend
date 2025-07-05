@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject, linkedSignal,
+  OnDestroy,
+  OnInit,
+  resource,
+  signal
+} from '@angular/core';
 import { XtComponentInfo, XtPluginInfo, XtResolverService } from 'xt-components';
 import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
@@ -12,6 +21,7 @@ import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { Subscription } from 'rxjs';
 import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-displayer.component';
+import { httpResource } from '@angular/common/http';
 
 @Component({
   selector: 'app-plugin-manager',
@@ -30,7 +40,7 @@ import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-
   styleUrl: './plugin-manager.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PluginManagerComponent implements OnDestroy {
+export class PluginManagerComponent implements OnDestroy, OnInit {
 
   subscriptions = new Subscription();
   resolverService = inject(XtResolverService);
@@ -46,7 +56,21 @@ export class PluginManagerComponent implements OnDestroy {
     pluginUrl: ['', [Validators.required, Validators.pattern("(ftp|ftps|http|https):\\/\\/[^ \"]+")]],
   });
 
-  listUrls=signal<Set<string>>(new Set());
+  loadlistUrl = httpResource (() => 'assets/config/plugin-urls.json');
+
+  listUrls=linkedSignal<Set<string>>(() => {
+    const ret = new Set<string>();
+    if (this.loadlistUrl.hasValue()) {
+      const loaded = this.loadlistUrl.value() as any;
+      for (const plugin in loaded) {
+        const urls = loaded[plugin] as Array<string>;
+        for (const url of urls) {
+          ret.add(url);
+        }
+      }
+    }
+    return ret;
+  });
   suggestedUrls = signal<string[]>([]);
 
   constructor () {
@@ -55,6 +79,11 @@ export class PluginManagerComponent implements OnDestroy {
         this.formValid.set((status == 'VALID'));
       }
     }));
+  }
+
+  ngOnInit(): void {
+        // Loads the default urls
+
   }
 
   ngOnDestroy(): void {
@@ -122,7 +151,7 @@ class PluginDisplayInfo {
       components:new Array<ComponentDisplayInfo>(),
       types:new Array<TypeDisplayInfo>()
     };
-    this.logoUrl='assets/plugin-default-img.jpg';
+    this.logoUrl=plugin.uriLogo??'assets/plugin-default-img.jpg';
     for (const comp of plugin.components||[]) {
       this.details.components.push(new ComponentDisplayInfo(comp));
     }

@@ -3,10 +3,12 @@ import { WebImageComponent } from './web-image/web-image.component';
 import { WebLinkComponent } from './web-link/web-link.component';
 import { WebRatingComponent } from './web-rating/web-rating.component';
 
-export function registerWebPlugin (resolverService:XtResolverService):boolean {
-    console.info ('Registering Plugin Web');
+export function registerWebPlugin (resolverService:XtResolverService):string {
+  const pluginName = "Plugin Web";
+    console.info ('Registering '+pluginName);
     resolverService.registerPlugin ({
-        name:'PluginWeb',
+        name:pluginName,
+        uriLogo:'pluginicon.png',
         components: [
             {
               componentName:'WebImage',
@@ -23,9 +25,9 @@ export function registerWebPlugin (resolverService:XtResolverService):boolean {
           }
         ]
     });
-    return true;
+    return pluginName;
 }
 
-export function registerPlugin (resolverService:XtResolverService):boolean {
+export function registerPlugin (resolverService:XtResolverService):string {
   return registerWebPlugin(resolverService);
 }

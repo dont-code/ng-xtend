@@ -3,10 +3,12 @@ import { SampleCurrencyComponent } from './currency/sample-currency.component';
 import { SampleHelloComponent } from './hello/sample-hello.component';
 import { SampleMoneyComponent } from './money/sample-money.component';
 
-export function registerSamplePlugin (resolverService:XtResolverService):boolean {
-    console.info ('Registering Plugin Sample');
+export function registerSamplePlugin (resolverService:XtResolverService):string {
+  const pluginName = "Plugin Sample";
+    console.info ('Registering '+pluginName);
     resolverService.registerPlugin ({
-        name:'PluginSample',
+        name:pluginName,
+        uriLogo:'pluginicon.png',
         components: [
             {
               componentName:'SampleHello',
@@ -34,9 +36,9 @@ export function registerSamplePlugin (resolverService:XtResolverService):boolean
                 }
           }
     });
-    return true;
+    return pluginName;
 }
 
-export function registerPlugin (resolverService:XtResolverService):boolean {
+export function registerPlugin (resolverService:XtResolverService):string {
   return registerSamplePlugin(resolverService);
 }

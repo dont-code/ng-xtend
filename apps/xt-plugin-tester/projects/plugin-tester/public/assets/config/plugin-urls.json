@@ -1,0 +1,10 @@
+{
+  "Plugin Web": [
+    "http://localhost:4202",
+    "https://test.dont-code.net/apps/latest/web-tester"
+  ],
+  "Plugin Sample": [
+    "http://localhost:4201",
+    "https://test.dont-code.net/apps/latest/sample-tester"
+  ]
+}

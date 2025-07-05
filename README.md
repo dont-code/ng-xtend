@@ -1,7 +1,14 @@
 # ![ng-xtend logo](docs/logos/logo-xtend-angular-red-small-transparent.png) ng-xtend Framework 
 Enable plugins in your Angular application ! 
 
+## Try it !
+A simple application to rate coffee beans:
 
+[![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png "A simple application to rate coffee beans.")](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"}
+
+Test how plugins are dynamically loaded:
+
+[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png "Test how plugins are dynamically loaded")](https://test.dont-code.net/apps/latest/plugin-tester){target="_blank"}
 
 ## ng-xtend, what for?
 

@@ -6,11 +6,14 @@ import { setupAngularTestBed } from '../../../globalTestSetup';
 import { XtCompositeComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
 import { MessageService } from 'primeng/api';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('PluginManagerComponent', () => {
   let component: PluginManagerComponent;
   let fixture: ComponentFixture<PluginManagerComponent>;
   let resolver: XtResolverService|null=null;
+  let httpTesting: HttpTestingController;
 
   beforeAll( () => {
     setupAngularTestBed();
@@ -19,9 +22,12 @@ describe('PluginManagerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PluginManagerComponent],
-      providers: [MessageService, provideNoopAnimations()]
+      providers: [MessageService, provideNoopAnimations(), provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();
+
+    // Avoid httpResource error
+    httpTesting = TestBed.inject(HttpTestingController);
 
     resolver = TestBed.inject(XtResolverService);
 
@@ -31,10 +37,16 @@ describe('PluginManagerComponent', () => {
   });
 
   it('should create', () => {
+    httpTesting.expectOne('assets/config/plugin-urls.json').flush({
+      test: []
+    });
     expect(component).toBeTruthy();
   });
 
   it('should list plugins', () => {
+    httpTesting.expectOne('assets/config/plugin-urls.json').flush({
+      test: []
+    });
     resolver!.registerPlugin({
       name:'TestPlugin1',
       components: [

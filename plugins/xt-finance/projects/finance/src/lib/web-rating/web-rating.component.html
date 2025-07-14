@@ -1,0 +1,7 @@
+@if (isInForm() ) {
+  <ng-container [formGroup]="formGroup()">
+    <p-rating [readonly]="false" [formControlName]="formControlName()" iconOnClass="pi pi-star-fill" iconOffClass="pi pi-star"></p-rating>
+  </ng-container>
+} @else if (displayValue()!=null) {
+  <p-rating [readonly]="true" [ngModel]="displayValue()" iconOnClass="pi pi-star-fill" iconOffClass="pi pi-star"></p-rating>
+}

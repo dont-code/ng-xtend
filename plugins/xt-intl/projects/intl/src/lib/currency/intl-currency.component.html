@@ -1,6 +1,6 @@
 @if (isInForm() ) {
     <ng-container [formGroup]="formGroup()">
-        <input type="text" pInputText [name]="componentNameInForm ()" [formControlName]="formControlName()" />
+      <p-autocomplete [fluid]="true" [forceSelection]="true" [dropdown]="true" [formControlName]="formControlName()" [suggestions]="listOfCurrencies()" (completeMethod)="matchCurrency($event)" (onUnselect)="selectionCanceled($event)" (onSelect)="selectionChange($event)"></p-autocomplete>
     </ng-container>
 } @else {
     {{ context().displayValue() }}

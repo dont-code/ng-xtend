@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { XtResolverService } from 'xt-components';
-import { registerSamplePlugin } from '../../../sample/src/lib/register';
+import { registerInternationalPlugin } from '../../../intl/src/lib/register';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +18,6 @@ export class AppComponent {
   protected resolverService = inject (XtResolverService);
 
   constructor () {
-    registerSamplePlugin(this.resolverService);
+    registerInternationalPlugin(this.resolverService);
   }
 }

@@ -1,20 +1,10 @@
-<h2>Hello component</h2>
-
-<label for="whoIsIt">Who is it ?</label>
-<input id="whoIsIt" type="text" pInputText [(ngModel)]="whoIsIt" />
-<xt-render displayMode="FULL_VIEW" [componentType]="SampleHelloComponent" [value]="whoIsIt()" ></xt-render>
-
-<h2>Currency component</h2>
+<h2>Testing International components</h2>
 
 <form [formGroup]="currencyForm">
-    <xt-render displayMode="FULL_EDITABLE" [formGroup]="currencyForm" subName="currency" [componentType]="SampleCurrencyComponent"></xt-render>
+  <label for="currency">Please select a currency</label>
+  <xt-render id="currency" displayMode="FULL_EDITABLE" [formGroup]="currencyForm" subName="currency" [componentType]="IntlCurrencyComponent" (outputs)="outputChanged($event)" ></xt-render>
 </form>
 <br/>
 Form Value is {{currencyForm.value | json}}, Form is {{currencyForm.pristine?"pristine":"Dirty"}}
-
-<h2>Money component</h2>
-<form [formGroup]="moneyForm">
-  <xt-render displayMode="FULL_EDITABLE" [formGroup]="moneyForm" subName="money" [componentType]="SampleMoneyComponent" ></xt-render>
-</form>
 <br/>
-Form Value is {{moneyForm.value | json}}, Form is {{moneyForm.pristine?"pristine":"Dirty"}}
+Last currency selected : {{lastCurrencySelected()}}

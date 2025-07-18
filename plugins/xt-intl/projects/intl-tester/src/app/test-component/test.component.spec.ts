@@ -4,8 +4,8 @@ import { TestComponent } from './test.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../../globalTestSetup';
-import { registerSamplePlugin } from '../../../../sample/src/lib/register';
 import { XtResolverService } from 'xt-components';
+import { registerInternationalPlugin } from '../../../../intl/src/lib/register';
 
 describe('TestComponent', () => {
   let component: TestComponent;
@@ -22,7 +22,7 @@ describe('TestComponent', () => {
     })
     .compileComponents();
 
-    registerSamplePlugin(TestBed.inject(XtResolverService));
+    registerInternationalPlugin(TestBed.inject(XtResolverService));
 
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;

@@ -11,7 +11,8 @@ export function registerInternationalPlugin (resolverService:XtResolverService):
             {
                 componentName:'IntlCurrency',
                 componentClass:IntlCurrencyComponent,
-                typesHandled: ['currency']
+                typesHandled: ['currency'],
+                outputs: ['valueSelected']
             }
         ],
         types:

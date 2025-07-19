@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntlCurrencyComponent } from './intl-currency.component';
-import {provideExperimentalZonelessChangeDetection} from "@angular/core";
-import { XtBaseContext,HostTestTypedComponent, HostTestTypedFormComponent, XtResolverService } from 'xt-components';
-import { registerSamplePlugin } from '../register';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { HostTestTypedComponent, HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
+import { registerInternationalPlugin } from '../register';
 import { By } from '@angular/platform-browser';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../../globalTestSetup';
@@ -21,7 +21,7 @@ describe('XtCurrencyComponent', () => {
     })
     .compileComponents();
 
-    registerSamplePlugin(TestBed.inject(XtResolverService));
+    registerInternationalPlugin(TestBed.inject(XtResolverService));
   });
 
   it('should create', () => {
@@ -39,7 +39,7 @@ describe('XtCurrencyComponent', () => {
   it('should support currency display', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedComponent);
     hostFixture.componentRef.setInput('value', 'EUR');
-    hostFixture.componentRef.setInput('valueType', 'sampleCurrency');
+    hostFixture.componentRef.setInput('valueType', 'currency');
 
     const host = hostFixture.componentInstance;
     expect(host).toBeTruthy();
@@ -57,7 +57,7 @@ describe('XtCurrencyComponent', () => {
     hostFixture.componentRef.setInput('formDescription', {
       currency:'EUR'
     });
-    hostFixture.componentRef.setInput('valueType', 'sampleCurrency');
+    hostFixture.componentRef.setInput('valueType', 'currency');
     hostFixture.componentRef.setInput('controlName', 'currency');
 
     const host = hostFixture.componentInstance;

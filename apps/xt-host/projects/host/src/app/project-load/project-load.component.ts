@@ -88,9 +88,14 @@ export class ProjectLoadComponent implements OnInit {
       if (apiUrl != null) {
           runInInjectionContext(this.injector, () => {
           try {
-          const apiProvider = inject(XtApiStoreProvider);
-          apiProvider.apiUrl = apiUrl;
-          this.storeMgr.setDefaultStoreProvider(apiProvider);
+            const apiProvider = inject(XtApiStoreProvider);
+            apiProvider.apiUrl = apiUrl;
+
+            const docUrl=this.appConfig.config.value()?.documentApiUrl;
+            if (docUrl!=null) {
+              apiProvider.docUrl = docUrl;
+            }
+            this.storeMgr.setDefaultStoreProvider(apiProvider);
           } catch(err) {
             console.error (err);
           }

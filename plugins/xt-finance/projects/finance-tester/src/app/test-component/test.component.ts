@@ -5,6 +5,7 @@ import { JsonPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { XtRenderComponent } from 'xt-components';
 import { Panel } from 'primeng/panel';
+import { Card } from 'primeng/card';
 
 @Component({
   selector: 'app-test',
@@ -12,7 +13,7 @@ import { Panel } from 'primeng/panel';
     AutoComplete,
     FormsModule,
     ReactiveFormsModule,
-    JsonPipe, XtRenderComponent, Panel
+    JsonPipe, XtRenderComponent, Panel, Card
   ],
   templateUrl: './test.component.html',
   styleUrl: './test.component.css'

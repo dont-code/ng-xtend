@@ -12,7 +12,7 @@ import {
 } from 'primeng/autocomplete';
 
 @Component({
-  selector: 'xt-sample-currency',
+  selector: 'xt-intl-currency',
   standalone: true,
   imports: [CommonModule, InputNumberModule, ReactiveFormsModule, InputTextModule, AutoComplete],
   templateUrl: './intl-currency.component.html',

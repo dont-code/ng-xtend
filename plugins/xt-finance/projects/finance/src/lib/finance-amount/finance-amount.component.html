@@ -1,0 +1,16 @@
+@if (isInForm() ) {
+  @let cur = currency();
+  <ng-container [formGroup]="formGroup()">
+    <xt-render-sub [context]="subContext('currency', 'currency')" (outputs)="outputChanged($event)" />
+    @if (cur != null) {
+      <p-inputNumber mode="currency" [currency]="cur" formControlName="amount" />
+    } @else {
+      <p-inputNumber mode="decimal" formControlName="amount" />
+    }
+  </ng-container>
+} @else {
+  @let displayAmount = amount();
+  @if (displayAmount) {
+    {{ displayAmount | currency : currency() }}
+  }
+}

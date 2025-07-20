@@ -1,33 +1,45 @@
 import { XtResolverService } from 'xt-components';
-import { WebImageComponent } from './web-image/web-image.component';
-import { WebLinkComponent } from './web-link/web-link.component';
-import { WebRatingComponent } from './web-rating/web-rating.component';
+import { MoneyAmountHandler } from './money-handler/money-amount-handler';
+import { FinanceAmountComponent } from './finance-amount/finance-amount.component';
 
-export function registerWebPlugin (resolverService:XtResolverService):string {
-  const pluginName = "Plugin Web";
+export function registerFinancePlugin (resolverService:XtResolverService):string {
+  const pluginName = "Plugin Finance";
     console.info ('Registering '+pluginName);
     resolverService.registerPlugin ({
         name:pluginName,
         uriLogo:'pluginicon.png',
         components: [
             {
-              componentName:'WebImage',
-              componentClass:WebImageComponent,
-              typesHandled: ['image'],
-            },{
-            componentName:'WebLink',
-            componentClass:WebLinkComponent,
-            typesHandled: ['link']
-          },{
-            componentName:'WebRating',
-            componentClass:WebRatingComponent,
-            typesHandled: ['rating']
-          }
-        ]
+              componentName:'FinanceAmount',
+              componentClass:FinanceAmountComponent,
+              typesHandled: ['money-amount','eur-amount','usd-amount'],
+            }
+        ],
+      types: {
+        "money-amount":{
+          currency:'currency',
+          amount:'number'
+        },
+        "eur-amount":{
+          currency:'currency',
+          amount:'number'
+        },
+        "usd-amount":{
+          currency:'currency',
+          amount:'number'
+        }
+      }
+      ,typeHandlers:[
+        {
+          typesHandled: ['money-amount', 'eur-amount', 'usd-amount'],
+          handlerClass: MoneyAmountHandler
+        }
+      ]
+
     });
     return pluginName;
 }
 
 export function registerPlugin (resolverService:XtResolverService):string {
-  return registerWebPlugin(resolverService);
+  return registerFinancePlugin(resolverService);
 }

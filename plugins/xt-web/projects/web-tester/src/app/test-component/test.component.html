@@ -1,5 +1,13 @@
 <h1 class="text-2xl">Testing Web Types</h1>
 
+<p-panel header="Configuration">
+  <div class="flex flex-wrap m-12 gap-4 items-center" id="DocUrl">
+    <label for="inMemoryStore">Use In memory storage</label>
+    <p-checkbox id="inMemoryStore" [ngModel]="storeInMemory()" [binary]="true" (ngModelChange)="storeInMemory.set($event)">In memory only</p-checkbox>
+    <label for="docUrl">Store documents with this url</label>
+    <p-autocomplete id="docUrl" [ngModel]="docUrl()" (ngModelChange)="docUrl.set($event)" [suggestions]="listofDocUrls()"  [dropdown]="true" [forceSelection]="false" ></p-autocomplete>
+  </div>
+</p-panel>
 <div class="flex flex-wrap mt-6 mb-6">
   <p-panel header="Selection">
     <label class="text-xl m-3" for="TypeSelector">Select the type to test</label>

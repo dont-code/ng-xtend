@@ -1,0 +1,20 @@
+ {
+  "$schema": "https://dont-code.net/schemas/v1/repository-schema.json",
+  "name": "Local Plugins Repository",
+  "description": "Repository provided by Dont-code using stable versions of plugins to connect to demo services.",
+  "webSocketUrl": "ws://test.dont-code.net/demo/preview",
+  "storeApiUrl": "https://test.dont-code.net/demo/data",
+  "projectApiUrl": "https://test.dont-code.net/demo/project",
+  "documentApiUrl": "https://test.dont-code.net/demo/documents",
+   "plugins": [
+     {
+       "id": "Web",
+       "display-name": "Web plugin",
+       "version": "1.0.0",
+       "info": {
+         "remote-entry":"http://localhost:4202/remoteEntry.json"
+       },
+       "config": {}
+     }
+   ]
+}

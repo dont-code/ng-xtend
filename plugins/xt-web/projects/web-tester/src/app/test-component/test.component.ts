@@ -1,10 +1,12 @@
-import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, model, OnDestroy, OnInit, signal } from '@angular/core';
 import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { XtRenderComponent } from 'xt-components';
 import { Panel } from 'primeng/panel';
+import { Checkbox, CheckboxChangeEvent } from 'primeng/checkbox';
+import { StoreManagerService, XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 
 @Component({
   selector: 'app-test',
@@ -12,7 +14,7 @@ import { Panel } from 'primeng/panel';
     AutoComplete,
     FormsModule,
     ReactiveFormsModule,
-    JsonPipe, XtRenderComponent, Panel
+    JsonPipe, XtRenderComponent, Panel, Checkbox
   ],
   templateUrl: './test.component.html',
   styleUrl: './test.component.css'
@@ -23,12 +25,25 @@ export class TestComponent implements OnInit, OnDestroy {
 
   selectedType= signal<string>('image');
 
+  docUrl = signal<string|null>(null);
+  storeInMemory = signal(true);
+
   value = signal<any>({TestType:'string'});
   mainForm :FormGroup =this.builder.group ({
     TestType:[null]
   });
 
+  protected storeMgr= inject(StoreManagerService);
+  protected apiProvider = inject (XtApiStoreProvider);
+
   protected subscriptions= new Subscription();
+
+  constructor() {
+    effect(() => {
+      this.updateStore (this.storeInMemory(), this.docUrl());
+    });
+
+  }
 
   listOfSimpleTypes() {
     return ['image','link', 'rating'];
@@ -57,4 +72,19 @@ export class TestComponent implements OnInit, OnDestroy {
     }));
   }
 
+  updateStore(inMemory:boolean, docUrl:string|null) {
+    if (inMemory) {
+      this.storeMgr.setDefaultStoreProvider(new XtMemoryStoreProvider());
+    }else {
+      this.apiProvider.docUrl=docUrl??'';
+      this.storeMgr.setDefaultStoreProvider(this.apiProvider);
+    }
+  }
+
+  listofDocUrls():string[] {
+    return [
+      'https://test.dont-code.net/demo/documents',
+      'https://collinfr.net/dont-code/documents',
+      'http://localhost:8084/documents'];
+  }
 }

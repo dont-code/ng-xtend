@@ -39,7 +39,7 @@ export type XtContext<T> = {
 
     setDisplayValue (newValue:T|null|undefined, type?:string): XtContext<T>;
 
-    setFormValue (newValue:T|null|undefined): boolean;
+    setFormValue (newValue:T|null|undefined, markAsDirty?:boolean): boolean;
 
     value(): T | null | undefined;
 
@@ -200,12 +200,15 @@ export class XtBaseContext<T> implements XtContext<T>{
     return ret;
   }
 
-  setFormValue (newValue:T|null|undefined): boolean {
+  setFormValue (newValue:T|null|undefined, markAsDirty=false): boolean {
     if (this.isInForm()) {
       if (this.subName!=null) {
         const control=this.parentFormGroup?.get(this.subName);
         if (control!=null) {
           control.setValue(newValue);
+          if (markAsDirty) {
+            control.markAsDirty();
+          }
           return true;
         }
       }

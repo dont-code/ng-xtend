@@ -15,8 +15,6 @@ export class AppComponent {
   protected resolverService = inject (XtResolverService);
 
   constructor () {
-    // Let's use the Test Store Helper for Web Images
-    StoreTestHelper.ensureTestProviderOnly();
     registerWebPlugin(this.resolverService);
   }
 

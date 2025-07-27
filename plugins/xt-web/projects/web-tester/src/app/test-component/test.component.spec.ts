@@ -5,8 +5,9 @@ import { setupAngularTestBed } from '../../../globalTestSetup';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { registerWebPlugin } from '../../../../web/src/lib/register';
-import { XtResolverService } from 'xt-components';
+import { StoreTestHelper, XtResolverService } from 'xt-components';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('TestComponent', () => {
   let component: TestComponent;
@@ -19,10 +20,11 @@ describe('TestComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestComponent],
-      providers: [provideNoopAnimations(), provideExperimentalZonelessChangeDetection()]
+      providers: [provideNoopAnimations(), provideExperimentalZonelessChangeDetection(), provideHttpClient()]
     })
     .compileComponents();
 
+    StoreTestHelper.ensureTestProviderOnly();
     registerWebPlugin(TestBed.inject(XtResolverService));
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;

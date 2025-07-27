@@ -48,7 +48,7 @@ export class WebImageComponent extends XtSimpleComponent{
     if (this.store!=null) {
       try {
         const docInfo = await this.store.storeDocument($event.files[0]);
-        const done= this.context().setFormValue (docInfo.documentName);
+        const done= this.context().setFormValue (docInfo.documentId, true);
         if (!done) throw new Error ("Cannot update form");
       } catch (err) {
         this.msgHandler.errorOccurred(err, "Error while uploading image");

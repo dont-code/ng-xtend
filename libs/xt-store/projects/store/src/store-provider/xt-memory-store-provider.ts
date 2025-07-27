@@ -51,7 +51,7 @@ export class XtMemoryStoreProvider<T extends ManagedData> extends AbstractXtStor
   override storeDocuments(toStore: File[]): Observable<UploadedDocumentInfo> {
     const toSend = new Array<UploadedDocumentInfo>();
     for (const file of toStore) {
-      const ret: UploadedDocumentInfo = { documentName: URL.createObjectURL(file), isUrl: true };
+      const ret: UploadedDocumentInfo = { documentName:file.name, documentId: URL.createObjectURL(file), isUrl: true };
       toSend.push(ret);
     }
     return from(toSend)

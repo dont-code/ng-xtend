@@ -81,7 +81,7 @@ export class TestStoreProvider<T = never> implements IStoreProvider<T> {
         return true;
     }
     storeDocument(toStore: File): Promise<IDocumentInfo> {
-      const ret = new TestDocumentInfo(URL.createObjectURL(toStore), true);
+      const ret = new TestDocumentInfo(toStore.name, true,URL.createObjectURL(toStore));
       return Promise.resolve(ret);
     }
 

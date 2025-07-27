@@ -26,7 +26,7 @@ export class TestComponent implements OnInit, OnDestroy {
     TestType:[null]
   });
 
-  selectedType= signal<string>('url');
+  selectedType= signal<string>('link');
 
   docUrl = signal<string|null>(null);
   storeInMemory = signal(true);

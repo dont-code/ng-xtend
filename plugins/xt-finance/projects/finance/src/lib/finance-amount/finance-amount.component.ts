@@ -8,7 +8,7 @@ import {
   runInInjectionContext,
   signal
 } from '@angular/core';
-import { XtComponentOutput, XtCompositeComponent, XtRenderSubComponent } from 'xt-components';
+import { XtComponentOutput, XtCompositeComponent, XtRenderSubComponent, XtResolverService } from 'xt-components';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InputNumber } from 'primeng/inputnumber';
 import { CurrencyPipe } from '@angular/common';
@@ -28,6 +28,7 @@ import { MoneyAmount } from '../money-handler/money-amount';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinanceAmountComponent extends XtCompositeComponent<MoneyAmount> implements OnInit {
+  isFixedCurrency=true;
   currency= signal<string|undefined>( undefined );
 
   amount = computed<number|undefined>(()=> {
@@ -36,8 +37,26 @@ export class FinanceAmountComponent extends XtCompositeComponent<MoneyAmount> im
 
   override ngOnInit(): void {
     super.ngOnInit();
+    let value=this.context().value();
+    if (this.context().valueType=='money-amount') {
+      this.isFixedCurrency=false;
+      this.currency.set(value?.currency);
+    }else if (this.context().valueType?.endsWith('-amount')) {
+      this.isFixedCurrency=true;
+      const currency=this.context().valueType?.substring(0,3).toUpperCase();
+        // Enforce the currency if needed
+      if (this.isInForm()) {
+        if (value==null) {
+          value=this.resolverService.findTypeHandlerOf(this.context()).handler?.createNew()??{};
+          this.context().setFormValue(value, true);
+        }else if (value.currency==null) {
+          value.currency=currency;
+          this.context().setFormValue(value, true);
+        }
+      }
+      this.currency.set(currency);
+    }
     this.manageFormControl('amount');
-    this.currency.set(this.context().value()?.currency);
   }
 
   outputChanged($output:XtComponentOutput | null) {

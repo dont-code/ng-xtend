@@ -5,10 +5,8 @@ module.exports = withNativeFederation({
   name: 'finance-tester',
 
   exposes: {
-    './WebImageComponent': './projects/finance/src/lib/web-image/web-image.component.ts',
-    './WebLinkComponent': './projects/finance/src/lib/web-link/web-link.component.ts',
-    './WebRatingComponent': './projects/finance/src/lib/web-rating/web-rating.component.ts',
-    './Register': './projects/web/src/finance/register.ts'
+    './FinanceAmountComponent': './projects/finance/src/lib/finance-amount/finance-amount.component.ts',
+    './Register': './projects/finance/src/lib/register.ts'
   },
 
   shared: {

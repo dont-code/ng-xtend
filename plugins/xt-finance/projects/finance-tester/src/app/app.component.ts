@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { StoreTestHelper, XtResolverService } from 'xt-components';
-import { registerWebPlugin } from '../../../web/src/lib/register';
+import { registerFinancePlugin } from '../../../finance/src/lib/register';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent {
   constructor () {
     // Let's use the Test Store Helper for Web Images
     StoreTestHelper.ensureTestProviderOnly();
-    registerWebPlugin(this.resolverService);
+    registerFinancePlugin(this.resolverService);
   }
 
 }

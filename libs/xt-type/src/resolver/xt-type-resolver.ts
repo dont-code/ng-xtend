@@ -24,7 +24,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
 
     addRootType<Type> (typeName:string, type:XtTypeInfo|string, handler?:XtTypeHandler<Type>):void {
       if (handler==null) {
-          handler = this.findTypeHandler(typeName)?.handler;
+          handler = this.findTypeHandler<Type>(typeName)?.handler;
       }
       const typeHierarchy = fromDescription (type, handler, typeName, undefined);
       this.types.set (typeName, typeHierarchy);

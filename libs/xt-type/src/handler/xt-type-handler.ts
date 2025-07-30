@@ -11,6 +11,11 @@ export type XtTypeHandler<Type> = {
 
   dateFromJson (dateAsString:string | null | undefined):Date | null | undefined;
   dateToJson (date:Date | null | undefined):string | null | undefined;
+
+  /**
+   * Creates a new empty instance of type. Id is not set at this point
+   */
+  createNew (): Type;
 }
 
 export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
@@ -23,6 +28,7 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
   }
 
   abstract init (context:XtTypeHierarchy):void;
+  abstract createNew (): Type;
 
   fromJson(json: any): void {
     // Copy the storage id to _id field if it exists

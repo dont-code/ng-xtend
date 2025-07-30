@@ -210,6 +210,15 @@ export class XtBaseContext<T> implements XtContext<T>{
             control.markAsDirty();
           }
           return true;
+        } else {
+            // Supports setting values without a child form control
+          const value=this.parentFormGroup?.getRawValue();
+          if (value!=null) {
+            if (newValue!==undefined)
+              value[this.subName]=newValue;
+            else
+              delete value[this.subName];
+          }
         }
       }
     }

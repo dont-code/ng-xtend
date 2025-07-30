@@ -134,7 +134,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4202
+            "port": 4204
           }
         },
         "extract-i18n": {

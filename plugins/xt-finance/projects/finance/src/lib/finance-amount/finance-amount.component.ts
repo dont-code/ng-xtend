@@ -38,7 +38,7 @@ export class FinanceAmountComponent extends XtCompositeComponent<MoneyAmount> im
   override ngOnInit(): void {
     super.ngOnInit();
     let value=this.context().value();
-    if (this.context().valueType=='money-amount') {
+    if ((this.context().valueType=='money-amount') || (this.context().valueType==null)) {
       this.isFixedCurrency=false;
       this.currency.set(value?.currency);
     }else if (this.context().valueType?.endsWith('-amount')) {

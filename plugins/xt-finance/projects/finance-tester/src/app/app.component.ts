@@ -10,7 +10,7 @@ import { registerFinancePlugin } from '../../../finance/src/lib/register';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'WebTester';
+  title = 'Finance Tester';
 
   protected resolverService = inject (XtResolverService);
 

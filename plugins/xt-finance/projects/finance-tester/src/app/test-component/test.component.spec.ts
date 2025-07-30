@@ -4,7 +4,7 @@ import { TestComponent } from './test.component';
 import { setupAngularTestBed } from '../../../globalTestSetup';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { registerWebPlugin } from '../../../../web/src/lib/register';
+import { registerFinancePlugin } from '../../../../finance/src/lib/register';
 import { XtResolverService } from 'xt-components';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -23,7 +23,7 @@ describe('TestComponent', () => {
     })
     .compileComponents();
 
-    registerWebPlugin(TestBed.inject(XtResolverService));
+    registerFinancePlugin(TestBed.inject(XtResolverService));
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -2,10 +2,10 @@
   "name": "xt-host",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "ng",s
     "start": "ng serve",
-    "build": "ng build xt-host --configuration=development",
-    "build-deploy": "APP=xt-host && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\" && rm -f ../../dist/$STAGE/$APP/*.* && mv ../../dist/$STAGE/$APP/browser/* ../../dist/$STAGE/$APP",
+    "build": "ng build host --configuration=development",
+    "build-deploy": "APP=host && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\" && rm -f ../../dist/$STAGE/$APP/*.* && mv ../../dist/$STAGE/$APP/browser/* ../../dist/$STAGE/$APP",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/host && ../../node_modules/.bin/vitest"
   },

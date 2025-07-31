@@ -3,6 +3,14 @@
     "http://localhost:4202",
     "https://test.dont-code.net/apps/latest/web-tester"
   ],
+  "Plugin International": [
+    "http://localhost:4203",
+    "https://test.dont-code.net/apps/latest/intl-tester"
+  ],
+  "Plugin Finance": [
+    "http://localhost:4204",
+    "https://test.dont-code.net/apps/latest/finance-tester"
+  ],
   "Plugin Sample": [
     "http://localhost:4201",
     "https://test.dont-code.net/apps/latest/sample-tester"

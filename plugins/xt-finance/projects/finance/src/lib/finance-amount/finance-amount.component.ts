@@ -31,10 +31,6 @@ export class FinanceAmountComponent extends XtCompositeComponent<MoneyAmount> im
   isFixedCurrency=true;
   currency= signal<string|undefined>( undefined );
 
-  amount = computed<number|undefined>(()=> {
-    return this.context().displayValue()?.amount;
-  })
-
   override ngOnInit(): void {
     super.ngOnInit();
     let value=this.context().value();

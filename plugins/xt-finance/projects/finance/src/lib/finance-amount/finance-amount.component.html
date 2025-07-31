@@ -11,8 +11,8 @@
     }
   </ng-container>
 } @else {
-  @let displayAmount = amount();
-  @if (displayAmount) {
-    <span>{{ displayAmount | currency : currency() }}</span>
+  @let displayAmount = displayValue();
+  @if ((displayAmount) && (displayAmount.amount!=null)) {
+    <span>{{ displayAmount.amount | currency : displayAmount.currency }}</span>
   }
 }

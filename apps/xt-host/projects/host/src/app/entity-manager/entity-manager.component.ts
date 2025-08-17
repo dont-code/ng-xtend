@@ -46,15 +46,7 @@ export class EntityManagerComponent implements OnDestroy {
 
   store : XtSignalStore<ManagedData> | null = null;
 
-  editForm = computed( () => {
-    const entity = this.selectedEntity();
-    const form = this.formBuilder.group({}, {updateOn: 'change'});
-    if (entity!=null) {
-      updateFormGroupWithValue(form, entity);
-    }
-    this.listenToFormEvent (form);
-    return this.formBuilder.group ({ editor: form });
-  });
+  editForm = signal<FormGroup>(this.formBuilder.group ({ editor: this.formBuilder.group({}) }));
 
   selectedEntity = signal<ManagedData|null>(null);
 
@@ -114,8 +106,19 @@ export class EntityManagerComponent implements OnDestroy {
     if (newValue?.valueSelected!=null) {
       newValue?.valueSelected.subscribe (selected => {
         this.selectedEntity.set(selected);
+        this.updateEditForm();
       });
     }
+  }
+
+  updateEditForm () {
+    const entity = this.selectedEntity();
+    const form = this.formBuilder.group({}, {updateOn: 'change'});
+    if (entity!=null) {
+      updateFormGroupWithValue(form, entity);
+    }
+    this.listenToFormEvent (form);
+    this.editForm.set( this.formBuilder.group ({ editor: form }));
   }
 
   async save() {
@@ -128,6 +131,7 @@ export class EntityManagerComponent implements OnDestroy {
       this.saving.set(true);
       const savedValue = await this.safeStore().storeEntity (toSave);
       this.selectedEntity.set(savedValue);
+      this.updateEditForm();
       this.canSave.set(false);
       this.viewMode.set("list");
     } catch (error) {
@@ -173,6 +177,7 @@ export class EntityManagerComponent implements OnDestroy {
     if (deleted) {
       this.selectedEntity.set(null);
       this.viewMode.set("list");
+      this.updateEditForm();
     }
     }
 
@@ -181,6 +186,7 @@ export class EntityManagerComponent implements OnDestroy {
       this.newing.set(true);
       const newOne = await this.safeStore().storeEntity({} as ManagedData);
       this.selectedEntity.set(newOne);
+      this.updateEditForm();
       this.viewMode.set("edit");
 
     } catch (error) {

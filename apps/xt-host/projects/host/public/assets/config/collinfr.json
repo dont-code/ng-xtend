@@ -15,6 +15,23 @@
         "remote-entry":"https://test.dont-code.net/apps/latest/web-tester/remoteEntry.json"
       },
       "config": {}
+    },    {
+      "id": "International",
+      "display-name": "International plugin",
+      "version": "1.0.0",
+      "info": {
+        "remote-entry":"https://test.dont-code.net/apps/latest/intl-tester/remoteEntry.json"
+      },
+      "config": {}
+    },    {
+      "id": "Finance",
+      "display-name": "Finance plugin",
+      "version": "1.0.0",
+      "info": {
+        "remote-entry":"https://test.dont-code.net/apps/latest/finance-tester/remoteEntry.json"
+      },
+      "config": {}
     }
+
   ]
 }

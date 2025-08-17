@@ -10,7 +10,7 @@
 	},
 	"newProjectRoot": "projects",
 	"projects": {
-		"xt-host": {
+		"host": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
@@ -26,10 +26,10 @@
 					"options": {},
 					"configurations": {
 						"production": {
-							"target": "xt-host:esbuild:production"
+							"target": "host:esbuild:production"
 						},
 						"development": {
-							"target": "xt-host:esbuild:development",
+							"target": "host:esbuild:development",
 							"dev": true,
               "devServer": false
 						}
@@ -39,7 +39,7 @@
 				"serve": {
 					"builder": "@angular-architects/native-federation:build",
 					"options": {
-						"target": "xt-host:serve-original:development",
+						"target": "host:serve-original:development",
 						"rebuildDelay": 0,
 						"dev": true,
 						"port": 0
@@ -69,7 +69,7 @@
 				"esbuild": {
 					"builder": "@angular-devkit/build-angular:application",
 					"options": {
-						"outputPath": "dist/xt-host",
+						"outputPath": "dist/host",
 						"index": "projects/host/src/index.html",
 						"browser": "projects/host/src/main.ts",
 						"preserveSymlinks": true,
@@ -117,10 +117,10 @@
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
 						"production": {
-							"buildTarget": "xt-host:esbuild:production"
+							"buildTarget": "host:esbuild:production"
 						},
 						"development": {
-							"buildTarget": "xt-host:esbuild:development"
+							"buildTarget": "host:esbuild:development"
 						}
 					},
 					"defaultConfiguration": "development",

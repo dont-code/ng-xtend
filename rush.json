@@ -330,8 +330,17 @@
       "projectFolder": "plugins/xt-web",
       "shouldPublish": true,
       "publishFolder": "dist/xt-plugin-web"
-    },
-    {
+    }, {
+      "packageName": "xt-plugin-intl",
+      "projectFolder": "plugins/xt-intl",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-plugin-intl"
+    }, {
+      "packageName": "xt-plugin-finance",
+      "projectFolder": "plugins/xt-finance",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-plugin-finance"
+    }, {
       "packageName": "xt-store",
       "projectFolder": "libs/xt-store",
       "shouldPublish": true,

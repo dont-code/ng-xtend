@@ -1,0 +1,10 @@
+<h2>Testing International components</h2>
+
+<form [formGroup]="currencyForm">
+  <label for="currency">Please select a currency</label>
+  <xt-render id="currency" displayMode="FULL_EDITABLE" [formGroup]="currencyForm" subName="currency" [componentType]="IntlCurrencyComponent" (outputs)="outputChanged($event)" ></xt-render>
+</form>
+<br/>
+Form Value is {{currencyForm.value | json}}, Form is {{currencyForm.pristine?"pristine":"Dirty"}}
+<br/>
+Last currency selected : {{lastCurrencySelected()}}

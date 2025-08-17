@@ -1,0 +1,163 @@
+{
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"cli": {
+		"packageManager": "pnpm",
+		"analytics": "aa50d3e8-3b23-4c0b-886c-589e9f92b5bc",
+		"cache": {
+			"enabled": false
+		}
+	},
+	"newProjectRoot": "projects",
+	"projects": {
+		"intl": {
+			"projectType": "library",
+			"root": "projects/intl",
+			"sourceRoot": "projects/intl/src",
+			"prefix": "lib",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:ng-packagr",
+					"options": {
+						"project": "projects/intl/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "projects/intl/tsconfig.lib.prod.json"
+						},
+						"development": {
+							"tsConfig": "projects/intl/tsconfig.lib.json"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"test": {
+					"builder": "@analogjs/vitest-angular:test",
+					"options": {
+						"tsConfig": "projects/intl/tsconfig.spec.json",
+						"polyfills": []
+					}
+				}
+			}
+		},
+		"intl-tester": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "css"
+				}
+			},
+			"root": "projects/intl-tester",
+			"sourceRoot": "projects/intl-tester/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "intl-tester:esbuild:production"
+						},
+						"development": {
+							"target": "intl-tester:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "intl-tester:serve-original:development",
+						"rebuildDelay": 0,
+						"dev": true,
+						"port": 0
+					}
+				},
+				"esbuild": {
+					"builder": "@angular-devkit/build-angular:application",
+					"options": {
+						"outputPath": "dist/xt-intl-tester",
+						"index": "projects/intl-tester/src/index.html",
+						"browser": "projects/intl-tester/src/main.ts",
+						"preserveSymlinks": true,
+						"polyfills": [
+							"es-module-shims"
+						],
+						"tsConfig": "projects/intl-tester/tsconfig.app.json",
+						"inlineStyleLanguage": "css",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/intl-tester/public"
+							}
+						],
+						"styles": [
+							"projects/intl-tester/src/styles.css"
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kB",
+									"maximumError": "4kB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "intl-tester:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "intl-tester:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4203
+					}
+				},
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "polyfills": [],
+            "tsConfig": "projects/intl-tester/tsconfig.spec.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/intl-tester/public"
+              }
+            ],
+            "styles": [
+              "projects/intl-tester/src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+		}
+	}
+}

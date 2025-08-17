@@ -22,8 +22,8 @@ export class AppConfigService {
 
     const statuses: {[key:string]:ResourceRef<any>} = {
       "Config": this.config,
-      "Project": this.project,
-      "Plugin": this.plugins
+      "Plugin": this.plugins,
+      "Project": this.project
     }
 
     for (const name in statuses) {
@@ -94,14 +94,14 @@ export class AppConfigService {
   project = resource({
     request: () => {
       const ret= {
-        plugins: this.plugins.value(),
+        pluginsLoaded: (this.plugins.status()==ResourceStatus.Resolved)||(this.plugins.status()==ResourceStatus.Local),
         projectUrl:this.config.value()?.projectApiUrl,
         projectName: this.configResources.projectName()
       }
       return ret;
     },
     loader: (options) => {
-      if ((options.request.plugins==true) && (options.request.projectName!=null)) {
+      if ((options.request.pluginsLoaded) && (options.request.projectName!=null)) {
         let projectUrl = options.request.projectUrl;
         if (projectUrl==null) {
           projectUrl='assets/projects/'+encodeURIComponent (options.request.projectName)+'.json';
@@ -111,6 +111,8 @@ export class AppConfigService {
         return fetch(projectUrl).then ((response) => {
           return response.json();
         });
+      } else if (!options.request.pluginsLoaded) {
+        return Promise.resolve();
       } else {
         return Promise.reject('No project name to load');
       }

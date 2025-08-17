@@ -1,4 +1,4 @@
-name: Website update
+name: Dont-code Website images update
 on:
   workflow_dispatch:
     inputs:

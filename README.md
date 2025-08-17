@@ -1,15 +1,6 @@
 # ![ng-xtend logo](docs/logos/logo-xtend-angular-red-small-transparent.png) ng-xtend Framework 
 Enable plugins in your Angular application ! 
 
-## Try it !
-A simple application to rate coffee beans:
-
-[![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png "A simple application to rate coffee beans.")](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"}
-
-Test how plugins are dynamically loaded:
-
-[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png "Test how plugins are dynamically loaded")](https://test.dont-code.net/apps/latest/plugin-tester){target="_blank"}
-
 ## ng-xtend, what for?
 
 The most successful web applications enjoy an eco-system of plugins with them. Check Nextcloud, Drupal, Joomla! or Wordpress, it's so easy to extend them with a plugin that meets your needs.
@@ -28,6 +19,15 @@ It's an Angular library allowing you to:
 - Use plugins together to render or edit this data.
 - Dynamically load and install plugins.
 - Save / Load / Update the data to any storage.
+
+## Try it !
+A simple application to rate coffee beans:
+
+[![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png "A simple application to rate coffee beans.")](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation){target="_blank"}
+
+Test how plugins are dynamically loaded:
+
+[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png "Test how plugins are dynamically loaded")](https://test.dont-code.net/apps/latest/plugin-tester){target="_blank"}
 
 ## Some examples ?
 Here are screenshots of an application automatically handling list, view and edition of complex data (evaluations of coffee beans) using ng-xtend, a [dont-code application](https://dont-code.net/){target="_blank"}, and the [default plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default) and [web plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-web)  

@@ -75,6 +75,12 @@ export class ApplicationModelManagerService {
         return 'date-time';
       case 'Website (url)':
         return 'link';
+      case 'Euro':
+        return 'eur-amount';
+      case 'Dollar':
+        return 'usd-amount';
+      case 'Other currency':
+        return 'money-amount';
       default:
         return type.toLowerCase();
     }

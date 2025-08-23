@@ -41,6 +41,16 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
         json[dateTypeName] = this.dateFromJson(json[dateTypeName]);
       }
     }
+
+    if( this.fields.oldFields != null) {
+      for (const oldField of this.fields.oldFields) {
+        const val=json[oldField.oldFieldName];
+        if (val!=undefined) {
+          json[oldField.newFieldName]=val;
+          delete json[oldField.oldFieldName];
+        }
+      }
+    }
   }
 
   toJson(value: Type): void {

@@ -9,6 +9,7 @@ export type XtTypeResolver = {
   findTypeHandler<Type> (typeName:string|null|undefined, subName?:string, value?:Type): {typeName?:string|null, handler?:XtTypeHandler<Type> };
 
   listSubNames (typeName: string | null | undefined, value?: any):string[];
+  isPrimitiveType (typeName: string | null | undefined, value?: any):boolean;
 
   canUpdate (): boolean;
 
@@ -44,7 +45,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
             return typeName;
         } else {
             const selectedType = this.types.get(typeName);
-            if( (selectedType != null) && (selectedType.children!=null)) {
+            if( (selectedType != null) && (selectedType.children!=null) && (selectedType.children[subName]!=null)) {
                 const type = selectedType.children[subName].type;
                 if (type==null) {
                   throw new Error('SubType named '+subName+' of '+typeName+ ' doesn\'t have a type name.');
@@ -55,6 +56,14 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
         }
 
         return undefined;
+    }
+
+    isPrimitiveType (typeName:string):boolean {
+      const type=this.types.get(typeName);
+      if ((type==null) || (type.children == null) || (Object.keys(type.children).length == 0 )) {
+        return true;
+      } else
+        return false;
     }
 
     listSubNames (typeName:string | null | undefined, value?: any):string[] {

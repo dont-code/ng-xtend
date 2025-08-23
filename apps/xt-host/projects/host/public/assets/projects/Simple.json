@@ -1,0 +1,34 @@
+{
+  "name": "Simple",
+  "template": false,
+  "description": "Simple project with no need for plugins",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Simple",
+      "entities": {
+        "a": {
+          "from": "",
+          "name": "SimpleNote",
+          "fields": {
+            "a": {
+              "name": "Text",
+              "type": "string"
+            },
+            "b": {
+              "name": "Amount",
+              "type": "number"
+            },
+            "c": {
+              "name": "Check",
+              "type": "boolean"
+            }
+          }
+        },
+        "sharing": {
+          "with": "Dont-code users"
+        }
+      }
+    }
+  }
+}

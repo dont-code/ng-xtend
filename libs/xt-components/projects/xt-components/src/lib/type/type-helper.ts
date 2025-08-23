@@ -1,12 +1,22 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { isPrimitive } from 'xt-type';
+import { isPrimitive, XtTypeResolver } from 'xt-type';
 
-export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:string]:any}) {
+export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:string]:any}, valueType?:string, resolver?:XtTypeResolver) {
 
   const toDelete = new Set<string>(Object.keys(formGroup.controls));
+    // We merge the properties of the value if any, with the properties of the model
+  const keySet  = new Set<string>((value!=null)?Object.keys(value):null);
+  if( ((valueType!=null) && (resolver!=null))) {
+    const modelSubName = resolver.listSubNames(valueType, value);
+    for (const sub of modelSubName) {
+      keySet.add(sub);
+    }
+  }
 
-  for (const valueKey in value) {
-    const primitive = isPrimitive(value[valueKey]);
+  for (const valueKey of keySet) {
+    const subValue=(value!=null)?value[valueKey]:null;
+    const subType=resolver?.findTypeName(valueType, valueKey, subValue)??undefined;
+    const primitive = (subType!=null)?resolver?.isPrimitiveType(subType):isPrimitive(subValue);
     if (toDelete.delete(valueKey)) {
       // Already a control
       const oldControl = formGroup.get(valueKey)!;
@@ -17,26 +27,26 @@ export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:str
           // It's ok, just set the value
           oldControl.setValue(value[valueKey]);
         } else {
-          formGroup.setControl(valueKey, new FormControl(value[valueKey]));
+          formGroup.setControl(valueKey, new FormControl(subValue));
         }
       } else {
         // Must be a FormGroup
         if ((oldControl as any).controls === undefined) {
           const newFormGroup = new FormGroup({});
           formGroup.setControl(valueKey, newFormGroup);
-          updateFormGroupWithValue(newFormGroup, value[valueKey]);
+          updateFormGroupWithValue(newFormGroup, subValue, subType, resolver);
         } else {
           // It was already a formgroup, so just update it
-          updateFormGroupWithValue(oldControl as FormGroup, value[valueKey]);
+          updateFormGroupWithValue(oldControl as FormGroup, subValue, subType, resolver);
         }
       }
     } else {
       if (primitive) {
-        formGroup.addControl(valueKey, new FormControl(value[valueKey]));
+        formGroup.addControl(valueKey, new FormControl(subValue));
       } else {
         const newFormGroup = new FormGroup({});
         formGroup.addControl(valueKey, newFormGroup);
-        updateFormGroupWithValue(newFormGroup, value[valueKey]);
+        updateFormGroupWithValue(newFormGroup, subValue, subType, resolver);
       }
     }
   }

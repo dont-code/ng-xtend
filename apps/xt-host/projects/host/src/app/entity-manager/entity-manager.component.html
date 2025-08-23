@@ -5,10 +5,10 @@
 <h1>{{entName}}</h1>
   <p-toolbar>
     <ng-template #center>
-      <p-button icon="pi pi-plus" (onClick)="newEntity()" [loading]="newing()"></p-button>
-      <p-button icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()" [loading]="updating()"></p-button>
-      <p-button icon="pi pi-trash" [disabled]="!selectedEntity()" (onClick)="deleteSelected()" [loading]="deleting()"></p-button>
-      <p-button icon="pi pi-save" [disabled]="!canSave()" (onClick)="save()" [loading]="saving()"></p-button>
+      <p-button id="btn-new" icon="pi pi-plus" (onClick)="newEntity()" [loading]="newing()"></p-button>
+      <p-button id="btn-reload" icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()" [loading]="updating()"></p-button>
+      <p-button id="btn-delete" icon="pi pi-trash" [disabled]="!selectedEntity()" (onClick)="deleteSelected()" [loading]="deleting()"></p-button>
+      <p-button id="btn-save" icon="pi pi-save" [disabled]="!canSave()" (onClick)="save()" [loading]="saving()"></p-button>
     </ng-template>
   </p-toolbar>
   <p-tabs [value]="viewMode()" >
@@ -26,10 +26,12 @@
       </p-tabpanel>
 
       <p-tabpanel value="edit">
-        @let mainForm=editForm();
-        <div [formGroup]="mainForm">
-          <xt-render displayMode="FULL_EDITABLE" [formGroup]="mainForm" subName="editor" [valueType]="entityName()" ></xt-render>
-        </div>
+        @if (canEdit()) {
+          @let mainForm=editForm();
+          <div [formGroup]="mainForm">
+            <xt-render displayMode="FULL_EDITABLE" [formGroup]="mainForm" subName="editor" [valueType]="entityName()" ></xt-render>
+          </div>
+          }
       </p-tabpanel>
     </p-tabpanels>
   </p-tabs>

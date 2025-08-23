@@ -53,6 +53,10 @@ export class XtResolverService {
     return this.typeResolver.listSubNames(baseContext.valueType, value);
   }
 
+  listSubNamesOfType<T> (valueType:string, value?:T): string[] {
+    return this.typeResolver.listSubNames(valueType, value);
+  }
+
   registerPlugin (info:XtPluginInfo) {
     this.pluginRegistry.registerPlugin (info);
     this.registerTypes (info.types, info.typeHandlers);

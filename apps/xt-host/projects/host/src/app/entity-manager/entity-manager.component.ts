@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { updateFormGroupWithValue, XtComponentOutput, XtRenderComponent } from 'xt-components';
+import { updateFormGroupWithValue, XtComponentOutput, XtRenderComponent, XtResolverService } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
 import { ManagedData } from 'xt-type';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
@@ -34,6 +34,7 @@ export class EntityManagerComponent implements OnDestroy {
   protected readonly storeMgr = inject(StoreManagerService);
   protected readonly formBuilder = inject(FormBuilder);
   protected readonly errorHandler = inject(ErrorHandlerService);
+  protected readonly resolver = inject (XtResolverService);
 
   /**
    * Support for setting entity name as an input and as a route.
@@ -115,7 +116,7 @@ export class EntityManagerComponent implements OnDestroy {
     const entity = this.selectedEntity();
     const form = this.formBuilder.group({}, {updateOn: 'change'});
     if (entity!=null) {
-      updateFormGroupWithValue(form, entity);
+      updateFormGroupWithValue(form, entity, this.entityName(), this.resolver.typeResolver);
     }
     this.listenToFormEvent (form);
     this.editForm.set( this.formBuilder.group ({ editor: form }));

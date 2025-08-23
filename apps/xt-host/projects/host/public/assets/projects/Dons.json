@@ -1,0 +1,84 @@
+{
+  "name": "Dons",
+  "template": false,
+  "description": "Liste les dons faits ou a faire dans l'année",
+  "imgUrl": "https://dont-code.net/assets/images/apps/Dons.webp",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Dons",
+      "entities": {
+        "a": {
+          "from": "",
+          "name": "Versement",
+          "fields": {
+            "a": {
+              "name": "Montant",
+              "type": "Other currency"
+            },
+            "b": {
+              "name": "Qui",
+              "type": "Reference"
+            },
+            "c": {
+              "type": "Date & Time",
+              "name": "Quand"
+            },
+            "d": {
+              "name": "Page de dons",
+              "type": "Website (url)"
+            },
+            "e": {
+              "name": "Reçu fiscal?",
+              "type": "Boolean"
+            }
+          }
+        }
+      },
+      "sharing": {
+        "with": "Dont-code users"
+      },
+      "reports": {
+        "a": {
+          "title": "Par année",
+          "for": "Versement",
+          "groupedBy": {
+            "a": {
+              "of": "Quand",
+              "label": "Année",
+              "display": {
+                "a": {
+                  "operation": "Sum",
+                  "of": "Montant"
+                },
+                "b": {
+                  "operation": "Count",
+                  "of": "Qui"
+                }
+              }
+            }
+          },
+          "sortedBy": {
+            "a": {
+              "by": "Quand",
+              "direction": "Ascending"
+            }
+          },
+          "as": {
+            "a": {
+              "type": "Table",
+              "of": "Versement",
+              "title": "Versements",
+              "by": ""
+            },
+            "b": {
+              "type": "Pie",
+              "of": "Montant",
+              "title": "Répartition"
+            }
+          }
+        }
+      }
+    }
+  }
+}

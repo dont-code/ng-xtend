@@ -52,7 +52,7 @@ describe('DefaultPrimitiveComponent', () => {
 
     expect(input.nativeElement.value).toEqual ('Text');
 
-    host.computedFormGroup().patchValue({'value':"NewText"});
+    host.computeFormGroup().patchValue({'value':"NewText"});
     hostFixture.detectChanges();
     expect(input.nativeElement.value).toEqual ("NewText");
   });
@@ -78,7 +78,7 @@ describe('DefaultPrimitiveComponent', () => {
 
     expect(inputDate.componentInstance.value).toEqual (date1 );
 
-    host.computedFormGroup().patchValue({'value':date2});
+    host.computeFormGroup().patchValue({'value':date2});
     hostFixture.detectChanges();
     expect(inputDate.componentInstance.value).toEqual (date2);
   });
@@ -104,7 +104,7 @@ describe('DefaultPrimitiveComponent', () => {
     checkbox.nativeElement.dispatchEvent(new Event('change'));
     hostFixture.detectChanges();
 
-    expect(host.computedFormGroup().value).toEqual ({ value: false });
+    expect(host.computeFormGroup().value).toEqual ({ value: false });
   });
 
   it('should switch to the correct UI whenever a value is set', () => {

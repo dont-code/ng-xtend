@@ -34,8 +34,18 @@ export class SampleMoneyComponent extends XtCompositeComponent<SampleMoney> impl
   //  console.debug("Calculating currency in XtMoneyComponent");
     this.recalculate();
     const value = this.context().value();
-    if (value==null) return undefined;
+    if (value?.currency==null) return undefined;
+
     return value.currency;
+  });
+
+  isValidCurrency= computed<boolean> ( () => {
+    const cur=this.currency();
+    if (cur==null) return false;
+    if (Intl.supportedValuesOf('currency').indexOf(cur) > -1) {
+      return true;
+    }else
+      return false;
   });
 
   amount = computed<number|undefined>(()=> {
@@ -52,10 +62,7 @@ export class SampleMoneyComponent extends XtCompositeComponent<SampleMoney> impl
       if (amountCtrl?.parent!=null) {
         amountCtrl.parent.valueChanges.pipe(takeUntilDestroyed()).subscribe({
           next: value => {
-            // Is the value a known currency ?
-            if (Intl.supportedValuesOf('currency').indexOf(value.currency) > -1) {
-              this.recalculate.set(!this.recalculate());
-            }
+            this.recalculate.set(!this.recalculate());
           }
         });
       }

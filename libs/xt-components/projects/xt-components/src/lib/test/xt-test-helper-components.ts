@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, Type } from '@angular/core';
+import { Component, computed, inject, input, OnInit, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtRenderComponent } from '../render/xt-render.component';
@@ -6,7 +6,8 @@ import { XtComponent } from '../xt-component';
 import { XtBaseContext, XtDisplayMode } from '../xt-context';
 import { XtRenderSubComponent } from '../render/xt-render-sub.component';
 import { XtResolverService } from '../angular/xt-resolver.service';
-
+import { xtTypeManager } from 'xt-type';
+import { updateFormGroupWithValue } from '../type/type-helper';
 /**
  * Component that can be used to bootstrap tests.
  * Just set the value and component type, and it will be injected in your test.
@@ -107,7 +108,7 @@ export class HostTestTypedComponent {
   imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent],
   template: '<h1>Test Typed Form Component</h1> <form [formGroup]="parentFormGroup"> <xt-render-sub [context]="subContext()"></xt-render-sub></form>'
 })
-export class HostTestTypedFormComponent {
+export class HostTestTypedFormComponent implements OnInit{
   builder = inject(FormBuilder);
   resolver = inject(XtResolverService);
 
@@ -116,7 +117,7 @@ export class HostTestTypedFormComponent {
   valueType = input<string> ();
   controlName = input<string>();
   // You can send the description to be used in a FormBuilder to create the formgroup;
-  formDescription = input<any> ({ });
+  formDescription = input<any> (null);
   // Or set the FormGroup directly
   formGroup= input<FormGroup>();
 
@@ -124,17 +125,28 @@ export class HostTestTypedFormComponent {
 
   createdFormGroup: FormGroup|null = null;
 
-  computedFormGroup = computed(() =>{
+  ngOnInit(): void {
+    this.computeFormGroup();
+  }
+
+  computeFormGroup () {
     if( this.createdFormGroup==null) {
       const formGroup=this.formGroup();
-      this.createdFormGroup=formGroup??generateFormGroup(this.formDescription());
+      if( this.formDescription()!=null) {
+        this.createdFormGroup=formGroup??generateFormGroup(this.formDescription());
+      } else {
+        this.createdFormGroup=this.builder.group({});
+        if (this.valueType()!=null) {
+          updateFormGroupWithValue(this.createdFormGroup, {}, this.valueType(), this.resolver.typeResolver);
+        }
+      }
       this.parentFormGroup.addControl(this.controlName()??HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
     }
     return this.createdFormGroup;
-  });
+  };
 
-  subContext = computed( () => {
-    this.computedFormGroup(); // Make sure the subformgroups are created
+  subContext () {
+    this.computeFormGroup(); // Make sure the subformgroups are created
 
     const ctrlName = this.controlName();
     let ret:XtBaseContext<any>|null = null;
@@ -147,16 +159,16 @@ export class HostTestTypedFormComponent {
     ret.valueType=this.valueType();
 
     return ret;
-  });
+  };
 
   patchValue (controlName:string, newVal:any) {
     const patch:{[key:string]:any}={};
     patch[controlName]=newVal;
-    this.computedFormGroup().patchValue(patch);
+    this.computeFormGroup().patchValue(patch);
   }
 
   retrieveValue (controlName:string): any {
-    return this.computedFormGroup().value[controlName];
+    return this.computeFormGroup().value[controlName];
   }
 
 }

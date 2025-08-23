@@ -27,10 +27,14 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       if (handler==null) {
           handler = this.findTypeHandler<Type>(typeName)?.handler;
       }
-      const typeHierarchy = fromDescription (type, handler, typeName, undefined);
+      const typeHierarchy = this.fromDescription (type, handler, typeName, undefined);
       this.types.set (typeName, typeHierarchy);
-      typeHierarchy.initHandlers();
+      typeHierarchy.initHandler();
 
+    }
+
+    getType (typeName:string):XtTypeHierarchy|undefined {
+      return this.types.get(typeName);
     }
 
     canUpdate(): boolean {
@@ -115,27 +119,56 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     }
   }
 
+  fromDescription (typeHierarchy:XtTypeInfo|string, handler?:XtTypeHandler<any>, name?:string, parent?:XtTypeHierarchy): XtTypeHierarchy {
+    let ret: XtBaseTypeHierarchy|null = null;
+    if (typeof typeHierarchy == 'string') {
+      ret = this.types.get(typeHierarchy)??null;
+      if( ret==null) {
+        ret= new XtBaseTypeHierarchy(typeHierarchy, handler);
+        ret.initHandler();
+      }
+    } else {
+
+      ret = new XtBaseTypeHierarchy(undefined, handler);
+
+      for (const key of Object.keys(typeHierarchy)) {
+        const value = typeHierarchy[key];
+          // We get the handler for the type if there is already one.
+        let subHandler=null;
+        if (typeof value == 'string') {
+          subHandler=this.findTypeHandler(value)?.handler;
+        }
+        this.fromDescription(value, subHandler??undefined, key, ret);
+      }
+    }
+
+    if((parent!=null) && (name!=null))
+      parent.addChild(name, ret);
+    else if ((parent!=null) && (name==null)) {
+      throw new Error("Cannot add type to parent without a name.");
+    } else if (name!=null) {
+      ret.type= name;
+    }
+    return ret;
+  }
 }
 
 export type XtTypeHierarchy = {
     type?:string;
     children?:{[key:string]: XtTypeHierarchy} ;
-    parent?:XtTypeHierarchy;
     handler?:XtTypeHandler<any>;
 
     addChild (key:string, child:XtTypeHierarchy) : void;
-    initHandlers ():void;
+    initHandler ():void;
 }
 
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
     type?:string;
     children?:{[key:string]: XtTypeHierarchy} ;
-    parent?:XtTypeHierarchy;
     handler?:XtTypeHandler<any>;
 
-    constructor (type?:string, parent?:XtTypeHierarchy, handler?:XtTypeHandler<any> ) {
+    constructor (type?:string, handler?:XtTypeHandler<any> ) {
         this.type=type;
-        this.parent=parent;
         this.handler=handler;
     }
 
@@ -144,43 +177,15 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
         this.children[key]=child;
     }
 
-    initHandlers ():void {
+    initHandler ():void {
       if (this.handler!=null) {
         this.handler.init(this);
       }
 
-      if (this.children!=null) {
-        for (const child of Object.values(this.children)) {
-          child.initHandlers();
-        }
-      }
     }
 
 }
 
-export function fromDescription (typeHierarchy:XtTypeInfo|string, handler?:XtTypeHandler<any>, name?:string, parent?:XtTypeHierarchy): XtTypeHierarchy {
-  let ret: XtBaseTypeHierarchy|null = null;
-  if (typeof typeHierarchy == 'string') {
-    ret= new XtBaseTypeHierarchy(typeHierarchy, parent, handler);
-  } else {
-
-    ret = new XtBaseTypeHierarchy(undefined, parent, handler);
-
-    for (const key of Object.keys(typeHierarchy)) {
-      const value = typeHierarchy[key];
-      fromDescription(value, undefined, key, ret);
-    }
-  }
-
-  if((parent!=null) && (name!=null))
-    parent.addChild(name, ret);
-  else if ((parent!=null) && (name==null)) {
-    throw new Error("Cannot add type to parent without a name.");
-  } else if (name!=null) {
-    ret.type= name;
-  }
-  return ret;
-}
 
 
 function isPrimitive(valueElement: any): boolean {

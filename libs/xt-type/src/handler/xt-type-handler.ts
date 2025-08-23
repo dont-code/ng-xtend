@@ -18,19 +18,27 @@ export type XtTypeHandler<Type> = {
   createNew (): Type;
 }
 
+/**
+ * An implementation of XtTypeHandler that provides the basic handling of special fields
+ */
 export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
   protected fields:SpecialFields<Type> = new SpecialFields<Type>();
+  protected type:XtTypeHierarchy|null = null;
 
   constructor(idField?:keyof Type, dateFields?:Array<keyof Type> ) {
     this.fields.idField=idField;
     this.fields.dateFields=dateFields;
   }
 
-  abstract init (context:XtTypeHierarchy):void;
+  init (context:XtTypeHierarchy):void {
+    this.type=context;
+  }
+
   abstract createNew (): Type;
 
   fromJson(json: any): void {
+    if( json==null) return;
     // Copy the storage id to _id field if it exists
     if (this.fields.idField != null) {
       json._id = json[this.fields.idField];
@@ -51,6 +59,13 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
         }
       }
     }
+
+    // Converts any subelements as well
+    if (this.type?.children!=null) {
+      for (const childKey in this.type.children) {
+        this.type.children[childKey].handler?.fromJson(json[childKey]);
+      }
+    }
   }
 
   toJson(value: Type): void {
@@ -63,6 +78,13 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     if (this.fields.dateFields != null) {
       for (const dateTypeName of this.fields.dateFields) {
         value[dateTypeName] = this.dateToJson(value[dateTypeName] as Date) as any;
+      }
+    }
+
+    // Converts any subelements as well
+    if (this.type?.children!=null) {
+      for (const childKey in this.type.children) {
+        this.type.children[childKey].handler?.toJson([childKey as keyof Type]);
       }
     }
   }

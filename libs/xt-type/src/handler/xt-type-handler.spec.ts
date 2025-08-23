@@ -1,5 +1,6 @@
 import { XtTypeHierarchy } from '../resolver/xt-type-resolver';
 import { AbstractTypeHandler } from './xt-type-handler';
+import { xtTypeManager } from '../globals';
 
 describe('Type Handler', () => {
   it('should support json date translation', () => {
@@ -56,6 +57,33 @@ describe('Type Handler', () => {
     expect(json.oldName).toBeUndefined();
   });
 
+  it('should support subType translation', () => {
+    xtTypeManager().addRootType('subType', {
+      newName:'string',
+      date:'Date'
+    }, new SubTypeTestHandler());
+
+    xtTypeManager().addRootType('complexType', {
+      subType:'subType'
+    }, new ComplexTypeTestHandler());
+
+    const handler = xtTypeManager().findTypeHandler('complexType')?.handler!;
+    let json={
+      id: 'test1',
+      subType:{
+        oldName: 'test1',
+        date: '2018-05-01'
+      }
+    }
+    handler.fromJson(json);
+    expect((json as unknown as ComplexType).subType.newName).toBe('test1');
+    expect((json as unknown as ComplexType).subType.date).toBeInstanceOf(Date);
+
+    handler.toJson(json as unknown as ComplexType);
+    expect((json as unknown as ComplexType).subType.date).toEqual(new Date('2018-05-01'));
+
+  });
+
 });
 
 type ToHandleType = {
@@ -70,11 +98,40 @@ class TestTypeHandler extends AbstractTypeHandler<ToHandleType> {
     this.fields.addOldField('oldName', 'newName');
   }
 
-  init(context: XtTypeHierarchy): void {
-  }
-
   createNew(): ToHandleType {
     return {id:'TEST', date:new Date(), newName:'TEST'};
+  }
+
+}
+
+type SubType = {
+  newName: string,
+  date: Date
+}
+
+type ComplexType = {
+  id: string,
+  subType: SubType
+}
+
+class SubTypeTestHandler extends AbstractTypeHandler<SubType> {
+  constructor() {
+    super(undefined, ['date'] );
+    this.fields.addOldField('oldName', 'newName');
+  }
+
+  createNew(): SubType {
+    return {date:new Date(), newName:'TEST'};
+  }
+
+}
+class ComplexTypeTestHandler extends AbstractTypeHandler<ComplexType> {
+  constructor() {
+    super( );
+  }
+
+  createNew(): ComplexType {
+    return {id:'TEST', subType:{newName:'Test', date:new Date()}};
   }
 
 }

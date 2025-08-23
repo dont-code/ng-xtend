@@ -59,9 +59,15 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
     XtStoreProviderHelper.cleanUpDataBeforeSaving([data],name);
 
     if( id != undefined) {
-      return lastValueFrom(this.http.put<T>(this.apiUrl+'/'+name+'/'+id, data, {observe:"body", responseType:"json"}));
+      return lastValueFrom(this.http.put<T>(this.apiUrl+'/'+name+'/'+id, data, {observe:"body", responseType:"json"})).then((ret)=> {
+        XtStoreProviderHelper.cleanUpLoadedData([ret], name);
+        return ret;
+      });
     } else {
-      return lastValueFrom(this.http.post<T>(this.apiUrl+'/'+name, data, {observe:"body", responseType:"json"}));
+      return lastValueFrom(this.http.post<T>(this.apiUrl+'/'+name, data, {observe:"body", responseType:"json"})).then((ret)=> {
+        XtStoreProviderHelper.cleanUpLoadedData([ret], name);
+        return ret;
+      });
     }
   }
 

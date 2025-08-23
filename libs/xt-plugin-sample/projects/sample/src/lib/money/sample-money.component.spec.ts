@@ -72,7 +72,7 @@ describe('SampleMoneyComponent', () => {
     expect(amount.componentInstance.value).toEqual (12);
     expect(currency.nativeElement.value).toEqual('EUR');
 
-    host.computedFormGroup().patchValue({currency:"USD"});
+    host.computeFormGroup().patchValue({currency:"USD"});
     hostFixture.detectChanges();
     expect(currency.nativeElement.value).toEqual ("USD");
 
@@ -90,7 +90,7 @@ describe('SampleMoneyComponent', () => {
     expect(host).toBeTruthy();
     hostFixture.detectChanges();
 
-    const formGroup = host.computedFormGroup();
+    const formGroup = host.computeFormGroup();
 
     const moneyComponent = hostFixture.debugElement.query(By.directive(SampleMoneyComponent));
     expect(moneyComponent).toBeTruthy();
@@ -111,7 +111,7 @@ describe('SampleMoneyComponent', () => {
     hostFixture.detectChanges();
     expect(amount.componentInstance.value).toEqual (12.5);
 
-    host.computedFormGroup().patchValue({currency:"USD"});
+    host.computeFormGroup().patchValue({currency:"USD"});
     hostFixture.detectChanges();
     expect(currency.nativeElement.value).toEqual ("USD");
 
@@ -119,7 +119,7 @@ describe('SampleMoneyComponent', () => {
     expect(amount.componentInstance.mode).toEqual ("currency");
     expect(amount.componentInstance.value).toEqual (12.5);
 
-    expect(host.computedFormGroup().value).toEqual({currency:"USD", amount:12.5});
+    expect(host.computeFormGroup().value).toEqual({currency:"USD", amount:12.5});
   });
 
   it('should support wrong currency edit', () => {

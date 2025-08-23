@@ -9,14 +9,13 @@ import { XtSpecialFieldsHelper } from '../transformation/xt-special-fields-helpe
 export class ManagedDataHandler<Type extends ManagedData = ManagedData> extends AbstractTypeHandler<Type>
 {
 
-  type:XtTypeHierarchy|null = null;
 
   constructor(idField?:keyof ManagedData, dateFields?:string[]) {
     super(idField, dateFields);
   }
 
   init(context:XtTypeHierarchy): void {
-    this.type = context;
+    super.init(context);
     this.findDateFields();
   }
 

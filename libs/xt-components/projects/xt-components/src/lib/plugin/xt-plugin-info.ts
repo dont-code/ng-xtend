@@ -1,4 +1,4 @@
-import { XtTypeInfo } from 'xt-type';
+import { XtTypeHandler, XtTypeInfo } from 'xt-type';
 import { XtOutputType } from '../xt-component';
 
 export type XtComponentInfo<T> = {
@@ -10,7 +10,7 @@ export type XtComponentInfo<T> = {
 
 export type XtTypeHandlerInfo<T> = {
   typesHandled: string[];
-  handlerClass: T;
+  handlerBuilder: () => T;
 }
 
 export type XtPluginInfo ={

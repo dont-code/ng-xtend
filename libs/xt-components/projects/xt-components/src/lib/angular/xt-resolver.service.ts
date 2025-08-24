@@ -65,6 +65,7 @@ export class XtResolverService {
   registerTypes (types:XtTypeInfo|undefined, handlers?:XtTypeHandlerInfo<any>[]): void {
     if ((types !=null) && (this.typeResolver.canUpdate())) {
       for (const newType in types) {
+
         let handler=this.handlerDefinedFor (newType, handlers);
         if (handler==null) {
           handler = new ManagedDataHandler();
@@ -77,7 +78,7 @@ export class XtResolverService {
   protected handlerDefinedFor(newType: string, handlers: XtTypeHandlerInfo<any>[] | undefined):any {
         for (const handler of handlers ?? []) {
           if (handler.typesHandled.includes(newType)) {
-            return new handler.handlerClass ();
+            return handler.handlerBuilder ();
           }
         }
         return null;

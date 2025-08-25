@@ -32,7 +32,7 @@ export function registerFinancePlugin (resolverService:XtResolverService):string
       ,typeHandlers:[
         {
           typesHandled: ['money-amount', 'eur-amount', 'usd-amount'],
-          handlerBuilder: () => new MoneyAmountHandler()
+          handlerClass: MoneyAmountHandler
         }
       ]
 

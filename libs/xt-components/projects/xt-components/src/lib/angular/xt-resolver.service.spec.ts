@@ -89,12 +89,18 @@ describe('XtResolverService', () => {
 });
 
 class TestTypeHandler extends AbstractTypeHandler<any> {
+    override createNew() {
+        return {};
+    }
     override init(context: XtTypeHierarchy): void {
 
     }
 
 }
 class TestType2Handler extends AbstractTypeHandler<any> {
+    override createNew() {
+        return {};
+    }
     override init(context: XtTypeHierarchy): void {
 
     }

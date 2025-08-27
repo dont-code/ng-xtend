@@ -2,9 +2,9 @@
   <ng-container [formGroup]="formGroup()">
     <p-autocomplete [fluid]="true" optionValue="code" [forceSelection]="true" [dropdown]="true" [formControlName]="formControlName()" [suggestions]="listOfCountries()" (completeMethod)="matchCountry($event)" (onUnselect)="selectionCanceled($event)" (onSelect)="selectionChange($event)">
       <ng-template let-country #item>
-        <div class="grid grid-cols-2 gap-4">
+        <div class="flex items-center gap-4">
           <img [src]="country.flag" style="width: 18px" />
-          <span>{{country.label}}343</span>
+          <span>{{country.label}}</span>
         </div>
       </ng-template>
     </p-autocomplete>

@@ -1,6 +1,19 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { isPrimitive, XtTypeResolver } from 'xt-type';
 
+export function   attachToFormGroup(formGroup: FormGroup, controlName:string, value:any, valueType?:string, resolver?:XtTypeResolver) {
+  // If it's a single value, just create the control
+  if (((value!=null) && (isPrimitive(value))
+  || (resolver?.isPrimitiveType(valueType)))) {
+    const simpleControl = new FormControl(value);
+    formGroup.addControl(controlName, simpleControl);
+  } else {
+    const complexGroup = new FormGroup({});
+    updateFormGroupWithValue(complexGroup, value, valueType, resolver);
+    formGroup.addControl(controlName, complexGroup);
+  }
+}
+
 export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:string]:any}, valueType?:string, resolver?:XtTypeResolver) {
 
   const toDelete = new Set<string>(Object.keys(formGroup.controls));

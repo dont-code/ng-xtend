@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal, Type } from '@angular/core';
-import {
-  XtComponent,
-  XtComponentInfo,
-  XtRenderComponent,
-  XtResolverService
-} from 'xt-components';
-import { FormBuilder, FormGroup, FormsModule, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
+import { attachToFormGroup, XtComponent, XtComponentInfo, XtRenderComponent, XtResolverService } from 'xt-components';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -27,8 +22,7 @@ export class TestComponent implements OnInit, OnDestroy {
   protected builder = inject(FormBuilder);
 
   value = signal<any>({TestComponent:null});
-  mainForm :FormGroup =this.builder.group ({
-  });
+  mainForm :FormGroup =this.builder.group ({});
 
   component = signal<XtComponentInfo<any> | null> (null);
   protected query:string|null = null;
@@ -95,17 +89,22 @@ export class TestComponent implements OnInit, OnDestroy {
   componentSwitch($event: AutoCompleteSelectEvent) {
     // Reset the mainForm
     this.mainForm.removeControl('TestComponent');
+    attachToFormGroup(this.mainForm,'TestComponent',{},this.findTypeFor ($event.value), this.xtResolver.typeResolver);
     this.component.set($event.value);
   }
 
   valueType = computed<string|undefined>( () => {
     const comp = this.component();
+    return this.findTypeFor(comp);
+  });
+
+  findTypeFor (comp:XtComponentInfo<any> |null):string|undefined {
     if(( comp?.typesHandled!=null) && (comp.typesHandled.length > 0)) {
       return comp.typesHandled[0];
     } else {
       return undefined;
     }
-  });
+  }
 
   protected listenToValueChanges() {
    // this.subscriptions.unsubscribe();

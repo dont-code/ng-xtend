@@ -28,7 +28,7 @@
       <xt-render [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_EDITABLE" subName="TestComponent" [formGroup]="mainForm"></xt-render>
     </div>
   </form>
-    Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
+    Form Value is {{mainForm.get('TestComponent')?.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
 
   <h2>View Inline Mode</h2>
   <xt-render id="inlineView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="INLINE_VIEW" subName="TestComponent" [value]="value()" ></xt-render>

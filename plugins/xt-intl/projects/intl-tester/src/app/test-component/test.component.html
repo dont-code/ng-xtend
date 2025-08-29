@@ -19,6 +19,10 @@
     <br/>
     Form Value is {{countryForm.value | json}}, Form is {{countryForm.pristine?"pristine":"Dirty"}}
     <br/>
-    Last currency selected : {{lastCountrySelected()}}
+    @let lastCountry = lastCountrySelected();
+    Last currency selected :
+    @if (lastCountry!=null) {
+      <br /><xt-render id="countryview" displayMode="FULL_VIEW" [componentType]="IntlCountryComponent" [value]="lastCountry" ></xt-render>
+    }
   </div>
 </div>

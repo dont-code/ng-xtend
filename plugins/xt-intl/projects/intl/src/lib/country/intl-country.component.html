@@ -1,6 +1,6 @@
 @if (isInForm() ) {
   <ng-container [formGroup]="formGroup()">
-    <p-autocomplete [fluid]="true" optionValue="code" [forceSelection]="true" [dropdown]="true" [formControlName]="formControlName()" [suggestions]="listOfCountries()" (completeMethod)="matchCountry($event)" (onUnselect)="selectionCanceled($event)" (onSelect)="selectionChange($event)">
+    <p-autocomplete [fluid]="true" optionValue="alpha3" [forceSelection]="true" [dropdown]="true" [formControlName]="formControlName()" [suggestions]="listOfCountries()" (completeMethod)="matchCountry($event)" (onUnselect)="selectionCanceled($event)" (onSelect)="selectionChange($event)">
       <ng-template let-country #item>
         <div class="flex items-center gap-4">
           <img [src]="country.flag" style="width: 18px" />
@@ -10,5 +10,15 @@
     </p-autocomplete>
   </ng-container>
 } @else {
-  {{ context().displayValue() }}
+  @let country=currentCountry();
+  @if (country!=null) {
+    @if (context().displayMode=='INLINE_VIEW') {
+      <img [src]="country.flag" style="width: 18px" />
+    } @else {
+      <div class="flex items-center gap-4">
+        <img [src]="country.flag" style="width: 18px" />
+        <span>{{country.label}}</span>
+      </div>
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, OnInit, output, signal } from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
@@ -8,7 +8,7 @@ import {
   AutoCompleteUnselectEvent
 } from 'primeng/autocomplete';
 import countriests from 'countries-ts';
-const { listCountries, searchCountries, alpha3Codes } = countriests;
+const { listCountries, searchCountries, alpha3Codes, getByAlpha3 } = countriests;
 
 import { Country } from 'countries-ts';
 
@@ -34,12 +34,12 @@ export class IntlCountryComponent extends XtSimpleComponent<string> {
   }
 
   matchCountry($event: AutoCompleteCompleteEvent) {
-    this.listOfCountries.set (this.toAlpha3(searchCountries($event.query))
+    this.listOfCountries.set (searchCountries($event.query)
     );
   }
 
   selectionChange($event: AutoCompleteSelectEvent) {
-    this.selected.emit($event.value.code);
+    this.selected.emit($event.value.alpha3);
   }
 
   selectionCanceled($event: AutoCompleteUnselectEvent) {
@@ -52,9 +52,15 @@ export class IntlCountryComponent extends XtSimpleComponent<string> {
 
   toAlpha3 (list:Country[]): Country[] {
     for (const country of list) {
-      country.code=alpha3Codes[country.code]??country.code;
+      country.alpha3=alpha3Codes[country.code]??country.code;
     }
     return list;
   }
 
+  currentCountry = computed( () => {
+    const val=this.displayValue();
+    if (val!=null) {
+      return getByAlpha3(val);
+    } else return null;
+  });
 }

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { setupAngularTestBed } from '../../../globalTestSetup';
-import { beforeAll, beforeEach, describe, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { registerInternationalPlugin } from '../register';
-import { XtResolverService } from 'xt-components';
+import { XtBaseContext, XtResolverService } from 'xt-components';
 import { IntlCountryComponent } from './intl-country.component';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
@@ -26,13 +26,14 @@ describe('IntlCountryComponent', () => {
   });
 
   it('should create', () => {
-/*    fixture = TestBed.createComponent(IntlCountryComponent);
+    fixture = TestBed.createComponent(IntlCountryComponent);
     component = fixture.componentInstance;
     const context= new XtBaseContext<string>('FULL_VIEW');
-    context.setDisplayValue("");
+    context.setDisplayValue("FRA");
     fixture.componentRef.setInput('context', context);
     fixture.detectChanges();
 
-    expect(component).toBeTruthy();*/
+    expect(component).toBeTruthy();
+
   });
 });

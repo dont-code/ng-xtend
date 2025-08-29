@@ -1,10 +1,28 @@
 <h2>Testing International components</h2>
 
-<form [formGroup]="currencyForm">
-  <label for="currency">Please select a currency</label>
-  <xt-render id="currency" displayMode="FULL_EDITABLE" [formGroup]="currencyForm" subName="currency" [componentType]="IntlCurrencyComponent" (outputs)="outputChanged($event)" ></xt-render>
-</form>
-<br/>
-Form Value is {{currencyForm.value | json}}, Form is {{currencyForm.pristine?"pristine":"Dirty"}}
-<br/>
-Last currency selected : {{lastCurrencySelected()}}
+<div class="grid grid-cols-2 gap-4">
+  <div>
+    <form [formGroup]="currencyForm">
+      <label for="currency">Please select a currency</label>
+      <xt-render id="currency" displayMode="FULL_EDITABLE" [formGroup]="currencyForm" subName="currency" [componentType]="IntlCurrencyComponent" (outputs)="outputChanged($event)" ></xt-render>
+    </form>
+    <br/>
+    Form Value is {{currencyForm.value | json}}, Form is {{currencyForm.pristine?"pristine":"Dirty"}}
+    <br/>
+    Last currency selected : {{lastCurrencySelected()}}
+  </div>
+  <div>
+    <form [formGroup]="countryForm">
+      <label for="currency">Please select a country</label>
+      <xt-render id="country" displayMode="FULL_EDITABLE" [formGroup]="countryForm" subName="country" [componentType]="IntlCountryComponent" (outputs)="countryChanged($event)" ></xt-render>
+    </form>
+    <br/>
+    Form Value is {{countryForm.value | json}}, Form is {{countryForm.pristine?"pristine":"Dirty"}}
+    <br/>
+    @let lastCountry = lastCountrySelected();
+    Last currency selected :
+    @if (lastCountry!=null) {
+      <br /><xt-render id="countryview" displayMode="FULL_VIEW" [componentType]="IntlCountryComponent" [value]="lastCountry" ></xt-render>
+    }
+  </div>
+</div>

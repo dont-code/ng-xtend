@@ -6,6 +6,7 @@ module.exports = withNativeFederation({
 
   exposes: {
     './IntlCurrencyComponent': './projects/intl/src/lib/currency/intl-currency.component.ts',
+    './IntlCountryComponent': './projects/intl/src/lib/country/intl-country.component.ts',
     './Register': './projects/intl/src/lib/register.ts'
   },
 

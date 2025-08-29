@@ -1,5 +1,6 @@
 import { XtResolverService } from 'xt-components';
 import { IntlCurrencyComponent } from './currency/intl-currency.component';
+import { IntlCountryComponent } from './country/intl-country.component';
 
 export function registerInternationalPlugin (resolverService:XtResolverService):string {
   const pluginName = "Plugin International";
@@ -13,11 +14,18 @@ export function registerInternationalPlugin (resolverService:XtResolverService):
                 componentClass:IntlCurrencyComponent,
                 typesHandled: ['currency'],
                 outputs: ['valueSelected']
+            },
+            {
+              componentName:'IntlCountry',
+              componentClass:IntlCountryComponent,
+              typesHandled: ['country'],
+              outputs: ['valueSelected']
             }
         ],
         types:
           {
-            currency:'string'
+            currency:'string',
+            country:'string'
           }
     });
     return pluginName;

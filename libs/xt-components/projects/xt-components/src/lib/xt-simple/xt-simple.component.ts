@@ -56,7 +56,6 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
     }
   }
 
-
   manageFormControl<T> (ctrlName:string, create:boolean=true): AbstractControl<T>|undefined {
     const formGroup = this.formGroupIfAny();
     if (formGroup==null) {

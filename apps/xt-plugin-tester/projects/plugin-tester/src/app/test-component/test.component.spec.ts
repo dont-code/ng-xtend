@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
@@ -21,7 +21,7 @@ describe('TestComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideNoopAnimations()]
+      providers: [provideZonelessChangeDetection(), provideNoopAnimations()]
     })
     .compileComponents();
 

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { XtCompositeComponent } from './xt-composite.component';
-import { Component, OnInit, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, OnInit, provideZonelessChangeDetection } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { XtBaseContext } from '../xt-context';
@@ -19,7 +19,7 @@ describe('XtCompositeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [XtCompositeComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DefaultPrimitiveComponent } from './default-primitive.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';

@@ -5,7 +5,7 @@ module.exports = withNativeFederation({
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
     ...share({
-      "@primeng/themes/aura": {
+      "@primeuix/themes/aura": {
         singleton: true,
         strictVersion: true,
         requiredVersion: "auto",
@@ -22,7 +22,8 @@ module.exports = withNativeFederation({
     'rxjs/webSocket',
     // Add further packages you don't need at runtime
     'chart.js/auto',
-    'primeng/chart'
+    'primeng/chart',
+    'primeicons'
   ]
 
   // Please read our FAQ about sharing libs:

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../../globalTestSetup';
 import { registerSamplePlugin } from '../../../../sample/src/lib/register';
@@ -18,7 +18,7 @@ describe('TestComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 

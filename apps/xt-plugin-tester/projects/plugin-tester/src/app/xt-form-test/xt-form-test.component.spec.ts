@@ -3,7 +3,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../../globalTestSetup';
 
 import { XtFormTestComponent } from './xt-form-test.component';
-import {provideExperimentalZonelessChangeDetection} from "@angular/core";
+import {provideZonelessChangeDetection} from "@angular/core";
 
 describe('XtFormTestComponent', () => {
   let component: XtFormTestComponent;
@@ -16,7 +16,7 @@ describe('XtFormTestComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [XtFormTestComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { XtResolverService } from './xt-resolver.service';
 import { XtBaseContext } from '../xt-context';
 import { AbstractTypeHandler, XtTypeHierarchy } from 'xt-type';
@@ -16,7 +16,7 @@ describe('XtResolverService', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
       .compileComponents();
 

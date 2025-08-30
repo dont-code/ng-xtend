@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { XtRenderSubComponent } from './xt-render-sub.component';
-import { Component, output, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, output, provideZonelessChangeDetection } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
@@ -25,7 +25,7 @@ describe('XtRenderSubComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [XtRenderSubComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
       .compileComponents();
 

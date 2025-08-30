@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SampleMoneyComponent } from './sample-money.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { HostTestTypedComponent, HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { registerSamplePlugin } from '../register';
 import { By } from '@angular/platform-browser';
@@ -18,7 +18,7 @@ describe('SampleMoneyComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SampleCurrencyComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
       .compileComponents();
 

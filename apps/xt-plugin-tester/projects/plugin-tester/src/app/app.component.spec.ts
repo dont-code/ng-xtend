@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../globalTestSetup';
 import { MessageService } from 'primeng/api';
@@ -15,7 +15,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), MessageService]
+      providers: [provideZonelessChangeDetection(), provideRouter(routes), MessageService]
     }).compileComponents();
   });
 

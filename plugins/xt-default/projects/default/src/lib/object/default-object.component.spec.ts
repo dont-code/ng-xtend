@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DefaultObjectComponent } from './default-object.component';
 import { HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';

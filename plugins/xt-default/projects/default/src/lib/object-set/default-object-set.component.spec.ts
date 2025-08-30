@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DefaultObjectSetComponent } from './default-object-set.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { XtBaseContext, XtResolverService } from 'xt-components';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';

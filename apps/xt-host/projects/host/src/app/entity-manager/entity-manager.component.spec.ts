@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EntityManagerComponent } from './entity-manager.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { routes } from '../app.routes';
 import { provideRouter } from '@angular/router';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -28,7 +28,7 @@ describe('EntityManagerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EntityManagerComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations(), MessageService]
+      providers: [provideZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations(), MessageService]
     })
     .compileComponents();
 

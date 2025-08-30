@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SampleHelloComponent } from './sample-hello.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { XtBaseContext } from 'xt-components';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../../globalTestSetup';

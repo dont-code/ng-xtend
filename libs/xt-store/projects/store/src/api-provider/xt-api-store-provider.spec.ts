@@ -5,7 +5,7 @@ import {XtApiStoreProvider} from "./xt-api-store-provider";
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import {toArray} from "rxjs/operators";
 import { UploadedDocumentInfo } from '../xt-document';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupAngularTestBed } from '../../globalTestSetup';
 
@@ -23,7 +23,7 @@ describe('DontCode Api Store Manager', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection()]
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideZonelessChangeDetection()]
     }).compileComponents();
 
     // Inject the http service and test controller for each test

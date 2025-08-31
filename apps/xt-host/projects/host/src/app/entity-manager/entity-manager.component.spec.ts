@@ -4,8 +4,7 @@ import { EntityManagerComponent } from './entity-manager.component';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { routes } from '../app.routes';
 import { provideRouter } from '@angular/router';
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { registerDefaultPlugin } from 'xt-plugin-default';
 import { XtResolverService } from 'xt-components';
@@ -20,10 +19,6 @@ describe('EntityManagerComponent', () => {
   let component: EntityManagerComponent;
   let fixture: ComponentFixture<EntityManagerComponent>;
   let storeTestBed: StoreTestBed;
-
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

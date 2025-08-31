@@ -1,15 +1,16 @@
-import {TestBed} from '@angular/core/testing';
-import {IndexedDbStorageService} from "./indexed-db-storage.service";
-import {map} from "rxjs/operators";
-import {lastValueFrom} from "rxjs";
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { IndexedDbStorageService } from './indexed-db-storage.service';
+import { map } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('DevTemplateManagerService', () => {
   let service: IndexedDbStorageService<{_id:string,code:string}>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     });
     service = TestBed.inject<IndexedDbStorageService<{_id:string,code:string}>>(IndexedDbStorageService<{_id:string,code:string}>);
   });
@@ -18,24 +19,23 @@ describe('DevTemplateManagerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should store and load entity', done => {
-      service.storeEntity('entityA', {
-        dueDate:'2020-08-01',
-        code:'testA',
-        count:10,
-        valid:true
-      }).then (value => {
-        return service.loadEntity('entityA', value._id);
-      }).then(value => {
-        expect (value?.code).toEqual('testA');
-        done();
-      }).catch((reason:Error) => {
-        done(reason.name+':'+reason.message);
-      });
+  it('should store and load entity', () => new Promise<void>((resolve, reject) => {
+    service.storeEntity('entityA', {
+      dueDate: '2020-08-01',
+      code: 'testA',
+      count: 10,
+      valid: true
+    }).then(value => {
+      return service.loadEntity('entityA', value._id);
+    }).then(value => {
+      expect(value?.code).toEqual('testA');
+      resolve();
+    }).catch((reason: Error) => {
+      reject(reason.name + ':' + reason.message);
+    });
+  }));
 
-  });
-
-  it('should store and delete entity', done => {
+  it('should store and delete entity', () => new Promise<void>((resolve, reject) => {
     service.storeEntity('entityB', {
       dueDate:'2020-08-01',
       code:'testB',
@@ -50,11 +50,11 @@ describe('DevTemplateManagerService', () => {
       return service.loadEntity('entityB', value.key)
     }).then (entity => {
       expect(entity).toBeFalsy(); // loadEntity returns undefined for a non-existant key;
-      done();
+      resolve();
     }).catch ((reason:Error) => {
-      done(reason.name+':'+reason.message);
+      reject(reason.name+':'+reason.message);
     })
-  });
+  }));
 
   it('should list entities',  async () => {
       // Store 10 elements in the database

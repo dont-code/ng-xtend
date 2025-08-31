@@ -2,7 +2,7 @@ const { withNativeFederation, shareAll, share } = require('@angular-architects/n
 
 module.exports = withNativeFederation({
 
-  name: 'web-tester',
+  name: 'web-plugin',
 
   exposes: {
     './WebImageComponent': './projects/web/src/lib/web-image/web-image.component.ts',

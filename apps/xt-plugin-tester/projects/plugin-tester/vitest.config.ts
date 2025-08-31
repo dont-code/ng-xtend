@@ -8,8 +8,9 @@ export default defineConfig(({ mode }) => ({
   plugins: [angular(), tsconfigPaths()],
   test: {
     globals: true,
-    environment: 'happy-dom',
-    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    setupFiles: ['src/test-setup.ts'],
+    environment: 'jsdom',
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default']
   },
   define: {

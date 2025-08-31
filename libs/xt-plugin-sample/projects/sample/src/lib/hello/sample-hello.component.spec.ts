@@ -1,23 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SampleHelloComponent } from './sample-hello.component';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { XtBaseContext } from 'xt-components';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('SampleHelloComponent', () => {
   let component: SampleHelloComponent;
   let fixture: ComponentFixture<SampleHelloComponent>;
 
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SampleHelloComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 

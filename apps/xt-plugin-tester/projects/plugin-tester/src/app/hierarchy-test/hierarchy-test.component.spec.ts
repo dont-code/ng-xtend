@@ -2,16 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HierarchyTestComponent } from './hierarchy-test.component';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('HierarchyTestComponent', () => {
   let component: HierarchyTestComponent;
   let fixture: ComponentFixture<HierarchyTestComponent>;
-
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

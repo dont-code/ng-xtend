@@ -11,14 +11,9 @@ import { XtResolverService } from '../angular/xt-resolver.service';
 import { Button } from 'primeng/button';
 import { By } from '@angular/platform-browser';
 import { XtPluginRegistry } from '../registry/xt-plugin-registry';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('XtRenderSubComponent', () => {
-
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   let resolverService:XtResolverService;
 

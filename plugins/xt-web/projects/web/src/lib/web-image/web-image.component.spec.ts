@@ -4,15 +4,11 @@ import { WebImageComponent } from './web-image.component';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { StoreTestHelper, XtBaseContext } from 'xt-components';
-import { setupAngularTestBed } from '../../../globalTestSetup';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('WebImageComponent', () => {
   let component: WebImageComponent;
   let fixture: ComponentFixture<WebImageComponent>;
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

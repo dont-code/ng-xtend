@@ -6,12 +6,8 @@ import { routes } from './app.routes';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../globalTestSetup';
 
 describe('AppComponent', () => {
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

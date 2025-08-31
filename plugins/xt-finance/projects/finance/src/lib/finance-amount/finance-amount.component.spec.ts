@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FinanceAmountComponent } from './finance-amount.component';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { XtBaseContext } from 'xt-components';
 import { MoneyAmount } from '../money-handler/money-amount';
 import { By } from '@angular/platform-browser';
@@ -10,10 +9,6 @@ import { By } from '@angular/platform-browser';
 describe('FinanceAmountComponent', () => {
   let component: FinanceAmountComponent;
   let fixture: ComponentFixture<FinanceAmountComponent>;
-
-  beforeAll(() => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

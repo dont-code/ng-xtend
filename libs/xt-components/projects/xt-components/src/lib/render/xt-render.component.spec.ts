@@ -8,15 +8,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HostTestFormComponent, HostTestSimpleComponent } from '../test/xt-test-helper-components';
 import { Button } from 'primeng/button';
 import { By } from '@angular/platform-browser';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 
 describe('XtRenderComponent', () => {
-
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

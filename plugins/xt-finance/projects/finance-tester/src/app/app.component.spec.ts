@@ -1,19 +1,15 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { setupAngularTestBed } from '../../globalTestSetup';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideNoopAnimations(),provideExperimentalZonelessChangeDetection()]
+      providers: [provideNoopAnimations(),provideZonelessChangeDetection()]
     }).compileComponents();
   });
 

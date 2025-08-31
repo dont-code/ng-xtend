@@ -5,7 +5,6 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
 import { AutoComplete } from 'primeng/autocomplete';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -13,10 +12,6 @@ describe('TestComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   let resolverService:XtResolverService;
-
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

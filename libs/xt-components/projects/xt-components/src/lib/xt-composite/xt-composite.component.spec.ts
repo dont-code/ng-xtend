@@ -5,16 +5,11 @@ import { Component, OnInit, provideZonelessChangeDetection } from '@angular/core
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { XtBaseContext } from '../xt-context';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('XtCompositeComponent', () => {
   let component: XtCompositeComponent;
   let fixture: ComponentFixture<XtCompositeComponent>;
-
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

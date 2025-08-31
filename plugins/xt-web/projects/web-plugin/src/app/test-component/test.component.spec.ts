@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
-import { setupAngularTestBed } from '../../../globalTestSetup';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { registerWebPlugin } from '../../../../web/src/lib/register';
 import { StoreTestHelper, XtResolverService } from 'xt-components';
@@ -12,10 +11,6 @@ import { provideHttpClient } from '@angular/common/http';
 describe('TestComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
-
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

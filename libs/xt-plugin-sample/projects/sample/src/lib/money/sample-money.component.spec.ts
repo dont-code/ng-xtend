@@ -7,13 +7,9 @@ import { registerSamplePlugin } from '../register';
 import { By } from '@angular/platform-browser';
 import { InputNumber } from 'primeng/inputnumber';
 import { SampleCurrencyComponent } from '../currency/sample-currency.component';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('SampleMoneyComponent', () => {
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

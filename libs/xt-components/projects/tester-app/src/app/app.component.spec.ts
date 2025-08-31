@@ -1,13 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('AppComponent', () => {
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

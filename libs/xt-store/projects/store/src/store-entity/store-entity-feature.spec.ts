@@ -1,19 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import {expect, describe, it, beforeEach, beforeAll} from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { provideZonelessChangeDetection } from '@angular/core';
 import { signalStore } from '@ngrx/signals';
 import { withXtStoreProvider, XtSignalStore } from './store-entity-feature';
 import { XtMemoryStoreProvider } from '../store-provider/xt-memory-store-provider';
 import { ManagedData } from 'xt-type';
-import { setupAngularTestBed } from '../../globalTestSetup';
 
 describe('StoreEntityFeature', () => {
-
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
 
   beforeEach(() => {
     TestBed.configureTestingModule({

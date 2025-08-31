@@ -5,9 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build web",
-    "build-deploy": "APP=web-tester && MAIN_LIB=web && ng build $MAIN_LIB --configuration=$BUILD && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\"  && rm -f ../../dist/$STAGE/$APP/*.* && mv ../../dist/$STAGE/$APP/browser/* ../../dist/$STAGE/$APP",
+    "build-deploy": "APP=web-plugin && MAIN_LIB=web && ng build $MAIN_LIB --configuration=$BUILD && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\"  && rm -f ../../dist/$STAGE/$APP/*.* && mv ../../dist/$STAGE/$APP/browser/* ../../dist/$STAGE/$APP",
     "watch": "ng build --watch --configuration development",
-    "test": "cd projects/web && ../../node_modules/.bin/vitest && cd ../web-tester && ../../node_modules/.bin/vitest"
+    "test": "cd projects/web && ../../node_modules/.bin/vitest && cd ../web-plugin && ../../node_modules/.bin/vitest"
   },
   "publishConfig": {
     "directory": "dist/xt-plugin-web",

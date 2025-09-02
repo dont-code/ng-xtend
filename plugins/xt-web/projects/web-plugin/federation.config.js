@@ -14,11 +14,11 @@ module.exports = withNativeFederation({
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
     ...share({
-      "@primeuix/themes/aura": {
+      "@primeuix/themes": {
         singleton: true,
         strictVersion: true,
         requiredVersion: "auto",
-        includeSecondaries: false,
+        includeSecondaries: true,
         build: 'separate'
       },
     }),},

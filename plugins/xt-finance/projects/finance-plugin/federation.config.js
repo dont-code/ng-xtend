@@ -2,12 +2,11 @@ const { withNativeFederation, shareAll, share } = require('@angular-architects/n
 
 module.exports = withNativeFederation({
 
-  name: 'intl-tester',
+  name: 'finance-plugin',
 
   exposes: {
-    './IntlCurrencyComponent': './projects/intl/src/lib/currency/intl-currency.component.ts',
-    './IntlCountryComponent': './projects/intl/src/lib/country/intl-country.component.ts',
-    './Register': './projects/intl/src/lib/register.ts'
+    './FinanceAmountComponent': './projects/finance/src/lib/finance-amount/finance-amount.component.ts',
+    './Register': './projects/finance/src/lib/register.ts'
   },
 
   shared: {
@@ -18,9 +17,12 @@ module.exports = withNativeFederation({
         strictVersion: true,
         requiredVersion: "auto",
         includeSecondaries: false,
-        build: 'separate'
-      },
-    }),},
+        build: 'separate',
+        packageInfo: {
+          entryPoint: 'node_modules/@primeuix/themes/dist/aura/index.mjs'
+        }
+      }
+    })},
 
   skip: [
     'rxjs/ajax',

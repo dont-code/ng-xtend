@@ -10,7 +10,10 @@ module.exports = withNativeFederation({
         strictVersion: true,
         requiredVersion: "auto",
         includeSecondaries: false,
-        build: 'separate'
+        build: 'separate',
+        packageInfo: {
+          entryPoint: 'node_modules/@primeuix/themes/dist/aura/index.mjs'
+        }
       }
     })
   },

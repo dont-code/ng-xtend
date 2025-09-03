@@ -14,14 +14,17 @@ module.exports = withNativeFederation({
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
     ...share({
-      "@primeuix/themes": {
+      "@primeuix/themes/aura": {
         singleton: true,
         strictVersion: true,
         requiredVersion: "auto",
-        includeSecondaries: true,
-        build: 'separate'
-      },
-    }),},
+        includeSecondaries: false,
+        build: 'separate',
+        packageInfo: {
+          entryPoint: 'node_modules/@primeuix/themes/dist/aura/index.mjs'
+        }
+      }
+    })},
 
   skip: [
     'rxjs/ajax',

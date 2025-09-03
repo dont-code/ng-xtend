@@ -41,15 +41,15 @@
         }
       }
     },
-    "finance-tester": {
+    "finance-plugin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "css"
         }
       },
-      "root": "projects/finance-tester",
-      "sourceRoot": "projects/finance-tester/src",
+      "root": "projects/finance-plugin",
+      "sourceRoot": "projects/finance-plugin/src",
       "prefix": "app",
       "architect": {
         "build": {
@@ -57,10 +57,10 @@
           "options": {},
           "configurations": {
             "production": {
-              "target": "finance-tester:esbuild:production"
+              "target": "finance-plugin:esbuild:production"
             },
             "development": {
-              "target": "finance-tester:esbuild:development",
+              "target": "finance-plugin:esbuild:development",
               "dev": true
             }
           },
@@ -69,7 +69,7 @@
         "serve": {
           "builder": "@angular-architects/native-federation:build",
           "options": {
-            "target": "finance-tester:serve-original:development",
+            "target": "finance-plugin:serve-original:development",
             "rebuildDelay": 0,
             "dev": true,
             "port": 0
@@ -78,23 +78,23 @@
         "esbuild": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/xt-finance-tester",
-            "index": "projects/finance-tester/src/index.html",
-            "browser": "projects/finance-tester/src/main.ts",
+            "outputPath": "dist/xt-finance-plugin",
+            "index": "projects/finance-plugin/src/index.html",
+            "browser": "projects/finance-plugin/src/main.ts",
             "preserveSymlinks": true,
             "polyfills": [
               "es-module-shims"
             ],
-            "tsConfig": "projects/finance-tester/tsconfig.app.json",
+            "tsConfig": "projects/finance-plugin/tsconfig.app.json",
             "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/finance-tester/public"
+                "input": "projects/finance-plugin/public"
               }
             ],
             "styles": [
-              "projects/finance-tester/src/styles.css"
+              "projects/finance-plugin/src/styles.css"
             ],
             "scripts": []
           },
@@ -126,10 +126,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "finance-tester:esbuild:production"
+              "buildTarget": "finance-plugin:esbuild:production"
             },
             "development": {
-              "buildTarget": "finance-tester:esbuild:development"
+              "buildTarget": "finance-plugin:esbuild:development"
             }
           },
           "defaultConfiguration": "development",
@@ -144,16 +144,16 @@
           "builder": "@analogjs/vitest-angular:test",
           "options": {
             "polyfills": [],
-            "tsConfig": "projects/finance-tester/tsconfig.spec.json",
+            "tsConfig": "projects/finance-plugin/tsconfig.spec.json",
             "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/finance-tester/public"
+                "input": "projects/finance-plugin/public"
               }
             ],
             "styles": [
-              "projects/finance-tester/src/styles.css"
+              "projects/finance-plugin/src/styles.css"
             ],
             "scripts": []
           }

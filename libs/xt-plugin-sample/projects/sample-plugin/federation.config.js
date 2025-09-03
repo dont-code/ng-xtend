@@ -2,7 +2,7 @@ const { withNativeFederation, shareAll, share } = require('@angular-architects/n
 
 module.exports = withNativeFederation({
 
-  name: 'sample-tester',
+  name: 'sample-plugin',
 
   exposes: {
     './SampleHelloComponent': './projects/sample/src/lib/hello/sample-hello.component.ts',
@@ -19,9 +19,12 @@ module.exports = withNativeFederation({
         strictVersion: true,
         requiredVersion: "auto",
         includeSecondaries: false,
-        build: 'separate'
-      },
-    }),},
+        build: 'separate',
+        packageInfo: {
+          entryPoint: 'node_modules/@primeuix/themes/dist/aura/index.mjs'
+        }
+      }
+    })},
 
   skip: [
     'rxjs/ajax',

@@ -1,21 +1,16 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { XtBaseContext } from './xt-context';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 describe('XtContext', () => {
 
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestDummyComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
       .compileComponents();
 

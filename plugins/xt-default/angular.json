@@ -34,34 +34,34 @@
         }
       }
     },
-    "default-tester": {
+    "default-plugin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "css"
         }
       },
-      "root": "projects/default-tester",
-      "sourceRoot": "projects/default-tester/src",
+      "root": "projects/default-plugin",
+      "sourceRoot": "projects/default-plugin/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/default-tester",
-            "index": "projects/default-tester/src/index.html",
-            "browser": "projects/default-tester/src/main.ts",
+            "outputPath": "dist/default-plugin",
+            "index": "projects/default-plugin/src/index.html",
+            "browser": "projects/default-plugin/src/main.ts",
             "polyfills": [],
-            "tsConfig": "projects/default-tester/tsconfig.app.json",
+            "tsConfig": "projects/default-plugin/tsconfig.app.json",
             "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/default-tester/public"
+                "input": "projects/default-plugin/public"
               }
             ],
             "styles": [
-              "projects/default-tester/src/styles.css"
+              "projects/default-plugin/src/styles.css"
             ],
             "scripts": []
           },
@@ -93,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "default-tester:build:production"
+              "buildTarget": "default-plugin:build:production"
             },
             "development": {
-              "buildTarget": "default-tester:build:development"
+              "buildTarget": "default-plugin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -108,16 +108,16 @@
           "builder": "@analogjs/vitest-angular:test",
           "options": {
             "polyfills": [],
-            "tsConfig": "projects/default-tester/tsconfig.spec.json",
+            "tsConfig": "projects/default-plugin/tsconfig.spec.json",
             "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/default-tester/public"
+                "input": "projects/default-plugin/public"
               }
             ],
             "styles": [
-              "projects/default-tester/src/styles.css"
+              "projects/default-plugin/src/styles.css"
             ],
             "scripts": []
           }

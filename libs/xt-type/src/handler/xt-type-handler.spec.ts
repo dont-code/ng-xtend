@@ -1,4 +1,3 @@
-import { XtTypeHierarchy } from '../resolver/xt-type-resolver';
 import { AbstractTypeHandler } from './xt-type-handler';
 import { xtTypeManager } from '../globals';
 

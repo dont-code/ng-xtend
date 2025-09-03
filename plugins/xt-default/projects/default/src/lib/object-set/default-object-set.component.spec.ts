@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DefaultObjectSetComponent } from './default-object-set.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { XtBaseContext, XtResolverService } from 'xt-components';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 type TestData= {
   simpleText:string,
@@ -23,14 +22,10 @@ describe('DefaultObjectSetComponent', () => {
 
   let resolverService:XtResolverService;
 
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DefaultObjectSetComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 

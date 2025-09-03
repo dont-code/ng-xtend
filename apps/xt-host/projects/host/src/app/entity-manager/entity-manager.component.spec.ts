@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EntityManagerComponent } from './entity-manager.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { routes } from '../app.routes';
 import { provideRouter } from '@angular/router';
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { registerDefaultPlugin } from 'xt-plugin-default';
 import { XtResolverService } from 'xt-components';
@@ -21,14 +20,10 @@ describe('EntityManagerComponent', () => {
   let fixture: ComponentFixture<EntityManagerComponent>;
   let storeTestBed: StoreTestBed;
 
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EntityManagerComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations(), MessageService]
+      providers: [provideZonelessChangeDetection(), provideRouter(routes), provideNoopAnimations(), MessageService]
     })
     .compileComponents();
 

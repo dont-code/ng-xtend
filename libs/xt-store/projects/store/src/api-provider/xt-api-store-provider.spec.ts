@@ -1,33 +1,26 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import {XtApiStoreProvider} from "./xt-api-store-provider";
-import { HttpClient, provideHttpClient } from '@angular/common/http';
-import {toArray} from "rxjs/operators";
+import { XtApiStoreProvider } from './xt-api-store-provider';
+import { provideHttpClient } from '@angular/common/http';
+import { toArray } from 'rxjs/operators';
 import { UploadedDocumentInfo } from '../xt-document';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../globalTestSetup';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 
 describe('DontCode Api Store Manager', () => {
 
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
-
-  let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let storeProvider: XtApiStoreProvider<any>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection()]
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideZonelessChangeDetection()]
     }).compileComponents();
 
     // Inject the http service and test controller for each test
-    httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     storeProvider = TestBed.inject(XtApiStoreProvider);
     storeProvider.apiUrl = '/testData';

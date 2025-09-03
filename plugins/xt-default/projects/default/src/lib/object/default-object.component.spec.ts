@@ -2,22 +2,18 @@ import { TestBed } from '@angular/core/testing';
 
 import { DefaultObjectComponent } from './default-object.component';
 import { HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('DefaultObjectComponent', () => {
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DefaultObjectComponent],
-      providers:[provideExperimentalZonelessChangeDetection(), provideNoopAnimations()]
+      providers:[provideZonelessChangeDetection(), provideNoopAnimations()]
     })
     .compileComponents();
 

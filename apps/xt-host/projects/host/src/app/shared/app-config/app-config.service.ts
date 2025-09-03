@@ -1,7 +1,7 @@
-import { computed, inject, Injectable, resource, ResourceRef, ResourceStatus, signal } from '@angular/core';
+import { computed, inject, Injectable, resource, ResourceRef, signal } from '@angular/core';
 import { XtResolverService } from 'xt-components';
 
-import { registerDefaultPlugin} from 'xt-plugin-default';
+import { registerDefaultPlugin } from 'xt-plugin-default';
 import { DcPluginModel, DcRepositoryModel } from '../models/dc-repository-model';
 
 @Injectable({
@@ -28,22 +28,22 @@ export class AppConfigService {
 
     for (const name in statuses) {
       switch (statuses[name].status()) {
-        case ResourceStatus.Error:
+        case 'error':
           return {
             status: 'Error',
             item: name,
             allLoaded:false,
             message: (statuses[name].error() as any).toString()
           };
-        case  ResourceStatus.Reloading:
-        case  ResourceStatus.Loading:
+        case  'reloading':
+        case  'loading':
           return {
             status: 'Loading',
             item: name,
             allLoaded:false
           }
-        case ResourceStatus.Resolved:
-        case ResourceStatus.Local:
+        case 'resolved':
+        case 'local':
           overallStatus = "Loaded";
           break;
       }
@@ -61,12 +61,12 @@ export class AppConfigService {
   // We have to maintain an initialization flow: Load the config, then the plugins, then the project. That means 3 resources
   // First we load the config
   config = resource ({
-    request: () => {
+    params: () => {
       return this.configResources.configName();
     },
     loader: (configName) => {
-      if (configName.request!=null) {
-        const configUrl = 'assets/config/'+configName.request+'.json'
+      if (configName.params!=null) {
+        const configUrl = 'assets/config/'+configName.params+'.json'
         return fetch (configUrl).then(response => {
           return response.json();
         }).then ((config) => {
@@ -81,37 +81,37 @@ export class AppConfigService {
 
   // Then the plugins
   plugins = resource({
-    request: () => {
+    params: () => {
       return this.config.value();
     },
     loader:(prop) =>  {
-      if (prop.request!=null)
-        return this.loadPlugins(prop.request);
+      if (prop.params!=null)
+        return this.loadPlugins(prop.params);
       else return Promise.resolve(false);
     }});
 
   // Then the project
   project = resource({
-    request: () => {
+    params: () => {
       const ret= {
-        pluginsLoaded: (this.plugins.status()==ResourceStatus.Resolved)||(this.plugins.status()==ResourceStatus.Local),
+        pluginsLoaded: (this.plugins.status()=='resolved')||(this.plugins.status()=='local'),
         projectUrl:this.config.value()?.projectApiUrl,
         projectName: this.configResources.projectName()
       }
       return ret;
     },
     loader: (options) => {
-      if ((options.request.pluginsLoaded) && (options.request.projectName!=null)) {
-        let projectUrl = options.request.projectUrl;
+      if ((options.params.pluginsLoaded) && (options.params.projectName!=null)) {
+        let projectUrl = options.params.projectUrl;
         if (projectUrl==null) {
-          projectUrl='assets/projects/'+encodeURIComponent (options.request.projectName)+'.json';
+          projectUrl='assets/projects/'+encodeURIComponent (options.params.projectName)+'.json';
         } else {
-          projectUrl = new URL (options.request.projectName, projectUrl.endsWith('/')?projectUrl:projectUrl+'/').toString();
+          projectUrl = new URL (options.params.projectName, projectUrl.endsWith('/')?projectUrl:projectUrl+'/').toString();
         }
         return fetch(projectUrl).then ((response) => {
           return response.json();
         });
-      } else if (!options.request.pluginsLoaded) {
+      } else if (!options.params.pluginsLoaded) {
         return Promise.resolve();
       } else {
         return Promise.reject('No project name to load');

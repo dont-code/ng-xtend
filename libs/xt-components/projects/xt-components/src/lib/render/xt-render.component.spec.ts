@@ -1,27 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 
 import { XtRenderComponent } from './xt-render.component';
-import { Component, output, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, output, provideZonelessChangeDetection } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HostTestFormComponent, HostTestSimpleComponent } from '../test/xt-test-helper-components';
 import { Button } from 'primeng/button';
 import { By } from '@angular/platform-browser';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 
 describe('XtRenderComponent', () => {
 
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [XtRenderComponent, ReactiveFormsModule],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 

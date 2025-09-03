@@ -40,15 +40,15 @@
 				}
 			}
 		},
-		"intl-tester": {
+		"intl-plugin": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
 					"style": "css"
 				}
 			},
-			"root": "projects/intl-tester",
-			"sourceRoot": "projects/intl-tester/src",
+			"root": "projects/intl-plugin",
+			"sourceRoot": "projects/intl-plugin/src",
 			"prefix": "app",
 			"architect": {
 				"build": {
@@ -56,10 +56,10 @@
 					"options": {},
 					"configurations": {
 						"production": {
-							"target": "intl-tester:esbuild:production"
+							"target": "intl-plugin:esbuild:production"
 						},
 						"development": {
-							"target": "intl-tester:esbuild:development",
+							"target": "intl-plugin:esbuild:development",
 							"dev": true
 						}
 					},
@@ -68,7 +68,7 @@
 				"serve": {
 					"builder": "@angular-architects/native-federation:build",
 					"options": {
-						"target": "intl-tester:serve-original:development",
+						"target": "intl-plugin:serve-original:development",
 						"rebuildDelay": 0,
 						"dev": true,
 						"port": 0
@@ -77,23 +77,23 @@
 				"esbuild": {
 					"builder": "@angular-devkit/build-angular:application",
 					"options": {
-						"outputPath": "dist/xt-intl-tester",
-						"index": "projects/intl-tester/src/index.html",
-						"browser": "projects/intl-tester/src/main.ts",
+						"outputPath": "dist/xt-intl-plugin",
+						"index": "projects/intl-plugin/src/index.html",
+						"browser": "projects/intl-plugin/src/main.ts",
 						"preserveSymlinks": true,
 						"polyfills": [
 							"es-module-shims"
 						],
-						"tsConfig": "projects/intl-tester/tsconfig.app.json",
+						"tsConfig": "projects/intl-plugin/tsconfig.app.json",
 						"inlineStyleLanguage": "css",
 						"assets": [
 							{
 								"glob": "**/*",
-								"input": "projects/intl-tester/public"
+								"input": "projects/intl-plugin/public"
 							}
 						],
 						"styles": [
-							"projects/intl-tester/src/styles.css"
+							"projects/intl-plugin/src/styles.css"
 						],
 						"scripts": []
 					},
@@ -125,10 +125,10 @@
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
 						"production": {
-							"buildTarget": "intl-tester:esbuild:production"
+							"buildTarget": "intl-plugin:esbuild:production"
 						},
 						"development": {
-							"buildTarget": "intl-tester:esbuild:development"
+							"buildTarget": "intl-plugin:esbuild:development"
 						}
 					},
 					"defaultConfiguration": "development",
@@ -143,16 +143,16 @@
           "builder": "@analogjs/vitest-angular:test",
           "options": {
             "polyfills": [],
-            "tsConfig": "projects/intl-tester/tsconfig.spec.json",
+            "tsConfig": "projects/intl-plugin/tsconfig.spec.json",
             "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/intl-tester/public"
+                "input": "projects/intl-plugin/public"
               }
             ],
             "styles": [
-              "projects/intl-tester/src/styles.css"
+              "projects/intl-plugin/src/styles.css"
             ],
             "scripts": []
           }

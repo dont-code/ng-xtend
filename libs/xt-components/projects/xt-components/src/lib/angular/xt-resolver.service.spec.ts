@@ -1,22 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { XtResolverService } from './xt-resolver.service';
 import { XtBaseContext } from '../xt-context';
 import { AbstractTypeHandler, XtTypeHierarchy } from 'xt-type';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('XtResolverService', () => {
   let service: XtResolverService;
 
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
       .compileComponents();
 

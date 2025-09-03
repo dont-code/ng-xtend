@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PluginManagerComponent } from './plugin-manager.component';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
 import { XtCompositeComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
 import { MessageService } from 'primeng/api';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -14,10 +13,6 @@ describe('PluginManagerComponent', () => {
   let fixture: ComponentFixture<PluginManagerComponent>;
   let resolver: XtResolverService|null=null;
   let httpTesting: HttpTestingController;
-
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -2,23 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WebLinkComponent } from './web-link.component';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { setupAngularTestBed } from '../../../globalTestSetup';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { XtBaseContext } from 'xt-components';
 
 describe('WebLinkComponent', () => {
   let component: WebLinkComponent;
   let fixture: ComponentFixture<WebLinkComponent>;
 
-  beforeAll(() => {
-    setupAngularTestBed();
-  })
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [WebLinkComponent],
-      providers: [provideNoopAnimations(), provideExperimentalZonelessChangeDetection()]
+      providers: [provideNoopAnimations(), provideZonelessChangeDetection()]
     })
     .compileComponents();
 

@@ -41,15 +41,15 @@
         }
       }
     },
-    "web-tester": {
+    "web-plugin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "css"
         }
       },
-      "root": "projects/web-tester",
-      "sourceRoot": "projects/web-tester/src",
+      "root": "projects/web-plugin",
+      "sourceRoot": "projects/web-plugin/src",
       "prefix": "app",
       "architect": {
         "build": {
@@ -57,10 +57,10 @@
           "options": {},
           "configurations": {
             "production": {
-              "target": "web-tester:esbuild:production"
+              "target": "web-plugin:esbuild:production"
             },
             "development": {
-              "target": "web-tester:esbuild:development",
+              "target": "web-plugin:esbuild:development",
               "dev": true
             }
           },
@@ -69,7 +69,7 @@
         "serve": {
           "builder": "@angular-architects/native-federation:build",
           "options": {
-            "target": "web-tester:serve-original:development",
+            "target": "web-plugin:serve-original:development",
             "rebuildDelay": 0,
             "dev": true,
             "port": 0
@@ -78,23 +78,23 @@
         "esbuild": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/xt-web-tester",
-            "index": "projects/web-tester/src/index.html",
-            "browser": "projects/web-tester/src/main.ts",
+            "outputPath": "dist/xt-web-plugin",
+            "index": "projects/web-plugin/src/index.html",
+            "browser": "projects/web-plugin/src/main.ts",
             "preserveSymlinks": true,
             "polyfills": [
               "es-module-shims"
             ],
-            "tsConfig": "projects/web-tester/tsconfig.app.json",
+            "tsConfig": "projects/web-plugin/tsconfig.app.json",
             "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/web-tester/public"
+                "input": "projects/web-plugin/public"
               }
             ],
             "styles": [
-              "projects/web-tester/src/styles.css"
+              "projects/web-plugin/src/styles.css"
             ],
             "scripts": []
           },
@@ -126,10 +126,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "web-tester:esbuild:production"
+              "buildTarget": "web-plugin:esbuild:production"
             },
             "development": {
-              "buildTarget": "web-tester:esbuild:development"
+              "buildTarget": "web-plugin:esbuild:development"
             }
           },
           "defaultConfiguration": "development",
@@ -144,16 +144,16 @@
           "builder": "@analogjs/vitest-angular:test",
           "options": {
             "polyfills": [],
-            "tsConfig": "projects/web-tester/tsconfig.spec.json",
+            "tsConfig": "projects/web-plugin/tsconfig.spec.json",
             "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/web-tester/public"
+                "input": "projects/web-plugin/public"
               }
             ],
             "styles": [
-              "projects/web-tester/src/styles.css"
+              "projects/web-plugin/src/styles.css"
             ],
             "scripts": []
           }

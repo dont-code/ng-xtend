@@ -1,22 +1,17 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { XtSimpleComponent } from './xt-simple.component';
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('XtSimpleComponent', () => {
   let component: XtSimpleComponent;
   let fixture: ComponentFixture<XtSimpleComponent>;
 
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [XtSimpleComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
       .compileComponents();
 

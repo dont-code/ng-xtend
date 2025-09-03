@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { setupAngularTestBed } from '../../../globalTestSetup';
 import { AutoComplete } from 'primeng/autocomplete';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -14,14 +13,10 @@ describe('TestComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let resolverService:XtResolverService;
 
-  beforeAll( () => {
-    setupAngularTestBed();
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestComponent],
-      providers: [provideExperimentalZonelessChangeDetection(), provideNoopAnimations()]
+      providers: [provideZonelessChangeDetection(), provideNoopAnimations()]
     })
     .compileComponents();
 

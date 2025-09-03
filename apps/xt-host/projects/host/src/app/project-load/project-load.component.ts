@@ -62,11 +62,11 @@ export class ProjectLoadComponent implements OnInit {
   });
 
   moveToNextPage = resource({
-    request: ()=> {
+    params: ()=> {
       return this.appConfig.loadingStatus().allLoaded;
     },
     loader: ((option) => {
-      if (option.request==true) {
+      if (option.params) {
         this.appMgr.setModel (this.appConfig.project.value());
         this.updateDefaultStore (this.appMgr.getDefaultSharing());
         // Register the types defined in the project

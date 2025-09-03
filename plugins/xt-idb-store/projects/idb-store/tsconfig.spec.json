@@ -5,9 +5,10 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
     "types": [
-      "jest"
+      "vitest/globals","node"
     ]
   },
+  "files": ["src/test-setup.ts"],
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"

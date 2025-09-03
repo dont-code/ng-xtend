@@ -31,8 +31,6 @@
     "primeng": "^20.0.1",
     "es-module-shims": "^2.6.2",
     "primeicons": "^7.0.0",
-    "@primeuix/utils": "^0.6.1",
-    "@primeuix/styled": "^0.7.2",
     "@primeng/themes": "^20.0.1",
     "tslib": "^2.8.1",
     "@angular-architects/native-federation": "^20.1.6",
@@ -41,11 +39,14 @@
     "countries-ts": "~2.1.0"
   },
   "devDependencies": {
+    "@primeuix/utils": "^0.6.1",
+    "@primeuix/styled": "^0.7.2",
     "@tailwindcss/postcss": "~4.1.12",
     "postcss": "~8.5.6",
     "@angular-devkit/build-angular": "^20.2.1",
     "@angular/cli": "^20.2.1",
     "@angular/compiler-cli": "^20.2.3",
+    "@angular/build": "^20.2.1",
     "ng-packagr": "^20.2.0",
     "typescript": "^5.9.2",
     "happy-dom": "^18.0.1",

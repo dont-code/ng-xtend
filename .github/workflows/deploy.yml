@@ -10,10 +10,15 @@ on:
         description: Deploy to public website?
         required: true
         type: boolean
+      branch:
+        description: Deploy from which branch ?
+        required: true
+        type: string
+        default: 'main'
 jobs:
   build:
     env:
-      branch: ${{ inputs.next == true && 'Development' || 'main' }}
+      branch: ${{ inputs.branch }}
       stage: ${{ inputs.next == true && 'next' || 'latest' }}
       build: ${{ inputs.next == true && 'next' || 'production' }}
       ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'

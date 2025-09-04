@@ -1,18 +1,18 @@
 {
   "Plugin Web": [
     "http://localhost:4202",
-    "https://test.dont-code.net/apps/latest/web-tester"
+    "https://test.dont-code.net/apps/latest/web-plugin"
   ],
   "Plugin International": [
     "http://localhost:4203",
-    "https://test.dont-code.net/apps/latest/intl-tester"
+    "https://test.dont-code.net/apps/latest/intl-plugin"
   ],
   "Plugin Finance": [
     "http://localhost:4204",
-    "https://test.dont-code.net/apps/latest/finance-tester"
+    "https://test.dont-code.net/apps/latest/finance-plugin"
   ],
   "Plugin Sample": [
     "http://localhost:4201",
-    "https://test.dont-code.net/apps/latest/sample-tester"
+    "https://test.dont-code.net/apps/latest/sample-plugin"
   ]
 }

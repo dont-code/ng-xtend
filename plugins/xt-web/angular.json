@@ -5,7 +5,7 @@
     "packageManager": "pnpm",
     "analytics": "8440f8d0-3f6c-4758-b71e-f9ee11217c7f",
     "cache": {
-      "enabled": false
+      "enabled": true
     }
   },
   "newProjectRoot": "projects",

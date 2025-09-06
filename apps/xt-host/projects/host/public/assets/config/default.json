@@ -12,23 +12,7 @@
        "display-name": "Web plugin",
        "version": "1.0.0",
        "info": {
-         "remote-entry":"https://test.dont-code.net/apps/latest/web-plugin/remoteEntry.json"
-       },
-       "config": {}
-     },    {
-       "id": "International",
-       "display-name": "International plugin",
-       "version": "1.0.0",
-       "info": {
-         "remote-entry":"https://test.dont-code.net/apps/latest/intl-plugin/remoteEntry.json"
-       },
-       "config": {}
-     },    {
-       "id": "Finance",
-       "display-name": "Finance plugin",
-       "version": "1.0.0",
-       "info": {
-         "remote-entry":"https://test.dont-code.net/apps/latest/finance-plugin/remoteEntry.json"
+         "remote-entry":"http://localhost:4202/remoteEntry.json"
        },
        "config": {}
      }

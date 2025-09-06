@@ -4,7 +4,8 @@ import { DefaultObjectComponent } from './object/default-object.component';
 import { DefaultObjectSetComponent } from './object-set/default-object-set.component';
 
 export function registerDefaultPlugin (resolverService:XtResolverService):boolean {
-    console.info ('Registering Plugin Default');
+  const pluginName = "Plugin Default";
+  console.info ('Registering ' +pluginName);
     resolverService.registerPlugin ({
         name:'PluginDefault',
         components: [

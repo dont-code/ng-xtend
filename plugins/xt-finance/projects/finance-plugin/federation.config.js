@@ -23,7 +23,9 @@ module.exports = withNativeFederation({
         }
       }
     })},
-
+  features: {
+    ignoreUnusedDeps:true
+  },
   skip: [
     'rxjs/ajax',
     'rxjs/fetch',

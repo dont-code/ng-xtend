@@ -21,9 +21,9 @@ It's an Angular library allowing you to:
 - Save / Load / Update the data to any storage.
 
 ## News
-2025-07-14: First version released, with support for dynamic plugins (thanks to native federation!) and a few plugins for Financial, Web and International applications. As well, added a default plugin to edit any data.
-2025-08-24: Published of apps developed: [Dashboard](https://dont-code.net/apps/repo/default)
-2025-09-06: Version 0.5, moved to Angular 20.2, added country selection plugin.
+- ***2025-07-14:*** First release, with support for dynamic plugins (thanks to [Angular architects!](https://github.com/angular-architects/module-federation-plugin)) and a few plugins for Financial, Web and International applications. As well, added a default plugin to edit any data.
+- ***2025-08-24:*** Published of apps developed: [Dashboard](https://dont-code.net/apps/repo/default)
+- ***2025-09-06:*** Version 0.5, moved to Angular 20.2, added country selection plugin.
 
 ## Try it !
 A simple application to rate coffee beans:

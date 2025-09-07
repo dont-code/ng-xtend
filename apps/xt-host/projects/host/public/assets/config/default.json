@@ -10,7 +10,7 @@
      {
        "id": "Web",
        "display-name": "Web plugin",
-       "version": "0.5",
+       "version": "1.0.0",
        "info": {
          "remote-entry":"https://test.dont-code.net/apps/latest/web-plugin/remoteEntry.json"
        },

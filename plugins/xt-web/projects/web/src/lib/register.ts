@@ -5,7 +5,7 @@ import { WebRatingComponent } from './web-rating/web-rating.component';
 
 export function registerWebPlugin (resolverService:XtResolverService):string {
   const pluginName = "Plugin Web";
-    console.info ('Registering '+pluginName);
+    console.info ('Registering ' +pluginName);
     resolverService.registerPlugin ({
         name:pluginName,
         uriLogo:'pluginicon.png',

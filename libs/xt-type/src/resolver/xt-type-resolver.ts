@@ -62,9 +62,12 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
         return undefined;
     }
 
-    isPrimitiveType (typeName:string):boolean {
+    isPrimitiveType (typeName:string, value?:any):boolean {
       const type=this.types.get(typeName);
-      if ((type==null) || (type.children == null) || (Object.keys(type.children).length == 0 )) {
+      if (type==null) {
+        // No type is defined, so just check the value
+        return isPrimitive(value);
+      } else if ( (type.children == null) || (Object.keys(type.children).length == 0 )) {
         return true;
       } else
         return false;

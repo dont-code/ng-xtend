@@ -10,7 +10,7 @@
      {
        "id": "Web",
        "display-name": "Web plugin",
-       "version": "1.0.0",
+       "version": "0.5",
        "info": {
          "remote-entry":"https://test.dont-code.net/apps/latest/web-plugin/remoteEntry.json"
        },
@@ -18,7 +18,7 @@
      },    {
        "id": "International",
        "display-name": "International plugin",
-       "version": "1.0.0",
+       "version": "0.5",
        "info": {
          "remote-entry":"https://test.dont-code.net/apps/latest/intl-plugin/remoteEntry.json"
        },
@@ -26,7 +26,7 @@
      },    {
        "id": "Finance",
        "display-name": "Finance plugin",
-       "version": "1.0.0",
+       "version": "0.5",
        "info": {
          "remote-entry":"https://test.dont-code.net/apps/latest/finance-plugin/remoteEntry.json"
        },

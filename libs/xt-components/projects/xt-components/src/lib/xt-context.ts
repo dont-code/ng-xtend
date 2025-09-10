@@ -96,6 +96,9 @@ export class XtBaseContext<T> implements XtContext<T>{
         this.parentFormGroup=parentGroup;
         this.parentContext=parentContext;
         this.subName=subName;
+        if ((parentGroup!=null) && (subName!=null)) {
+          this.localFormGroup=parentGroup.get(subName) as FormGroup;
+        }
     }
 
     setDisplayValue (newValue:T|null|undefined, type?:string, updateParent:boolean=true): XtBaseContext<T> {

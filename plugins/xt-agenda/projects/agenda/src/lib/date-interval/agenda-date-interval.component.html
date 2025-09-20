@@ -1,0 +1,20 @@
+@if (isInForm() ) {
+  <ng-container [formGroup]="formGroup()">
+    <div class="grid grid-cols-3 gap-2">
+      <div><span>Occurs every</span></div>
+      <div><p-inputnumber [showButtons]="true" formControlName="every"></p-inputnumber></div>
+      <div><p-select formControlName="item" [options]="allIntervalItems()" placeholder="Select interval"></p-select></div>
+    </div>
+  </ng-container>
+} @else {
+  @let interval = displayValue();
+  @if (interval) {
+    <span>Occurs every&nbsp;
+    @if ((interval.every!=null)&&(interval.every!=1)) {
+      {{ interval.every }}&nbsp;
+    }
+    {{ interval.item}}
+    </span>
+  }
+}
+

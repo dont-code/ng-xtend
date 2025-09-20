@@ -1,0 +1,164 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "pnpm",
+    "analytics": "8440f8d0-3f6c-4758-b71e-f9ee11217c7f",
+    "cache": {
+      "enabled": true
+    }
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "agenda": {
+      "projectType": "library",
+      "root": "projects/agenda",
+      "sourceRoot": "projects/agenda/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/agenda/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/agenda/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/agenda/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+					"builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "tsConfig": "projects/agenda/tsconfig.spec.json",
+            "polyfills": [
+            ]
+          }
+        }
+      }
+    },
+    "agenda-plugin": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
+      "root": "projects/agenda-plugin",
+      "sourceRoot": "projects/agenda-plugin/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {},
+          "configurations": {
+            "production": {
+              "target": "agenda-plugin:esbuild:production"
+            },
+            "development": {
+              "target": "agenda-plugin:esbuild:development",
+              "dev": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "agenda-plugin:serve-original:development",
+            "rebuildDelay": 0,
+            "dev": true,
+            "port": 0
+          }
+        },
+        "esbuild": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/xt-agenda-plugin",
+            "index": "projects/agenda-plugin/src/index.html",
+            "browser": "projects/agenda-plugin/src/main.ts",
+            "preserveSymlinks": true,
+            "polyfills": [
+              "es-module-shims"
+            ],
+            "tsConfig": "projects/agenda-plugin/tsconfig.app.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/agenda-plugin/public"
+              }
+            ],
+            "styles": [
+              "projects/agenda-plugin/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1MB",
+                  "maximumError": "2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+					"defaultConfiguration": "development"
+        },
+				"serve-original": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "agenda-plugin:esbuild:production"
+            },
+            "development": {
+              "buildTarget": "agenda-plugin:esbuild:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4205
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "polyfills": [],
+            "tsConfig": "projects/agenda-plugin/tsconfig.spec.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/agenda-plugin/public"
+              }
+            ],
+            "styles": [
+              "projects/agenda-plugin/src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  }
+}

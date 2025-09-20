@@ -341,6 +341,11 @@
       "shouldPublish": true,
       "publishFolder": "dist/xt-plugin-finance"
     }, {
+      "packageName": "xt-plugin-agenda",
+      "projectFolder": "plugins/xt-agenda",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-plugin-agenda"
+    }, {
       "packageName": "xt-store",
       "projectFolder": "libs/xt-store",
       "shouldPublish": true,

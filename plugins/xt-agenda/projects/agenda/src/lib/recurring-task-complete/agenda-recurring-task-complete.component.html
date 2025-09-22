@@ -1,1 +1,13 @@
-<p>recurring-task-complete works!</p>
+@if (isInForm() ) {
+  <ng-container [formGroup]="formGroup()">
+    <div class="flex flex-row flex-nowrap items-center gap-2">
+      <div class="flex-none"><span>Done</span></div>
+      <div class="flex-none"><p-checkbox formControlName="completed" [binary]="true"></p-checkbox></div>
+    </div>
+  </ng-container>
+} @else {
+  @let done = displayValue();
+  @if (done!=null) {
+    <span>Done&nbsp;</span><p-checkbox [ngModel]="done" [binary]="true" [disabled]="true"></p-checkbox>
+  }
+}

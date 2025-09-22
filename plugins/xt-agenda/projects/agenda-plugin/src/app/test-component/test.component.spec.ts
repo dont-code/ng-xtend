@@ -6,6 +6,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { registerAgendaPlugin } from '../../../../agenda/src/lib/register';
 import { XtResolverService } from 'xt-components';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { registerDefaultPlugin } from 'xt-plugin-default';
 
 describe('TestComponent', () => {
   let component: TestComponent;
@@ -18,7 +19,9 @@ describe('TestComponent', () => {
     })
     .compileComponents();
 
-    registerAgendaPlugin(TestBed.inject(XtResolverService));
+    const resolver = TestBed.inject(XtResolverService);
+    registerDefaultPlugin(resolver);
+    registerAgendaPlugin(resolver);
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

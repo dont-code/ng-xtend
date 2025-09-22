@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { XtBaseContext } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { AgendaDateIntervalComponent } from './agenda-date-interval.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { SelectItem } from 'primeng/select';

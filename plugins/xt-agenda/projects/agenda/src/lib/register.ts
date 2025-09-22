@@ -1,5 +1,4 @@
 import { XtResolverService } from 'xt-components';
-import { RecurringTaskHandler } from './type-handlers/recurring-task-handler';
 import { AgendaDateIntervalComponent } from './date-interval/agenda-date-interval.component';
 import {
   AgendaRecurringTaskCompleteComponent
@@ -34,15 +33,8 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
           date: 'date',
           occurs: 'date-interval',
           completed: 'recurring-task-complete'
-        },
-      }
-      ,typeHandlers:[
-        {
-          typesHandled: ['recurring-task'],
-          handlerClass: RecurringTaskHandler
         }
-      ]
-
+      }
     });
     return pluginName;
 }

@@ -1,14 +1,18 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
-import { RecurringTask } from '../type-handlers/recurring-task';
+import { Checkbox } from 'primeng/checkbox';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'xt-agenda-recurring-task-complete',
-  imports: [],
+  imports: [
+    Checkbox,
+    ReactiveFormsModule, FormsModule
+  ],
   templateUrl: './agenda-recurring-task-complete.component.html',
   styleUrl: './agenda-recurring-task-complete.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AgendaRecurringTaskCompleteComponent extends XtSimpleComponent<RecurringTask> {
+export class AgendaRecurringTaskCompleteComponent extends XtSimpleComponent<boolean> {
 
 }

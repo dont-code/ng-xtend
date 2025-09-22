@@ -27,7 +27,8 @@ export class TestComponent implements OnDestroy {
     dateInterval:this.builder.group({
       every:[1],
       item:['Week']
-    })
+    }),
+    completed: [false]
   });
 
   listOfTasks  = signal<Array<any>> ([]);
@@ -37,7 +38,8 @@ export class TestComponent implements OnDestroy {
     this.resolver.registerTypes({
       'agenda-test-type': {
         name: 'string',
-        dateInterval: 'date-interval'
+        dateInterval: 'date-interval',
+        completed: 'recurring-task-complete'
       }
     });
 

@@ -1,15 +1,8 @@
+import { DateInterval } from './date-interval';
+
 export type RecurringTask = {
-  amount: number;
-  currency?: Currency;
+  name: string;
+  date: Date;
+  completed:boolean;
+  occurs?: DateInterval;
 }
-
-export type Currency = string;
-
-export type EuroAmount = RecurringTask & {
-  currency:'EUR'
-}
-
-export type UsdAmount = RecurringTask & {
-  currency:'USD'
-}
-

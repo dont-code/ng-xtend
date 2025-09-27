@@ -3,7 +3,7 @@ import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { XtRenderComponent } from 'xt-components';
+import { attachToFormGroup, XtRenderComponent, XtResolverService } from 'xt-components';
 import { Panel } from 'primeng/panel';
 import { Checkbox } from 'primeng/checkbox';
 import { StoreManagerService, XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
@@ -22,16 +22,16 @@ import { StoreManagerService, XtApiStoreProvider, XtMemoryStoreProvider } from '
 export class TestComponent implements OnInit, OnDestroy {
 
   protected builder = inject(FormBuilder);
-  mainForm :FormGroup =this.builder.group ({
-    TestType:[null]
-  });
+  mainForm :FormGroup =this.builder.group ({  });
+
+  protected resolver = inject (XtResolverService);
 
   selectedType= signal<string>('link');
 
   docUrl = signal<string|null>(null);
   storeInMemory = signal(true);
 
-  value = signal<any>({TestType:'string'});
+  value = signal<any>('https://ng-xtend.dev');
 
   protected storeMgr= inject(StoreManagerService);
   protected apiProvider = inject (XtApiStoreProvider);
@@ -39,6 +39,7 @@ export class TestComponent implements OnInit, OnDestroy {
   protected subscriptions= new Subscription();
 
   constructor() {
+
   }
 
   listOfSimpleTypes() {
@@ -46,8 +47,9 @@ export class TestComponent implements OnInit, OnDestroy {
   }
 
   typeSwitch($event: AutoCompleteSelectEvent) {
+    attachToFormGroup(this.mainForm, 'TestType', null, $event.value, this.resolver.typeResolver);
     this.selectedType.set($event.value);
-    this.mainForm.setValue({TestType:null});
+//    this.mainForm.setValue();
   }
 
   ngOnDestroy(): void {
@@ -55,6 +57,8 @@ export class TestComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    attachToFormGroup(this.mainForm, 'TestType', this.value(), this.selectedType(), this.resolver.typeResolver);
+
     this.listenToValueChanges();
   }
 
@@ -63,7 +67,7 @@ export class TestComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.mainForm.valueChanges.subscribe({
       next: newValue => {
         if (newValue.TestType !== undefined)
-          this.value.set(newValue);
+          this.value.set(newValue.TestType);
       }
     }));
   }

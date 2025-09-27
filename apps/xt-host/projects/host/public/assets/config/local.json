@@ -30,6 +30,14 @@
          "remote-entry":"http://localhost:4204/remoteEntry.json"
        },
        "config": {}
+     },    {
+       "id": "Agenda",
+       "display-name": "Agenda plugin",
+       "version": "1.0.0",
+       "info": {
+         "remote-entry":"http://localhost:4205/remoteEntry.json"
+       },
+       "config": {}
      }
    ]
 }

@@ -97,7 +97,11 @@ export class XtBaseContext<T> implements XtContext<T>{
         this.parentContext=parentContext;
         this.subName=subName;
         if ((parentGroup!=null) && (subName!=null)) {
-          this.localFormGroup=parentGroup.get(subName) as FormGroup;
+          const subControl=parentGroup.get(subName);
+          // If it's a form group, then it should be set as localFormGroup
+          if ((subControl as FormGroup)?.controls!=null) {
+            this.localFormGroup=subControl as FormGroup;
+          }
         }
     }
 
@@ -257,9 +261,9 @@ export class XtBaseContext<T> implements XtContext<T>{
           return this.childContexts?.get(subName)!;
         }else {
             let subValue:WritableSignal<any|null> | null = null;
-            let parentGroup = this.formGroup();
+            let currentGroup = this.formGroup();
             // Recalculate parentGroup and formControlName and value if needed.
-            if (parentGroup==null){
+            if (currentGroup==null){
               let curValue = this.nonFormValue;
               if (curValue!=null){
                 if (curValue()!=null) {
@@ -271,7 +275,7 @@ export class XtBaseContext<T> implements XtContext<T>{
               }
             }
 
-            const ret = new XtBaseContext<T> (this.displayMode, subName, parentGroup, this);
+            const ret = new XtBaseContext<T> (this.displayMode, subName, currentGroup, this);
             if( subValue!=null) ret.nonFormValue=subValue;
 
             if (subType!=null) {

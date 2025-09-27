@@ -33,6 +33,8 @@ export class FinanceAmountComponent extends XtCompositeComponent<MoneyAmount> im
 
   override ngOnInit(): void {
     super.ngOnInit();
+
+    // The same components support multiple types: money-amount (with currency selection), eur-amount or usd-amount
     let value=this.context().value();
     if ((this.context().valueType=='money-amount') || (this.context().valueType==null)) {
       this.isFixedCurrency=false;

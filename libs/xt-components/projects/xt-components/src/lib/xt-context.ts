@@ -99,7 +99,7 @@ export class XtBaseContext<T> implements XtContext<T>{
         if ((parentGroup!=null) && (subName!=null)) {
           const subControl=parentGroup.get(subName);
           // If it's a form group, then it should be set as localFormGroup
-          if ((subControl as FormGroup).controls!=null) {
+          if ((subControl as FormGroup)?.controls!=null) {
             this.localFormGroup=subControl as FormGroup;
           }
         }

@@ -630,6 +630,9 @@ importers:
       xt-plugin-default:
         specifier: workspace:^
         version: link:../xt-default/dist/xt-plugin-default
+      xt-store:
+        specifier: workspace:^
+        version: link:../../libs/xt-store/dist/store
       xt-type:
         specifier: workspace:^
         version: link:../../libs/xt-type

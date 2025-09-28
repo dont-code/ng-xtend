@@ -1,0 +1,19 @@
+Workflow support
+
+Must enable:
+- Menu Item = Type + Workflow
+- Workflow can be implemented with Tabs (list <-> edit), or Wizards (next / previous), or page (replacing the previous one, when no return back is possible)
+- It can be full screen or in a modal dialog (from a SubList)
+- Workflow List, Edit
+   + List output is selection, triggers Edit
+   + Edit output is save or cancel, returns to List
+- Workflow View One per category => Edit
+- Workflow New Element
+- Workflow Select from SubList => New Element
+
+Configuration:
+- Menu to Workflow
+- Workflow is list of Components, with outputs to next component
+- Page input and outputs. Outputs are triggering the next page
+
+

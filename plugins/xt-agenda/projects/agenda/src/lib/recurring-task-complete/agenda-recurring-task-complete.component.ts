@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
-import { Checkbox } from 'primeng/checkbox';
+import { Checkbox, CheckboxChangeEvent } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -14,5 +14,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AgendaRecurringTaskCompleteComponent extends XtSimpleComponent<boolean> {
+    taskCompleted($event: CheckboxChangeEvent) {
+        throw new Error('Method not implemented.');
+    }
 
 }

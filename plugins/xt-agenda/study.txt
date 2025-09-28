@@ -1,0 +1,27 @@
+Menage
+- Scheduled once a week, last x hours, paid y amount per hour
+  Can be deleted, or new added, or hours changed
+
+Dog
+ - Medication every 3 months, once done, next is 3 month after. Warn few weeks before
+ - Mark when chaleur
+
+Coffe Machine
+  - Monthly cleaning, once done, next is one month apart
+
+Artotheque
+ - 6 months change, once done, next is 6 months apart
+
+
+Concept of
+Regular Task
+ - Can be defined by a first task, a default interval (week, month, x months), create the next one when task is complete.
+ - Tasks can have hours and costs per hour, or total costs
+
+ Button "Next" of task ? Complete
+ Donc
+
+  //Type 'next-task' to hold the button to copy the task for the next iteration
+ Type 'recurring-task' to hold initial & interval at minimum
+  Type 'complete-task' to hold the value checked / unchecked. If checked, it creates the next task
+  Type 'date-interval'

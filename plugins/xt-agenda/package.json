@@ -27,6 +27,7 @@
     "xt-components": "workspace:^",
     "xt-plugin-default": "workspace:^",
     "xt-type": "workspace:^",
+    "xt-store": "workspace:^",
     "rxjs": "^7.8.2",
     "primeng": "^20.1.2",
     "primeicons": "^7.0.0",
@@ -35,7 +36,8 @@
     "tailwindcss": "~4.1.13",
     "es-module-shims": "^2.6.2",
     "@angular-architects/native-federation": "^20.1.6",
-    "@softarc/native-federation-runtime": "^3.3.5"
+    "@softarc/native-federation-runtime": "^3.3.5",
+    "date-fns": "~4.1.0"
   },
   "devDependencies": {
     "@primeuix/utils": "^0.6.1",

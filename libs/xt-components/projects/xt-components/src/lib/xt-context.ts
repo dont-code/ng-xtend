@@ -1,6 +1,9 @@
 import { FormGroup } from '@angular/forms';
 import { XtTypeResolver } from 'xt-type';
 import { computed, Signal, signal, WritableSignal } from '@angular/core';
+import { XtAction } from './action/XtAction';
+import { IStoreProvider } from './store/store-support';
+import { XtActionHandler, XtActionResult } from './action/xt-action-handler';
 
 /**
  * A XtContext provides all the necessary information for an ng-extended component to operate. It is passed from parent to child component and pass
@@ -47,6 +50,8 @@ export type XtContext<T> = {
 
     toString (): string;
 
+    listActions: WritableSignal<XtAction<T>[] | null>;
+
 }
 
 export type XtDisplayMode = 'INLINE_VIEW'|'FULL_VIEW'|'FULL_EDITABLE'|'LIST_VIEW';
@@ -81,6 +86,12 @@ export class XtBaseContext<T> implements XtContext<T>{
     nonFormValue?: WritableSignal<T|null>;
 
     valueType?:string;
+
+  /**
+   * Keeps track of all the possible actions for this context
+   * @protected
+   */
+  listActions = signal<XtAction<T>[]|null>(null);
 
     /**
      *

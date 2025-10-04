@@ -16,4 +16,5 @@ Configuration:
 - Workflow is list of Components, with outputs to next component
 - Page input and outputs. Outputs are triggering the next page
 
+Design:
 

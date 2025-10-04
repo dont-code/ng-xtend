@@ -8,6 +8,9 @@ import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-p
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
 import { loadRemoteModule } from '@angular-architects/native-federation';
+import { XtAction } from '../action/XtAction';
+import { IStoreProvider } from '../store/store-support';
+import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +76,59 @@ export class XtResolverService {
       }
     }
   }
+
+
+  /**
+   * Calculates all the possible actions for a given context
+   * @param context
+   * @param onlyVisible
+   */
+  possibleActions<T> (context:XtContext<T>, onlyVisible:boolean=true): Array<XtAction<T>> {
+    const existingActions = context.listActions();
+    if (existingActions!=null) {
+      return existingActions;
+    }
+
+    if (context.valueType!=null) {
+      const actionInfos = this.pluginRegistry.listActionInfos<T>(context.valueType);
+      const actions = actionInfos.map((info) => {
+        const ret = new XtAction(info.name,info.info, true);
+        return ret;
+      });
+      context.listActions.set(actions);
+      return actions;
+    }
+    return [];
+  }
+
+  /**
+   * Finds the possible action with the given name for the current type, and runs it in the current value.
+   * If the action is not possible in this context, try a parent context
+   * @param actionName
+   * @param store
+   */
+  async runAction<T> (context: XtContext<T>, actionName:string,  store?:IStoreProvider<T>): Promise<XtActionResult<any>> {
+    let handler: XtActionHandler<T> |null = null;
+    for (const action of this.possibleActions(context,false)) {
+      if (action.name==actionName) {
+        const handlerClass=action.info.handlerClass;
+        handler=new handlerClass ();
+        break;
+      }
+    }
+
+    if (handler!=null) {
+      return handler.runAction(context, actionName, store);
+    } else {
+      // Couldn't find the handler, let's see if we can have that up the context chain
+      if (context.parentContext!=null) {
+        return this.runAction(context.parentContext, actionName, undefined); // Run the parent without any store indication, as it most probably is different
+      } else {
+        return Promise.reject("Cannot find action "+actionName+" for context "+this.toString());
+      }
+    }
+  }
+
 
   protected handlerDefinedFor(newType: string, handlers: XtTypeHandlerInfo<any>[] | undefined):any {
         for (const handler of handlers ?? []) {

@@ -1,0 +1,12 @@
+Action system:
+
+- Declare common actions (refresh) and type specific actions
+- Action contains text and icon
+- Declare action handler per action per  type
+- Provides dynamic action state: enabled / disabled
+- Asynchronous run, 
+
+- Action handled in a context ??
+  - Will enable throwing action up the type chain
+  - has access to store ??
+  - can provide easy signals for actions status & display

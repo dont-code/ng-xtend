@@ -1,5 +1,6 @@
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { IDataTransformer, IDocumentInfo, IStoreManager, IStoreProvider, StoreSupport } from '../store/store-support';
+import { uuid } from '@primeuix/utils';
 
 /**
  * A very light and not 100% compatible storemanager in case you are not using xt-store.
@@ -35,23 +36,30 @@ export class TestStoreManager implements IStoreManager {
 export class TestStoreProvider<T = never> implements IStoreProvider<T> {
     protected data = new Map<string, Map<string,any>> ();
 
-    protected getOrCreateArray (name: string): Map<string,any> {
+    protected getOrCreateArray (name: string): Map<string,T> {
       let ret=this.data.get(name);
       if (ret==null) {
-        ret = new Map<string, any>();
+        ret = new Map<string, T>();
         this.data.set(name, ret);
       }
       return ret;
     }
 
-    protected extractKey (value: any):string {
-      if (value.__id!=null) return value.__id;
+    protected extractKey (value: any, create?:boolean):string {
+      if (value._id!=null) return value._id; // ManagedData key
       else if (value.id!=null) return value.id;
-      else return value.toString()
+      else {
+        if (create===true) {
+          const newId = new Date().getTime().toString();
+          value._id=newId;
+          return newId;
+        }
+        return value.toString();
+      }
     }
 
     storeEntity(name: string, entity: T): Promise<T> {
-      this.getOrCreateArray(name).set(this.extractKey(entity), entity);
+      this.getOrCreateArray(name).set(this.extractKey(entity, true), entity);
       return Promise.resolve(entity);
     }
 
@@ -72,8 +80,17 @@ export class TestStoreProvider<T = never> implements IStoreProvider<T> {
     }
 
     searchEntities(name: string, ...criteria: any[]): Observable<T[]> {
+      if ((criteria!=null) && (criteria.length>0)) {
         throw new Error('Method not implemented.');
+      }
+      // No criteria defined, just send the full list
+      const ret=new Array<T>();
+      for (const toAdd of this.getOrCreateArray(name).values()) {
+        ret.push(toAdd);
+      }
+      return from([ret]);
     }
+
     searchAndPrepareEntities(name: string, sort?: any, groupBy?: any, transformer?: IDataTransformer<T> | undefined, ...criteria: any[]): Observable<any> {
         throw new Error('Method not implemented.');
     }

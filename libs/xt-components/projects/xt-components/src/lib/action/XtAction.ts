@@ -1,5 +1,5 @@
-import { XtActionHandler, XtActionInfo } from 'xt-components';
 import { signal } from '@angular/core';
+import { XtActionInfo } from '../plugin/xt-plugin-info';
 
 export class XtAction<T> {
   name: string;

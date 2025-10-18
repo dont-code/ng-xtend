@@ -24,24 +24,32 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
             }
         ],
       types: {
-        'recurring-task-complete': 'boolean',
+        'task': {
+          date:'date',
+          repetition:'recurring-task',
+          completed:'task-complete',
+        },
+        'task-complete': 'boolean',
         'date-interval': {
           every: 'number',
           item: 'string'
         },
         'recurring-task': {
           name: 'string',
-          date: 'date',
-          occurs: 'date-interval',
-          completed: 'recurring-task-complete'
+          picture: 'image',
+          occurs: 'date-interval'
         }
       },
-      typeHandlers: [
-        {
-          typesHandled: ['recurring-task'],
-          handlerClass: RecurringTaskHandler
+      actionHandlers: [{
+        types: ['recurring-task-complete'],
+        actions: {
+          'next-task': {
+            description:'Create next task',
+            visible: false,
+            handlerClass: RecurringTaskHandler
+          }
         }
-      ]
+      }]
     });
     return pluginName;
 }

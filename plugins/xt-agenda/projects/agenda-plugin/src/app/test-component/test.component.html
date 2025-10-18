@@ -1,4 +1,6 @@
-<h1 class="text-2xl">Testing Agenda Types</h1>
+<div class="text-2xl text-shadow-md">
+  Testing Agenda types
+</div>
 
 <form class="m-3" id="editView" [formGroup]="mainForm">
 <div class="grid grid-cols-2 gap-4">
@@ -17,6 +19,8 @@
 <pre>
   <span class="m-3 mt-6">Form Value is {{mainForm.value | json}}, Form is {{mainForm.pristine?"Pristine":"Dirty"}}</span>
 </pre>
-
-Recurrent task is
+<br />
+<div class="text-2xl text-shadow-md">
+  Displaying the Recurrent task
+</div>
 <xt-render displayMode="LIST_VIEW" valueType="agenda-test-type" [value]="listOfTasks()" ></xt-render>

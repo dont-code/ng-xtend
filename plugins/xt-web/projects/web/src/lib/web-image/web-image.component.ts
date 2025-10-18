@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { IStoreProvider, MessageHandler, StoreSupport, XtSimpleComponent } from 'xt-components';
+import { IStoreProvider, XtMessageHandler, StoreSupport, XtSimpleComponent } from 'xt-components';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { NgIf } from '@angular/common';
@@ -21,7 +21,7 @@ import { Image } from 'primeng/image';
 })
 export class WebImageComponent extends XtSimpleComponent{
 
-  msgHandler= inject(MessageHandler);
+  msgHandler= inject(XtMessageHandler);
 
   store?:IStoreProvider<any>;
 

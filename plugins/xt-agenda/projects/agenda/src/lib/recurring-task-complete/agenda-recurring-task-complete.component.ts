@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { XtSimpleComponent } from 'xt-components';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { XtSimpleComponent, XtMessageHandler, XtResolverService } from 'xt-components';
 import { Checkbox, CheckboxChangeEvent } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,8 +14,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AgendaRecurringTaskCompleteComponent extends XtSimpleComponent<boolean> {
+    msgHandler = inject(XtMessageHandler);
+    resolver = inject(XtResolverService);
+
     taskCompleted($event: CheckboxChangeEvent) {
-        throw new Error('Method not implemented.');
+      if ($event.checked==true) {
+        this.resolver.runAction(this.context(), 'next-task').catch((error:any) => {
+          this.msgHandler.errorOccurred(error, "Cannot create next task");
+        });
+      }
     }
 
 }

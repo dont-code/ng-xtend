@@ -8,10 +8,13 @@ import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-p
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
 import { loadRemoteModule } from '@angular-architects/native-federation';
-import { XtAction } from '../action/XtAction';
+import { XtAction } from '../action/xt-action';
 import { IStoreProvider } from '../store/store-support';
 import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
 
+/**
+ * An all in one helper class, enabling manipulation of the context, with data and type associated with it.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -180,6 +183,39 @@ export class XtResolverService {
       return module;
     });
 
+  }
+
+  /**
+   * Based on the type & value of the element, find which property is on its type and returns it's value
+   * @param context
+   * @param subPropertyType
+   * @param value
+   */
+  findSubPropertyWithType<T> (context: XtContext<T>, subPropertyType:string, value:T): any {
+    const subKeys = this.typeResolver.findSubPropertiesWithType (context.valueType, subPropertyType);
+    if ((subKeys!=null)&&(subKeys.length==1)) {
+      return value[subKeys[0] as keyof T];
+    } else if (subKeys.length>1) {
+        // Let's pickup the first
+      return value[subKeys[0] as keyof T];
+    } else {
+      return undefined;
+    }
+  }
+
+  /**
+   * Creates a duplicate of an object, using our knowledge on its type given by the context
+   * @param context
+   * @param value
+   */
+  safeDuplicate<T> (context: XtContext<T>, value:T): T {
+
+    const typeHandler = this.typeResolver.findTypeHandler(context.valueType, undefined, value);
+
+    if (typeHandler.handler!=null) {
+      return typeHandler.handler.safeDuplicate (value);
+    }
+    return structuredClone(value);
   }
 
 }

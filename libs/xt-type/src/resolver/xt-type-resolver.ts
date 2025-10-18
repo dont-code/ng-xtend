@@ -10,6 +10,8 @@ export type XtTypeResolver = {
 
   listSubNames (typeName: string | null | undefined, value?: any):string[];
   isPrimitiveType (typeName: string | null | undefined, value?: any):boolean;
+  findSubPropertiesWithType<Type> (typeName:string|null|undefined, typeOfSubProperties:string):(keyof Type)[];
+  calculateSubPropertiesPerType<Type> (typeName:string|null|undefined):Map<string, (keyof Type)[]>;
 
   canUpdate (): boolean;
 
@@ -105,6 +107,49 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       return ret;
     }
 
+  calculateSubPropertiesPerType<Type> (typeName:string|null|undefined):Map<string, (keyof Type)[]> {
+    const ret = new Map<string, (keyof Type)[]>();
+    if (typeName!=null) {
+      const typeInfo = this.types.get(typeName);
+      if (typeInfo?.children != null) {
+        for (const subKey in typeInfo?.children) {
+          const type = typeInfo?.children[subKey];
+          if (type.type!=null) {
+            let list = ret.get(type.type);
+            if (list == null) {
+              list = new Array<keyof Type>();
+              ret.set(type.type, list);
+            }
+            list.push(subKey as keyof Type);
+          }
+        }
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Returns the list of properties of the type typeName that are compatible with the type typeOfSubProperties
+   * @param typeName
+   * @param typeOfSubProperties
+   */
+  findSubPropertiesWithType<Type> (typeName:string|null|undefined, typeOfSubProperties:string):(keyof Type)[] {
+    if (typeName!=null) {
+      const typeInfo = this.types.get(typeName);
+      if (typeInfo?.children != null) {
+        const ret=new Array<keyof Type>();
+        for (const subKey in typeInfo?.children) {
+          const type = typeInfo?.children[subKey];
+          if (type.isTypeOf (typeOfSubProperties)) {
+            ret.push(subKey as keyof Type);
+          }
+        }
+        return ret;
+      }
+    }
+    return [];
+  }
+
   findTypeHandler<Type>(typeName: string | null | undefined, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> } {
     if (typeName==null) return {typeName};
     const ret= this.types.get(typeName);
@@ -163,6 +208,8 @@ export type XtTypeHierarchy = {
 
     addChild (key:string, child:XtTypeHierarchy) : void;
     initHandler ():void;
+
+    isTypeOf(typeName: string): boolean;
 }
 
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
@@ -184,12 +231,14 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
       if (this.handler!=null) {
         this.handler.init(this);
       }
-
     }
 
+    isTypeOf (toTest: string){
+      return this.type==toTest;
+    }
+
+
 }
-
-
 
 function isPrimitive(valueElement: any): boolean {
   if (typeof valueElement == 'object') {

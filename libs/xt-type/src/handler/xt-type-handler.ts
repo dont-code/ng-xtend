@@ -1,6 +1,7 @@
 import { ManagedData } from '../managed-data/managed-data';
 import { SpecialFields } from '../transformation/special-fields';
-import { XtTypeHierarchy } from '../resolver/xt-type-resolver';
+import { XtTypeHierarchy, XtTypeResolver } from '../resolver/xt-type-resolver';
+import { MappingHelper } from '../transformation/mapping-helper';
 
 export type XtTypeHandler<Type> = {
   init(context:XtTypeHierarchy):void,
@@ -16,6 +17,9 @@ export type XtTypeHandler<Type> = {
    * Creates a new empty instance of type. Id is not set at this point
    */
   createNew (): Type;
+  safeDuplicate (value: Type): Type;
+
+  getOrCreateMappingFrom<OtherType> (toTypeName: string, registry:XtTypeResolver): MappingHelper<Type, OtherType> | undefined;
 }
 
 /**
@@ -25,6 +29,11 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
   protected fields:SpecialFields<Type> = new SpecialFields<Type>();
   protected type:XtTypeHierarchy|null = null;
+
+  /**
+   * Marker for 'I checked and you cannot map to this type', don't try again
+   */
+  protected static readonly NONE_MAPPING=new MappingHelper<any,any>({});
 
   constructor(idField?:keyof Type, dateFields?:Array<keyof Type> ) {
     this.fields.idField=idField;
@@ -118,4 +127,90 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     return date.toJSON();
   }
 
+  safeDuplicate (value: Type): Type {
+    // For now just make a clone
+    return structuredClone(value);
+  }
+
+  getOrCreateMappingFrom<OtherType> (fromTypeName: string, registry:XtTypeResolver): MappingHelper<Type, OtherType> | undefined
+  {
+    let ret=this.fields.getMapping(fromTypeName);
+    if (ret===AbstractTypeHandler.NONE_MAPPING) return undefined;
+    if (ret==null) {
+      // try to find a mapping
+      ret = this.createMappingFrom ( fromTypeName, registry);
+      if (ret==null) {
+        this.fields.setMapping(fromTypeName, AbstractTypeHandler.NONE_MAPPING);
+      } else {
+        this.fields.setMapping(fromTypeName, ret);
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Try to automatically map a type to another by looking at properties that may have different names but the same types.
+   * @param fromTypeName
+   * @param registry
+   * @protected
+   */
+  protected createMappingFrom<OtherType>(fromTypeName: string, registry:XtTypeResolver): MappingHelper<OtherType, Type> | undefined {
+    // Let's see if we have properties with the same types.
+    const fromTypes = registry.calculateSubPropertiesPerType<OtherType> (fromTypeName);
+    const toTypes = registry.calculateSubPropertiesPerType<Type> (this.type?.type);
+    // Do we find all the types needed in the source ?
+    const mapping: {[key in keyof OtherType]:keyof Type} = {} as {[key in keyof OtherType]:keyof Type};
+    for (const toTypeName of toTypes.keys()) {
+      let found=fromTypes.get(toTypeName);
+      if (found == null) {
+        // Cannot find this type
+        return undefined;
+      } else {
+        const targetPossibilities = toTypes.get(toTypeName)!;
+        if ((found.length==1) && (targetPossibilities.length==1)) {
+          mapping[found[0]]=targetPossibilities[0];
+        } else if (found.length >= targetPossibilities.length) {
+          for (const targetProp of targetPossibilities) {
+            const matchIndex: number =this.findBestMappingMatch<OtherType> (found, targetProp);
+            if (matchIndex!=-1) {
+              mapping[found[matchIndex]]=targetProp;
+              found.splice(matchIndex, 1);
+            }else {
+              return undefined;
+            }
+          }
+        }
+      }
+    }
+    return new MappingHelper<OtherType, Type>(mapping);
+  }
+
+  /**
+   * Try to find which property in the list matches best the target property
+   * @param found
+   * @param targetProp
+   * @protected
+   */
+  protected findBestMappingMatch<OtherType>(found: (keyof OtherType)[], targetProp: keyof Type): number {
+    let index=0;
+    // Do they have the same name ?
+    for (const key of found) {
+      if (key.toString().toLowerCase()==targetProp.toString().toLowerCase()) {
+        return index;
+      }
+      index++;
+    }
+
+    // Or similar names ?
+    index=0;
+    for (const key of found) {
+      if ((key.toString().toLowerCase().indexOf(targetProp.toString().toLowerCase())!=-1) ||
+          (targetProp.toString().toLowerCase().indexOf(key.toString().toLowerCase())!=-1)) {
+        return index;
+      }
+      index++;
+    }
+
+    return -1;
+  }
 }

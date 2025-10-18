@@ -19,7 +19,7 @@ export * from './lib/render/xt-render-sub.component';
 export * from './lib/xt-simple/xt-simple.component';
 export * from './lib/xt-composite/xt-composite.component';
 
-export * from './lib/angular/message-handler';
+export * from './lib/angular/xt-message-handler.service';
 export * from './lib/store/store-support';
 export * from './lib/type/type-helper';
 export * from './lib/test/xt-unit-test-helper';

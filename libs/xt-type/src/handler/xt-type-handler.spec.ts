@@ -83,7 +83,91 @@ describe('Type Handler', () => {
 
   });
 
+  it ('should correctly map simple types', () => {
+    const resolver = xtTypeManager();
+    const testToHandler=new TestToTypeHandler();
+    resolver.addRootType('fromSimpleType', {
+      name: 'string',
+      date: 'date',
+      count: 'number'
+    });
+    resolver.addRootType('toSimpleType', {
+      nom: 'string',
+      jours: 'date',
+      nombre: 'number'
+    }, testToHandler);
+
+    const mapping = testToHandler.getOrCreateMappingFrom('fromSimpleType', resolver);
+    expect(mapping).toBeTruthy();
+    const curDate = new Date();
+    const mapped = mapping!.to ({
+      name: 'nom1',
+      date: curDate,
+      count: 3
+    });
+    expect (mapped).toEqual({
+      nom:'nom1',
+      jours: curDate,
+      nombre: 3
+    });
+  });
+
+  it ('should correctly map complex types', () => {
+    const resolver = xtTypeManager();
+    const testToComplexHandler=new TestToComplexHandler();
+    resolver.addRootType('fromComplexType', {
+      name: 'string',
+      startdate: 'date',
+      enddate: 'date',
+      description:'string',
+      count: 'number'
+    });
+    resolver.addRootType('toComplexType', {
+      description:'string',
+      lastname: 'string',
+      start: 'date',
+      end: 'date',
+      nombre: 'number'
+    }, testToComplexHandler);
+
+    const mapping = testToComplexHandler.getOrCreateMappingFrom('fromComplexType', resolver);
+    expect(mapping).toBeTruthy();
+    const curDate = new Date();
+    const endDate = new Date().setMonth((curDate.getMonth() + 1)%13);
+    const mapped = mapping!.to ({
+      name: 'nom3',
+      startdate: curDate,
+      enddate: endDate,
+      description:'description 3',
+      count: 3
+    });
+    expect (mapped).toEqual({
+      lastname:'nom3',
+      start: curDate,
+      end: endDate,
+      description:'description 3',
+      nombre: 3
+    });
+  })
+
+  it ('should fail on non-mappable types', () => {
+    const resolver = xtTypeManager();
+    const testToHandler=new TestToTypeHandler();
+    resolver.addRootType('fromBadType', {
+      name: 'string',
+      count: 'number'
+    });
+    resolver.addRootType('toBadType', {
+      nom: 'string',
+      date: 'date'
+    }, testToHandler);
+
+    const mapping = testToHandler.getOrCreateMappingFrom('fromBadType', resolver);
+    expect(mapping).toBeUndefined();
+  })
+
 });
+
 
 type ToHandleType = {
   id: string,
@@ -131,6 +215,30 @@ class ComplexTypeTestHandler extends AbstractTypeHandler<ComplexType> {
 
   createNew(): ComplexType {
     return {id:'TEST', subType:{newName:'Test', date:new Date()}};
+  }
+
+}
+
+class TestToTypeHandler extends AbstractTypeHandler<any> {
+  createNew() {
+    return {
+      nom: 'nom1',
+      jours: new Date(),
+      nombre: new Date().getTime()
+    }
+  }
+
+}
+
+class TestToComplexHandler extends AbstractTypeHandler<any> {
+  createNew() {
+    return {
+      lastname: 'nom2',
+      description: 'description 2',
+      start: new Date(),
+      end: new Date().setHours(13,43,54,245),
+      nombre: new Date().getTime()
+    }
   }
 
 }

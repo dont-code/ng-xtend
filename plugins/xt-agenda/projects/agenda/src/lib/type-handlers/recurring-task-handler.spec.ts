@@ -24,58 +24,79 @@ describe('Recurring Task Handler', () => {
 
   it ('Should calculate next task', async ()=> {
     const resolver = TestBed.inject(XtResolverService);
-    const taskContext= new XtBaseContext<RecurringTask>('FULL_VIEW');
-    taskContext.valueType='recurring-task';
+    resolver.registerTypes({
+      'testing-task': {
+        date: 'date',
+        repeat: 'recurring-task',
+        completed: 'recurring-task-complete'
+      }
+    });
+    const taskContext= new XtBaseContext<any>('FULL_VIEW');
+    taskContext.valueType='testing-task';
     taskContext.setDisplayValue({
       _id:'23243',
-      name:'Test Task',
       date: new Date(2025,0,1),
       completed:false,
-      occurs: {
-        every: 2,
-        item:'Week'
+      repeat:{
+        name:'Test Task 1',
+        occurs: {
+          every: 2,
+          item:'Week'
+        }
       }
     });
 
     const handlerResult = resolver.findTypeHandlerOf(taskContext);
     expect(handlerResult).toBeDefined();
-    expect(handlerResult.typeName).toBe ('recurring-task');
+    expect(handlerResult.typeName).toBe ('testing-task');
     expect(handlerResult.handler).toBeDefined();
 
     const handler = handlerResult.handler as RecurringTaskHandler<RecurringTask>;
     const nextTaskResult = await handler.runAction(taskContext, 'next-task');
     expect(nextTaskResult.status).toBe ('success');
     expect(nextTaskResult.value).toEqual({
-      name:'Test Task',
       completed:false,
-      occurs: {
-        every: 2,
-        item: 'Week'
+      repeat:{
+        name: 'Test Task 1',
+        occurs: {
+          every: 2,
+          item: 'Week'
+        }
       },
       date: new Date (2025,0,15)
     });
   });
 
   it ('Should calculate and store next task', async ()=> {
-    const store = StoreSupport.getStoreManager().getProviderSafe<RecurringTask>('recurring-task');
-    const currentTask = await store.storeEntity('recurring-task', {
-      name:'Test Task',
+    const resolver = TestBed.inject(XtResolverService);
+    resolver.registerTypes({
+      'testing-task': {
+        date: 'date',
+        repeat: 'recurring-task',
+        completed: 'recurring-task-complete'
+      }
+    });
+    const store = StoreSupport.getStoreManager().getProviderSafe<TestingTask>('testing-task');
+    const currentTask = await store.storeEntity('testing-task', {
       date: new Date(2025,0,5),
       completed:false,
-      occurs: {
-        every: 3,
-        item:'Month'
+      repeat: {
+        name: 'Test Task 2',
+        occurs: {
+          every: 3,
+          item: 'Month'
+        }
       }
     });
 
     expect(currentTask._id).toBeDefined();
 
-    const resolver = TestBed.inject(XtResolverService);
     const taskContext= new XtBaseContext<RecurringTask>('FULL_VIEW');
     taskContext.valueType='recurring-task';
     taskContext.setDisplayValue(currentTask);
 
     const handler = resolver.findTypeHandlerOf(taskContext).handler as RecurringTaskHandler<RecurringTask>;
+    expect(handler).toBeTruthy();
     const nextTaskResult = await handler.nextTaskAction(taskContext, store);
     expect(nextTaskResult.status).toBe ('success');
     expect(nextTaskResult.value?._id).toBeDefined();
@@ -83,11 +104,13 @@ describe('Recurring Task Handler', () => {
 
     expect(nextTaskResult.value).toEqual({
       _id:nextTaskResult.value?._id,
-      name:'Test Task',
       completed:false,
-      occurs: {
-        every: 3,
-        item: 'Month'
+      created: {
+        name:'Test Task 2',
+        occurs: {
+          every: 3,
+          item: 'Month'
+        }
       },
       date: new Date (2025,3,5)
     });
@@ -99,3 +122,10 @@ describe('Recurring Task Handler', () => {
   });
 
 });
+
+type TestingTask = {
+  _id:string,
+  date:Date,
+  completed:boolean,
+  repeat: RecurringTask
+}

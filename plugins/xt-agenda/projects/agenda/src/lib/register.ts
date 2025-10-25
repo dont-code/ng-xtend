@@ -3,7 +3,7 @@ import { AgendaDateIntervalComponent } from './date-interval/agenda-date-interva
 import {
   AgendaRecurringTaskCompleteComponent
 } from './recurring-task-complete/agenda-recurring-task-complete.component';
-import { RecurringTaskHandler } from './type-handlers/recurring-task-handler';
+import { TaskCompleteHandler } from './type-handlers/task-complete-handler';
 
 export function registerAgendaPlugin (resolverService:XtResolverService):string {
   const pluginName = "Plugin Agenda";
@@ -27,7 +27,7 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
         'task': {
           date:'date',
           repetition:'recurring-task',
-          completed:'task-complete',
+          completed:'task-complete'
         },
         'task-complete': 'boolean',
         'date-interval': {
@@ -41,12 +41,12 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
         }
       },
       actionHandlers: [{
-        types: ['recurring-task-complete'],
+        types: ['task-complete'],
         actions: {
           'next-task': {
-            description:'Create next task',
+            description:'Create next task occurrence',
             visible: false,
-            handlerClass: RecurringTaskHandler
+            handlerClass: TaskCompleteHandler
           }
         }
       }]

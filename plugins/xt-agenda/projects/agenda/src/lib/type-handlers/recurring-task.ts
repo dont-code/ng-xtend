@@ -3,7 +3,7 @@ import { DateInterval } from './date-interval';
 
 export type RecurringTask = ManagedData &{
   name: string;
-  picture: string;
+  picture?: string;
   occurs?: DateInterval;
 }
 

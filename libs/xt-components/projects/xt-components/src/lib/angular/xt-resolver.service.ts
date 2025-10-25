@@ -1,9 +1,10 @@
-import { computed, inject, Injectable, Type } from '@angular/core';
+import { computed, inject, Injectable, Injector, runInInjectionContext, Type } from '@angular/core';
 import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
 import { XtResolvedComponent } from '../xt-resolved-component';
-import { ManagedDataHandler, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
+import { ManagedDataHandler,
+  MappingHelper, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
 import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
@@ -51,7 +52,7 @@ export class XtResolverService {
   }
 
   findTypeHandlerOf<T> (baseContext:XtContext<T>, subName?:string, value?:T): {typeName?:string | null, handler?:XtTypeHandler<any>} {
-    const ret = this.typeResolver.findTypeHandler(baseContext.valueType, subName, value);
+    const ret = this.typeResolver.findTypeHandler(baseContext.valueType, false, subName, value);
     return ret;
   }
 
@@ -115,13 +116,13 @@ export class XtResolverService {
     for (const action of this.possibleActions(context,false)) {
       if (action.name==actionName) {
         const handlerClass=action.info.handlerClass;
-        handler=new handlerClass ();
+          handler=new handlerClass ();
         break;
       }
     }
 
     if (handler!=null) {
-      return handler.runAction(context, actionName, store);
+      return handler.runAction(context, actionName, this, store);
     } else {
       // Couldn't find the handler, let's see if we can have that up the context chain
       if (context.parentContext!=null) {
@@ -210,12 +211,26 @@ export class XtResolverService {
    */
   safeDuplicate<T> (context: XtContext<T>, value:T): T {
 
-    const typeHandler = this.typeResolver.findTypeHandler(context.valueType, undefined, value);
+    const typeHandler = this.typeResolver.findTypeHandler(context.valueType, false, undefined, value);
 
     if (typeHandler.handler!=null) {
       return typeHandler.handler.safeDuplicate (value);
     }
     return structuredClone(value);
+  }
+
+  resolveMappingOf<U, T> (context: XtContext<T>, targetType:string, value?:T): MappingHelper<U, T> | undefined {
+    if (context.valueType!=null) {
+      const typeHandler = this.typeResolver.findTypeHandler<T>(targetType, false, undefined, value);
+
+      if (typeHandler.handler!=null) {
+        const ret = typeHandler.handler.getOrCreateMappingFrom<U>(context.valueType, this.typeResolver);
+        if( ret != null) {
+          return ret;
+        }
+      }
+    }
+    return undefined;
   }
 
 }

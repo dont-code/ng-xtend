@@ -19,7 +19,7 @@ export type XtTypeHandler<Type> = {
   createNew (): Type;
   safeDuplicate (value: Type): Type;
 
-  getOrCreateMappingFrom<OtherType> (toTypeName: string, registry:XtTypeResolver): MappingHelper<Type, OtherType> | undefined;
+  getOrCreateMappingFrom<OtherType> (fromTypeName: string, registry:XtTypeResolver): MappingHelper<OtherType, Type> | undefined;
 }
 
 /**
@@ -129,12 +129,19 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
   safeDuplicate (value: Type): Type {
     // For now just make a clone
-    return structuredClone(value);
+    const ret= structuredClone(value);
+    // The duplicate should have the same Id
+    const idField = this.idField();
+    if (idField!=null) {
+      delete ret[idField];
+    }
+    delete (ret as ManagedData)._id;
+    return ret;
   }
 
-  getOrCreateMappingFrom<OtherType> (fromTypeName: string, registry:XtTypeResolver): MappingHelper<Type, OtherType> | undefined
+  getOrCreateMappingFrom<OtherType> (fromTypeName: string, registry:XtTypeResolver): MappingHelper<OtherType, Type> | undefined
   {
-    let ret=this.fields.getMapping(fromTypeName);
+    let ret=this.fields.getMapping<OtherType>(fromTypeName);
     if (ret===AbstractTypeHandler.NONE_MAPPING) return undefined;
     if (ret==null) {
       // try to find a mapping

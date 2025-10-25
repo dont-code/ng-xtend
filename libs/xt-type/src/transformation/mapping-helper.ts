@@ -10,27 +10,35 @@ export class MappingHelper<FROM, TO> {
     }
   }
 
-  to (value:FROM | null | undefined): TO | null | undefined {
+  to (value:FROM | null | undefined, oldTo?:TO | null): TO | null | undefined {
     if (value==null) return value as unknown as TO;
     else {
-      const ret = {} as TO;
+      let ret = oldTo;
+      if (ret==null) {
+        ret = {} as TO;
+      }
       for (const fromKey of Object.keys(value) as (keyof FROM)[]) {
         let toKey=this.mapFromTo.get(fromKey);
-        if (toKey == null) { toKey=fromKey as unknown as keyof TO;}
-        ret[toKey]=value[fromKey] as any;
+        if ((toKey == null) && (fromKey!='_id')) { toKey=fromKey as unknown as keyof TO;} // Assume no mapping = same mapping, don't copy the Ids
+        if (toKey!=null)
+          ret[toKey]=value[fromKey] as any;
       }
       return ret;
     }
   }
 
-  from (value:TO | null | undefined): FROM | null | undefined {
+  from (value:TO | null | undefined, oldFrom?:FROM | null): FROM | null | undefined {
     if (value==null) return value as unknown as FROM;
     else {
-      const ret = {} as FROM;
+      let ret = oldFrom;
+      if (ret==null) {
+        ret = {} as FROM;
+      }
       for (const toKey of Object.keys(value) as (keyof TO)[]) {
         let fromKey=this.mapToFrom.get(toKey);
-        if (fromKey == null) { fromKey=toKey as unknown as keyof FROM;}
-        ret[fromKey]=value[toKey] as any;
+        if ((fromKey == null)&&(toKey!='_id')) { fromKey=toKey as unknown as keyof FROM;}
+        if (fromKey!=null)
+          ret[fromKey]=value[toKey] as any;
       }
       return ret;
     }

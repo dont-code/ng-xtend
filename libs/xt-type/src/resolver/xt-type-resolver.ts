@@ -1,4 +1,6 @@
 import { XtTypeHandler } from '../handler/xt-type-handler';
+import { ManagedDataHandler } from '../managed-data/managed-data-handler';
+import { DefaultTypeHandler } from '../handler/default/default-type-handler';
 
 /**
  * Determines the type of elements based on a hierarchy of type
@@ -6,7 +8,8 @@ import { XtTypeHandler } from '../handler/xt-type-handler';
 export type XtTypeResolver = {
 
   findTypeName (typeName:string|null|undefined, subName?:string, value?:any):string|null|undefined;
-  findTypeHandler<Type> (typeName:string|null|undefined, subName?:string, value?:Type): {typeName?:string|null, handler?:XtTypeHandler<Type> };
+  getOrCreateTypeHandler<Type>(typeName: string | null | undefined, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> };
+  findTypeHandler<Type> (typeName:string|null|undefined, createDefault?:boolean, subName?:string, value?:Type): {typeName?:string|null, handler?:XtTypeHandler<Type> };
 
   listSubNames (typeName: string | null | undefined, value?: any):string[];
   isPrimitiveType (typeName: string | null | undefined, value?: any):boolean;
@@ -150,12 +153,28 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     return [];
   }
 
-  findTypeHandler<Type>(typeName: string | null | undefined, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> } {
+  getOrCreateTypeHandler<Type>(typeName: string | null | undefined, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> } {
+    return this.findTypeHandler(typeName, true, subName, value );
+  }
+
+  findTypeHandler<Type>(typeName: string | null | undefined, createDefault?:boolean, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> } {
+    if ((typeName!=null) && (subName!=null)) {
+      typeName = this.findTypeName(typeName, subName, value);
+    }
     if (typeName==null) return {typeName};
     const ret= this.types.get(typeName);
     if (ret!=null) {
+      if ((ret.handler==null)&& (createDefault==true)) {
+        ret.handler = this.createDefaultTypeHandler(ret, value);
+      }
       return { typeName:ret.type, handler: ret.handler};
     } else return {};
+  }
+
+  createDefaultTypeHandler<Type> (type: XtTypeHierarchy, value?:Type): XtTypeHandler<Type> {
+    const ret = new DefaultTypeHandler<Type>();
+    ret.init(type);
+    return ret;
   }
 
   setHandler<Type>(typeName: string, handler: XtTypeHandler<Type>): void {

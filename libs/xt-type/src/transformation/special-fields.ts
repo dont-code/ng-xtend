@@ -20,15 +20,15 @@ export class SpecialFields<Type>
   /**
    * Stores the mapping from Type to another type
    */
-  mappingToType = new Map<string, MappingHelper<Type, any>> ();
+  mappingFromType = new Map<string, MappingHelper<any, Type>> ();
 
-  setMapping<ToType> (toTypeName:string, mapping:MappingHelper<Type, ToType>)
+  setMapping<FromType> (fromTypeName:string, mapping:MappingHelper<FromType, Type>)
   {
-    this.mappingToType.set(toTypeName, mapping);
+    this.mappingFromType.set(fromTypeName, mapping);
   }
 
-  getMapping<ToType>(toTypeName:string): MappingHelper<Type, any> | undefined {
-    return this.mappingToType.get(toTypeName);
+  getMapping<FromType>(fromTypeName:string): MappingHelper<FromType, Type> | undefined {
+    return this.mappingFromType.get(fromTypeName);
   }
 
   addDateField(name: keyof Type) {

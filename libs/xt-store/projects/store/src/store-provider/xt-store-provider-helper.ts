@@ -47,7 +47,7 @@ export class XtStoreProviderHelper {
    * @protected
    */
   public static findTypeHandler (typeName:string, subName?:string, value?:ManagedData): { typeName?:string | null, handler?:XtTypeHandler<any>} {
-    return XtStoreProviderHelper.typeManager?.findTypeHandler(typeName, subName, value);
+    return XtStoreProviderHelper.typeManager?.findTypeHandler(typeName, false, subName, value);
   }
 
     /**

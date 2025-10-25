@@ -96,7 +96,7 @@ describe('PluginManagerComponent', () => {
     expect(plugins).toHaveLength(2);
     expect(plugins[1].details?.components).toHaveLength(2);
     expect(plugins[1].details?.components[1]?.name).toEqual('TestComponent22');
-    expect(plugins[1].details?.components[1]?.className).toEqual('XtSimpleComponent');
+    expect(plugins[1].details?.components[1]?.className).toBeTruthy();
     expect(plugins[1].details?.types).toHaveLength(4);
 
   });

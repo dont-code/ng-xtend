@@ -1,6 +1,4 @@
 import { XtContext } from '../xt-context';
-import { IStoreProvider} from '../store/store-support';
-import { XtResolver } from '../resolver/xt-resolver';
 import { XtResolverService } from '../angular/xt-resolver.service';
 
 export type XtActionResult<Type> = {
@@ -19,5 +17,5 @@ export type XtActionHandler<Type> = {
    * @param actionName
    * @param store
    */
-  runAction (context: XtContext<Type>, actionName: string, resolver:XtResolverService, store?:IStoreProvider<Type>): Promise<XtActionResult<Type>>;
+  runAction (context: XtContext<Type>, actionName: string, resolver:XtResolverService, storeMgr?:any): Promise<XtActionResult<Type>>;
 }

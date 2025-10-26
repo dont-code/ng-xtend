@@ -1,22 +1,15 @@
-import {
-  IStoreProvider,
-  XtActionHandler,
-  XtActionResult,
-  XtContext,
-  XtResolver,
-  XtResolverService
-} from 'xt-components';
-import { AbstractTypeHandler } from 'xt-type';
+import { XtActionHandler, XtActionResult, XtContext, XtResolverService } from 'xt-components';
+import { AbstractTypeHandler, ManagedData } from 'xt-type';
 import { Task } from './recurring-task';
-import { inject } from '@angular/core';
 import { addInterval } from './date-interval';
+import { XtStoreManagerService } from 'xt-store';
 
 export class TaskCompleteHandler extends AbstractTypeHandler<any> implements XtActionHandler<any> {
 
-  async runAction(context: XtContext<any>, actionName: string, resolver:XtResolverService, store?: IStoreProvider<any> | undefined): Promise<XtActionResult<any>> {
+  async runAction(context: XtContext<any>, actionName: string, resolver:XtResolverService, storeMgr?:XtStoreManagerService): Promise<XtActionResult<any>> {
       switch (actionName) {
         case 'next-task':
-          return await this.nextTaskAction(context, resolver, store);
+          return await this.nextTaskAction(context, resolver, storeMgr);
         default:
           return Promise.reject({ status: 'error', errors: ['Unrecognized action '+actionName] });
       }
@@ -25,9 +18,10 @@ export class TaskCompleteHandler extends AbstractTypeHandler<any> implements XtA
   /**
    * Let's create the next iteration of the task that holds the recurrent task complete button
    * @param context
-   * @param store
+   * @param resolver
+   * @param storeMgr
    */
-  async nextTaskAction<T>(context: XtContext<boolean>, resolver: XtResolverService, store?: IStoreProvider<T> | undefined): Promise<XtActionResult<T>> {
+  async nextTaskAction<T extends ManagedData>(context: XtContext<boolean>, resolver: XtResolverService, storeMgr?:XtStoreManagerService): Promise<XtActionResult<T>> {
     // Lets pickup the parent item, that's the task we need to duplicate
     const parentContext = context.parentContext;
     if (parentContext == null) {
@@ -57,9 +51,11 @@ export class TaskCompleteHandler extends AbstractTypeHandler<any> implements XtA
       // And apply the task modifications to it
       taskMapping.from(parentAsTask, nextTask);
 
+        // Let's try to store the newly created item
+      const store = storeMgr?.getStoreFor<T>(parentContext.valueType);
       if (store != null) {
         try {
-          const stored = await store.storeEntity(parentContext.valueType, nextTask);
+          const stored = await store.storeEntity(nextTask);
           return { status: 'success', value: stored };
         } catch (err) {
           return { status: 'error', errors: [(err as any).toString()] };

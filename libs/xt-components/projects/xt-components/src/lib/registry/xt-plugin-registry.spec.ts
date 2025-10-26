@@ -81,21 +81,21 @@ describe('XtPluginRegistry', () => {
 });
 
 class TestRunActionHandler implements XtActionHandler<any> {
-    runAction(context: XtContext<any>, actionName: string, store?: IStoreProvider<any> | undefined): Promise<XtActionResult<any>> {
+    runAction(context: XtContext<any>, actionName: string): Promise<XtActionResult<any>> {
         throw new Error('Method not implemented.');
     }
 
 }
 
 class TestReloadActionHandler implements XtActionHandler<any> {
-    runAction(context: XtContext<any>, actionName: string, store?: IStoreProvider<any> | undefined): Promise<XtActionResult<any>> {
+    runAction(context: XtContext<any>, actionName: string): Promise<XtActionResult<any>> {
         throw new Error('Method not implemented.');
     }
 
 }
 
 class TestNewActionHandler implements XtActionHandler<any> {
-  runAction(context: XtContext<any>, actionName: string, store?: IStoreProvider<any> | undefined): Promise<XtActionResult<any>> {
+  runAction(context: XtContext<any>, actionName: string): Promise<XtActionResult<any>> {
     throw new Error('Method not implemented.');
   }
 

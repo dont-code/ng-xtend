@@ -160,7 +160,7 @@ class TestType2Handler extends AbstractTypeHandler<any> {
 
 
 class TestTaskCompleteActionHandler implements XtActionHandler<any> {
-  runAction(context: XtContext<any>, actionName: string, store?: IStoreProvider<any> | undefined): Promise<XtActionResult<any>> {
+  runAction(context: XtContext<any>, actionName: string, resolver:XtResolverService, storeMgr?:any): Promise<XtActionResult<any>> {
     const val = context.displayValue ();
     val.complete = true;
     context.setDisplayValue(val);
@@ -173,14 +173,14 @@ class TestTaskCompleteActionHandler implements XtActionHandler<any> {
 }
 
 class TestReloadActionHandler implements XtActionHandler<any> {
-  runAction(context: XtContext<any>, actionName: string, store?: IStoreProvider<any> | undefined): Promise<XtActionResult<any>> {
+  runAction(context: XtContext<any>, actionName: string, resolver:XtResolverService, storeMgr?:any): Promise<XtActionResult<any>> {
     throw new Error('Method not implemented.');
   }
 
 }
 
 class TestNewActionHandler implements XtActionHandler<any> {
-  runAction(context: XtContext<any>, actionName: string, store?: IStoreProvider<any> | undefined): Promise<XtActionResult<any>> {
+  runAction(context: XtContext<any>, actionName: string, resolver:XtResolverService, storeMgr?:any): Promise<XtActionResult<any>> {
     throw new Error('Method not implemented.');
   }
 

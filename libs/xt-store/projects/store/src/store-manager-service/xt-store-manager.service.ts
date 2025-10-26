@@ -8,7 +8,7 @@ import { XtStoreProvider } from '../store-provider/xt-store-provider';
 @Injectable({
   providedIn: 'root'
 })
-export class StoreManagerService {
+export class XtStoreManagerService {
 
   protected storeManager = xtStoreManager();
   protected entityToStoreMap = new Map<string, XtSignalStore<ManagedData>>();
@@ -16,10 +16,10 @@ export class StoreManagerService {
   constructor() {
   }
 
-  getStoreFor(entityName: string): XtSignalStore<ManagedData> {
+  getStoreFor<T extends ManagedData>(entityName: string): XtSignalStore<T> {
     let store = this.entityToStoreMap.get(entityName);
     if (store == null) {
-      const provider = this.storeManager.getProvider<ManagedData>(entityName);
+      const provider = this.storeManager.getProvider<T>(entityName);
       if (provider == null) {
         throw new Error('No provider found for entity ' + entityName);
       } else {
@@ -30,10 +30,10 @@ export class StoreManagerService {
       }
       this.entityToStoreMap.set(entityName, store);
     }
-    return store;
+    return store as XtSignalStore<T>;
   }
 
-setDefaultStoreProvider (provider: XtStoreProvider<ManagedData>) {
+  setDefaultStoreProvider (provider: XtStoreProvider<ManagedData>) {
     this.storeManager.setDefaultProvider(provider);
   }
 }

@@ -5,10 +5,12 @@ import { registerAgendaPlugin } from '../register';
 import { RecurringTask } from './recurring-task';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
+import { StoreTestBed, XtStoreManagerService } from 'xt-store';
 
 describe('Recurring Task Handler', () => {
 
   let resolver:XtResolverService;
+  let storeMgr: XtStoreManagerService;
 
   beforeAll(() => {
     StoreTestHelper.ensureTestProviderOnly();
@@ -21,6 +23,7 @@ describe('Recurring Task Handler', () => {
       .compileComponents();
 
     resolver = TestBed.inject(XtResolverService);
+    storeMgr = TestBed.inject(XtStoreManagerService);
     registerAgendaPlugin(resolver);
   });
 
@@ -65,6 +68,7 @@ describe('Recurring Task Handler', () => {
   });
 
   it ('Should calculate and store next task', async ()=> {
+    StoreTestBed.ensureMemoryProviderOnly();
     resolver.registerTypes({
       'testing-task': {
         date: 'date',
@@ -72,8 +76,8 @@ describe('Recurring Task Handler', () => {
         completed: 'task-complete'
       }
     });
-    const store = StoreSupport.getStoreManager().getProviderSafe<TestingTask>('testing-task');
-    const currentTask = await store.storeEntity('testing-task', {
+    const store = storeMgr.getStoreFor<TestingTask>('testing-task');
+    const currentTask = await store.storeEntity({
       date: new Date(2025,0,5),
       completed:false,
       repeat: {
@@ -94,7 +98,7 @@ describe('Recurring Task Handler', () => {
     const completedContext = taskContext.subContext('completed', undefined, resolver.typeResolver);
     expect(completedContext.valueType).toBe ('task-complete');
 
-    const nextTaskResult = await resolver.runAction(completedContext, 'next-task', store);
+    const nextTaskResult = await resolver.runAction(completedContext, 'next-task', storeMgr);
     expect(nextTaskResult.status).toBe ('success');
     expect(nextTaskResult.value?._id).toBeDefined();
     expect(nextTaskResult.value?._id).not.toEqual(currentTask._id);
@@ -113,8 +117,7 @@ describe('Recurring Task Handler', () => {
     });
 
     // Finds the next task in the store
-    const listStored = await firstValueFrom(store.searchEntities('testing-task'));
-    expect(listStored.length).toEqual(2);
+    expect(store.entities().length).toEqual(2);
 
   });
 

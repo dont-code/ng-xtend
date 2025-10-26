@@ -29,7 +29,7 @@ describe('EntityManagerComponent', () => {
 
     registerDefaultPlugin(TestBed.inject(XtResolverService));
     storeTestBed = new StoreTestBed();
-    storeTestBed.ensureMemoryProviderOnly();
+    StoreTestBed.ensureMemoryProviderOnly();
   });
 
   it('should create', () => {

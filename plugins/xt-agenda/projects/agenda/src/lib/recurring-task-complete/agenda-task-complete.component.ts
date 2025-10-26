@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { XtSimpleComponent, XtMessageHandler, XtResolverService } from 'xt-components';
+import { XtMessageHandler, XtResolverService, XtSimpleComponent } from 'xt-components';
 import { Checkbox, CheckboxChangeEvent } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'xt-agenda-recurring-task-complete',
+  selector: 'xt-agenda-task-complete',
   imports: [
     Checkbox,
     ReactiveFormsModule, FormsModule
   ],
-  templateUrl: './agenda-recurring-task-complete.component.html',
-  styleUrl: './agenda-recurring-task-complete.component.css',
+  templateUrl: './agenda-task-complete.component.html',
+  styleUrl: './agenda-task-complete.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AgendaRecurringTaskCompleteComponent extends XtSimpleComponent<boolean> {
+export class AgendaTaskCompleteComponent extends XtSimpleComponent<boolean> {
     msgHandler = inject(XtMessageHandler);
     resolver = inject(XtResolverService);
 

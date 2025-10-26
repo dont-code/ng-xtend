@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TestComponent } from './test.component';
+import { WebTestComponent } from './web-test.component';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { registerWebPlugin } from '../../../../web/src/lib/register';
@@ -9,19 +9,19 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('TestComponent', () => {
-  let component: TestComponent;
-  let fixture: ComponentFixture<TestComponent>;
+  let component: WebTestComponent;
+  let fixture: ComponentFixture<WebTestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestComponent],
+      imports: [WebTestComponent],
       providers: [provideNoopAnimations(), provideZonelessChangeDetection(), provideHttpClient()]
     })
     .compileComponents();
 
     StoreTestHelper.ensureTestProviderOnly();
     registerWebPlugin(TestBed.inject(XtResolverService));
-    fixture = TestBed.createComponent(TestComponent);
+    fixture = TestBed.createComponent(WebTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

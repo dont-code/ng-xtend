@@ -109,9 +109,8 @@ export class XtResolverService {
    * Finds the possible action with the given name for the current type, and runs it in the current value.
    * If the action is not possible in this context, try a parent context
    * @param actionName
-   * @param store
    */
-  async runAction<T> (context: XtContext<T>, actionName:string,  store?:IStoreProvider<T>): Promise<XtActionResult<any>> {
+  async runAction<T> (context: XtContext<T>, actionName:string, storeMgr?:any): Promise<XtActionResult<any>> {
     let handler: XtActionHandler<T> |null = null;
     for (const action of this.possibleActions(context,false)) {
       if (action.name==actionName) {
@@ -122,11 +121,11 @@ export class XtResolverService {
     }
 
     if (handler!=null) {
-      return handler.runAction(context, actionName, this, store);
+      return handler.runAction(context, actionName, this, storeMgr);
     } else {
       // Couldn't find the handler, let's see if we can have that up the context chain
       if (context.parentContext!=null) {
-        return this.runAction(context.parentContext, actionName, undefined); // Run the parent without any store indication, as it most probably is different
+        return this.runAction(context.parentContext, actionName); // Run the parent without any store indication, as it most probably is different
       } else {
         return Promise.reject("Cannot find action "+actionName+" for context "+this.toString());
       }

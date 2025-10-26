@@ -1,9 +1,7 @@
 import { XtResolverService } from 'xt-components';
 import { AgendaDateIntervalComponent } from './date-interval/agenda-date-interval.component';
-import {
-  AgendaRecurringTaskCompleteComponent
-} from './recurring-task-complete/agenda-recurring-task-complete.component';
 import { TaskCompleteHandler } from './type-handlers/task-complete-handler';
+import { AgendaTaskCompleteComponent } from './recurring-task-complete/agenda-task-complete.component';
 
 export function registerAgendaPlugin (resolverService:XtResolverService):string {
   const pluginName = "Plugin Agenda";
@@ -18,9 +16,9 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
               typesHandled: ['date-interval']
             },
             {
-              componentName:'AgendaRecurringTaskCompleteComponent',
-              componentClass:AgendaRecurringTaskCompleteComponent,
-              typesHandled: ['recurring-task-complete']
+              componentName:'AgendaTaskCompleteComponent',
+              componentClass:AgendaTaskCompleteComponent,
+              typesHandled: ['task-complete']
             }
         ],
       types: {

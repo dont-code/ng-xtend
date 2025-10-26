@@ -19,7 +19,7 @@ import { Button } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { StoreManagerService, XtSignalStore } from 'xt-store';
+import { XtStoreManagerService, XtSignalStore } from 'xt-store';
 
 @Component({
   selector: 'app-entity-manager',
@@ -31,7 +31,7 @@ import { StoreManagerService, XtSignalStore } from 'xt-store';
 })
 export class EntityManagerComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
-  protected readonly storeMgr = inject(StoreManagerService);
+  protected readonly storeMgr = inject(XtStoreManagerService);
   protected readonly formBuilder = inject(FormBuilder);
   protected readonly errorHandler = inject(ErrorHandlerService);
   protected readonly resolver = inject (XtResolverService);

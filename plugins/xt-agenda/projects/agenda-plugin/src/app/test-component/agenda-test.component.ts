@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, signal, WritableSignal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValueChangeEvent } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import {
   updateFormGroupWithValue,
@@ -53,14 +53,6 @@ export class AgendaTestComponent implements OnDestroy {
     StoreTestBed.ensureMemoryProviderOnly();
     this.taskStore = this.storeMgr.getStoreFor('agenda-test-type') as XtSignalStore<AgendaTestType>;
     this.fillSampleListOfTask ();
-      // Update the value displayed from the form
-    this.subscriptions.add(this.mainForm().events.subscribe({
-      next: (value) => {
-        if ((value as any)?.value?.editor!=null) {
-          this.selectedTask.set((value as any)?.value?.editor);
-        }
-      }
-    }));
   }
 
   async fillSampleListOfTask () {
@@ -103,12 +95,24 @@ export class AgendaTestComponent implements OnDestroy {
   }
 
   updateEditForm () {
+
     const entity = this.selectedTask();
     const form = this.builder.group({}, {updateOn: 'change'});
     if (entity!=null) {
       updateFormGroupWithValue(form, entity, 'agenda-test-type', this.resolver.typeResolver);
     }
     this.mainForm.set( this.builder.group ({ editor: form }));
+    // Update the value displayed from the form
+    this.subscriptions.unsubscribe();
+    this.subscriptions = new Subscription();
+    this.subscriptions.add(form.valueChanges.subscribe( (value)=> {
+      console.log("Event ");
+        if (value!=null) {
+          this.taskStore?.storeEntity(value as AgendaTestType);
+          //this.selectedTask.set((value as any)?.value?.editor);
+        }
+    }));
+
   }
 
   ngOnDestroy(): void {

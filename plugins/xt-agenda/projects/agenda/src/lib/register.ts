@@ -1,7 +1,7 @@
 import { XtResolverService } from 'xt-components';
 import { AgendaDateIntervalComponent } from './date-interval/agenda-date-interval.component';
 import { TaskCompleteHandler } from './type-handlers/task-complete-handler';
-import { AgendaTaskCompleteComponent } from './recurring-task-complete/agenda-task-complete.component';
+import { AgendaTaskCompleteComponent } from './task-complete/agenda-task-complete.component';
 
 export function registerAgendaPlugin (resolverService:XtResolverService):string {
   const pluginName = "Plugin Agenda";
@@ -45,7 +45,13 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
             description:'Create next task occurrence',
             visible: false,
             handlerClass: TaskCompleteHandler
+          },
+          'remove-next-task': {
+            description:'Remove any next task occurrence',
+            visible: false,
+            handlerClass: TaskCompleteHandler
           }
+
         }
       }]
     });

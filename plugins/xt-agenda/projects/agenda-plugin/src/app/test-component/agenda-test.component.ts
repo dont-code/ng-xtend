@@ -8,7 +8,7 @@ import {
   XtResolverService
 } from 'xt-components';
 import { Subscription } from 'rxjs';
-import { StoreTestBed, StoreManagerService, XtSignalStore } from 'xt-store';
+import { StoreTestBed, XtStoreManagerService, XtSignalStore } from 'xt-store';
 import { RecurringTask } from '../../../../agenda/src/lib/type-handlers/recurring-task';
 import { ManagedData } from 'xt-type';
 
@@ -28,7 +28,7 @@ export class AgendaTestComponent implements OnDestroy {
 
   protected builder = inject(FormBuilder);
   protected resolver= inject(XtResolverService);
-  protected readonly storeMgr = inject(StoreManagerService);
+  protected readonly storeMgr = inject(XtStoreManagerService);
 
   mainForm:WritableSignal<FormGroup> =signal(this.builder.group ({
       'editor': this.builder.group({})

@@ -21,9 +21,10 @@ It's an Angular library allowing you to:
 - Save / Load / Update the data to any storage.
 
 ## News
-- ***2025-07-14:*** First release, with support for dynamic plugins (thanks to [Angular architects!](https://github.com/angular-architects/module-federation-plugin)) and a few plugins for Financial, Web and International applications. As well, added a default plugin to edit any data.
-- ***2025-08-24:*** Published of apps developed: [Dashboard](https://dont-code.net/apps/repo/default)
+- ***2025-11-02:*** Added support for actions, allowing plugins to add features dynamically, and added the agenda plugin, with support for recurrent tasks
 - ***2025-09-06:*** Version 0.5, moved to Angular 20.2, added country selection plugin.
+- ***2025-08-24:*** Published of apps developed: [Dashboard](https://dont-code.net/apps/repo/default)
+- ***2025-07-14:*** First release, with support for dynamic plugins (thanks to [Angular architects!](https://github.com/angular-architects/module-federation-plugin)) and a few plugins for Financial, Web and International applications. As well, added a default plugin to edit any data.
 
 ## Try it !
 A simple application to rate coffee beans:
@@ -52,10 +53,10 @@ Curious ? You can run and test the application here:
 - Complex Components: With some additional effort, this type Angular Component can itself provide extension points, filled by ng-xtend with the right plugin. Ideal for displaying complex information, where you want to delegate actions or display.
 For example, think of a "Money" plugin that delegates the "Currency" management to another plugin, without even knowing it.
 - List Components: Displays a list of any objects. It calls other plugins to manage the values inside the displayed list
+- Action Handlers: New ! Provides actionable services on types without User Interface elements.
 
 Then in the future, we'll support
 
-- Action Components: Provides actionable services on types without User Interface elements.
 - Workflow components: Enable pre-defined flow of pages (list to detail for example...) 
 
 ## How does it work ?
@@ -81,9 +82,9 @@ As well, plugins will be able to alter the application menus and other customiza
 - [x] General support for complex components and lists
 - [x] Strong type support
 - [x] Dynamic loading of plugins
+- [x] Support for action components
 - [ ] v1 !
 - [ ] Enhanced component selection criteria (xt-type, context)
-- [ ] Support for action components
 - [ ] v2 !
 
 ## How to use it ?

@@ -7,7 +7,7 @@ import { XtStoreProvider } from '../store-provider/xt-store-provider';
 export class StoreTestBed {
   readonly storeManager = new XtStoreManager();
 
-  public ensureMemoryProviderOnly () {
+  public static ensureMemoryProviderOnly () {
     XtStoreManager.setTestMode(new XtMemoryStoreProvider<ManagedData>());
   }
 

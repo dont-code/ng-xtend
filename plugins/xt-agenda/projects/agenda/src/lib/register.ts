@@ -1,9 +1,7 @@
 import { XtResolverService } from 'xt-components';
 import { AgendaDateIntervalComponent } from './date-interval/agenda-date-interval.component';
-import {
-  AgendaRecurringTaskCompleteComponent
-} from './recurring-task-complete/agenda-recurring-task-complete.component';
-import { RecurringTaskHandler } from './type-handlers/recurring-task-handler';
+import { TaskCompleteHandler } from './type-handlers/task-complete-handler';
+import { AgendaTaskCompleteComponent } from './task-complete/agenda-task-complete.component';
 
 export function registerAgendaPlugin (resolverService:XtResolverService):string {
   const pluginName = "Plugin Agenda";
@@ -18,30 +16,44 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
               typesHandled: ['date-interval']
             },
             {
-              componentName:'AgendaRecurringTaskCompleteComponent',
-              componentClass:AgendaRecurringTaskCompleteComponent,
-              typesHandled: ['recurring-task-complete']
+              componentName:'AgendaTaskCompleteComponent',
+              componentClass:AgendaTaskCompleteComponent,
+              typesHandled: ['task-complete']
             }
         ],
       types: {
-        'recurring-task-complete': 'boolean',
+        'task': {
+          date:'date',
+          repetition:'recurring-task',
+          completed:'task-complete'
+        },
+        'task-complete': 'boolean',
         'date-interval': {
           every: 'number',
           item: 'string'
         },
         'recurring-task': {
           name: 'string',
-          date: 'date',
-          occurs: 'date-interval',
-          completed: 'recurring-task-complete'
+          picture: 'image',
+          occurs: 'date-interval'
         }
       },
-      typeHandlers: [
-        {
-          typesHandled: ['recurring-task'],
-          handlerClass: RecurringTaskHandler
+      actionHandlers: [{
+        types: ['task-complete'],
+        actions: {
+          'next-task': {
+            description:'Create next task occurrence',
+            visible: false,
+            handlerClass: TaskCompleteHandler
+          },
+          'remove-next-task': {
+            description:'Remove any next task occurrence',
+            visible: false,
+            handlerClass: TaskCompleteHandler
+          }
+
         }
-      ]
+      }]
     });
     return pluginName;
 }

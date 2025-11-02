@@ -33,24 +33,20 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   selectedElement = linkedSignal<T[]|null, T|null> ({
     source: this.valueSet,
     computation: (source, previous) => {
-      if ((source!=null) && (previous?.value!=null)) {
-        // Detect if a new element has just been added, then selects it.
-        if ((previous.source!=null) && (previous.source.length==source.length+1)) {
-          for (const newElem of source.reverse()) {
-            const findIt=previous.source.find((toCheck) => {
-              return (toCheck as any)._id==(newElem as any)._id;
-            });
-            if (findIt==null) {
-              return newElem;
-            }
-          }
-        } else {
+      console.log("Triggering select with current "+source?.length+" and previous "+previous?.source?.length);
+      if ((source!=null) && (previous?.source!=null)) {
+        console.log("Recalculating selection");
+        if( previous?.value!=null) {
+          console.log("Trying to reselect existing element");
             // Otherwise reselect the element if still there
           return source.find((toCheck) => {
-            return (toCheck as any)._id==(previous.value as any)._id;
+            const ret= (toCheck as any)._id==(previous.value as any)._id;
+            if (ret) console.log("Found existing element to reselect");
+            return ret;
           })??null;
         }
       }
+      console.log("No selection");
       return null;
     }
   });

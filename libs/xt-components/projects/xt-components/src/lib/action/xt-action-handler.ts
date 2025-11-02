@@ -1,8 +1,8 @@
 import { XtContext } from '../xt-context';
-import { IStoreProvider} from '../store/store-support';
+import { XtResolverService } from '../angular/xt-resolver.service';
 
 export type XtActionResult<Type> = {
-  status: 'success' | 'error';
+  status: 'success' | 'error' | 'none';
   warnings?: string[];
   errors?: string[];
 
@@ -10,11 +10,12 @@ export type XtActionResult<Type> = {
 }
 
 export type XtActionHandler<Type> = {
+
   /**
    * Runs an action on a item under the context
    * @param context
    * @param actionName
    * @param store
    */
-  runAction (context: XtContext<Type>, actionName: string, store?:IStoreProvider<Type>): Promise<XtActionResult<Type>>;
+  runAction (context: XtContext<Type>, actionName: string, resolver:XtResolverService, storeMgr?:any): Promise<XtActionResult<Type>>;
 }

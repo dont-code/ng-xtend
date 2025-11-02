@@ -1,3 +1,5 @@
+import { MappingHelper } from './mapping-helper';
+
 export class SpecialFields<Type>
 {
   /**
@@ -14,6 +16,20 @@ export class SpecialFields<Type>
    * Old field names that needs to be converted to new ones when loaded from json
    */
   oldFields?:Array<OldField<Type>>;
+
+  /**
+   * Stores the mapping from Type to another type
+   */
+  mappingFromType = new Map<string, MappingHelper<any, Type>> ();
+
+  setMapping<FromType> (fromTypeName:string, mapping:MappingHelper<FromType, Type>)
+  {
+    this.mappingFromType.set(fromTypeName, mapping);
+  }
+
+  getMapping<FromType>(fromTypeName:string): MappingHelper<FromType, Type> | undefined {
+    return this.mappingFromType.get(fromTypeName);
+  }
 
   addDateField(name: keyof Type) {
     if (this.dateFields==null) {

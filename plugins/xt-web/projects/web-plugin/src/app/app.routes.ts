@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { TestComponent } from './test-component/test.component';
+import { WebTestComponent } from './web-test-component/web-test.component';
 
 export const routes: Routes = [{
-  path:'', component:TestComponent
+  path:'', component:WebTestComponent
 }];

@@ -11,6 +11,10 @@
     "http://localhost:4204",
     "https://test.dont-code.net/apps/latest/finance-plugin"
   ],
+  "Plugin Agenda": [
+    "http://localhost:4205",
+    "https://test.dont-code.net/apps/latest/agenda-plugin"
+  ],
   "Plugin Sample": [
     "http://localhost:4201",
     "https://test.dont-code.net/apps/latest/sample-plugin"

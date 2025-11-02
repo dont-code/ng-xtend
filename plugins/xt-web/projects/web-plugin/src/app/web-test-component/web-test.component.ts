@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { attachToFormGroup, XtRenderComponent, XtResolverService } from 'xt-components';
 import { Panel } from 'primeng/panel';
 import { Checkbox } from 'primeng/checkbox';
-import { StoreManagerService, XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
+import { XtStoreManagerService, XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 
 @Component({
   selector: 'app-test',
@@ -16,10 +16,10 @@ import { StoreManagerService, XtApiStoreProvider, XtMemoryStoreProvider } from '
     ReactiveFormsModule,
     JsonPipe, XtRenderComponent, Panel, Checkbox
   ],
-  templateUrl: './test.component.html',
-  styleUrl: './test.component.css'
+  templateUrl: './web-test.component.html',
+  styleUrl: './web-test.component.css'
 })
-export class TestComponent implements OnInit, OnDestroy {
+export class WebTestComponent implements OnInit, OnDestroy {
 
   protected builder = inject(FormBuilder);
   mainForm :FormGroup =this.builder.group ({  });
@@ -33,7 +33,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
   value = signal<any>('https://ng-xtend.dev');
 
-  protected storeMgr= inject(StoreManagerService);
+  protected storeMgr= inject(XtStoreManagerService);
   protected apiProvider = inject (XtApiStoreProvider);
 
   protected subscriptions= new Subscription();

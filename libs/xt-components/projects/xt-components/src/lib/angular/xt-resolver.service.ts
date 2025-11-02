@@ -1,14 +1,21 @@
-import { computed, inject, Injectable, Type } from '@angular/core';
+import { computed, inject, Injectable, Injector, runInInjectionContext, Type } from '@angular/core';
 import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
 import { XtResolvedComponent } from '../xt-resolved-component';
-import { ManagedDataHandler, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
+import { ManagedDataHandler,
+  MappingHelper, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
 import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
 import { loadRemoteModule } from '@angular-architects/native-federation';
+import { XtAction } from '../action/xt-action';
+import { IStoreProvider } from '../store/store-support';
+import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
 
+/**
+ * An all in one helper class, enabling manipulation of the context, with data and type associated with it.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -45,7 +52,7 @@ export class XtResolverService {
   }
 
   findTypeHandlerOf<T> (baseContext:XtContext<T>, subName?:string, value?:T): {typeName?:string | null, handler?:XtTypeHandler<any>} {
-    const ret = this.typeResolver.findTypeHandler(baseContext.valueType, subName, value);
+    const ret = this.typeResolver.findTypeHandler(baseContext.valueType, false, subName, value);
     return ret;
   }
 
@@ -73,6 +80,58 @@ export class XtResolverService {
       }
     }
   }
+
+
+  /**
+   * Calculates all the possible actions for a given context
+   * @param context
+   * @param onlyVisible
+   */
+  possibleActions<T> (context:XtContext<T>, onlyVisible:boolean=true): Array<XtAction<T>> {
+    const existingActions = context.listActions();
+    if (existingActions!=null) {
+      return existingActions;
+    }
+
+    if (context.valueType!=null) {
+      const actionInfos = this.pluginRegistry.listActionInfos<T>(context.valueType);
+      const actions = actionInfos.map((info) => {
+        const ret = new XtAction(info.name,info.info, true);
+        return ret;
+      });
+      context.listActions.set(actions);
+      return actions;
+    }
+    return [];
+  }
+
+  /**
+   * Finds the possible action with the given name for the current type, and runs it in the current value.
+   * If the action is not possible in this context, try a parent context
+   * @param actionName
+   */
+  async runAction<T> (context: XtContext<T>, actionName:string, storeMgr?:any): Promise<XtActionResult<any>> {
+    let handler: XtActionHandler<T> |null = null;
+    for (const action of this.possibleActions(context,false)) {
+      if (action.name==actionName) {
+        const handlerClass=action.info.handlerClass;
+          handler=new handlerClass ();
+        break;
+      }
+    }
+
+    if (handler!=null) {
+      return handler.runAction(context, actionName, this, storeMgr);
+    } else {
+      // Couldn't find the handler, let's see if we can have that up the context chain
+      if (context.parentContext!=null) {
+        return this.runAction(context.parentContext, actionName); // Run the parent without any store indication, as it most probably is different
+      } else {
+        return Promise.reject("Cannot find action "+actionName+" for context "+this.toString());
+      }
+    }
+  }
+
 
   protected handlerDefinedFor(newType: string, handlers: XtTypeHandlerInfo<any>[] | undefined):any {
         for (const handler of handlers ?? []) {
@@ -124,6 +183,53 @@ export class XtResolverService {
       return module;
     });
 
+  }
+
+  /**
+   * Based on the type & value of the element, find which property is on its type and returns it's value
+   * @param context
+   * @param subPropertyType
+   * @param value
+   */
+  findSubPropertyWithType<T> (context: XtContext<T>, subPropertyType:string, value:T): any {
+    const subKeys = this.typeResolver.findSubPropertiesWithType (context.valueType, subPropertyType);
+    if ((subKeys!=null)&&(subKeys.length==1)) {
+      return value[subKeys[0] as keyof T];
+    } else if (subKeys.length>1) {
+        // Let's pickup the first
+      return value[subKeys[0] as keyof T];
+    } else {
+      return undefined;
+    }
+  }
+
+  /**
+   * Creates a duplicate of an object, using our knowledge on its type given by the context
+   * @param context
+   * @param value
+   */
+  safeDuplicate<T> (context: XtContext<T>, value:T): T {
+
+    const typeHandler = this.typeResolver.findTypeHandler(context.valueType, false, undefined, value);
+
+    if (typeHandler.handler!=null) {
+      return typeHandler.handler.safeDuplicate (value);
+    }
+    return structuredClone(value);
+  }
+
+  resolveMappingOf<U, T> (context: XtContext<T>, targetType:string, value?:T): MappingHelper<U, T> | undefined {
+    if (context.valueType!=null) {
+      const typeHandler = this.typeResolver.findTypeHandler<T>(targetType, false, undefined, value);
+
+      if (typeHandler.handler!=null) {
+        const ret = typeHandler.handler.getOrCreateMappingFrom<U>(context.valueType, this.typeResolver);
+        if( ret != null) {
+          return ret;
+        }
+      }
+    }
+    return undefined;
   }
 
 }

@@ -4,12 +4,10 @@ import { XtTypeHierarchy } from '../resolver/xt-type-resolver';
 import { XtSpecialFieldsHelper } from '../transformation/xt-special-fields-helper';
 
 /**
- * A general data handler that manages _id field and Date fields from / to json
+ * A general data handler that manages an optional _id field and Date fields from / to json
  */
 export class ManagedDataHandler<Type extends ManagedData = ManagedData> extends AbstractTypeHandler<Type>
 {
-
-
   constructor(idField?:keyof ManagedData, dateFields?:string[]) {
     super(idField, dateFields);
   }
@@ -33,6 +31,7 @@ export class ManagedDataHandler<Type extends ManagedData = ManagedData> extends 
         }
       }
   }
+
 
 
 }

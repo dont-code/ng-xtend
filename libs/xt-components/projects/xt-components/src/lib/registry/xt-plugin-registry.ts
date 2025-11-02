@@ -1,4 +1,4 @@
-import { XtComponentInfo, XtPluginInfo } from '../plugin/xt-plugin-info';
+import { XtActionHandlerInfo, XtActionInfo, XtComponentInfo, XtPluginInfo } from '../plugin/xt-plugin-info';
 import { signal, Type } from '@angular/core';
 import { XtComponent } from '../xt-component';
 
@@ -7,6 +7,7 @@ export class XtPluginRegistry {
     pluginRegistry = new Map<string, XtPluginInfo> ();
     componentRegistry = new Map<string, XtComponentInfo<any>> ();
     componentByTypeCache = new Map<string, XtComponentInfo<any>[]> ();
+    protected actionByTypeRegistry = new Map<string, Map<string, XtActionInfo<any>>> ();
 
     listComponents = signal(new Array<XtComponentInfo<any>>());
     listPlugins = signal(new Array<XtPluginInfo>());
@@ -42,6 +43,12 @@ export class XtPluginRegistry {
         this.registerComponent (comp);
       }
       if (updated) this.componentByTypeCache.clear(); // Force recalculation of type
+    }
+
+    if( info.actionHandlers!=null) {
+      for (const handler of info.actionHandlers) {
+        this.registerActionHandler (handler);
+      }
     }
 
     this.listPlugins.update((array) => {
@@ -148,4 +155,35 @@ export class XtPluginRegistry {
     return ret;
   }
 
+  registerActionHandler<T>(handlerInfo:XtActionHandlerInfo<T>) {
+    for (const type of handlerInfo.types) {
+      const handlers = handlerInfo.actions;
+      for (const actionName of Object.keys(handlers)) {
+        let exist = this.actionByTypeRegistry.get(type);
+        if (exist==null) {
+          exist = new Map();
+          this.actionByTypeRegistry.set(type, exist);
+        }
+        exist.set(actionName, handlers[actionName]);
+      }
+    }
+  }
+
+  findActionInfo<T>(type:string, actionName:string):XtActionInfo<T>|undefined {
+    const handlers=this.actionByTypeRegistry.get(type);
+    if (handlers!=null) {
+      return handlers.get(actionName);
+    }
+    return undefined;
+  }
+
+  listActionInfos<T> (type:string): {name:string, info: XtActionInfo<T>}[] {
+    const handlers=this.actionByTypeRegistry.get(type);
+    if (handlers!=null) {
+      return Array.from(handlers.entries()).map(([name,info]) => {
+        return {name:name,info:info};
+      });
+    }
+    else return []
+  }
 }

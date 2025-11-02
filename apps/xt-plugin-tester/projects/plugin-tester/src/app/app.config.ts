@@ -7,7 +7,8 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { MessageHandler } from 'xt-components';
+import { XtMessageHandler } from 'xt-components';
+import { ErrorHandlerService } from './error-handler/error-handler.service';
 
 
 export const appConfig: ApplicationConfig = {
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     MessageService,
-    { provide: MessageHandler, useClass:MessageService}
+    { provide: XtMessageHandler, useClass:ErrorHandlerService}
 
   ]
 };

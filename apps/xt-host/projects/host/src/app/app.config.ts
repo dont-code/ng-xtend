@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZonelessChangeDetection, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -6,9 +6,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
-import { definePreset } from '@primeuix/styled';
 import { MessageService } from 'primeng/api';
-import { MessageHandler } from 'xt-components';
+import { XtMessageHandler } from 'xt-components';
+import { ErrorHandlerService } from './error-handler/error-handler.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     MessageService,
-    { provide: MessageHandler, useClass:MessageService}
+    { provide: XtMessageHandler, useClass:ErrorHandlerService}
   ]
 };

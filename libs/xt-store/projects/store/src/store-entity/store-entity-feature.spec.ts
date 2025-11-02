@@ -42,4 +42,37 @@ describe('StoreEntityFeature', () => {
     expect(loaded).toBeDefined();
     expect(loaded!["testValue"]).toEqual('testValue2');
   });
+
+  it('should support deleting elements', async () => {
+    const provider = new XtMemoryStoreProvider();
+    // Create some entities
+    provider.storeEntity('TestProvider', {
+      testValue:'testValue1',
+      added:true
+    });
+    provider.storeEntity('TestProvider', {
+      testValue:'testValue2',
+      added:true
+    });
+    provider.storeEntity('TestProvider', {
+      testValue:'testValue3',
+      added:true
+    });
+    const storeType = signalStore(withXtStoreProvider ("TestProvider", provider));
+    const store = new storeType() as XtSignalStore<ManagedData>;
+
+    await store.fetchEntities();
+    let listOfEntity = store.entities();
+    expect(listOfEntity).toHaveLength(3);
+
+    let result = await store.deleteEntity(listOfEntity[1]._id!);
+    expect(result).toBeTruthy();
+    listOfEntity = store.entities();
+    expect(listOfEntity).toHaveLength(2);
+
+    result = await store.deleteEntity(listOfEntity[1]._id!);
+    expect(result).toBeTruthy();
+    listOfEntity = store.entities();
+    expect(listOfEntity).toHaveLength(1);
+  });
 });

@@ -190,8 +190,7 @@ describe('DefaultObjectSetComponent', () => {
 
     expect(component.selectedElement()).toBeTruthy();
     expect(component.selectedElement()?.simpleNumber).toEqual(12);
-
-      // Now refresh the values without the selected element, is it now null ?
+      // Is it kept while deleting another element ?
     context.setDisplayValue([{
       _id:'11',
       simpleText: 'bonjour',
@@ -199,10 +198,21 @@ describe('DefaultObjectSetComponent', () => {
       simpleNumber: 11,
       simpleBoolean: false
     }, {
-      _id:'13',
-      simpleText: 'guten tag',
-      simpleDate: new Date(1973, 3, 3),
-      simpleNumber: 13,
+      _id:'12',
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }]);
+    expect(component.selectedElement()).toBeTruthy();
+    expect(component.selectedElement()?.simpleNumber).toEqual(12);
+
+      // Now refresh the values without the selected element, is it now null ?
+    context.setDisplayValue([{
+      _id:'11',
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
       simpleBoolean: false
     }]);
 

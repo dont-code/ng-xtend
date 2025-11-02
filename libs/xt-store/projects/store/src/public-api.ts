@@ -5,7 +5,7 @@
 export * from './store-manager/xt-store-manager';
 export * from './store-provider/xt-store-provider';
 export * from './store-provider/xt-store-provider-helper';
-export * from './store-manager-service/store-manager.service';
+export * from './store-manager-service/xt-store-manager.service';
 
 export * from './store-entity/store-entity-feature';
 

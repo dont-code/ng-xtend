@@ -11,7 +11,7 @@ import {
 import { AppConfigService } from '../shared/app-config/app-config.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
-import { StoreManagerService } from 'xt-store';
+import { XtStoreManagerService } from 'xt-store';
 import { XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 import { XtResolverService } from 'xt-components';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
@@ -30,7 +30,7 @@ export class ProjectLoadComponent implements OnInit {
 
   protected readonly appMgr=inject(ApplicationModelManagerService);
   protected readonly appConfig = inject(AppConfigService);
-  protected readonly storeMgr = inject(StoreManagerService);
+  protected readonly storeMgr = inject(XtStoreManagerService);
   protected readonly resolver=inject(XtResolverService);
   protected readonly errorHandler = inject(ErrorHandlerService);
 

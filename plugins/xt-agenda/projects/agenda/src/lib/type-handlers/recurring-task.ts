@@ -1,15 +1,14 @@
 import { ManagedData } from 'xt-type';
-import { addInterval, DateInterval } from './date-interval';
+import { DateInterval } from './date-interval';
 
 export type RecurringTask = ManagedData &{
   name: string;
-  date: Date;
-  completed:boolean;
+  picture?: string;
   occurs?: DateInterval;
-
 }
 
-export function nextDate (task:RecurringTask): Date {
-  if( task.date==null) return task.date;
-  return addInterval(task.date, task.occurs);
+export type Task = ManagedData & {
+  date: Date;
+  completed: boolean;
+  repetition: RecurringTask;
 }

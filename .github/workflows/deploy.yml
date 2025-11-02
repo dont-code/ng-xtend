@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 1
           ref: ${{ env.branch }}
           token: ${{secrets.DONTCODE_ACTIONS_TOKEN}}
-          
+
       - name: Git config user
         uses: snow-actions/git-config-user@v1.0.0
         with:
@@ -53,12 +53,13 @@ jobs:
           node common/scripts/install-run-rush.js build-deploy-${{ env.stage }}
       - name: Deploy to test.dont-code.net apps with ${{env.stage}}
         if: ${{ success() && (matrix.browser == 'chromium') && ( inputs.deploy == true ) }}
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
           username: ${{secrets.DONTCODE_APPS_WEBSITE_USER}}
           password: ${{secrets.DONTCODE_APPS_WEBSITE_PASSWORD}}
           local_path: './dist/${{env.stage}}/*'
           remote_path: '/www/${{env.stage}}'
-          server: 'test.dont-code.net'
+          server: 'test.${{secrets.DONTCODE_WEBSITE_HOST}}'
+          port: ${{secrets.DONTCODE_WEBSITE_SSH_PORT}}
           sftp_only: 'true'
           delete_remote_files: 'false'

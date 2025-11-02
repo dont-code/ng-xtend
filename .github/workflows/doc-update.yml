@@ -46,5 +46,6 @@ jobs:
           local_path: './dist/ng-xtend-website/*'
           remote_path: '/www'
           server: 'ng-xtend.dev'
+          port: ${{secrets.DONTCODE_WEBSITE_SSH_PORT}}
           sftp_only: 'true'
           delete_remote_files: 'false'

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://dont-code.net/schemas/v1/repository-schema.json",
+  "name": "Agenda Plugins Repository",
+  "description": "Repository only asking for agenda plugin.",
+  "webSocketUrl": "ws://test.dont-code.net/demo/preview",
+  "storeApiUrl": "https://test.dont-code.net/demo/data",
+  "documentApiUrl": "https://test.dont-code.net/demo/documents",
+  "plugins": [
+    {
+      "id": "Agenda",
+      "display-name": "Agenda plugin",
+      "version": "1.0.0",
+      "info": {
+        "remote-entry":"http://localhost:4205/remoteEntry.json"
+      },
+      "config": {}
+    }
+  ]
+}

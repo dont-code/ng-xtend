@@ -2,7 +2,7 @@
   <ng-container [formGroup]="formGroup()">
     <div class="flex flex-row flex-nowrap items-center gap-2">
       <div class="flex-none"><span>Done</span></div>
-      <div class="flex-none"><p-checkbox formControlName="completed" [binary]="true" (onChange)="taskCompleted ($event)"></p-checkbox></div>
+      <div class="flex-none"><p-checkbox [formControlName]="formControlName()" [binary]="true" (onChange)="taskCompleted ($event)"></p-checkbox></div>
     </div>
   </ng-container>
 } @else {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, output, Signal } from '@angular/core';
-import { XtComponentOutput, XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
+import { XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
 import { TableModule } from 'primeng/table';
 
 @Component({
@@ -33,20 +33,20 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   selectedElement = linkedSignal<T[]|null, T|null> ({
     source: this.valueSet,
     computation: (source, previous) => {
-      console.log("Triggering select with current "+source?.length+" and previous "+previous?.source?.length);
+   //   console.log("Triggering select with current "+source?.length+" and previous "+previous?.source?.length);
       if ((source!=null) && (previous?.source!=null)) {
-        console.log("Recalculating selection");
+     //   console.log("Recalculating selection");
         if( previous?.value!=null) {
-          console.log("Trying to reselect existing element");
+       //   console.log("Trying to reselect existing element");
             // Otherwise reselect the element if still there
           return source.find((toCheck) => {
             const ret= (toCheck as any)._id==(previous.value as any)._id;
-            if (ret) console.log("Found existing element to reselect");
+         //   if (ret) console.log("Found existing element to reselect");
             return ret;
           })??null;
         }
       }
-      console.log("No selection");
+//      console.log("No selection");
       return null;
     }
   });

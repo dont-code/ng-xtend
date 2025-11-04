@@ -1,0 +1,38 @@
+{
+  "name": "Agenda",
+  "template": false,
+  "description": "Project for testing Agenda plugin",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Agenda",
+      "entities": {
+        "a": {
+          "from": "",
+          "name": "Task",
+          "fields": {
+            "aa": {
+              "name": "Text",
+              "type": "string"
+            },
+            "ab": {
+              "name": "Day",
+              "type": "date"
+            },
+            "ac": {
+              "name": "Recurring",
+              "type": "recurring-task"
+            },
+            "ad": {
+              "name": "Check",
+              "type": "task-complete"
+            }
+          }
+        },
+        "sharing": {
+          "with": "Dont-code users"
+        }
+      }
+    }
+  }
+}

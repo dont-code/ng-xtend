@@ -10,7 +10,7 @@
   <ng-template #end></ng-template>
 </p-toolbar>
 <div class="md:hidden">
-  <p-drawer id="mainLeftDrawer" [style]="{width:'15em'}" [(visible)]="leftDrawerVisible" [modal]="false" [closeOnEscape]="true" [closable]="true">
+  <p-drawer id="mainLeftDrawer" [style]="{width:'15em', 'z-index':2000}" [(visible)]="leftDrawerVisible" [modal]="false" [closeOnEscape]="true" [closable]="true">
     <ng-template #header>
       <a routerLink="/"><img src="assets/images/logo-xtend-transparent.png" class="size-16" /></a>
     </ng-template>

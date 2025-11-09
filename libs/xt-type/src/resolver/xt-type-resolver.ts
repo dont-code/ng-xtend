@@ -28,11 +28,11 @@ export type XtUpdatableTypeResolver = XtTypeResolver & {
 export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     types= new Map<string, XtTypeHierarchy> ();
 
-    addRootType<Type> (typeName:string, type:XtTypeInfo|string, handler?:XtTypeHandler<Type>):void {
+    addRootType<Type> (typeName:string, type:XtTypeInfo|XtTypeDetail|string, handler?:XtTypeHandler<Type>):void {
       if (handler==null) {
           handler = this.findTypeHandler<Type>(typeName)?.handler;
       }
-      const typeHierarchy = this.fromDescription (type, handler, typeName, undefined);
+      const typeHierarchy = this.fromDescription (type, typeName,handler, undefined);
       this.types.set (typeName, typeHierarchy);
       typeHierarchy.initHandler();
 
@@ -186,31 +186,58 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     }
   }
 
-  fromDescription (typeHierarchy:XtTypeInfo|string, handler?:XtTypeHandler<any>, name?:string, parent?:XtTypeHierarchy): XtTypeHierarchy {
+  fromDescription (typeHierarchy:XtTypeInfo|XtTypeDetail|string, name:string, handler?:XtTypeHandler<any>, parent?:XtTypeHierarchy): XtTypeHierarchy {
     let ret: XtBaseTypeHierarchy|null = null;
+    let reference:XtTypeReference|null = null;
     if (typeof typeHierarchy == 'string') {
-      ret = this.types.get(typeHierarchy)??null;
+      ret = this.types.get(typeHierarchy) as XtBaseTypeHierarchy??null;
       if( ret==null) {
         ret= new XtBaseTypeHierarchy(typeHierarchy, handler);
         ret.initHandler();
       }
     } else {
 
-      ret = new XtBaseTypeHierarchy(undefined, handler);
+      ret = new XtBaseTypeHierarchy(name, handler);
 
-      for (const key of Object.keys(typeHierarchy)) {
-        const value = typeHierarchy[key];
-          // We get the handler for the type if there is already one.
-        let subHandler=null;
-        if (typeof value == 'string') {
-          subHandler=this.findTypeHandler(value)?.handler;
+        // We read the detailed version of the description
+      if (isTypeDetail(typeHierarchy)) {
+        ret.compatibleTypes=typeHierarchy.compatibleTypes;
+        if (typeHierarchy.reference?.referenceType!=null) {
+          reference=new XtBaseTypeReference(typeHierarchy.type,typeHierarchy.reference.field, typeHierarchy.reference.referenceType);
         }
-        this.fromDescription(value, subHandler??undefined, key, ret);
+        if (typeHierarchy.children!=null) {
+          for (const key of Object.keys(typeHierarchy.children)) {
+            const value = typeHierarchy.children[key];
+            // We get the handler for the type if there is already one.
+            let subHandler=null;
+            if (typeof value == 'string') {
+              subHandler=this.findTypeHandler(value)?.handler;
+            }
+            this.fromDescription(value, key, subHandler??undefined, ret);
+          }
+        }
+      } else  // The simple version is given
+      {
+        let simpleType=typeHierarchy as XtTypeInfo;
+        for (const key of Object.keys(simpleType)) {
+          const value = simpleType[key];
+            // We get the handler for the type if there is already one.
+          let subHandler=null;
+          if (typeof value == 'string') {
+            subHandler=this.findTypeHandler(value)?.handler;
+          }
+          this.fromDescription(value, key, subHandler??undefined, ret);
+        }
       }
     }
 
-    if((parent!=null) && (name!=null))
-      parent.addChild(name, ret);
+    if((parent!=null) && (name!=null)) {
+      if( reference!=null) {
+        parent.addReference(name,reference);
+      }else {
+        parent.addChild(name, ret);
+      }
+    }
     else if ((parent!=null) && (name==null)) {
       throw new Error("Cannot add type to parent without a name.");
     } else if (name!=null) {
@@ -221,32 +248,43 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
 }
 
 export type XtTypeHierarchy = {
-    type?:string;
+    type:string;
     children?:{[key:string]: XtTypeHierarchy} ;
     handler?:XtTypeHandler<any>;
+    compatibleTypes?: string[];
+    references?: {[key:string]: XtTypeReference};
 
     addChild (key:string, child:XtTypeHierarchy) : void;
+    addReference (key:string, child:XtTypeReference) : void;
     initHandler ():void;
 
     isTypeOf(typeName: string): boolean;
+    isCompatibleWith (typeName: string): boolean;
 }
 
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
-    type?:string;
-    children?:{[key:string]: XtTypeHierarchy} ;
+    type:string;
+    children?:{[key:string]: XtBaseTypeHierarchy} ;
     handler?:XtTypeHandler<any>;
+    compatibleTypes?: string[];
+    references?: {[key:string]: XtBaseTypeReference};
 
-    constructor (type?:string, handler?:XtTypeHandler<any> ) {
+    constructor (type:string, handler?:XtTypeHandler<any> ) {
         this.type=type;
         this.handler=handler;
     }
 
-    addChild (key:string, child:XtTypeHierarchy) : void {
+    addChild (key:string, child:XtBaseTypeHierarchy) : void {
         if (this.children==null) this.children= {};
         this.children[key]=child;
     }
 
-    initHandler ():void {
+    addReference (key:string, child:XtBaseTypeReference) : void {
+      if (this.references==null) this.references= {};
+      this.references[key]=child;
+    }
+
+  initHandler ():void {
       if (this.handler!=null) {
         this.handler.init(this);
       }
@@ -256,7 +294,27 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
       return this.type==toTest;
     }
 
+    isCompatibleWith (toTest:string): boolean {
+      if (this.compatibleTypes==null) return false;
+      return this.compatibleTypes.indexOf(toTest) > -1;
+    }
 
+
+}
+
+/**
+ * Internally manages a link between two types
+ */
+export class XtBaseTypeReference implements XtTypeReference{
+  type:string;
+  referenceType?: 'ONE' | 'MANY' | undefined;
+  field: string;
+
+  constructor(type:string, field:string, referenceType?: 'ONE' | 'MANY') {
+    this.type = type;
+    this.referenceType = referenceType;
+    this.field = field;
+  }
 }
 
 function isPrimitive(valueElement: any): boolean {
@@ -272,5 +330,26 @@ function isPrimitive(valueElement: any): boolean {
  * Simple description of a type: Each property is either an object itself or just a single type
  */
 export type XtTypeInfo = {
-  [keys: string]: XtTypeInfo|string;
+  [keys: string]: XtTypeDetail|XtTypeInfo|string;
+}
+
+/**
+ * More complex description of a type. Enable model compatibility & links
+ */
+export type XtTypeDetail = {
+  type:string;
+  compatibleTypes?:string[];
+  reference?:XtTypeReference;
+  children?:{[key:string]: XtTypeDetail|XtTypeInfo|string};
+}
+
+export type XtTypeReference = {
+  referenceType?:'ONE'|'MANY';
+  field:string;
+}
+
+function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeDetail {
+  if ((toTest.type==null)||(typeof toTest['type']!='string')) {
+    return false;
+  } else return (toTest.compatibleTypes != null) || (toTest.reference != null) || (toTest.children != null);
 }

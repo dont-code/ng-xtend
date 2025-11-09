@@ -7,25 +7,28 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
   const pluginName = "Plugin Agenda";
     console.info ('Registering '+pluginName);
     resolverService.registerPlugin ({
-        name:pluginName,
-        uriLogo:'pluginicon.png',
+        name: pluginName,
+        uriLogo: 'pluginicon.png',
         components: [
-            {
-              componentName:'AgendaDateIntervalComponent',
-              componentClass:AgendaDateIntervalComponent,
-              typesHandled: ['date-interval']
-            },
-            {
-              componentName:'AgendaTaskCompleteComponent',
-              componentClass:AgendaTaskCompleteComponent,
-              typesHandled: ['task-complete']
-            }
+          {
+            componentName: 'AgendaDateIntervalComponent',
+            componentClass: AgendaDateIntervalComponent,
+            typesHandled: ['date-interval']
+          },
+          {
+            componentName: 'AgendaTaskCompleteComponent',
+            componentClass: AgendaTaskCompleteComponent,
+            typesHandled: ['task-complete']
+          }
         ],
-      types: {
-        'task': {
-          date:'date',
-          repetition:'recurring-task',
-          completed:'task-complete'
+        types: {
+          'task': {
+            date: 'date',
+            repetition: {
+              type: 'recurring-task',
+              link: {}
+            },
+          completed: 'task-complete'
         },
         'task-complete': 'boolean',
         'date-interval': {

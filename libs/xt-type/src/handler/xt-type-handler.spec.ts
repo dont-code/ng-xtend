@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { AbstractTypeHandler } from './xt-type-handler';
 import { xtTypeManager } from '../globals';
 

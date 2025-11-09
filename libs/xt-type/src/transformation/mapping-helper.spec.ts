@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { MappingHelper } from './mapping-helper';
 
 describe('Handle Mapping of fields', () => {

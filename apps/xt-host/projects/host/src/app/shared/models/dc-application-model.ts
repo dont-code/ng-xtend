@@ -1,3 +1,5 @@
+import { XtTypeReference } from 'xt-type';
+
 export type DcApplicationModel = {
   name:string,
   description?: string,
@@ -18,10 +20,12 @@ export type DcEntityModel = {
   name: string,
   fields?: {
     [key:string]:DcFieldModel
-  }
+  },
+  compatibleWith?: string[]
 }
 
 export type DcFieldModel = {
   name: string,
-  type: string
+  type: string,
+  reference?: XtTypeReference
 }

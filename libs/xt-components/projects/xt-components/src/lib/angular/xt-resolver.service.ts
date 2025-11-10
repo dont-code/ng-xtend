@@ -4,7 +4,7 @@ import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
 import { XtResolvedComponent } from '../xt-resolved-component';
 import { ManagedDataHandler,
-  MappingHelper, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
+  MappingHelper, XtTypeDetail, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
 import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
@@ -71,6 +71,7 @@ export class XtResolverService {
 
   registerTypes (types:XtTypeInfo|undefined, handlers?:XtTypeHandlerInfo<any>[]): void {
     if ((types !=null) && (this.typeResolver.canUpdate())) {
+
       for (const newType in types) {
         let handler=this.handlerDefinedFor (newType, handlers);
         if (handler==null) {

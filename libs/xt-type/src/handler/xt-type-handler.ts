@@ -72,7 +72,7 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     // Converts any subelements as well
     if (this.type?.children!=null) {
       for (const childKey in this.type.children) {
-        this.type.children[childKey].handler?.fromJson(json[childKey]);
+        (this.type.children[childKey] as any).handler?.fromJson(json[childKey]);
       }
     }
   }
@@ -93,7 +93,7 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     // Converts any subelements as well
     if (this.type?.children!=null) {
       for (const childKey in this.type.children) {
-        this.type.children[childKey].handler?.toJson([childKey as keyof Type]);
+        (this.type.children[childKey] as any).handler?.toJson([childKey as keyof Type]);
       }
     }
   }

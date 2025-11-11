@@ -12,7 +12,7 @@ export type XtTypeResolver = {
   findTypeHandler<Type> (typeName:string|null|undefined, createDefault?:boolean, subName?:string, value?:Type): {typeName?:string|null, handler?:XtTypeHandler<Type> };
 
   listSubNames (typeName: string | null | undefined, value?: any):string[];
-  listReferences (typeName: string | null | undefined):Map<string,XtTypeReference>;
+  listReferences (typeName: string | null | undefined):{[key:string ]: XtTypeReference};
   isPrimitiveType (typeName: string | null | undefined, value?: any):boolean;
   findSubPropertiesWithType<Type> (typeName:string|null|undefined, typeOfSubProperties:string):(keyof Type)[];
   calculateSubPropertiesPerType<Type> (typeName:string|null|undefined):Map<string, (keyof Type)[]>;
@@ -28,7 +28,6 @@ export type XtUpdatableTypeResolver = XtTypeResolver & {
 
 export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     types= new Map<string, XtTypeHierarchy> ();
-    protected static readonly EMPTY_REFERENCE_MAP = new Map<string, XtTypeReference>();
 
     addRootType<Type> (typeName:string, type:XtTypeInfo|XtTypeDetail|string, handler?:XtTypeHandler<Type>):void {
       if (handler==null) {
@@ -74,19 +73,27 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       return typeName;
 
     const selectedType = this.types.get(typeName);
-    return selectedType?.references?.get(refName);
+    if( selectedType?.children!=null)
+      return selectedType?.children[refName] as XtTypeReference;
+    return undefined;
   }
 
-  listReferences(typeName: string | null | undefined):Map<string, XtTypeReference> {
+  listReferences(typeName: string | null | undefined):{[key:string ]: XtTypeReference} {
+    const ret:{[key:string]: XtTypeReference} = {};
     if( typeName==null)
-      return XtTypeHierarchyResolver.EMPTY_REFERENCE_MAP;
+      return ret;
 
     const selectedType = this.types.get(typeName);
-    if( (selectedType != null) && (selectedType.references!=null) ) {
-      return selectedType.references;
+    if( (selectedType != null) && (selectedType.children!=null) ) {
+      for (const childKey in selectedType.children) {
+        const child=selectedType.children[childKey];
+        if( isTypeReference(child)) {
+          ret[childKey] = child;
+        }
+      }
     }
 
-    return XtTypeHierarchyResolver.EMPTY_REFERENCE_MAP;
+    return ret;
   }
 
 
@@ -166,8 +173,10 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
         const ret=new Array<keyof Type>();
         for (const subKey in typeInfo?.children) {
           const type = typeInfo?.children[subKey];
-          if (type.isTypeOf (typeOfSubProperties)) {
-            ret.push(subKey as keyof Type);
+          if (!isTypeReference(type)) {
+            if (type.isTypeOf (typeOfSubProperties)) {
+              ret.push(subKey as keyof Type);
+            }
           }
         }
         return ret;
@@ -241,7 +250,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
               ret.addReference(key, reference);
             } else {
               const newChild = this.fromDescription(value, key, subHandler??undefined, ret);
-              ret.addChild(key, newChild);
+              ret.addChild(key, newChild as XtBaseTypeHierarchy);
             }
           }
         }
@@ -256,7 +265,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
             subHandler=this.findTypeHandler(value)?.handler;
           }
           const newChild = this.fromDescription(value, key, subHandler??undefined, ret);
-          ret.addChild(key, newChild);
+          ret.addChild(key, newChild as XtBaseTypeHierarchy);
 
         }
       }
@@ -268,10 +277,9 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
 
 export type XtTypeHierarchy = {
     type:string;
-    children?:{[key:string]: XtTypeHierarchy} ;
+    children?:{[key:string]: XtTypeHierarchy | XtTypeReference} ;
     handler?:XtTypeHandler<any>;
     compatibleTypes?: string[];
-    references?: Map<string, XtTypeReference>;
 
     addChild (key:string, child:XtTypeHierarchy) : void;
     addReference (key:string, child:XtTypeReference) : void;
@@ -282,26 +290,25 @@ export type XtTypeHierarchy = {
 }
 
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
-    type:string;
-    children?:{[key:string]: XtBaseTypeHierarchy} ;
-    handler?:XtTypeHandler<any>;
-    compatibleTypes?: string[];
-    references?: Map<string, XtTypeReference>;
+  type:string;
+  children?:{[key:string]: XtBaseTypeHierarchy | XtTypeReference} ;
+  handler?:XtTypeHandler<any>;
+  compatibleTypes?: string[];
 
-    constructor (type:string, handler?:XtTypeHandler<any> ) {
-        this.type=type;
-        this.handler=handler;
-    }
+  constructor (type:string, handler?:XtTypeHandler<any> ) {
+      this.type=type;
+      this.handler=handler;
+  }
 
-    addChild (key:string, child:XtBaseTypeHierarchy) : void {
-        if (this.children==null) this.children= {};
-        this.children[key]=child;
-    }
+  addChild (key:string, child:XtBaseTypeHierarchy) : void {
+      if (this.children==null) this.children= {};
+      this.children[key]=child;
+  }
 
-    addReference (key:string, child:XtBaseTypeReference) : void {
-      if (this.references==null) this.references= new Map<string, XtTypeReference>();
-      this.references.set(key,child);
-    }
+  addReference (key:string, child:XtBaseTypeReference) : void {
+    if (this.children==null) this.children= {};
+    this.children[key]=child;
+  }
 
   initHandler ():void {
       if (this.handler!=null) {
@@ -378,10 +385,12 @@ export function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeD
   return true;
 }
 
-export function isTypeReference (toTest:XtTypeReference|XtTypeInfo|string): toTest is XtTypeReference {
+export function isTypeReference (toTest:XtTypeReference|XtTypeInfo|XtTypeHierarchy|string): toTest is XtTypeReference {
   if (typeof toTest == 'string') return false;
-  if (toTest.referenceType != null) return true;
-  else {
-    return ((toTest.type!=null)&& (toTest.field!=null));
+  if ((toTest as any).referenceType != null) return true;
+  else if ((toTest as any).handler!=null) {
+    return false;
+  } else {
+      return (toTest as any).field!=null;
   }
 }

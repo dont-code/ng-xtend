@@ -213,11 +213,12 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     let ret: XtBaseTypeHierarchy|null = null;
     let reference:XtTypeReference|null = null;
     if (typeof typeHierarchy == 'string') {
-      ret = this.types.get(typeHierarchy) as XtBaseTypeHierarchy??null;
-      if( ret==null) {
+      // It's either a primitive or a reference to another rootType
+      //ret = this.types.get(typeHierarchy) as XtBaseTypeHierarchy??null;
+      //if( ret==null) {
         ret= new XtBaseTypeHierarchy(typeHierarchy, handler);
         ret.initHandler();
-      }
+      //}
     } else {
 
       ret = new XtBaseTypeHierarchy(name, handler);
@@ -365,7 +366,7 @@ export type XtTypeReference = {
   field:string;
 }
 
-function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeDetail {
+export function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeDetail {
   if (toTest.compatibleTypes !=null) {
     return Array.isArray(toTest.compatibleTypes);
   }
@@ -377,7 +378,7 @@ function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeDetail {
   return true;
 }
 
-function isTypeReference (toTest:XtTypeReference|XtTypeInfo|string): toTest is XtTypeReference {
+export function isTypeReference (toTest:XtTypeReference|XtTypeInfo|string): toTest is XtTypeReference {
   if (typeof toTest == 'string') return false;
   if (toTest.referenceType != null) return true;
   else {

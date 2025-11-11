@@ -24,11 +24,8 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
         types: {
           'task': {
             date: 'date',
-            repetition: {
-              type: 'recurring-task',
-              link: {}
-            },
-          completed: 'task-complete'
+            repetition: 'recurring-task',
+            completed: 'task-complete'
         },
         'task-complete': 'boolean',
         'date-interval': {

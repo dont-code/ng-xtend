@@ -67,77 +67,77 @@ export class XtPluginRegistry {
     }
 
   registerComponent<T> (info:XtComponentInfo<T>) {
-        this.componentRegistry.set (info.componentName, info);
-        this.listComponents.update((array) => {
-          let found=false;
-          for (let i=0; i<array.length; i++) {
-            if (array[i].componentName==info.componentName) {
-              found=true;
-              array[i] = info;
-            }
+      this.componentRegistry.set (info.componentName, info);
+      this.listComponents.update((array) => {
+        let found=false;
+        for (let i=0; i<array.length; i++) {
+          if (array[i].componentName==info.componentName) {
+            found=true;
+            array[i] = info;
           }
-          if( !found)
-            array.push(info);
-          return array;
-        });
-    }
+        }
+        if( !found)
+          array.push(info);
+        return array;
+      });
+  }
 
-    findComponentsForType<T> (valueType:string|null|undefined, value?:T): XtComponentInfo<any>[] {
-      let originalType=valueType;
-      //console.debug('Finding type from '+valueType+' with value ',value);
-        // We don't know the value type, let's try to guess if it's a primitive or object based on the value
-      if ( valueType == null) {
-        valueType = XtPluginRegistry.ANY_OBJECT_TYPE;
-        if ((value == null) || (typeof value != 'object')) {
-          valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
-        } else if (value instanceof Date) {
-          valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
-        }
-
-        if (Array.isArray(value)) {
-          valueType = (valueType===XtPluginRegistry.ANY_PRIMITIVE_TYPE)?XtPluginRegistry.ANY_PRIMITIVE_SET:XtPluginRegistry.ANY_OBJECT_SET;
-        }
-      } else { // originalType has been defined.
-        if (Array.isArray(value)) {
-          valueType=valueType.endsWith('[]')?valueType:valueType+'[]';
-          originalType=valueType;
-        }
+  findComponentsForType<T> (valueType:string|null|undefined, value?:T): XtComponentInfo<any>[] {
+    let originalType=valueType;
+    //console.debug('Finding type from '+valueType+' with value ',value);
+      // We don't know the value type, let's try to guess if it's a primitive or object based on the value
+    if ( valueType == null) {
+      valueType = XtPluginRegistry.ANY_OBJECT_TYPE;
+      if ((value == null) || (typeof value != 'object')) {
+        valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
+      } else if (value instanceof Date) {
+        valueType=XtPluginRegistry.ANY_PRIMITIVE_TYPE;
       }
-      //console.debug('Type found is '+valueType);
 
-      let ret = this.componentByTypeCache.get(valueType);
-      if (ret == null) {
-          ret = new Array<XtComponentInfo<any>> ()
-          for (const comp of this.componentRegistry) {
-              const info=comp[1];
-              if (info.typesHandled.includes (valueType)) {
-                  ret.push(info);
-              }
-          }
-
-          if ((ret.length == 0) && (originalType!=null)) {
-            // Couldn't find a specific component, let's try the generic ones, so we don't pass any type
-            ret = this.findComponentsForType(null, value);
-            // Cache the component only if we were able to assert its type.
-            // If no type has been given and value is null, then we cannot assess the real type
-            if (value!=null) {
-              this.componentByTypeCache.set(originalType, ret);
-            }
-          } else {
-            // Cache the component only if we were able to assert its type.
-            // If no type has been given and value is null, then we cannot assess the real type
-            if ((value!=null) || (originalType!=null)) {
-              this.componentByTypeCache.set(originalType ?? valueType, ret);
-            }
-          }
-
+      if (Array.isArray(value)) {
+        valueType = (valueType===XtPluginRegistry.ANY_PRIMITIVE_TYPE)?XtPluginRegistry.ANY_PRIMITIVE_SET:XtPluginRegistry.ANY_OBJECT_SET;
       }
-      return ret;
+    } else { // originalType has been defined.
+      if (Array.isArray(value)) {
+        valueType=valueType.endsWith('[]')?valueType:valueType+'[]';
+        originalType=valueType;
+      }
     }
+    //console.debug('Type found is '+valueType);
 
-    public static registry (): XtPluginRegistry {
-        return XT_REGISTRY;
+    let ret = this.componentByTypeCache.get(valueType);
+    if (ret == null) {
+        ret = new Array<XtComponentInfo<any>> ()
+        for (const comp of this.componentRegistry) {
+            const info=comp[1];
+            if (info.typesHandled.includes (valueType)) {
+                ret.push(info);
+            }
+        }
+
+        if ((ret.length == 0) && (originalType!=null)) {
+          // Couldn't find a specific component, let's try the generic ones, so we don't pass any type
+          ret = this.findComponentsForType(null, value);
+          // Cache the component only if we were able to assert its type.
+          // If no type has been given and value is null, then we cannot assess the real type
+          if (value!=null) {
+            this.componentByTypeCache.set(originalType, ret);
+          }
+        } else {
+          // Cache the component only if we were able to assert its type.
+          // If no type has been given and value is null, then we cannot assess the real type
+          if ((value!=null) || (originalType!=null)) {
+            this.componentByTypeCache.set(originalType ?? valueType, ret);
+          }
+        }
+
     }
+    return ret;
+  }
+
+  public static registry (): XtPluginRegistry {
+    return XT_REGISTRY;
+  }
 
   findComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any>|null {
     // Search for the component registered with this class

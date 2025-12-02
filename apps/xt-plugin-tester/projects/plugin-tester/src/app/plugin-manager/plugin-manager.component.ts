@@ -130,6 +130,12 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
       this.resolverService.loadPlugin(url).catch((error) => {
         this.errorHandler.errorOccurred(error, "Error while loading plugin.");
       });
+
+      try {
+        this.resolverService.resolvePendingReferences();
+      } catch (error) {
+        this.errorHandler.errorOccurred(error, "Error while resolving pending references.");
+      }
     }
   }
 

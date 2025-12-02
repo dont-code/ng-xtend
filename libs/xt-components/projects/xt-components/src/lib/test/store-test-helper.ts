@@ -1,6 +1,13 @@
 import { from, Observable } from 'rxjs';
-import { IDataTransformer, IDocumentInfo, IStoreManager, IStoreProvider, StoreSupport } from '../store/store-support';
-import { uuid } from '@primeuix/utils';
+import {
+  IDataTransformer,
+  IDocumentInfo,
+  IStoreCriteria,
+  IStoreCriteriaOperator,
+  IStoreManager,
+  IStoreProvider,
+  StoreSupport
+} from '../store/store-support';
 
 /**
  * A very light and not 100% compatible storemanager in case you are not using xt-store.
@@ -31,6 +38,10 @@ export class TestStoreManager implements IStoreManager {
     return this.defaultProvider;
   }
 
+  newStoreCriteria(name: string, value: any, operator: IStoreCriteriaOperator): IStoreCriteria {
+    return new TestStoreCriteria(name, value, operator);
+  }
+
 }
 
 export class TestStoreProvider<T = never> implements IStoreProvider<T> {
@@ -50,7 +61,7 @@ export class TestStoreProvider<T = never> implements IStoreProvider<T> {
       else if (value.id!=null) return value.id;
       else {
         if (create===true) {
-          const newId = new Date().getTime().toString();
+          const newId = Math.random().toString(36).substring(2, 8);
           value._id=newId;
           return newId;
         }
@@ -79,14 +90,25 @@ export class TestStoreProvider<T = never> implements IStoreProvider<T> {
         return Promise.resolve( this.getOrCreateArray(name).delete(key));
     }
 
-    searchEntities(name: string, ...criteria: any[]): Observable<T[]> {
-      if ((criteria!=null) && (criteria.length>0)) {
-        throw new Error('Method not implemented.');
-      }
+    searchEntities(name: string, ...criteria: TestStoreCriteria[]): Observable<T[]> {
       // No criteria defined, just send the full list
       const ret=new Array<T>();
-      for (const toAdd of this.getOrCreateArray(name).values()) {
-        ret.push(toAdd);
+      if( (criteria==null)||(criteria.length==0)) {
+        for (const toAdd of this.getOrCreateArray(name).values()) {
+          ret.push(toAdd);
+        }
+      } else {
+        for (const toAdd of this.getOrCreateArray(name).values()) {
+          let canAdd=true;
+          for (const criter of criteria) {
+            if (!criter.filter(toAdd)) {
+              canAdd=false;
+              break;
+            }
+          }
+          if( canAdd) ret.push(toAdd);
+        }
+
       }
       return from([ret]);
     }
@@ -117,5 +139,38 @@ export class TestDocumentInfo implements IDocumentInfo {
     this.documentId = documentId;
     this.documentName = documentName;
     this.isUrl = isUrl;
+  }
+}
+
+export class TestStoreCriteria implements IStoreCriteria {
+  name: string;
+  value: any;
+  operator: '='|'<='|'<';
+
+  constructor(
+    name: string,
+    value: any,
+    operator?: IStoreCriteriaOperator
+  ) {
+    this.name = name;
+    this.value = value;
+    if (!operator) this.operator = '=';
+    else {
+      this.operator = operator;
+    }
+  }
+
+  filter (toFilter:any): boolean {
+    const testValue=toFilter[this.name];
+    switch (this.operator) {
+      case '=':
+        return testValue == this.value;
+      case '<':
+        return (testValue as number)<(this.value as number);
+      case '<=':
+        return (testValue as number)<(this.value as number);
+      default:
+        return true;
+    }
   }
 }

@@ -743,6 +743,9 @@ importers:
       xt-components:
         specifier: workspace:^
         version: link:../../libs/xt-components/dist/xt-components
+      xt-type:
+        specifier: workspace:^
+        version: link:../../libs/xt-type
     devDependencies:
       '@analogjs/vite-plugin-angular':
         specifier: ^1.22.4

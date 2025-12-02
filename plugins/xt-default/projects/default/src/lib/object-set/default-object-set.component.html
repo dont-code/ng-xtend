@@ -9,10 +9,13 @@
   </ng-template>
   <ng-template #body let-element let-eltIndex='rowIndex'>
     @let eltContext=elementSetContext(eltIndex);
-    <tr [pSelectableRow]="element">
-    @for (subName of allSubNames; track subName) {
-      <td><xt-render-sub [context]="subElementContextForName(eltContext, subName)"></xt-render-sub> </td>
+    @if (eltContext.subReferencesResolved()) {
+      <tr [pSelectableRow]="element">
+      @for (subName of allSubNames; track subName) {
+        @let subEltContext=subElementContextForName(eltContext, subName);
+        <td><xt-render-sub [context]="subEltContext"></xt-render-sub></td>
+      }
+      </tr>
     }
-    </tr>
   </ng-template>
 </p-table>

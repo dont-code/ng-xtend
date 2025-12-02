@@ -18,6 +18,7 @@ import { XtResolverService } from '../angular/xt-resolver.service';
 import { XtResolvedComponent } from '../xt-resolved-component';
 import { XtBaseOutput } from '../output/xt-base-output';
 import { XtBaseInput } from '../output/xt-base-input';
+import { isTypeReference } from 'xt-type';
 
 /**
  * Offers a nice and easy to dynamically embed a component.
@@ -64,6 +65,10 @@ export class XtRenderComponent<T> implements AfterViewInit {
 
     const ret= new XtBaseContext<any>(this.displayMode(), this.subName(), form);
     ret.valueType=this.valueType();
+    const typeInfo = this.resolverService.typeResolver.findType(ret.valueType);
+    if( isTypeReference(typeInfo)) {
+      ret.setReferenceInfo(typeInfo);
+    }
     if (!ret.isInForm()) {
       const subName = this.subName();
       const value = this.value();
@@ -76,6 +81,15 @@ export class XtRenderComponent<T> implements AfterViewInit {
     return ret as XtContext<T>;
   });
 
+  realContext = computed(() => {
+    let ret = this.context();
+    if ((ret.isReference()) && (ret.subReferencesResolved())) {
+      ret = ret.referencedContext!;
+    }
+    return ret;
+  });
+
+
   type:Signal<Type<XtComponent<T>>|null> = computed( () => {
     //console.debug("Calculating type in XtRenderSubComponent");
 
@@ -85,7 +99,7 @@ export class XtRenderComponent<T> implements AfterViewInit {
       //console.debug('XtRender, using component set '+ type);
       //compFound = this.resolverService.findComponentInfo (type);
     //} else {
-      compFound= this.resolverService.findBestComponent(this.context());
+      compFound= this.resolverService.findBestComponent(this.realContext());
       //console.debug('XtRender, found component ',compFound.componentName);
       type= compFound.componentClass;
     }

@@ -35,6 +35,14 @@ export class XtRenderSubComponent<T> implements AfterViewInit {
 
   resolverService = inject(XtResolverService);
 
+  realContext = computed(() => {
+    let ret = this.context();
+    if ((ret.isReference()) && (ret.subReferencesResolved())) {
+      ret = ret.referencedContext!;
+    }
+    return ret;
+  });
+
   type:Signal<Type<XtComponent<T>>|null> = computed( () => {
     //console.debug("Calculating type in XtRenderSubComponent");
 
@@ -44,7 +52,7 @@ export class XtRenderSubComponent<T> implements AfterViewInit {
       //console.debug('XtRender, using component set '+ type);
       //compFound = this.resolverService.findComponentInfo (type);
     //} else {
-      compFound= this.resolverService.findBestComponent(this.context());
+      compFound= this.resolverService.findBestComponent(this.realContext());
       //console.debug('XtRender, found component ',compFound.componentName);
       type= compFound.componentClass;
     }

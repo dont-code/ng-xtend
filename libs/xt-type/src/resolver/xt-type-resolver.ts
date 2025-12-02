@@ -7,6 +7,7 @@ import { DefaultTypeHandler } from '../handler/default/default-type-handler';
 export type XtTypeResolver = {
 
   findTypeName (typeName:string|null|undefined, subName?:string, value?:any):string|null|undefined;
+  findType (typeName:string|null|undefined, subName?:string):XtTypeReference|XtTypeHierarchy|null|undefined;
   findReference (typeName:string|null|undefined, subName:string):XtTypeReference|null|undefined;
   getOrCreateTypeHandler<Type>(typeName: string | null | undefined, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> };
   findTypeHandler<Type> (typeName:string|null|undefined, createDefault?:boolean, subName?:string, value?:Type): {typeName?:string|null, handler?:XtTypeHandler<Type> };
@@ -24,6 +25,7 @@ export type XtTypeResolver = {
 export type XtUpdatableTypeResolver = XtTypeResolver & {
   addRootType<Type> (typeName:string, type:XtTypeInfo|XtTypeDetail|string, handler?:XtTypeHandler<Type>):void;
   setHandler<Type> (typeName:string, handler:XtTypeHandler<Type>):void;
+  resolveAllTypeReferences ():void;
 }
 
 export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
@@ -68,6 +70,23 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
         return undefined;
     }
 
+  /**
+   * Retrieves the complete information on a subType. It can be a type definition or a reference to a type definition
+   * @param typeName
+   * @param subName
+   */
+  findType (typeName:string|null|undefined, subName?:string|null):XtTypeReference|XtTypeHierarchy|null|undefined {
+    if( typeName==null)
+      return typeName;
+    const selectedType = this.types.get(typeName);
+    if (subName!=null) {
+      if( selectedType?.children!=null)
+        return selectedType?.children[subName];
+      else throw new Error ('No subType named '+subName+' for '+typeName+'.');
+    }
+    return selectedType;
+  }
+
   findReference(typeName: string | null | undefined, refName: string):XtTypeReference | null | undefined {
     if( typeName==null)
       return typeName;
@@ -79,18 +98,13 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
   }
 
   listReferences(typeName: string | null | undefined):{[key:string ]: XtTypeReference} {
-    const ret:{[key:string]: XtTypeReference} = {};
+    let ret:{[key:string]: XtTypeReference} = {};
     if( typeName==null)
       return ret;
 
     const selectedType = this.types.get(typeName);
-    if( (selectedType != null) && (selectedType.children!=null) ) {
-      for (const childKey in selectedType.children) {
-        const child=selectedType.children[childKey];
-        if( isTypeReference(child)) {
-          ret[childKey] = child;
-        }
-      }
+    if( selectedType!=null) {
+      ret= selectedType.listReferences();
     }
 
     return ret;
@@ -246,7 +260,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
               subHandler=this.findTypeHandler(value)?.handler;
             }
             if (isTypeReference (value)) {
-              reference = new XtBaseTypeReference(value.type, value.field, value.referenceType);
+              reference = new XtBaseTypeReference(value.toType, value.field, value.type, value.referenceType);
               ret.addReference(key, reference);
             } else {
               const newChild = this.fromDescription(value, key, subHandler??undefined, ret);
@@ -273,6 +287,23 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
 
     return ret;
   }
+
+  resolveAllTypeReferences ():void {
+    for (const type of this.types.values()) {
+      const refs = type.listReferences();
+      for (const ref in Object.keys(refs)) {
+        if( refs[ref].type==XtBaseTypeReference.UNRESOLVED_TYPE) {
+          const refType = this.findType(refs[ref].toType, refs[ref].field);
+          if( refType!=null) {
+            refs[ref].type=refType.type;
+          }else {
+            throw new Error('Unable to resolve reference '+ref+' of type '+type.type);
+          }
+        }
+      }
+    }
+  }
+
 }
 
 export type XtTypeHierarchy = {
@@ -287,6 +318,8 @@ export type XtTypeHierarchy = {
 
     isTypeOf(typeName: string): boolean;
     isCompatibleWith (typeName: string): boolean;
+
+    listReferences (): { [key:string]:XtTypeReference};
 }
 
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
@@ -325,21 +358,39 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
       return this.compatibleTypes.indexOf(toTest) > -1;
     }
 
+  listReferences (): { [key:string]:XtTypeReference} {
+    const ret:{[key:string]:XtTypeReference} = {};
 
+    if( this.children!=null ) {
+      for (const childKey in this.children) {
+        const child=this.children[childKey];
+        if( isTypeReference(child)) {
+          ret[childKey] = child;
+        }
+      }
+    }
+    return ret;
+  }
 }
 
 /**
  * Internally manages a link between two types
  */
 export class XtBaseTypeReference implements XtTypeReference{
-  type:string;
-  referenceType?: 'ONE' | 'MANY' | undefined;
+  toType:string;
+  referenceType?: 'MANY-TO-ONE' | 'ONE-TO-MANY' | undefined;
   field: string;
+  type?:string;
 
-  constructor(type:string, field:string, referenceType?: 'ONE' | 'MANY') {
-    this.type = type;
+  public static readonly UNRESOLVED_TYPE = 'UNRESOLVED';
+
+  constructor(toType:string, field:string, type?:string, referenceType?: 'MANY-TO-ONE' | 'ONE-TO-MANY') {
+    this.toType = toType;
     this.referenceType = referenceType;
     this.field = field;
+    if( type!=null) {
+      this.type=type;
+    }else this.type=XtBaseTypeReference.UNRESOLVED_TYPE;
   }
 }
 
@@ -368,9 +419,10 @@ export type XtTypeDetail = {
 }
 
 export type XtTypeReference = {
-  type:string,
-  referenceType?:'ONE'|'MANY';
-  field:string;
+  toType:string,
+  referenceType?:'MANY-TO-ONE'|'ONE-TO-MANY',
+  field:string,
+  type?:string
 }
 
 export function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeDetail {
@@ -385,7 +437,8 @@ export function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeD
   return true;
 }
 
-export function isTypeReference (toTest:XtTypeReference|XtTypeInfo|XtTypeHierarchy|string): toTest is XtTypeReference {
+export function isTypeReference (toTest:XtTypeReference|XtTypeInfo|XtTypeHierarchy|string|null|undefined): toTest is XtTypeReference {
+  if (toTest==null) return false;
   if (typeof toTest == 'string') return false;
   if ((toTest as any).referenceType != null) return true;
   else if ((toTest as any).handler!=null) {

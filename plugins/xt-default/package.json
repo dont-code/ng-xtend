@@ -25,6 +25,7 @@
     "@angular/router": "^20.3.9",
     "@angular/cdk": "^20.2.4",
     "xt-components": "workspace:^",
+    "xt-type": "workspace:^",
     "rxjs": "^7.8.2",
     "primeng": "^20.3.0",
     "primeicons": "^7.0.0",

@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { XtTypeResolver } from 'xt-type';
+import { isTypeReference, XtTypeHierarchy, XtTypeReference, XtTypeResolver } from 'xt-type';
 import { computed, Signal, signal, WritableSignal } from '@angular/core';
 import { XtAction } from './action/xt-action';
 
@@ -13,77 +13,114 @@ import { XtAction } from './action/xt-action';
  */
 export type XtContext<T> = {
 
-    displayMode: XtDisplayMode;
+  displayMode: XtDisplayMode;
 
-    subName?: string; // The subName in the parentFormGroup and parentContext
-    parentFormGroup?: FormGroup;
-    localFormGroup?: FormGroup;
+  subName?: string; // The subName in the parentFormGroup and parentContext
+  parentFormGroup?: FormGroup;
+  localFormGroup?: FormGroup;
 
-    // A parentContext if defined
-    parentContext?:XtContext<any>;
+  /**
+   * When the value in the context is a reference to another type
+   */
+  reference?:XtTypeReference
 
-    isInForm (): boolean;
+  /**
+   * If it's a reference, we keep the context referenced
+   */
+  referencedContext?:XtContext<any>;
 
-    formGroup () : FormGroup | undefined;
+  /**
+   * creates the referencedContext by using this referenced value
+   * @param val
+   */
+  updateReferencedContext(val: any, valueType?:string): void;
 
-    formControlNameOrNull():string|null;
+  /**
+   * Signal when all the asynchronously defined subreferences are resolved.
+   */
+  subReferencesResolved: WritableSignal<boolean>;
 
-    formControlValue (): any | null;
+  // A parentContext if defined
+  parentContext?:XtContext<any>;
 
-    subValue (subName?:string):T | null | undefined;
+  isInForm (): boolean;
 
-    subContext(subName: string | undefined | null, subType?:string, typeResolver?: XtTypeResolver | null): XtContext<any>;
+  formGroup () : FormGroup | undefined;
 
-    elementSetContext(subElement: any): XtContext<any>;
+  formControlNameOrNull():string|null;
 
-    displayValue: Signal<T|null>;
+  formControlValue (): any | null;
 
-    setDisplayValue (newValue:T|null|undefined, type?:string): XtContext<T>;
+  subValue (subName?:string):T | null | undefined;
 
-    setFormValue (newValue:T|null|undefined, markAsDirty?:boolean): boolean;
+  subContext(subName: string | undefined | null, subType?:string, typeResolver?: XtTypeResolver | null): XtContext<any>;
 
-    value(): T | null | undefined;
+  elementSetContext(subElement: any): XtContext<any>;
 
-    valueType?:string;
+  displayValue: Signal<T|null>;
 
-    toString (): string;
+  setDisplayValue (newValue:T|null|undefined, type?:string): XtContext<T>;
 
-    listActions: WritableSignal<XtAction<T>[] | null>;
+  setFormValue (newValue:T|null|undefined, markAsDirty?:boolean): boolean;
+
+  value(): T | null | undefined;
+
+  valueType?:string;
+
+  toString (): string;
+
+  listActions: WritableSignal<XtAction<T>[] | null>;
+
+  isReference ():boolean;
+
+  setReferenceInfo (ref:XtTypeReference):void;
 
 }
 
 export type XtDisplayMode = 'INLINE_VIEW'|'FULL_VIEW'|'FULL_EDITABLE'|'LIST_VIEW';
 
 export class XtBaseContext<T> implements XtContext<T>{
-    displayMode: XtDisplayMode = 'FULL_VIEW';
+  displayMode: XtDisplayMode = 'FULL_VIEW';
 
-    /**
-     * When editable, the value is stored in a parent formGroup
-     */
-    subName?: string;
-    parentFormGroup?: FormGroup<any>;
+  /**
+   * When editable, the value is stored in a parent formGroup
+   */
+  subName?: string;
+  parentFormGroup?: FormGroup<any>;
 
-    /**
-     * When the context is a child, it potentially needs to update its parent value
-     */
-    parentContext?:XtBaseContext<any>;
+  /**
+   * When the context is a child, it potentially needs to update its parent value
+   */
+  parentContext?:XtBaseContext<any>;
 
-    /**
-     * All child contexts are kept in this map
-     */
-    protected childContexts?:Map<string, XtBaseContext<any>>;
+  /**
+   * All child contexts are kept in this map
+   */
+  protected childContexts?:Map<string, XtBaseContext<any>>;
 
   /**
    * localFormGroup exists only for composite components: it's children are all gathered in a form group
    */
-    localFormGroup?: FormGroup<any>;
+  localFormGroup?: FormGroup<any>;
 
-    /**
-     * When not managed by a form, the value is here
-     */
-    nonFormValue?: WritableSignal<T|null>;
+  /**
+   * When not managed by a form, the value is here
+   */
+  nonFormValue?: WritableSignal<T|null>;
 
-    valueType?:string;
+  valueType?:string;
+
+  /**
+   * When the value in the context is a reference to another type
+   */
+  reference?:XtTypeReference;
+
+  /**
+   * If it's a reference, we keep the context referenced
+   */
+  referencedContext?:XtContext<any>;
+
+  subReferencesResolved = signal(false);
 
   /**
    * Keeps track of all the possible actions for this context
@@ -254,62 +291,109 @@ export class XtBaseContext<T> implements XtContext<T>{
       throw new Error ("The value must be an Array / Set to create a subElement context.")
     }
 
-    const ret = new XtBaseContext<T> (this.displayMode, undefined, undefined, this);
-    ret.setDisplayValue((value as any[])[elementIndex]);
-    if (this.valueType!=null) {
+    const indexKey = elementIndex.toString();
+    let ret = this.childContexts?.get(indexKey);
+
+    if( ret==null) {
+      ret = new XtBaseContext<T>(this.displayMode, undefined, undefined, this);
+      ret.setDisplayValue((value as any[])[elementIndex]);
+
+      if (this.valueType != null) {
         // Convert potential array type into single type
-      ret.valueType=this.valueType.endsWith('[]')?this.valueType.substring(0, this.valueType.length-2):this.valueType;
+        ret.valueType = this.valueType.endsWith('[]') ? this.valueType.substring(0, this.valueType.length - 2) : this.valueType;
+      }
+      if( this.childContexts==null) this.childContexts=new Map<string, XtBaseContext<any>>();
+      this.childContexts?.set(indexKey, ret);
     }
     return ret;
   }
 
-    subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver | null): XtContext<any> {
-        if ((subName==null) || (subName.length==0)) {
-            return this;
-        } else if (this.childContexts?.has(subName)) {
-          return this.childContexts?.get(subName)!;
-        }else {
-            let subValue:WritableSignal<any|null> | null = null;
-            let currentGroup = this.formGroup();
-            // Recalculate parentGroup and formControlName and value if needed.
-            if (currentGroup==null){
-              let curValue = this.nonFormValue;
-              if (curValue!=null){
-                if (curValue()!=null) {
-                  subValue = signal ((curValue() as any)[subName]);
-                }
-              }
-              if (subValue==null) {
-                subValue = signal (null);
+  subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver | null): XtContext<any> {
+      if ((subName==null) || (subName.length==0)) {
+          return this;
+      } else if (this.childContexts?.has(subName)) {
+        return this.childContexts?.get(subName)!;
+      }else {
+          let subValue:WritableSignal<any|null> | null = null;
+          let currentGroup = this.formGroup();
+          // Recalculate parentGroup and formControlName and value if needed.
+          if (currentGroup==null){
+            let curValue = this.nonFormValue;
+            if (curValue!=null){
+              if (curValue()!=null) {
+                subValue = signal ((curValue() as any)[subName]);
               }
             }
-
-            const ret = new XtBaseContext<T> (this.displayMode, subName, currentGroup, this);
-            if( subValue!=null) ret.nonFormValue=subValue;
-
-            if (subType!=null) {
-              ret.valueType=subType;
-            } else if ((this.valueType!=null) && (typeResolver!=null)) {
-                ret.valueType=typeResolver.findTypeName(this.valueType, subName, this.value())??undefined;
+            if (subValue==null) {
+              subValue = signal (null);
             }
+          }
 
-            if (this.childContexts==null) this.childContexts=new Map<string, XtBaseContext<any>>();
-            this.childContexts.set(subName, ret);
-            return ret;
-        }
+          const ret = new XtBaseContext<T> (this.displayMode, subName, currentGroup, this);
+          if( subValue!=null) ret.nonFormValue=subValue;
+
+          if (subType!=null) {
+            ret.valueType=subType;
+          } else if ((this.valueType!=null) && (typeResolver!=null)) {
+            const subType = typeResolver.findType(this.valueType, subName);
+            if( subType!=null) {
+              if (isTypeReference(subType)) {
+
+                ret.valueType=typeResolver.findType(subType.type, subType.field)?.type??undefined;
+                ret.reference=subType;
+              } else {
+                ret.valueType=(subType as XtTypeHierarchy).type;
+              }
+            }
+            //ret.valueType=typeResolver.findTypeName(this.valueType, subName, this.value())??undefined;
+          }
+
+          if (this.childContexts==null) this.childContexts=new Map<string, XtBaseContext<any>>();
+          this.childContexts.set(subName, ret);
+          return ret;
+      }
     }
 
     formGroup (): FormGroup|undefined {
         return this.localFormGroup??this.parentFormGroup;
     }
 
-    toString():string {
+  isReference ():boolean {
+    return (this.reference!=null);
+  }
+
+  setReferenceInfo (reference:XtTypeReference):void {
+    this.reference=reference;
+    this.subReferencesResolved.set(this.reference!=null);
+  }
+
+  /**
+   * creates the referencedContext by using this referenced value
+   * @param val
+   */
+  updateReferencedContext(val: any, valueType?:string): void {
+    if (!this.isReference()) throw new Error ('This context '+this.toString()+' is not a reference.');
+
+    if( this.referencedContext==null) {
+      let refDisplayMode = 'INLINE_VIEW' as XtDisplayMode;
+      if (this.displayMode=='FULL_VIEW') refDisplayMode = 'FULL_VIEW';
+      this.referencedContext = new XtBaseContext(refDisplayMode);
+    }
+    this.referencedContext.setDisplayValue(val);
+    if( valueType!=null) this.referencedContext.valueType=valueType;
+  }
+
+  toString():string {
       let ret='XtContext named ';
       ret += this.subName??'None';
       ret += ' with type ';
       ret += this.valueType??'None';
       ret +=' with value ';
       ret += this.nonFormValue?this.nonFormValue():this.formControlValue();
+      if (this.isReference()) {
+        ret +=' referencing ';
+        ret += this.reference?.type
+      }
       return ret;
   }
 }

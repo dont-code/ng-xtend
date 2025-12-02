@@ -133,6 +133,8 @@ export class AppConfigService {
       if (errors.length > 0) {
         return Promise.reject(errors);
       }
+      // Once all plugins are loaded, we resolve all type references
+      this.resolverService.resolvePendingReferences();
     }
     return Promise.resolve(true);
   }

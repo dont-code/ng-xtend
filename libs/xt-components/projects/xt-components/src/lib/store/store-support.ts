@@ -1,7 +1,7 @@
 /**
  * Wrapper around xt-store manager: You can use it to check if xt-store is included or not, and decide what to do
  *
- * This allow plugins to potentially use xt-store whenever included in the applications running the plugin
+ * This allows plugins to potentially use xt-store whenever included in the applications running the plugin
  */
 import { Observable } from 'rxjs';
 
@@ -21,6 +21,7 @@ export class StoreSupport {
   static setTestStoreManager (testStoreManager:IStoreManager): void {
     StoreSupport.testStoreManager = testStoreManager;
   }
+
 }
 
 /**
@@ -44,6 +45,14 @@ export interface IDocumentInfo {
   documentId?: string;
 }
 
+export type IStoreCriteriaOperator = '='|'<'|'<=';
+
+export interface IStoreCriteria {
+  name: string;
+  value: any;
+  operator: IStoreCriteriaOperator;
+}
+
 export interface IStoreProvider<T> {
   storeEntity( name:string, entity: T): Promise<T>;
 
@@ -59,7 +68,7 @@ export interface IStoreProvider<T> {
 
   searchEntities(
     name: string,
-    ...criteria: any[]
+    ...criteria: IStoreCriteria[]
   ): Observable<Array<T>>;
 
   searchAndPrepareEntities(
@@ -101,4 +110,5 @@ export interface IStoreManager {
 
   getDefaultProviderSafe<T=never>(): IStoreProvider<T>;
 
+  newStoreCriteria (name:string, value:any, operator: IStoreCriteriaOperator): IStoreCriteria;
 }

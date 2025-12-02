@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, output, Signal } from '@angular/core';
-import { XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
+import { ChangeDetectionStrategy, Component, computed, linkedSignal, output, Signal } from '@angular/core';
+import { StoreSupport, XtCompositeComponent, XtContext, XtRenderSubComponent } from 'xt-components';
 import { TableModule } from 'primeng/table';
 
 @Component({
@@ -10,8 +10,6 @@ import { TableModule } from 'primeng/table';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
-  resolver = inject(XtResolverService);
-
   selected= output<T>();
 
   debugValue=false;
@@ -52,15 +50,18 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   });
 
   subNames = computed(() => {
-    const ret = this.resolver.listSubNamesOf(this.context(), this.valueSet());
+    const ret = this.resolverService.listSubNamesOf(this.context(), this.valueSet());
     return ret;
   });
-
 
   elementSetContext(elementIndex: number): XtContext<any> {
     this.formGroupIfAny();
 
-    return this.context().elementSetContext(elementIndex);
+    const ret= this.context().elementSetContext(elementIndex);
+    this.resolverService.loadAllReferencesForContext(ret, StoreSupport.getStoreManager()).then(() => {
+      console.debug("Resolved all references for element "+elementIndex+ ' of type '+this.context().valueType);
+    } );
+    return ret;
   }
 
   subElementContextForName(subElementContext: XtContext<any>, subName: string, subType?: string): XtContext<any> {

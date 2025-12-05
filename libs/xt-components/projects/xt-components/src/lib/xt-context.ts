@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { isTypeReference, XtTypeHierarchy, XtTypeReference, XtTypeResolver } from 'xt-type';
+import { isTypeReference, XtBaseTypeReference, XtTypeHierarchy, XtTypeReference, XtTypeResolver } from 'xt-type';
 import { computed, Signal, signal, WritableSignal } from '@angular/core';
 import { XtAction } from './action/xt-action';
 
@@ -338,9 +338,11 @@ export class XtBaseContext<T> implements XtContext<T>{
             const subType = typeResolver.findType(this.valueType, subName);
             if( subType!=null) {
               if (isTypeReference(subType)) {
+                if( subType.type== XtBaseTypeReference.UNRESOLVED_TYPE) throw new Error ("You must resolve all reference types before using them in a context. Missing type "+subType.type+" for subName "+subName+" in valueType "+this.valueType+" of context "+this.toString())
 
-                ret.valueType=typeResolver.findType(subType.type, subType.field)?.type??undefined;
+                ret.valueType=subType.toType;
                 ret.reference=subType;
+                if (this.displayMode=='LIST_VIEW') ret.displayMode='INLINE_VIEW'; // We display a reference as inline in a list
               } else {
                 ret.valueType=(subType as XtTypeHierarchy).type;
               }

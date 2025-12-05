@@ -291,7 +291,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
   resolveAllTypeReferences ():void {
     for (const type of this.types.values()) {
       const refs = type.listReferences();
-      for (const ref in Object.keys(refs)) {
+      for (const ref of Object.keys(refs)) {
         if( refs[ref].type==XtBaseTypeReference.UNRESOLVED_TYPE) {
           const refType = this.findType(refs[ref].toType, refs[ref].field);
           if( refType!=null) {

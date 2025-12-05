@@ -58,9 +58,9 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     this.formGroupIfAny();
 
     const ret= this.context().elementSetContext(elementIndex);
-    this.resolverService.loadAllReferencesForContext(ret, StoreSupport.getStoreManager()).then(() => {
+  /*  this.resolverService.loadAllReferencesForContext(ret, StoreSupport.getStoreManager()).then(() => {
       console.debug("Resolved all references for element "+elementIndex+ ' of type '+this.context().valueType);
-    } );
+    } );*/
     return ret;
   }
 

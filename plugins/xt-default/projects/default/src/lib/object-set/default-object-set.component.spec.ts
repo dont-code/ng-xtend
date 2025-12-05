@@ -237,31 +237,34 @@ describe('DefaultObjectSetComponent', () => {
       ]
     });
 
+    resolverService.resolvePendingReferences();
+
     const storeMgr = StoreSupport.getStoreManager();
     const authorStore = storeMgr.getProviderSafe<AuthorTestType>('authorType');
     const bookStore = storeMgr.getProviderSafe<BookTestType>('bookType');
 
-    await authorStore.storeEntity('authorType', {
+    const philipKDick=await authorStore.storeEntity('authorType', {
       fullName:'Philip K. Dick',
       city:'Chicago',
       born:new Date (1928, 12, 16)
     });
 
-    await authorStore.storeEntity('authorType', {
+    const AnnLeckie = await authorStore.storeEntity('authorType', {
       fullName:'Ann Leckie',
       city:'Toledo',
       born:new Date (1966, 3, 2)
     });
 
+    // We simulate a reference by injecting the entity directly
     await bookStore.storeEntity('bookType', {
       name:'Ubik',
-      authorRef:'Philip K. Dick',
+      authorRef:philipKDick,
       genreRef:'SF'
     });
 
     await bookStore.storeEntity('bookType', {
       name:'Ancillaire',
-      authorRef:'Ann Leckie',
+      authorRef:AnnLeckie,
       genreRef:'Space Opera'
     });
 
@@ -282,17 +285,14 @@ describe('DefaultObjectSetComponent', () => {
     const cols = fixture.debugElement.queryAll(By.css('thead > tr > th'));
     expect(cols).toHaveLength(3);
 
-    await fixture.whenStable();
-    await fixture.whenStable();
-
     // Check that the reference has been crossed and author city is displayed
-    expect(rows[0].children[1].nativeElement.textContent).toContain('Chicago');
+    expect(rows[0].children[1].nativeElement.textContent).toContain('Philip K. Dick(Chicago)');
   });
 });
 
 type BookTestType = {
   name:string,
-  authorRef: string,
+  authorRef: AuthorTestType,
   genreRef: string
 }
 
@@ -315,12 +315,12 @@ const BOOK_AUTHOR_TYPES:XtTypeInfo = {
     children:{
       name:'string',
       authorRef:{
-        type:'authorType',
+        toType:'authorType',
         referenceType:'MANY-TO-ONE',
         field:'fullName'
       },
       genreRef: {
-        type:'bookGenreType',
+        toType:'bookGenreType',
         referenceType:'MANY-TO-ONE',
         field:'name'
       }

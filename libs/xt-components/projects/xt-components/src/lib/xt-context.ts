@@ -335,7 +335,7 @@ export class XtBaseContext<T> implements XtContext<T>{
           if (subType!=null) {
             ret.valueType=subType;
           } else if ((this.valueType!=null) && (typeResolver!=null)) {
-            const subType = typeResolver.findType(this.valueType, subName);
+            const subType = typeResolver.findType(this.valueType, subName, this.value());
             if( subType!=null) {
               if (isTypeReference(subType)) {
                 if( subType.type== XtBaseTypeReference.UNRESOLVED_TYPE) throw new Error ("You must resolve all reference types before using them in a context. Missing type "+subType.type+" for subName "+subName+" in valueType "+this.valueType+" of context "+this.toString())

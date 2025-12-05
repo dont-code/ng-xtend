@@ -7,7 +7,7 @@ import { DefaultTypeHandler } from '../handler/default/default-type-handler';
 export type XtTypeResolver = {
 
   findTypeName (typeName:string|null|undefined, subName?:string, value?:any):string|null|undefined;
-  findType (typeName:string|null|undefined, subName?:string):XtTypeReference|XtTypeHierarchy|null|undefined;
+  findType (typeName:string|null|undefined, subName?:string, value?:any):XtTypeReference|XtTypeHierarchy|null|undefined;
   findReference (typeName:string|null|undefined, subName:string):XtTypeReference|null|undefined;
   getOrCreateTypeHandler<Type>(typeName: string | null | undefined, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> };
   findTypeHandler<Type> (typeName:string|null|undefined, createDefault?:boolean, subName?:string, value?:Type): {typeName?:string|null, handler?:XtTypeHandler<Type> };
@@ -15,6 +15,7 @@ export type XtTypeResolver = {
   listSubNames (typeName: string | null | undefined, value?: any):string[];
   listReferences (typeName: string | null | undefined):{[key:string ]: XtTypeReference};
   isPrimitiveType (typeName: string | null | undefined, value?: any):boolean;
+  findPrimitiveType (value:any) : XtTypeHierarchy| undefined;
   findSubPropertiesWithType<Type> (typeName:string|null|undefined, typeOfSubProperties:string):(keyof Type)[];
   calculateSubPropertiesPerType<Type> (typeName:string|null|undefined):Map<string, (keyof Type)[]>;
 
@@ -75,10 +76,13 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
    * @param typeName
    * @param subName
    */
-  findType (typeName:string|null|undefined, subName?:string|null):XtTypeReference|XtTypeHierarchy|null|undefined {
+  findType (typeName:string|null|undefined, subName?:string|null, value?:any):XtTypeReference|XtTypeHierarchy|null|undefined {
     if( typeName==null)
       return typeName;
     const selectedType = this.types.get(typeName);
+    if( (selectedType==null)&& (value!=null)) {
+      return this.findPrimitiveType(value);
+    }
     if (subName!=null) {
       if( selectedType?.children!=null)
         return selectedType?.children[subName];
@@ -122,7 +126,14 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
         return false;
     }
 
-    listSubNames (typeName:string | null | undefined, value?: any):string[] {
+  findPrimitiveType (value:any) : XtTypeHierarchy| undefined {
+    if (value==null) return undefined;
+    const simpleType = findPrimitiveType(value);
+    if (simpleType!=null) return new XtBaseTypeHierarchy(simpleType);
+    else return undefined;
+  }
+
+  listSubNames (typeName:string | null | undefined, value?: any):string[] {
       let ret:string[] = [];
       if (typeName!=null) {
         const typeInfo = this.types.get(typeName);
@@ -402,6 +413,22 @@ function isPrimitive(valueElement: any): boolean {
     }
   } else return true;
 }
+
+function findPrimitiveType (value:any) : string | undefined {
+  if (value==null) return undefined;
+  if (Array.isArray(value)) {
+    if (value.length>0) return findPrimitiveType(value[0])+'[]';
+    else return undefined;
+  }
+  if (typeof value == 'object') {
+    // Dates are object of simple types
+    if( value instanceof Date) {
+      return 'date';
+    } else return undefined;
+  } else return (typeof value).toLowerCase();
+}
+
+
 
 /**
  * Simple description of a type: Each property is either an object itself or just a single type

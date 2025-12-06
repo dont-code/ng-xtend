@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { JsonPipe } from '@angular/common';
 import { XtComponentOutput, XtRenderComponent } from 'xt-components';
 import { FormsModule } from '@angular/forms';
 import { Panel } from 'primeng/panel';
 import { DefaultObjectSetComponent } from '../../../../default/src/lib/object-set/default-object-set.component';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-test-object-set',
@@ -25,7 +26,7 @@ export class TestObjectSetComponent {
   value = signal<any>(this.loadObject('simple') );
 
   listOfObjects() {
-    return ['simple', 'long', 'complex'];
+    return ['simple', 'long', 'complex', 'references'];
   }
 
   objectSwitch($event: AutoCompleteSelectEvent) {
@@ -95,6 +96,25 @@ export class TestObjectSetComponent {
             prop222:false
           }
         }
+      }],
+      references: [{
+        name:'Ubik',
+        authorRef:AppComponent.authorPkDick,
+        genreRef: {
+          name: 'SF'
+        }
+      },{
+        name:'Ancillaire',
+        authorRef:AppComponent.authorAnnLeckie,
+        genreRef: {
+          name: 'Space Opera'
+        }
+      },{
+        name:'Total Recall',
+        authorRef:AppComponent.authorPkDick,
+        genreRef: {
+          name: 'SF'
+        }
       }]
     }[objName];
   }
@@ -112,4 +132,9 @@ export class TestObjectSetComponent {
       })
     }
   }
+
+  valueType= computed(() => {
+    const displayedType=this.selectedObject();
+    return displayedType=='references'?'bookType':undefined;
+  });
 }

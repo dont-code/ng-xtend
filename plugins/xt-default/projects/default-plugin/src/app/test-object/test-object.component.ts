@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { updateFormGroupWithValue } from 'xt-components';
 import { Panel } from 'primeng/panel';
 import { DefaultObjectComponent } from '../../../../default/src/lib/object/default-object.component';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-test-object',
@@ -50,7 +51,7 @@ export class TestObjectComponent implements OnInit, OnDestroy {
   }
 
   listOfObjects() {
-    return ['simple', 'complex'];
+    return ['simple', 'complex', 'references'];
   }
 
   objectSwitch($event: AutoCompleteSelectEvent) {
@@ -81,6 +82,13 @@ export class TestObjectComponent implements OnInit, OnDestroy {
             prop221:new Date(),
             prop222:true
           }
+        }
+      },
+      references: {
+        name:'Ubik',
+        authorRef:AppComponent.authorPkDick,
+        genreRef: {
+          name: 'SF'
         }
       }
     }[objName];

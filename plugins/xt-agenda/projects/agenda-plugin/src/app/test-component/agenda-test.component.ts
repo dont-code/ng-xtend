@@ -47,13 +47,14 @@ export class AgendaTestComponent implements OnDestroy {
           name: 'string',
           date: 'date',
           recurrence: {
-            type: 'recurring-task',
-            referenceType: 'ONE'
+            toType: 'task-def',
+            referenceType: 'MANY-TO-ONE'
           },
           completed: 'task-complete'
         },
         compatibleTypes: ['task']
-      }
+      },
+      'task-def': 'recurring-task'
     });
 
     StoreTestBed.ensureMemoryProviderOnly();

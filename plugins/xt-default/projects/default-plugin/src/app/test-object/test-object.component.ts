@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, computed,
   inject,
   OnDestroy,
   OnInit,
@@ -117,5 +117,10 @@ export class TestObjectComponent implements OnInit, OnDestroy {
   objectComponentType() {
     return DefaultObjectComponent;
   }
+
+  valueType= computed(() => {
+    const displayedType=this.selectedObject();
+    return displayedType=='references'?'bookType':undefined;
+  });
 
 }

@@ -11,12 +11,12 @@
     <form class="m-3" id="editView" [formGroup]="mainForm()">
       <xt-render [componentType]="objectComponentType()" displayMode="FULL_EDITABLE" subName="TestObject" [formGroup]="mainForm()"></xt-render>
     </form>
-    <span class="m-3 mt-6">Form Value is {{mainForm().value | json}}, Form is {{mainForm().pristine?"pristine":"Dirty"}}</span>
+    <span class="m-3 mt-6">Form Value is <pre>{{mainForm().value | json}}</pre>, Form is {{mainForm().pristine?"pristine":"Dirty"}}</span>
   </p-panel>
   <p-panel header="View Inline Mode">
-    <xt-render id="inlineView" [componentType]="objectComponentType()" displayMode="INLINE_VIEW" [value]="value()" ></xt-render>
+    <xt-render id="inlineView" [componentType]="objectComponentType()" displayMode="INLINE_VIEW" [valueType]="valueType()" [value]="value()" ></xt-render>
   </p-panel>
   <p-panel header="Full View Mode">
-    <xt-render id="fullView" [componentType]="objectComponentType()" displayMode="FULL_VIEW" [value]="value()"></xt-render>
+    <xt-render id="fullView" [componentType]="objectComponentType()" displayMode="FULL_VIEW" [valueType]="valueType()" [value]="value()"></xt-render>
   </p-panel>
 </div>

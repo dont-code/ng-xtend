@@ -15,10 +15,13 @@ import { AuthorTestType } from './ref-test-types';
     \
   } @else {\
   @let value=displayValue();\
+  @let cont=context();\
   @if (value!=null) {\
-    @if (context().displayMode=="INLINE_VIEW") {\
-     {{value.fullName}}&nbsp;({{value.city}})\
-     }\
+    @if (cont.displayMode=="INLINE_VIEW") {\
+      {{value.fullName}}&nbsp;({{value.city}})\
+     } @else {\
+      {{value.fullName}}&nbsp; Born in {{value.city}}, the {{value.born | date}}\
+      }\
   }\
   \
   }',

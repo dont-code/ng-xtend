@@ -264,7 +264,7 @@ export class XtResolverService {
     (this.typeResolver as XtUpdatableTypeResolver).resolveAllTypeReferences();
   }
 
-  async loadAllReferencesForContext<T> (context:XtContext<T>, storeMgr: IStoreManager): Promise<void> {
+/*  async loadAllReferencesForContext<T> (context:XtContext<T>, storeMgr: IStoreManager): Promise<void> {
     const refs  =this.typeResolver.listReferences(context.valueType);
     const promises:Promise<void>[]=[];
     for (const ref of Object.keys(refs)) {
@@ -286,7 +286,6 @@ export class XtResolverService {
     }
 
   }
-
-
+*/
 
 }

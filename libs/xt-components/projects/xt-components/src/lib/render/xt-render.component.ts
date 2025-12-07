@@ -83,8 +83,8 @@ export class XtRenderComponent<T> implements AfterViewInit {
 
   realContext = computed(() => {
     let ret = this.context();
-    if ((ret.isReference()) && (ret.subReferencesResolved())) {
-      ret = ret.referencedContext!;
+    if ((ret.isReference())&& (ret.referencedContext!=null)) {
+      ret = ret.referencedContext;
     }
     return ret;
   });

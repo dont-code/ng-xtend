@@ -37,8 +37,9 @@ export type XtContext<T> = {
 
   /**
    * Signal when all the asynchronously defined subreferences are resolved.
-   */
+   *
   subReferencesResolved: WritableSignal<boolean>;
+*/
 
   // A parentContext if defined
   parentContext?:XtContext<any>;
@@ -120,7 +121,7 @@ export class XtBaseContext<T> implements XtContext<T>{
    */
   referencedContext?:XtContext<any>;
 
-  subReferencesResolved = signal(false);
+  //subReferencesResolved = signal(false);
 
   /**
    * Keeps track of all the possible actions for this context
@@ -366,7 +367,7 @@ export class XtBaseContext<T> implements XtContext<T>{
 
   setReferenceInfo (reference:XtTypeReference):void {
     this.reference=reference;
-    this.subReferencesResolved.set(this.reference!=null);
+    //this.subReferencesResolved.set(this.reference!=null);
   }
 
   /**

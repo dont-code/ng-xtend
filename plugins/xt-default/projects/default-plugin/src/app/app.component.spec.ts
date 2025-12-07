@@ -28,6 +28,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Default Plugin Testing app');
+    expect(compiled.querySelector('.text-3xl')?.textContent).toContain('Default Plugin Testing app');
   });
 });

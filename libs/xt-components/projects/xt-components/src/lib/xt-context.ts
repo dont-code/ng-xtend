@@ -32,8 +32,8 @@ export type XtContext<T> = {
   /**
    * creates the referencedContext by using this referenced value
    * @param val
-   */
-  updateReferencedContext(val: any, valueType?:string): void;
+   *
+  updateReferencedContext(val: any, valueType?:string): void;*/
 
   /**
    * Signal when all the asynchronously defined subreferences are resolved.
@@ -118,8 +118,8 @@ export class XtBaseContext<T> implements XtContext<T>{
 
   /**
    * If it's a reference, we keep the context referenced
-   */
-  referencedContext?:XtContext<any>;
+   *
+  referencedContext?:XtContext<any>;*/
 
   //subReferencesResolved = signal(false);
 
@@ -373,7 +373,7 @@ export class XtBaseContext<T> implements XtContext<T>{
   /**
    * creates the referencedContext by using this referenced value
    * @param val
-   */
+   *
   updateReferencedContext(val: any, valueType?:string): void {
     if (!this.isReference()) throw new Error ('This context '+this.toString()+' is not a reference.');
 
@@ -384,7 +384,7 @@ export class XtBaseContext<T> implements XtContext<T>{
     }
     this.referencedContext.setDisplayValue(val);
     if( valueType!=null) this.referencedContext.valueType=valueType;
-  }
+  }*/
 
   toString():string {
       let ret='XtContext named ';

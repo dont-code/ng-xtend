@@ -2,6 +2,7 @@ import { XtPluginRegistry, XtResolverService } from 'xt-components';
 import { DefaultPrimitiveComponent } from './primitive/default-primitive.component';
 import { DefaultObjectComponent } from './object/default-object.component';
 import { DefaultObjectSetComponent } from './object-set/default-object-set.component';
+import { ManyToOneRefComponent } from './reference/many-to-one-ref.component';
 
 export function registerDefaultPlugin (resolverService:XtResolverService):boolean {
   const pluginName = "Plugin Default";
@@ -22,6 +23,10 @@ export function registerDefaultPlugin (resolverService:XtResolverService):boolea
             componentClass:DefaultObjectSetComponent,
             typesHandled: [XtPluginRegistry.ANY_OBJECT_SET],
             outputs: ['valueSelected']
+          },{
+            componentName:'ManyToOneReference',
+            componentClass:ManyToOneRefComponent,
+            typesHandled: [XtPluginRegistry.ANY_SINGLE_REFERENCE]
           }
         ]
     });

@@ -2,6 +2,7 @@ import { FormGroup } from '@angular/forms';
 import { isTypeReference, XtBaseTypeReference, XtTypeHierarchy, XtTypeReference, XtTypeResolver } from 'xt-type';
 import { computed, Signal, signal, WritableSignal } from '@angular/core';
 import { XtAction } from './action/xt-action';
+import { XtPluginRegistry } from './registry/xt-plugin-registry';
 
 /**
  * A XtContext provides all the necessary information for an ng-extended component to operate. It is passed from parent to child component and pass
@@ -344,6 +345,10 @@ export class XtBaseContext<T> implements XtContext<T>{
                 ret.valueType=subType.toType;
                 ret.reference=subType;
                 if (this.displayMode=='LIST_VIEW') ret.displayMode='INLINE_VIEW'; // We display a reference as inline in a list
+                else if (this.displayMode=='FULL_EDITABLE') {
+                  // We don't edit directly references, we simply enable selection of them.
+                  ret.valueType=(subType.referenceType=='ONE-TO-MANY')?XtPluginRegistry.ANY_MULTIPLE_REFERENCE:XtPluginRegistry.ANY_SINGLE_REFERENCE;
+                }
               } else {
                 ret.valueType=(subType as XtTypeHierarchy).type;
               }

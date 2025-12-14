@@ -4,6 +4,7 @@
  * This allows plugins to potentially use xt-store whenever included in the applications running the plugin
  */
 import { Observable } from 'rxjs';
+import { TestStoreCriteria } from '../test/store-test-helper';
 
 export class StoreSupport {
 
@@ -20,6 +21,10 @@ export class StoreSupport {
 
   static setTestStoreManager (testStoreManager:IStoreManager): void {
     StoreSupport.testStoreManager = testStoreManager;
+  }
+
+  static newStoreCriteria (name:string, value:any, operator?:IStoreCriteriaOperator): IStoreCriteria {
+    return new TestStoreCriteria(name, value, operator);
   }
 
 }

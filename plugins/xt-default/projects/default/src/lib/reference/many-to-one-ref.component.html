@@ -1,0 +1,21 @@
+@if (isInForm()) {
+  <ng-container [formGroup]="formGroup()">
+    <p-autocomplete [formControlName]="formControlName()" [suggestions]="filteredReferences()" (completeMethod)="filterReferences($event)" [dropdown]="true" [fluid]="true">
+      <ng-template let-ref #item>
+        <div class="flex items-center gap-2">
+          <div><xt-render-sub [context]="contextForReference(ref)"></xt-render-sub></div>
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <div class="font-medium px-3 py-2">Available {{formControlName()}}</div>
+      </ng-template>
+      <ng-template #footer>
+        <div class="px-3 py-3">
+          <p-button label="Add New" fluid severity="secondary" text size="small" icon="pi pi-plus" />
+        </div>
+      </ng-template>
+    </p-autocomplete>
+  </ng-container>
+} @else {
+  <span class="text-red-800">Only uses ManyToOne component when editing reference.</span>
+}

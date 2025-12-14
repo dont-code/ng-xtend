@@ -33,6 +33,13 @@ export class XtPluginRegistry {
 
   public static readonly ANY_OBJECT_SET = "ANY_OBJECT_SET";
 
+  /**
+   * Whenever a component can handle any type of reference to a single entity or to multiple entities.
+   */
+  public static readonly ANY_SINGLE_REFERENCE = "ANY_SINGLE_REFERENCE";
+
+  public static readonly ANY_MULTIPLE_REFERENCE = "ANY_MULTIPLE_REFERENCE";
+
   registerPlugin (info:XtPluginInfo) {
     this.pluginRegistry.set (info.name, info);
 

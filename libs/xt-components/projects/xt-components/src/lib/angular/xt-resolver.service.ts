@@ -18,8 +18,8 @@ import { XtComponent } from '../xt-component';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { XtAction } from '../action/xt-action';
 import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
-import { IStoreManager } from '../store/store-support';
-import { firstValueFrom } from 'rxjs';
+import { IStoreManager, StoreSupport } from '../store/store-support';
+import { firstValueFrom, Observable } from 'rxjs';
 
 /**
  * An all in one helper class, enabling manipulation of the context, with data and type associated with it.
@@ -262,6 +262,17 @@ export class XtResolverService {
 
   resolvePendingReferences () {
     (this.typeResolver as XtUpdatableTypeResolver).resolveAllTypeReferences();
+  }
+
+  /**
+   * Calculates the values that can be referenced by the reference & value of this context
+   * @param context
+   */
+  findPossibleReferences<T, U> (context:XtContext<T>): Observable<U[]> {
+    if (!context.isReference()) throw new Error('Cannot find possible references of this non reference context'+context.toString());
+    const reference = context.reference!;
+    const store =StoreSupport.getStoreManager().getProviderSafe<U>(reference.toType);
+    return store.searchEntities(reference.toType );
   }
 
 /*  async loadAllReferencesForContext<T> (context:XtContext<T>, storeMgr: IStoreManager): Promise<void> {

@@ -1,5 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { isPrimitive, XtTypeResolver } from 'xt-type';
+import { isPrimitive, isTypeReference, XtTypeHierarchy, XtTypeReference, XtTypeResolver } from 'xt-type';
 
 export function   attachToFormGroup(formGroup: FormGroup, controlName:string, value:any, valueType?:string, resolver?:XtTypeResolver) {
   // If it's a single value, just create the control
@@ -28,13 +28,14 @@ export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:str
 
   for (const valueKey of keySet) {
     const subValue=(value!=null)?value[valueKey]:null;
-    const subType=resolver?.findTypeName(valueType, valueKey, subValue)??undefined;
-    const primitive = (subType!=null)?resolver?.isPrimitiveType(subType, subValue):isPrimitive(subValue);
+    const subType=resolver?.findType(valueType, valueKey, subValue)??undefined;
+    const subTypeName = isTypeReference(subType) ? subType.toType : subType?.type;
+    const primitive = resolver?.isPrimitiveType(subType, subValue);
     if (toDelete.delete(valueKey)) {
       // Already a control
       const oldControl = formGroup.get(valueKey)!;
       // Is it the right type ?
-      if (primitive) {
+      if ((primitive) || (isTypeReference(subType))) {
         // Must be an FormControl2
         if ((oldControl as any).controls === undefined) {
           // It's ok, just set the value
@@ -47,19 +48,19 @@ export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:str
         if ((oldControl as any).controls === undefined) {
           const newFormGroup = new FormGroup({});
           formGroup.setControl(valueKey, newFormGroup);
-          updateFormGroupWithValue(newFormGroup, subValue, subType, resolver);
+          updateFormGroupWithValue(newFormGroup, subValue, subTypeName, resolver);
         } else {
           // It was already a formgroup, so just update it
-          updateFormGroupWithValue(oldControl as FormGroup, subValue, subType, resolver);
+          updateFormGroupWithValue(oldControl as FormGroup, subValue, subTypeName, resolver);
         }
       }
     } else {
-      if (primitive) {
+      if ((primitive) || (isTypeReference(subType))) {
         formGroup.addControl(valueKey, new FormControl(subValue));
       } else {
         const newFormGroup = new FormGroup({});
         formGroup.addControl(valueKey, newFormGroup);
-        updateFormGroupWithValue(newFormGroup, subValue, subType, resolver);
+        updateFormGroupWithValue(newFormGroup, subValue, subTypeName, resolver);
       }
     }
   }

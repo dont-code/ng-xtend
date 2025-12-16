@@ -57,6 +57,8 @@ describe('XtResolverService', () => {
     service.registerPlugin({
       name: 'resolverTest',
       types: {
+        testString: 'string',
+        testType2:'number',
         type1: {
           subType1: 'testString'
         },

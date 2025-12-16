@@ -20,7 +20,11 @@ export class XtRegistryResolver implements XtResolver {
       const typeInfo = this.typeResolver.findType(baseContext.valueType, subName);
         // If it's a type reference, we find the component of the referenced type
       if (isTypeReference(typeInfo)) {
-        typeToFind =typeInfo.type;
+        if (baseContext.displayMode=='FULL_EDITABLE') {
+          typeToFind = XtPluginRegistry.ANY_SINGLE_REFERENCE;
+        }else {
+          typeToFind =typeInfo.toType;
+        }
       }
 
       const ret= this.registry.findComponentsForType (typeToFind, baseContext.subValue(subName));

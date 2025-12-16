@@ -8,6 +8,7 @@ import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ManyToOneRefComponent } from '../reference/many-to-one-ref.component';
+import { XtTypeInfo } from 'xt-type';
 
 describe('DefaultObjectComponent', () => {
   let resolverService: XtResolverService;
@@ -115,6 +116,26 @@ describe('DefaultObjectComponent', () => {
 
     const refComponent = objectComponent.query(By.directive(ManyToOneRefComponent));
     expect(refComponent).toBeTruthy();
+
+    // Simulate click on dropdown button to load all suggestions
+    refComponent.query(By.css('.p-autocomplete-dropdown')).nativeElement.click();
+    hostFixture.detectChanges();
+
+    await hostFixture.whenStable();
+    await hostFixture.whenStable();
+    await hostFixture.whenStable();
+
+    // Select a suggestion item
+    let suggestionItems = refComponent.queryAll(By.css('.p-autocomplete-option'));
+    suggestionItems[0].nativeElement.click();
+
+    hostFixture.detectChanges();
+    await hostFixture.whenStable();
+    await hostFixture.whenStable();
+    await hostFixture.whenStable();
+
+    // Check the value is correct
+    expect(host.createdFormGroup?.value.value['authorRef']).toEqual(philipKDick);
 
   });
 

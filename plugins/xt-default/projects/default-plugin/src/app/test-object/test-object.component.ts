@@ -10,7 +10,7 @@ import {
 import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import { XtRenderComponent } from 'xt-components';
+import { XtRenderComponent, XtResolverService } from 'xt-components';
 import { Subscription } from 'rxjs';
 import { updateFormGroupWithValue } from 'xt-components';
 import { Panel } from 'primeng/panel';
@@ -33,7 +33,8 @@ import { AppComponent } from '../app.component';
 })
 export class TestObjectComponent implements OnInit, OnDestroy {
   protected builder = inject(FormBuilder);
-  protected ref = inject(ChangeDetectorRef);
+  //protected ref = inject(ChangeDetectorRef);
+  protected resolver = inject(XtResolverService);
 
   selectedObject= signal<string>('simple');
 
@@ -46,7 +47,7 @@ export class TestObjectComponent implements OnInit, OnDestroy {
 
   constructor() {
     const newForm = new FormGroup({'TestObject': new FormGroup({})}, {updateOn: 'change'});
-    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
+    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value(), this.valueType(),this.resolver.typeResolver);
     this.mainForm.set(newForm);
   }
 
@@ -58,7 +59,7 @@ export class TestObjectComponent implements OnInit, OnDestroy {
     this.selectedObject.set($event.value);
     this.value.set(this.loadObject ($event.value));
     const newForm = new FormGroup({'TestObject': new FormGroup({})}, {updateOn: 'change'});
-    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
+    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value(), this.valueType(),this.resolver.typeResolver);
     this.mainForm.set(newForm);
     this.listenToValueChanges();
   }

@@ -14,7 +14,7 @@ export type XtTypeResolver = {
 
   listSubNames (typeName: string | null | undefined, value?: any):string[];
   listReferences (typeName: string | null | undefined):{[key:string ]: XtTypeReference};
-  isPrimitiveType (typeName: string | null | undefined, value?: any):boolean;
+  isPrimitiveType (type: string | XtTypeHierarchy| XtTypeReference | null | undefined, value?: any):boolean;
   findPrimitiveType (value:any) : XtTypeHierarchy| undefined;
   findSubPropertiesWithType<Type> (typeName:string|null|undefined, typeOfSubProperties:string):(keyof Type)[];
   calculateSubPropertiesPerType<Type> (typeName:string|null|undefined):Map<string, (keyof Type)[]>;
@@ -36,7 +36,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       if (handler==null) {
           handler = this.findTypeHandler<Type>(typeName)?.handler;
       }
-      const typeHierarchy = this.fromDescription (type, typeName,handler, undefined);
+      const typeHierarchy = this.fromDescription (type, typeName,handler);
       this.types.set (typeName, typeHierarchy);
       typeHierarchy.initHandler();
 
@@ -115,15 +115,33 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
   }
 
 
-  isPrimitiveType (typeName:string, value?:any):boolean {
-      const type=this.types.get(typeName);
-      if (type==null) {
+  isPrimitiveType (typeDef:string | XtTypeHierarchy| XtTypeReference | null | undefined, value?:any):boolean {
+
+      if (typeDef==null) {
         // No type is defined, so just check the value
         return isPrimitive(value);
-      } else if ( (type.children == null) || (Object.keys(type.children).length == 0 )) {
-        return true;
-      } else
-        return false;
+      } else {
+        let typeName:string|null=null;
+        let foundType=null;
+        if (isTypeReference(typeDef)) {
+          typeName = typeDef.toType;
+        } else if (typeof typeDef == 'string') {
+          typeName = typeDef;
+        }
+        if (typeName!=null) {
+          foundType = this.types.get(typeName);
+        }else {
+          foundType = typeDef as XtTypeHierarchy;
+        }
+
+        if (foundType==null) {
+          if ((typeName=='string') || (typeName=='number') || (typeName=='boolean') || (typeName=='date') || (typeName=='date-time') || (typeName=='time')) {
+            return true;
+          }else return false;
+        }else if ( (foundType.children == null) || (Object.keys(foundType.children).length == 0 )) {
+          return true;
+        } else return false;
+      }
     }
 
   findPrimitiveType (value:any) : XtTypeHierarchy| undefined {
@@ -243,16 +261,20 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     }
   }
 
-  fromDescription (typeHierarchy:XtTypeInfo|XtTypeDetail|string, name:string, handler?:XtTypeHandler<any>, parent?:XtTypeHierarchy): XtTypeHierarchy {
+  fromDescription (typeHierarchy:XtTypeInfo|XtTypeDetail|string, name:string, handler?:XtTypeHandler<any>): XtTypeHierarchy {
     let ret: XtBaseTypeHierarchy|null = null;
     let reference:XtTypeReference|null = null;
     if (typeof typeHierarchy == 'string') {
       // It's either a primitive or a reference to another rootType
-      //ret = this.types.get(typeHierarchy) as XtBaseTypeHierarchy??null;
-      //if( ret==null) {
+      if (!this.isPrimitiveType(typeHierarchy)) {
+          // Find the reference to an non primitive type
+        ret = this.types.get(typeHierarchy) as XtBaseTypeHierarchy??null;
+        if( ret==null) throw new Error('Type '+typeHierarchy+' not found in the type hierarchy.');
+      } else {
+          // Just create the hierarchy to the primitive type
         ret= new XtBaseTypeHierarchy(typeHierarchy, handler);
         ret.initHandler();
-      //}
+      }
     } else {
 
       ret = new XtBaseTypeHierarchy(name, handler);
@@ -274,7 +296,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
               reference = new XtBaseTypeReference(value.toType, value.field, value.type, value.referenceType);
               ret.addReference(key, reference);
             } else {
-              const newChild = this.fromDescription(value, key, subHandler??undefined, ret);
+              const newChild = this.fromDescription(value, key, subHandler??undefined);
               ret.addChild(key, newChild as XtBaseTypeHierarchy);
             }
           }
@@ -289,7 +311,7 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
           if (typeof value == 'string') {
             subHandler=this.findTypeHandler(value)?.handler;
           }
-          const newChild = this.fromDescription(value, key, subHandler??undefined, ret);
+          const newChild = this.fromDescription(value, key, subHandler??undefined);
           ret.addChild(key, newChild as XtBaseTypeHierarchy);
 
         }

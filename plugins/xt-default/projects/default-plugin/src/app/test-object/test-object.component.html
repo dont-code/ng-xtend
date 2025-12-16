@@ -9,7 +9,7 @@
   </p-panel>
   <p-panel header="Edit Mode">
     <form class="m-3" id="editView" [formGroup]="mainForm()">
-      <xt-render [componentType]="objectComponentType()" displayMode="FULL_EDITABLE" subName="TestObject" [formGroup]="mainForm()"></xt-render>
+      <xt-render [componentType]="objectComponentType()" displayMode="FULL_EDITABLE" subName="TestObject" [formGroup]="mainForm()" [valueType]="valueType()"></xt-render>
     </form>
     <span class="m-3 mt-6">Form Value is <pre>{{mainForm().value | json}}</pre>, Form is {{mainForm().pristine?"pristine":"Dirty"}}</span>
   </p-panel>

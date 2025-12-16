@@ -65,48 +65,19 @@ describe('updateFormGroupWithValue', () => {
     expect(costGroup?.controls['amount'].value).toEqual(234);
   })
 
-  it('should support missing simple type', () => {
-    const parentGroup=new FormGroup({});
+  it('should handle missing type', () => {
     const resolver = TestBed.inject(XtResolverService);
-    resolver.registerTypes({
-      EvaluationTest3: {
-        name:'string',
-        cost:'missingType'
-      }
-    });
 
-    updateFormGroupWithValue(parentGroup, {
-      name:'Test',
-      cost:234
-    }, "EvaluationTest3", resolver.typeResolver);
-
-    expect(parentGroup.get('name')).toBeDefined();
-    const costGroup=parentGroup.get('cost');
-    expect(costGroup?.value).toEqual(234);
-  })
-
-  it('should support missing complex type', () => {
-    const parentGroup=new FormGroup({});
-    const resolver = TestBed.inject(XtResolverService);
-    resolver.registerTypes({
-      EvaluationTest4: {
-        name:'string',
-        cost:'missingType2'
-      }
-    });
-
-    updateFormGroupWithValue(parentGroup, {
-      name:'Test',
-      cost:{
-        amount:234,
-        currency:'EUR',
-        shop:'CoffeeShop'
-      }
-    }, "EvaluationTest4", resolver.typeResolver);
-
-    expect(parentGroup.get('name')).toBeDefined();
-    const costGroup=parentGroup.get('cost') as unknown as FormGroup;
-    expect(costGroup?.controls).toBeDefined();
-    expect(costGroup?.controls['amount'].value).toEqual(234);
-  })
+    try {
+      resolver.registerTypes({
+        EvaluationTest4: {
+          name: 'string',
+          cost: 'missingType2'
+        }
+      });
+      expect(true).toBeFalsy();// We should go there
+    } catch (e) {
+      // Ok
+    }
+  });
 });

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { XtBaseContext, XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { XtBaseContext, XtContext, XtRenderSubComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
-import { XtTypeReference} from 'xt-type';
+import { XtTypeReference } from 'xt-type';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -12,30 +12,48 @@ import { firstValueFrom } from 'rxjs';
     AutoComplete,
     ReactiveFormsModule,
     Button,
-    XtRenderSubComponent
+    XtRenderSubComponent,
+    FormsModule
   ],
   templateUrl: './many-to-one-ref.component.html',
   styleUrl: './many-to-one-ref.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManyToOneRefComponent extends XtSimpleComponent{
+export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit{
   resolver = inject(XtResolverService);
-  filteredReferences = signal<any[]>([]);
+  filteredReferences=signal<any[]>([]);
 
   allReferences: any[] = [];
+  allSourceReferences: any[] = [];
   allReferencesLoaded = false;
+
+  /**
+   * We have to go through a ngModel for the selection as we need to calculate the displayedLabel
+   */
+  selectedReference= signal<any>(null);
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    firstValueFrom(this.resolver.findPossibleReferences(this.context())).then((references: any[]) => {
+      this.allReferences = references.map((item) => {
+        this.allSourceReferences.push(item);  // Store the original value
+        return this.addDisplayLabel(item);
+      });
+      this.allReferencesLoaded=true;
+    });
+    this.selectedReference.set(this.addDisplayLabel(this.context().formControlValue()));
+  }
+
+  addDisplayLabel(item:any):any {
+    if (item==null) return item;
+    return { displayLabel:item._id, ...item};
+  }
 
   filterReferences($event:AutoCompleteCompleteEvent):void {
     const filterValue = $event.query;
     const refInfo = this.context().reference;
     if( refInfo!=null) {
-      if (!this.allReferencesLoaded) {
-        this.allReferencesLoaded = true;
-        firstValueFrom(this.resolver.findPossibleReferences(this.context())).then ((references:any[]) => {
-          this.allReferences = references;
-          this.filteredReferences.set(this.filterPossibleReferences(refInfo, filterValue));
-        });
-      } else {
+      if (this.allReferencesLoaded) {
         this.filteredReferences.set(this.filterPossibleReferences(refInfo, filterValue));
       }
     }
@@ -43,7 +61,7 @@ export class ManyToOneRefComponent extends XtSimpleComponent{
 
   protected filterPossibleReferences (refInfo:XtTypeReference, toSearch:string ): any[] {
     if ((toSearch==null) || (toSearch.length==0)) {
-      return this.allReferences;
+      return new Array(...this.allReferences);
     } else {
       const lowerSearch=toSearch.toLowerCase();
       return this.allReferences.filter((entity) => {
@@ -65,4 +83,15 @@ export class ManyToOneRefComponent extends XtSimpleComponent{
     ret.valueType=thisContext.reference?.toType;
     return ret;
   }
+
+  changeSelection($event: any) {
+    this.selectedReference.set($event);
+    if( $event == null) {
+      this.context().setFormValue($event,true);
+    }else {
+      const ref=this.allSourceReferences.find((ref) => ref._id==$event._id);
+      this.context().setFormValue(ref,true);
+    }
+  }
+
 }

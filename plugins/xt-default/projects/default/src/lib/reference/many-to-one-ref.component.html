@@ -1,6 +1,6 @@
 @if (isInForm()) {
   <ng-container [formGroup]="formGroup()">
-    <p-autocomplete [formControlName]="formControlName()" [suggestions]="filteredReferences()" (completeMethod)="filterReferences($event)" [dropdown]="true" [fluid]="true">
+    <p-autocomplete [ngModel]="selectedReference()" (ngModelChange)="changeSelection ($event)" [ngModelOptions]="{standalone:true}" [suggestions]="filteredReferences()" (completeMethod)="filterReferences($event)" [dropdown]="true" [fluid]="true" optionLabel="displayLabel">
       <ng-template let-ref #item>
         <div class="flex items-center gap-2">
           <div><xt-render-sub [context]="contextForReference(ref)"></xt-render-sub></div>

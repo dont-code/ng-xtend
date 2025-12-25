@@ -20,7 +20,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "tslib": "^2.8.1"
+    "tslib": "^2.8.1",
+    "eta": "~4.5.0"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

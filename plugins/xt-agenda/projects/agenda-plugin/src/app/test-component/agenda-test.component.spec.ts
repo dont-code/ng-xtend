@@ -21,6 +21,7 @@ describe('TestComponent', () => {
 
     const resolver = TestBed.inject(XtResolverService);
     registerDefaultPlugin(resolver);
+    resolver.registerTypes({image:'string'});
     registerAgendaPlugin(resolver);
     fixture = TestBed.createComponent(AgendaTestComponent);
     component = fixture.componentInstance;

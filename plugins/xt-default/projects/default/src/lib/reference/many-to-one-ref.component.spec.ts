@@ -89,13 +89,12 @@ describe('ManyToOneRefComponent', () => {
     const autocomplete = hostFixture.debugElement.query(By.directive(AutoComplete));
     expect(autocomplete).toBeTruthy();
 
+    await hostFixture.whenStable(); // Ensure the list of option is loaded
+
     // Simulate click on dropdown button to load all suggestions
     autocomplete.query(By.css('.p-autocomplete-dropdown')).nativeElement.click();
     hostFixture.detectChanges();
 
-    await hostFixture.whenStable();
-    await hostFixture.whenStable();
-    await hostFixture.whenStable();
     // Check the number of suggestion items
     let suggestionItems = autocomplete.queryAll(By.directive(TestAuthorComponent));
     expect(suggestionItems.length).toBe(2);
@@ -103,10 +102,6 @@ describe('ManyToOneRefComponent', () => {
     // Select the first author
     suggestionItems[0].nativeElement.click();
     hostFixture.detectChanges();
-
-    await hostFixture.whenStable();
-    await hostFixture.whenStable();
-    await hostFixture.whenStable();
 
     // Check the value is correct
     expect(host.createdFormGroup?.value.value['authorRef']).toEqual(philipKDick);

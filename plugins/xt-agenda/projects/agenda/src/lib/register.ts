@@ -22,21 +22,21 @@ export function registerAgendaPlugin (resolverService:XtResolverService):string 
           }
         ],
         types: {
+          'task-complete': 'boolean',
+          'date-interval': {
+            every: 'number',
+            item: 'string'
+          },
+          'recurring-task': {
+            name: 'string',
+            picture: 'image',
+            occurs: 'date-interval'
+          },
           'task': {
             date: 'date',
             repetition: 'recurring-task',
             completed: 'task-complete'
-        },
-        'task-complete': 'boolean',
-        'date-interval': {
-          every: 'number',
-          item: 'string'
-        },
-        'recurring-task': {
-          name: 'string',
-          picture: 'image',
-          occurs: 'date-interval'
-        }
+          }
       },
       actionHandlers: [{
         types: ['task-complete'],

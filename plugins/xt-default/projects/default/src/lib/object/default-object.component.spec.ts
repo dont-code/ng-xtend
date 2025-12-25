@@ -1,11 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DefaultObjectComponent } from './default-object.component';
-import { HostTestTypedFormComponent, StoreSupport, StoreTestHelper, XtBaseContext, XtResolverService } from 'xt-components';
+import {
+  HostTestTypedFormComponent,
+  StoreSupport,
+  StoreTestHelper,
+  XtBaseContext,
+  XtResolverService
+} from 'xt-components';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ManyToOneRefComponent } from '../reference/many-to-one-ref.component';
 import { XtTypeInfo } from 'xt-type';
@@ -16,7 +22,7 @@ describe('DefaultObjectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DefaultObjectComponent],
-      providers:[provideZonelessChangeDetection(), provideNoopAnimations()]
+      providers:[provideZonelessChangeDetection(), provideAnimations()]
     })
     .compileComponents();
 
@@ -117,16 +123,16 @@ describe('DefaultObjectComponent', () => {
     const refComponent = objectComponent.query(By.directive(ManyToOneRefComponent));
     expect(refComponent).toBeTruthy();
 
+    await hostFixture.whenStable(); // Ensure the list of option is loaded
+
     // Simulate click on dropdown button to load all suggestions
     refComponent.query(By.css('.p-autocomplete-dropdown')).nativeElement.click();
     hostFixture.detectChanges();
 
-    await hostFixture.whenStable();
-    await hostFixture.whenStable();
-    await hostFixture.whenStable();
-
     // Select a suggestion item
-    let suggestionItems = refComponent.queryAll(By.css('.p-autocomplete-option'));
+    let suggestionItems=refComponent.queryAll(By.css('.p-autocomplete-option'));
+
+    expect(suggestionItems).toHaveLength(2);
     suggestionItems[0].nativeElement.click();
 
     hostFixture.detectChanges();

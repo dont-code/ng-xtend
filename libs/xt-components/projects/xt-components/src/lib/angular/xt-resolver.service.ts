@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, Type } from '@angular/core';
-import { XtBaseContext, XtContext } from '../xt-context';
+import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
 import { XtResolvedComponent } from '../xt-resolved-component';

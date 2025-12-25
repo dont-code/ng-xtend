@@ -87,7 +87,7 @@ export class TestObjectComponent implements OnInit, OnDestroy {
       },
       references: {
         name:'Ubik',
-        authorRef:AppComponent.authorPkDick,
+        authorRef:null,
         genreRef: {
           name: 'SF'
         }

@@ -1,12 +1,5 @@
 import { Counters, ManagedData, XtTypeHandler, xtTypeManager } from 'xt-type';
-import {
-  XtGroupBy,
-  XtGroupByAggregate,
-  XtGroupByOperation,
-  XtSortBy,
-  XtStoreCriteria,
-  XtStoreCriteriaOperator
-} from '../xt-store-parameters';
+import { XtGroupBy, XtGroupByAggregate, XtGroupByOperation, XtSortBy, XtStoreCriteria } from '../xt-store-parameters';
 
 /**
  * Helps handle metadata information about loaded items

@@ -1,16 +1,24 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { inject, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { XtResolverService } from 'xt-components';
 
 describe('AppComponent', () => {
+
+  let resolver:XtResolverService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [provideNoopAnimations(),provideZonelessChangeDetection()]
     }).compileComponents();
+
+    resolver = TestBed.inject(XtResolverService);
+    resolver.registerTypes({
+      currency: 'string'
+    });
   });
 
   it('should create the app', () => {

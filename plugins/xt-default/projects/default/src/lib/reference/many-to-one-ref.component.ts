@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { XtBaseContext, XtContext, XtRenderSubComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Button } from 'primeng/button';
-import { XtTypeReference } from 'xt-type';
+import { XtTypeHandler, XtTypeReference } from 'xt-type';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -11,7 +10,6 @@ import { firstValueFrom } from 'rxjs';
   imports: [
     AutoComplete,
     ReactiveFormsModule,
-    Button,
     XtRenderSubComponent,
     FormsModule
   ],
@@ -27,6 +25,8 @@ export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit{
   allSourceReferences: any[] = [];
   allReferencesLoaded = false;
 
+  typeHandler:XtTypeHandler<any>|null=null;
+
   /**
    * We have to go through a ngModel for the selection as we need to calculate the displayedLabel
    */
@@ -34,19 +34,27 @@ export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit{
 
   override ngOnInit(): void {
     super.ngOnInit();
-    firstValueFrom(this.resolver.findPossibleReferences(this.context())).then((references: any[]) => {
+    const context=this.context();
+    const value=context.formControlValue();
+
+    this.typeHandler =this.resolver.findTypeHandlerOf(context, undefined, value)?.handler??null;
+    firstValueFrom(this.resolver.findPossibleReferences(context)).then((references: any[]) => {
       this.allReferences = references.map((item) => {
         this.allSourceReferences.push(item);  // Store the original value
-        return this.addDisplayLabel(item);
+        return this.withDisplayLabel(item);
       });
       this.allReferencesLoaded=true;
     });
-    this.selectedReference.set(this.addDisplayLabel(this.context().formControlValue()));
+    this.selectedReference.set(this.withDisplayLabel(value));
   }
 
-  addDisplayLabel(item:any):any {
+  withDisplayLabel(item:any):any {
     if (item==null) return item;
-    return { displayLabel:item._id, ...item};
+    let displayLabel=this.typeHandler?.stringToDisplay(item);
+    if( displayLabel==null) {
+      displayLabel=item._id;
+    }
+    return { displayLabel, ...item};
   }
 
   filterReferences($event:AutoCompleteCompleteEvent):void {

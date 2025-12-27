@@ -2,6 +2,7 @@ import { ManagedData } from '../managed-data/managed-data';
 import { SpecialFields } from '../transformation/special-fields';
 import { XtTypeHierarchy, XtTypeResolver } from '../resolver/xt-type-resolver';
 import { MappingHelper } from '../transformation/mapping-helper';
+import { XtSpecialFieldsHelper } from '../transformation/xt-special-fields-helper';
 
 export type XtTypeHandler<Type> = {
   init(context:XtTypeHierarchy):void,
@@ -48,6 +49,11 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
   init (context:XtTypeHierarchy):void {
     this.type=context;
+    if (context.displayTemplate!=null) this.fields.setDisplayTemplate(context.displayTemplate);
+    if (context.numericField!=null) this.fields.setNumericValueField(context.numericField as keyof Type);
+    if (this.fields.isEmpty ()) {
+      this.fields = XtSpecialFieldsHelper.findSpecialFields(context.type, context);
+    }
   }
 
   abstract createNew (): Type;

@@ -41,6 +41,10 @@ export class SpecialFields<Type>
     this.dateFields = dateFields;
   }
 
+  isEmpty ():boolean {
+    return this.idField==null && this.dateFields==null && this.mappingFromType.size==0 && this.numericValueField==null && this.oldFields==null && this.displayTemplate==null;
+  }
+
   setMapping<FromType> (fromTypeName:string, mapping:MappingHelper<FromType, Type>)
   {
     this.mappingFromType.set(fromTypeName, mapping);

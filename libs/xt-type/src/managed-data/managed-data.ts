@@ -1,4 +1,7 @@
-
+/**
+ * A Managed data is a structure whose lifecycle (creation, destruction, persistance) is managed.
+ * It usually contains a unique identifier (usually _id).
+ */
 export type ManagedData = {
   _id?:string,
   [keys:string]: ManagedData | string | number | boolean | Date | undefined | null

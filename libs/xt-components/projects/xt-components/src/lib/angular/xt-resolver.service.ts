@@ -6,6 +6,7 @@ import { XtResolvedComponent } from '../xt-resolved-component';
 import {
   ManagedDataHandler,
   MappingHelper,
+  XtSpecialFieldsHelper,
   XtTypeHandler,
   XtTypeInfo,
   xtTypeManager,
@@ -60,7 +61,12 @@ export class XtResolverService {
   }
 
   findTypeHandlerOf<T> (baseContext:XtContext<T>, subName?:string, value?:T): {typeName?:string | null, handler?:XtTypeHandler<any>} {
-    const ret = this.typeResolver.findTypeHandler(baseContext.valueType, false, subName, value);
+    let ret:{typeName?:string | null, handler?:XtTypeHandler<any>} = {typeName:undefined, handler:undefined};
+    if (baseContext.isReference()){
+      ret = this.typeResolver.findTypeHandler(baseContext.reference!.toType, false, undefined, value);
+    }else {
+      ret = this.typeResolver.findTypeHandler(baseContext.valueType, false, subName, value);
+    }
     return ret;
   }
 

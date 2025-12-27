@@ -283,6 +283,8 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       if (isTypeDetail(typeHierarchy)) {
         if( typeHierarchy.compatibleTypes!=null)
           ret.compatibleTypes=[...typeHierarchy.compatibleTypes];
+        ret.displayTemplate=typeHierarchy.displayTemplate;
+        ret.numericField=typeHierarchy.numericField;
 
         if (typeHierarchy.children!=null) {
           for (const key of Object.keys(typeHierarchy.children)) {
@@ -344,6 +346,8 @@ export type XtTypeHierarchy = {
     children?:{[key:string]: XtTypeHierarchy | XtTypeReference} ;
     handler?:XtTypeHandler<any>;
     compatibleTypes?: string[];
+    displayTemplate?:string;
+    numericField?:string;
 
     addChild (key:string, child:XtTypeHierarchy) : void;
     addReference (key:string, child:XtTypeReference) : void;
@@ -360,6 +364,8 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
   children?:{[key:string]: XtBaseTypeHierarchy | XtTypeReference} ;
   handler?:XtTypeHandler<any>;
   compatibleTypes?: string[];
+  displayTemplate?:string;
+  numericField?:string;
 
   constructor (type:string, handler?:XtTypeHandler<any> ) {
       this.type=type;
@@ -464,6 +470,8 @@ export type XtTypeInfo = {
  */
 export type XtTypeDetail = {
   compatibleTypes?:string[];
+  displayTemplate?:string;
+  numericField?:string;
   children?:{[key:string]: XtTypeReference|XtTypeInfo|string};
 }
 
@@ -479,7 +487,7 @@ export function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeD
     return Array.isArray(toTest.compatibleTypes);
   }
   for (const sub in toTest) {
-    if ((sub!='compatibleTypes') && (sub!='children')) {
+    if ((sub!='compatibleTypes') && (sub!='children') && (sub!='displayTemplate') && (sub!='numericField')) {
       return false;
     }
   }

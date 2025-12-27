@@ -6,6 +6,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { registerFinancePlugin } from '../../../../finance/src/lib/register';
 import { XtResolverService } from 'xt-components';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { DummyCurrencyComponent } from '../dummy-currency/dummy-currency.component';
 
 describe('TestComponent', () => {
   let component: TestComponent;
@@ -20,8 +21,17 @@ describe('TestComponent', () => {
     .compileComponents();
 
     resolver = TestBed.inject(XtResolverService);
-    resolver.registerTypes({
-      currency: 'string'
+    // Add the currency plugin to allow test
+    resolver.registerPlugin({
+      name:'dummy-currency',
+      components:[{
+        componentName:'DummyCurrency',
+        componentClass: DummyCurrencyComponent,
+        typesHandled:['currency']
+      }],
+      types: {
+        currency: 'string'
+      }
     });
 
     registerFinancePlugin(TestBed.inject(XtResolverService));

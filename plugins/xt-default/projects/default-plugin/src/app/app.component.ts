@@ -91,9 +91,12 @@ export class AppComponent implements OnDestroy {
 
 const BOOK_AUTHOR_TYPES:XtTypeInfo = {
   authorType: {
-    fullName:'string',
-    city:'string',
-    born:'date',
+    displayTemplate:'<%=it.fullName%>(<%=it.city%>)',
+    children:{
+      fullName:'string',
+      city:'string',
+      born:'date'
+    }
   },
   bookGenreType: {
     name:'string'

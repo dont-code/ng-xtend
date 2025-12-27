@@ -17,16 +17,25 @@ export function registerFinancePlugin (resolverService:XtResolverService):string
         ],
       types: {
         "money-amount":{
-          currency:'currency',
-          amount:'number'
+          numericField: 'amount',
+          children:{
+            currency:'currency',
+            amount:'number'
+          }
         },
         "eur-amount":{
-          currency:'currency',
-          amount:'number'
+          numericField: 'amount',
+          children: {
+            currency: 'currency',
+            amount: 'number'
+          }
         },
         "usd-amount":{
-          currency:'currency',
-          amount:'number'
+          numericField: 'amount',
+          children: {
+            currency: 'currency',
+            amount: 'number'
+          }
         }
       }
       ,typeHandlers:[

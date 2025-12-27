@@ -100,11 +100,13 @@ describe('ManyToOneRefComponent', () => {
     expect(suggestionItems.length).toBe(2);
 
     // Select the first author
+    expect(suggestionItems[0].nativeElement.textContent).toEqual('Philip K. Dick(Chicago)');
     suggestionItems[0].nativeElement.click();
     hostFixture.detectChanges();
 
     // Check the value is correct
     expect(host.createdFormGroup?.value.value['authorRef']).toEqual(philipKDick);
+    expect(autocomplete.query(By.css('input')).nativeElement.value).toEqual('Philip K. Dick(Chicago)');
 
       // Now select another reference
     autocomplete.query(By.css('.p-autocomplete-dropdown')).nativeElement.click();
@@ -147,9 +149,12 @@ type AuthorTestType = {
 
 const BOOK_AUTHOR_TYPES:XtTypeInfo = {
   authorType: {
-    fullName:'string',
-    city:'string',
-    born:'date',
+    displayTemplate:'<%=it.fullName%>(<%=it.city%>)',
+    children:{
+      fullName:'string',
+      city:'string',
+      born:'date'
+    }
   },
   bookGenreType: {
     name:'string'
@@ -184,9 +189,7 @@ const BOOK_AUTHOR_TYPES:XtTypeInfo = {
   } @else {\
   @let value=displayValue();\
   @if (value!=null) {\
-    @if (context().displayMode=="INLINE_VIEW") {\
-     {{value.fullName}}({{value.city}})\
-     }\
+    @if (context().displayMode=="INLINE_VIEW") {{{value.fullName}}({{value.city}})}\
   }\
   \
   }',

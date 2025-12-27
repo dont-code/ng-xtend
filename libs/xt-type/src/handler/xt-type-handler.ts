@@ -25,6 +25,7 @@ export type XtTypeHandler<Type> = {
    * Simple support to display or calculate with the item
    */
   stringToDisplay(value:Type):string;
+  isDisplayTemplateSet():boolean;
   numberToCalculate(value:Type):number | undefined;
 
   getOrCreateMappingFrom<OtherType> (fromTypeName: string, registry:XtTypeResolver): MappingHelper<OtherType, Type> | undefined;
@@ -251,4 +252,9 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
     return -1;
   }
+
+  isDisplayTemplateSet():boolean {
+    return this.fields.displayTemplate!=null;
+  }
+
 }

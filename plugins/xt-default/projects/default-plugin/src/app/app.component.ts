@@ -3,7 +3,7 @@ import { EventType, Router, RouterOutlet } from '@angular/router';
 import { StoreSupport, StoreTestHelper, XtResolverService } from 'xt-components';
 import { registerDefaultPlugin } from '../../../default/src/lib/register';
 import { XtTypeInfo } from 'xt-type';
-import { AuthorTestType } from './test-types/ref-test-types';
+import { AuthorTestType, BookGenreTestType } from './test-types/ref-test-types';
 import { TestAuthorComponent } from './test-types/test-author.component';
 import { Toolbar } from 'primeng/toolbar';
 import { Button } from 'primeng/button';
@@ -58,7 +58,7 @@ export class AppComponent implements OnDestroy {
   async initReferenceData() {
     const storeMgr = StoreSupport.getStoreManager();
     const authorStore = storeMgr.getProviderSafe<AuthorTestType>('authorType');
-    //const bookStore = storeMgr.getProviderSafe<BookTestType>('bookType');
+    const bookGenreStore = storeMgr.getProviderSafe<BookGenreTestType>('bookGenreType');
 
     AppComponent.authorPkDick=await authorStore.storeEntity('authorType', {
       fullName:'Philip K. Dick',
@@ -71,6 +71,9 @@ export class AppComponent implements OnDestroy {
       city:'Toledo',
       born:new Date (1966, 3, 2)
     });
+
+    await bookGenreStore.storeEntity('bookGenreType', {name:'SF'});
+    await bookGenreStore.storeEntity('bookGenreType', {name:'Space Opera'});
 
     // We simulate a reference by injecting the entity directly
 /*    await bookStore.storeEntity('bookType', {

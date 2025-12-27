@@ -30,4 +30,12 @@ export class DefaultObjectComponent extends XtCompositeComponent {
 
     return display=='INLINE_VIEW' || display=='LIST_VIEW';
   });
+
+  canCalculateDisplayString = computed(() => {
+    return this.resolver.findTypeHandlerOf(this.context())?.handler?.isDisplayTemplateSet() ?? false;
+  });
+
+  displayString = computed(() => {
+    return this.resolver.findTypeHandlerOf(this.context())?.handler?.stringToDisplay(this.context().value());
+  });
 }

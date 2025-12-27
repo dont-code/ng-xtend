@@ -76,12 +76,12 @@ describe('PluginManagerComponent', () => {
         }
       ],
       types: {
-        'TestType21': {
-          'subProp':'TestType211'
-        },
         'TestType211': {
           'TestProperty2111':'date',
           'TestProperty2112':'boolean'
+        },
+        'TestType21': {
+          'subProp':'TestType211'
         },
         'TestType22': 'string',
         'TestType23': {

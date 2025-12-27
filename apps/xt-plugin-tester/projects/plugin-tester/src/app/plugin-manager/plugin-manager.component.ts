@@ -11,7 +11,7 @@ import {
 import { XtComponentInfo, XtPluginInfo, XtResolverService } from 'xt-components';
 import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
-import { XtTypeInfo } from 'xt-type';
+import { XtTypeDetail, XtTypeInfo, isTypeDetail } from 'xt-type';
 import { Card } from 'primeng/card';
 import { JsonPipe } from '@angular/common';
 import { Panel } from 'primeng/panel';
@@ -130,6 +130,12 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
       this.resolverService.loadPlugin(url).catch((error) => {
         this.errorHandler.errorOccurred(error, "Error while loading plugin.");
       });
+
+      try {
+        this.resolverService.resolvePendingReferences();
+      } catch (error) {
+        this.errorHandler.errorOccurred(error, "Error while resolving pending references.");
+      }
     }
   }
 
@@ -188,7 +194,7 @@ class TypeDisplayInfo {
   name:string;
   typeName?: string;
 
-  constructor(name:string, type:XtTypeInfo|string) {
+  constructor(name:string, type:XtTypeInfo|XtTypeDetail|string) {
     this.name=name;
     if (typeof type == 'string') {
       this.typeName = type;

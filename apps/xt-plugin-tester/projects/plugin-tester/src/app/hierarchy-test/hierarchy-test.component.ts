@@ -27,6 +27,10 @@ export class HierarchyTestComponent {
     // Register the edited type
     this.xtResolver.registerTypes (
       {
+        'money': {
+          amount: 'number',
+          currency: 'string'
+        },
         'TestPayment': {
           toWho: 'string',
           payment: 'money'

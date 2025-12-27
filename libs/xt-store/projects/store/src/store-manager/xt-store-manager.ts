@@ -1,7 +1,7 @@
 import { XtStoreProvider } from '../store-provider/xt-store-provider';
 import { Observable } from 'rxjs';
 import { UploadedDocumentInfo } from '../xt-document';
-import { XtStoreCriteria, XtGroupBy, XtSortBy } from '../xt-store-parameters';
+import { XtStoreCriteria, XtGroupBy, XtSortBy, XtStoreCriteriaOperator } from '../xt-store-parameters';
 import { DontCodeStorePreparedEntities } from '../store-provider/xt-store-provider-helper';
 import { XtDataTransformer } from '../store-provider/xt-data-transformer';
 import { ManagedData } from 'xt-type';
@@ -96,6 +96,10 @@ export class XtStoreManager {
 
   removeDefaultProvider(): void {
     this.removeProvider();
+  }
+
+  newStoreCriteria(name: string, value: any, operator: XtStoreCriteriaOperator): XtStoreCriteria {
+    return new XtStoreCriteria(name, value, operator);
   }
 
   storeEntity<T extends ManagedData = ManagedData>(name: string, entity: T): Promise<T> {

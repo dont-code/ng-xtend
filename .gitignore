@@ -121,3 +121,7 @@ out-tsc/
 # Heft temporary files
 .cache/
 .heft/
+/libs/xt-type/vitest.config.d.ts
+/libs/xt-type/vitest.config.d.ts.map
+/libs/xt-type/vitest.config.js
+/libs/xt-type/vitest.config.js.map

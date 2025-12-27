@@ -278,11 +278,11 @@ const TEST_MONEY_PLUGIN_INFO={
   ],
   types:
     {
+      'TestCurrency': 'string',
       'TestMoney': {
         amount: 'number',
         currency: 'TestCurrency'
-      },
-      'TestCurrency': 'string'
+      }
     }
 
 }

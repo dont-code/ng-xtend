@@ -22,6 +22,7 @@ describe('Recurring Task Handler', () => {
 
     resolver = TestBed.inject(XtResolverService);
     storeMgr = TestBed.inject(XtStoreManagerService);
+    resolver.registerTypes({ image: 'string'});
     registerAgendaPlugin(resolver);
   });
 

@@ -1,4 +1,5 @@
 import { MappingHelper } from './mapping-helper';
+import { Eta, TemplateFunction } from 'eta/core';
 
 export class SpecialFields<Type>
 {
@@ -13,6 +14,16 @@ export class SpecialFields<Type>
   idField?:keyof Type;
 
   /**
+   * Squirrelly template for calculating the string to display
+   */
+  displayTemplate?:TemplateFunction;
+
+  /**
+   * Field used to provide numerical value for calculation
+   */
+  numericValueField?:keyof Type;
+
+  /**
    * Old field names that needs to be converted to new ones when loaded from json
    */
   oldFields?:Array<OldField<Type>>;
@@ -21,6 +32,18 @@ export class SpecialFields<Type>
    * Stores the mapping from Type to another type
    */
   mappingFromType = new Map<string, MappingHelper<any, Type>> ();
+
+  protected static readonly templateEngine = new Eta();
+
+
+  constructor(idField?:keyof Type, dateFields?:Array<keyof Type>) {
+    this.idField = idField;
+    this.dateFields = dateFields;
+  }
+
+  isEmpty ():boolean {
+    return this.idField==null && this.dateFields==null && this.mappingFromType.size==0 && this.numericValueField==null && this.oldFields==null && this.displayTemplate==null;
+  }
 
   setMapping<FromType> (fromTypeName:string, mapping:MappingHelper<FromType, Type>)
   {
@@ -31,14 +54,15 @@ export class SpecialFields<Type>
     return this.mappingFromType.get(fromTypeName);
   }
 
-  addDateField(name: keyof Type) {
+  addDateField(name: keyof Type):SpecialFields<Type> {
     if (this.dateFields==null) {
       this.dateFields = new Array<keyof Type>();
     }
     this.dateFields.push(name);
+    return this;
   }
 
-  addOldField(oldName:string, newName: keyof Type) {
+  addOldField(oldName:string, newName: keyof Type):SpecialFields<Type> {
     if (this.oldFields==null) {
       this.oldFields = new Array<OldField<Type>>();
     }
@@ -46,12 +70,41 @@ export class SpecialFields<Type>
       oldFieldName:oldName,
       newFieldName:newName
     });
+    return this;
   }
 
-  clearDateFields() {
+  clearDateFields():SpecialFields<Type> {
     if( this.dateFields!=null) {
       this.dateFields.length=0;
     }
+    return this;
+  }
+
+  setDisplayTemplate (template?:string):SpecialFields<Type> {
+    if (template==null) {
+      this.displayTemplate = undefined;
+    }else {
+      // Precompile the template
+      this.displayTemplate = SpecialFields.templateEngine.compile(template);
+    }
+    return this;
+  }
+
+  runDisplayTemplate (value:Type):string|undefined {
+    if (this.displayTemplate!=null) {
+      return this.displayTemplate.call(SpecialFields.templateEngine,value as object);
+    } else {
+      return undefined;
+    }
+  }
+
+  setNumericValueField (fieldName?:keyof Type):SpecialFields<Type> {
+    this.numericValueField = fieldName;
+    return this;
+  }
+
+  static isDateType (type:string):boolean {
+    return type==='Date' || type==='string' || type==='number';
   }
 }
 

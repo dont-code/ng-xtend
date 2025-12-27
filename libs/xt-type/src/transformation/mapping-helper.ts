@@ -3,10 +3,12 @@ export class MappingHelper<FROM, TO> {
   mapFromTo= new Map<keyof FROM, keyof TO>();
   mapToFrom= new Map<keyof TO, keyof FROM>();
 
-  constructor(mappingInfo:{[key in keyof FROM]: keyof TO}) {
-    for (const prop of Object.keys(mappingInfo) as (keyof FROM)[]) {
-      this.mapFromTo.set(prop, mappingInfo[prop]);
-      this.mapToFrom.set(mappingInfo[prop], prop);
+  constructor(mappingInfo:{[key in keyof FROM]: keyof TO}|undefined) {
+    if( mappingInfo!=null) {
+      for (const prop of Object.keys(mappingInfo) as (keyof FROM)[]) {
+        this.mapFromTo.set(prop, mappingInfo[prop]);
+        this.mapToFrom.set(mappingInfo[prop], prop);
+      }
     }
   }
 
@@ -71,4 +73,29 @@ export class MappingHelper<FROM, TO> {
       parent[toName as unknown as keyof FROM] = value;
     }
   }
+}
+
+/**
+ * Mapper when no mapping is needed
+ */
+export class NoMappingHelper<TYPE> extends MappingHelper<TYPE, TYPE> {
+  constructor() {
+    super(undefined);
+  }
+
+  override to (value:TYPE | null | undefined, oldTo?:TYPE | null): TYPE | null | undefined {
+    return {...oldTo, ...value} as TYPE;
+  }
+  override from (value:TYPE | null | undefined, oldFrom?:TYPE | null): TYPE | null | undefined {
+    return {...oldFrom, ...value} as TYPE;
+  }
+
+  override getValueAs(toName: keyof TYPE, parent: TYPE ): any {
+    return parent[toName];
+  }
+
+  setValueAs(toName: keyof TYPE, parent: TYPE, value: any ) {
+    parent[toName] = value;
+  }
+
 }

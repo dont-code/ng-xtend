@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, computed,
   inject,
   OnDestroy,
   OnInit,
@@ -10,11 +10,12 @@ import {
 import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import { XtRenderComponent } from 'xt-components';
+import { XtRenderComponent, XtResolverService } from 'xt-components';
 import { Subscription } from 'rxjs';
 import { updateFormGroupWithValue } from 'xt-components';
 import { Panel } from 'primeng/panel';
 import { DefaultObjectComponent } from '../../../../default/src/lib/object/default-object.component';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-test-object',
@@ -32,7 +33,8 @@ import { DefaultObjectComponent } from '../../../../default/src/lib/object/defau
 })
 export class TestObjectComponent implements OnInit, OnDestroy {
   protected builder = inject(FormBuilder);
-  protected ref = inject(ChangeDetectorRef);
+  //protected ref = inject(ChangeDetectorRef);
+  protected resolver = inject(XtResolverService);
 
   selectedObject= signal<string>('simple');
 
@@ -45,19 +47,19 @@ export class TestObjectComponent implements OnInit, OnDestroy {
 
   constructor() {
     const newForm = new FormGroup({'TestObject': new FormGroup({})}, {updateOn: 'change'});
-    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
+    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value(), this.valueType(),this.resolver.typeResolver);
     this.mainForm.set(newForm);
   }
 
   listOfObjects() {
-    return ['simple', 'complex'];
+    return ['simple', 'complex', 'references'];
   }
 
   objectSwitch($event: AutoCompleteSelectEvent) {
     this.selectedObject.set($event.value);
     this.value.set(this.loadObject ($event.value));
     const newForm = new FormGroup({'TestObject': new FormGroup({})}, {updateOn: 'change'});
-    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value());
+    updateFormGroupWithValue (newForm.get('TestObject')! as FormGroup, this.value(), this.valueType(),this.resolver.typeResolver);
     this.mainForm.set(newForm);
     this.listenToValueChanges();
   }
@@ -81,6 +83,13 @@ export class TestObjectComponent implements OnInit, OnDestroy {
             prop221:new Date(),
             prop222:true
           }
+        }
+      },
+      references: {
+        name:'Ubik',
+        authorRef:null,
+        genreRef: {
+          name: 'SF'
         }
       }
     }[objName];
@@ -109,5 +118,10 @@ export class TestObjectComponent implements OnInit, OnDestroy {
   objectComponentType() {
     return DefaultObjectComponent;
   }
+
+  valueType= computed(() => {
+    const displayedType=this.selectedObject();
+    return displayedType=='references'?'bookType':undefined;
+  });
 
 }

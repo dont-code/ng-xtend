@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { DontCodeModelManager } from './dont-code-model-manager';
 
 describe('Model Manager', () => {

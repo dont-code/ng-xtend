@@ -1,23 +1,26 @@
 @let allSubNames=subNames();
 
 @if (displayInline()) {
-  <p-table [columns]="allSubNames" [value]="[{}]">
-    <ng-template #header>
-      <tr>
+  @if (canCalculateDisplayString()) {
+    {{displayString()}}
+  }@else {
+    <p-table [columns]="allSubNames" [value]="[{}]">
+      <ng-template #header>
+        <tr>
+          @for (subName of allSubNames; track subName) {
+            <th>{{subName}}</th>
+          }
+        </tr>
+      </ng-template>
+      <ng-template #body>
+        <tr>
         @for (subName of allSubNames; track subName) {
-          <th>{{subName}}</th>
+          <td><xt-render-sub [context]="subContext(subName)"></xt-render-sub></td>
         }
-      </tr>
-    </ng-template>
-    <ng-template #body>
-      <tr>
-      @for (subName of allSubNames; track subName) {
-        <td><xt-render-sub [context]="subContext(subName)"></xt-render-sub></td>
-      }
-      </tr>
-    </ng-template>
-  </p-table>
-
+        </tr>
+      </ng-template>
+    </p-table>
+  }
 } @else {
   <p-panel>
     @for (subName of allSubNames; track subName) {

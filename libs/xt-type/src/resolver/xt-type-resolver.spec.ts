@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { xtTypeManager } from '../globals';
-import { AbstractTypeHandler } from '../handler/xt-type-handler';
 
 describe('Xt Type Resolver', () => {
   it ('should correctly calculates properties per types', () => {
@@ -21,16 +21,27 @@ describe('Xt Type Resolver', () => {
     expect([...fromTypes.keys()].sort()).toEqual(['string', 'number', 'date'].sort());
     expect(fromTypes.get('number')).toEqual(['count','recount']);
 
-  })
+  });
+
+  it ('should correctly load complex types', () => {
+    const resolver = xtTypeManager();
+    resolver.addRootType('authorType', {
+      firstName: 'string',
+      lastName: 'string'
+    });
+    resolver.addRootType('bookType', {
+      children:{
+        name: 'string',
+        author: {
+          type: 'authorType',
+          referenceType:'ONE'
+        }
+      }
+    });
+
+    const authorRef = resolver.findReference('bookType', 'author');
+    expect(authorRef).toBeTruthy();
+    expect(authorRef?.type).toEqual('authorType');
+  });
 })
 
-class TestToTypeHandler extends AbstractTypeHandler<any> {
-    createNew() {
-        return {
-          nom: 'nom1',
-          jours: new Date(),
-          nombre: new Date().getTime()
-        }
-    }
-
-}

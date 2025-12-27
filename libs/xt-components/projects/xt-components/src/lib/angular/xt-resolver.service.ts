@@ -1,17 +1,26 @@
-import { computed, inject, Injectable, Injector, runInInjectionContext, Type } from '@angular/core';
+import { computed, inject, Injectable, Type } from '@angular/core';
 import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
 import { XtResolvedComponent } from '../xt-resolved-component';
-import { ManagedDataHandler,
-  MappingHelper, XtTypeHandler, XtTypeInfo, xtTypeManager, XtTypeResolver, XtUpdatableTypeResolver } from 'xt-type';
+import {
+  ManagedDataHandler,
+  MappingHelper,
+  XtSpecialFieldsHelper,
+  XtTypeHandler,
+  XtTypeInfo,
+  xtTypeManager,
+  XtTypeResolver,
+  XtUpdatableTypeResolver
+} from 'xt-type';
 import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { XtAction } from '../action/xt-action';
-import { IStoreProvider } from '../store/store-support';
 import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
+import { IStoreManager, StoreSupport } from '../store/store-support';
+import { firstValueFrom, Observable } from 'rxjs';
 
 /**
  * An all in one helper class, enabling manipulation of the context, with data and type associated with it.
@@ -52,7 +61,12 @@ export class XtResolverService {
   }
 
   findTypeHandlerOf<T> (baseContext:XtContext<T>, subName?:string, value?:T): {typeName?:string | null, handler?:XtTypeHandler<any>} {
-    const ret = this.typeResolver.findTypeHandler(baseContext.valueType, false, subName, value);
+    let ret:{typeName?:string | null, handler?:XtTypeHandler<any>} = {typeName:undefined, handler:undefined};
+    if (baseContext.isReference()){
+      ret = this.typeResolver.findTypeHandler(baseContext.reference!.toType, false, undefined, value);
+    }else {
+      ret = this.typeResolver.findTypeHandler(baseContext.valueType, false, subName, value);
+    }
     return ret;
   }
 
@@ -71,6 +85,7 @@ export class XtResolverService {
 
   registerTypes (types:XtTypeInfo|undefined, handlers?:XtTypeHandlerInfo<any>[]): void {
     if ((types !=null) && (this.typeResolver.canUpdate())) {
+
       for (const newType in types) {
         let handler=this.handlerDefinedFor (newType, handlers);
         if (handler==null) {
@@ -231,5 +246,63 @@ export class XtResolverService {
     }
     return undefined;
   }
+
+  async resolveReferencedValue<T,U> (context: XtContext<T>, storeMgr: IStoreManager): Promise<U | U[] | null | undefined> {
+    if (!context.isReference()) return undefined;
+    const ref= context.reference!;
+    const storeProvider = storeMgr.getProvider<U> (ref.type);
+    if (storeProvider == null) {
+      throw new Error ('No Store provider found for type '+ref.type);
+    }
+
+    const ret= await firstValueFrom(storeProvider.searchEntities(ref.toType, storeMgr.newStoreCriteria(ref.field, context.value(),'=')));
+    if (ret.length == 0) return null;
+      if (ref.referenceType=='MANY-TO-ONE') {
+        if (ret.length > 1) throw new Error('Multiple values for many to one relation between ' + context.valueType + ' and ' + ref.type + ' with value ' + context.value());
+        return ret[0];
+      } else if (ref.referenceType=='ONE-TO-MANY') {
+        return ret;
+      }
+    return undefined;
+  }
+
+  resolvePendingReferences () {
+    (this.typeResolver as XtUpdatableTypeResolver).resolveAllTypeReferences();
+  }
+
+  /**
+   * Calculates the values that can be referenced by the reference & value of this context
+   * @param context
+   */
+  findPossibleReferences<T, U> (context:XtContext<T>): Observable<U[]> {
+    if (!context.isReference()) throw new Error('Cannot find possible references of this non reference context'+context.toString());
+    const reference = context.reference!;
+    const store =StoreSupport.getStoreManager().getProviderSafe<U>(reference.toType);
+    return store.searchEntities(reference.toType );
+  }
+
+/*  async loadAllReferencesForContext<T> (context:XtContext<T>, storeMgr: IStoreManager): Promise<void> {
+    const refs  =this.typeResolver.listReferences(context.valueType);
+    const promises:Promise<void>[]=[];
+    for (const ref of Object.keys(refs)) {
+      const subContext= context.subContext(ref, undefined, this.typeResolver);
+      promises.push(this.resolveReferencedValue(subContext, storeMgr).then ((value) => {
+        subContext.updateReferencedContext(value);
+      }));
+    }
+
+    if( promises.length>0) {
+      return Promise.all(promises).then((values) => {
+        context.subReferencesResolved.set(true);
+        return;
+      });
+    } else {
+      return Promise.resolve().then (() => {
+        context.subReferencesResolved.set(true);
+      });
+    }
+
+  }
+*/
 
 }

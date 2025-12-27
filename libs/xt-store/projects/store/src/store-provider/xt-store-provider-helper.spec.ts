@@ -1,16 +1,16 @@
 import {XtStoreProviderHelper} from './xt-store-provider-helper';
 import { XtStoreGroupByAggregate, XtStoreGroupBy } from '../xt-reporting';
 import { XtGroupByOperation } from '../xt-store-parameters';
-import { ManagedData, ManagedDataHandler, xtTypeManager } from 'xt-type';
+import { ManagedData, ManagedDataHandler, SpecialFields, xtTypeManager } from 'xt-type';
 import { describe, expect, it } from 'vitest';
 
 describe('Store Provider Helper', () => {
   it('should correctly manage id fields', () => {
 
     xtTypeManager().addRootType("EntityA", {
-        "_id": "Text",
-        "name": "Text"
-    }, new ManagedDataHandler("_id"));
+        "_id": "string",
+        "name": "string"
+    }, new ManagedDataHandler(new SpecialFields("_id")));
 
     let result = XtStoreProviderHelper.findTypeHandler("EntityA");
 
@@ -28,9 +28,9 @@ describe('Store Provider Helper', () => {
     expect(toStore[0]).toStrictEqual(listToTest[0]);
 
     xtTypeManager().addRootType("EntityB", {
-      "uniqueName": "Text",
-      "firstName": "Text"
-    }, new ManagedDataHandler('uniqueName'));
+      "uniqueName": "string",
+      "firstName": "string"
+    }, new ManagedDataHandler(new SpecialFields('uniqueName')));
     result = XtStoreProviderHelper.findTypeHandler("EntityB");
     expect(result.handler?.idField()).toEqual("uniqueName");
 
@@ -55,9 +55,9 @@ describe('Store Provider Helper', () => {
   it('should correctly manage Date fields', () => {
 
     xtTypeManager().addRootType("DateEntityB", {
-      "_id":"Text",
+      "_id":"string",
       "Date":"date-time"
-    }, new ManagedDataHandler(undefined, ["Date"]));
+    }, new ManagedDataHandler(new SpecialFields (undefined,["Date"])));
     let result = XtStoreProviderHelper.findTypeHandler("DateEntityB");
 
     expect(result.handler).toBeTruthy();

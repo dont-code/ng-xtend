@@ -1,5 +1,9 @@
+import { describe, expect, it } from 'vitest';
 import { AbstractTypeHandler } from './xt-type-handler';
 import { xtTypeManager } from '../globals';
+import { SpecialFields } from '../transformation/special-fields';
+import { ManagedDataHandler } from '../managed-data/managed-data-handler';
+import { ManagedData } from '../managed-data/managed-data';
 
 describe('Type Handler', () => {
   it('should support json date translation', () => {
@@ -38,6 +42,32 @@ describe('Type Handler', () => {
     expect((json as any)._id).toBeUndefined();
   });
 
+  it ('should calculate display string', () => {
+    const handler = new ManagedDataHandler(
+      new SpecialFields<ManagedData>().setDisplayTemplate('Name: <%= it.firstName %>, <%= it.lastName %>')
+    );
+    const display=handler.stringToDisplay({
+      firstName:'John',
+      lastName:'Doe'
+    });
+
+    expect (display).toEqual('Name: John, Doe');
+  });
+
+  it ('should support numerical value', () => {
+    const handler = new ManagedDataHandler(
+      new SpecialFields<ManagedData>().setNumericValueField('amount')
+    );
+    const amount=handler.numberToCalculate({
+      firstName:'John',
+      lastName:'Doe',
+      currency:'EUR',
+      amount:34.5
+    });
+
+    expect (amount).toEqual(34.5);
+  });
+
   it('should support old field translation', () => {
     const handler = new TestTypeHandler();
     let json={
@@ -59,7 +89,7 @@ describe('Type Handler', () => {
   it('should support subType translation', () => {
     xtTypeManager().addRootType('subType', {
       newName:'string',
-      date:'Date'
+      date:'date'
     }, new SubTypeTestHandler());
 
     xtTypeManager().addRootType('complexType', {
@@ -177,7 +207,7 @@ type ToHandleType = {
 
 class TestTypeHandler extends AbstractTypeHandler<ToHandleType> {
   constructor() {
-    super('id', ['date'] );
+    super(new SpecialFields('id', ['date']) );
     this.fields.addOldField('oldName', 'newName');
   }
 
@@ -199,7 +229,7 @@ type ComplexType = {
 
 class SubTypeTestHandler extends AbstractTypeHandler<SubType> {
   constructor() {
-    super(undefined, ['date'] );
+    super(new SpecialFields(undefined, ['date']) );
     this.fields.addOldField('oldName', 'newName');
   }
 

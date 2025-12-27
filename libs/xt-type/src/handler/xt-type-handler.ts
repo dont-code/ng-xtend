@@ -2,10 +2,12 @@ import { ManagedData } from '../managed-data/managed-data';
 import { SpecialFields } from '../transformation/special-fields';
 import { XtTypeHierarchy, XtTypeResolver } from '../resolver/xt-type-resolver';
 import { MappingHelper } from '../transformation/mapping-helper';
+import { XtSpecialFieldsHelper } from '../transformation/xt-special-fields-helper';
 
 export type XtTypeHandler<Type> = {
   init(context:XtTypeHierarchy):void,
   idField():keyof Type|null,
+  getId(value: Type): any | null;
 
   fromJson (json:any):void;
   toJson (value: Type): any;
@@ -18,6 +20,13 @@ export type XtTypeHandler<Type> = {
    */
   createNew (): Type;
   safeDuplicate (value: Type): Type;
+
+  /**
+   * Simple support to display or calculate with the item
+   */
+  stringToDisplay(value:Type):string;
+  isDisplayTemplateSet():boolean;
+  numberToCalculate(value:Type):number | undefined;
 
   getOrCreateMappingFrom<OtherType> (fromTypeName: string, registry:XtTypeResolver): MappingHelper<OtherType, Type> | undefined;
 }
@@ -35,13 +44,17 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
    */
   protected static readonly NONE_MAPPING=new MappingHelper<any,any>({});
 
-  constructor(idField?:keyof Type, dateFields?:Array<keyof Type> ) {
-    this.fields.idField=idField;
-    this.fields.dateFields=dateFields;
+  constructor(specialFields?:SpecialFields<Type> ) {
+    if (specialFields!=null) this.fields=specialFields;
   }
 
   init (context:XtTypeHierarchy):void {
     this.type=context;
+    if (context.displayTemplate!=null) this.fields.setDisplayTemplate(context.displayTemplate);
+    if (context.numericField!=null) this.fields.setNumericValueField(context.numericField as keyof Type);
+    if (this.fields.isEmpty ()) {
+      this.fields = XtSpecialFieldsHelper.findSpecialFields(context.type, context);
+    }
   }
 
   abstract createNew (): Type;
@@ -72,7 +85,7 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     // Converts any subelements as well
     if (this.type?.children!=null) {
       for (const childKey in this.type.children) {
-        this.type.children[childKey].handler?.fromJson(json[childKey]);
+        (this.type.children[childKey] as any).handler?.fromJson(json[childKey]);
       }
     }
   }
@@ -93,13 +106,32 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     // Converts any subelements as well
     if (this.type?.children!=null) {
       for (const childKey in this.type.children) {
-        this.type.children[childKey].handler?.toJson([childKey as keyof Type]);
+        (this.type.children[childKey] as any).handler?.toJson([childKey as keyof Type]);
       }
     }
   }
 
   idField():keyof Type|null {
     return this.fields.idField??null;
+  }
+
+  getId(value: Type): any | null {
+    let fieldId=this.idField();
+    if (fieldId!=null) return value[fieldId];
+    else return (value as any)._id;
+  }
+
+  stringToDisplay(value: Type): string {
+    let ret= this.fields.runDisplayTemplate(value);
+    if (ret==null) {
+      ret=this.getId(value)?.toString() ?? JSON.stringify(value);
+    }
+    return ret as string;
+  }
+
+  numberToCalculate(value: Type): number | undefined {
+    if (this.fields.numericValueField!=null) return value[this.fields.numericValueField] as number;
+    return undefined;
   }
 
   dateFromJson(dateAsString: string | null | undefined): Date | null | undefined {
@@ -220,4 +252,9 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
 
     return -1;
   }
+
+  isDisplayTemplateSet():boolean {
+    return this.fields.displayTemplate!=null;
+  }
+
 }

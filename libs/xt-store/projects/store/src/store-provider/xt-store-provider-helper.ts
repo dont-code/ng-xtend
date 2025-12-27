@@ -1,12 +1,5 @@
 import { Counters, ManagedData, XtTypeHandler, xtTypeManager } from 'xt-type';
-import {
-  XtGroupBy,
-  XtGroupByAggregate,
-  XtGroupByOperation,
-  XtSortBy,
-  XtStoreCriteria,
-  XtStoreCriteriaOperator
-} from '../xt-store-parameters';
+import { XtGroupBy, XtGroupByAggregate, XtGroupByOperation, XtSortBy, XtStoreCriteria } from '../xt-store-parameters';
 
 /**
  * Helps handle metadata information about loaded items
@@ -25,11 +18,11 @@ export class XtStoreProviderHelper {
       for (const criterium of criteria) {
         const toTest = element[criterium.name as keyof T];
         switch (criterium.operator) {
-          case XtStoreCriteriaOperator.EQUALS:
+          case '=':
             return criterium.value==toTest;
-          case XtStoreCriteriaOperator.LESS_THAN:
+          case '<':
             return toTest < criterium.value;
-          case XtStoreCriteriaOperator.LESS_THAN_EQUAL:
+          case '<=':
             return toTest <= criterium.value;
           default:
             throw new Error ("Operator "+criterium.operator+" unknown");

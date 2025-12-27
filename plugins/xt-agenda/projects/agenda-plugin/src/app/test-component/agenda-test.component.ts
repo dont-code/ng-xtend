@@ -43,11 +43,18 @@ export class AgendaTestComponent implements OnDestroy {
       // Register a dummy test type for displaying properly the values
     this.resolver.registerTypes({
       'agenda-test-type': {
-        name: 'string',
-        date: 'date',
-        recurrence: 'recurring-task',
-        completed: 'task-complete'
-      }
+        children:{
+          name: 'string',
+          date: 'date',
+          recurrence: {
+            toType: 'task-def',
+            referenceType: 'MANY-TO-ONE'
+          },
+          completed: 'task-complete'
+        },
+        compatibleTypes: ['task']
+      },
+      'task-def': 'recurring-task'
     });
 
     StoreTestBed.ensureMemoryProviderOnly();

@@ -1,9 +1,5 @@
 
-export enum XtStoreCriteriaOperator {
-  EQUALS = '=',
-  LESS_THAN = '<',
-  LESS_THAN_EQUAL = '<=',
-}
+export type XtStoreCriteriaOperator = '='|'<'|'<=';
 
 export class XtStoreCriteria {
   name: string;
@@ -17,11 +13,26 @@ export class XtStoreCriteria {
   ) {
     this.name = name;
     this.value = value;
-    if (!operator) this.operator = XtStoreCriteriaOperator.EQUALS;
+    if (!operator) this.operator = '=';
     else {
       this.operator = operator;
     }
   }
+
+  filter (toFilter:any): boolean {
+    const testValue=toFilter[this.name];
+    switch (this.operator) {
+      case '=':
+        return testValue == this.value;
+      case '<':
+        return (testValue as number)<(this.value as number);
+      case '<=':
+        return (testValue as number)<(this.value as number);
+      default:
+        return true;
+    }
+  }
+
 }
 
 export type XtSortBy ={

@@ -8,6 +8,7 @@
   "exclude": [
     "**/*.spec.ts",
     "dist/**",
-    "tsup.config.ts"
+    "tsup.config.ts",
+    "vitest.config.ts"
   ]
 }

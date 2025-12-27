@@ -46,6 +46,7 @@ export class HostTestFormComponent {
   // Or set the FormGroup directly
   formGroup= input<FormGroup>();
 
+//  parentFormGroup = this.builder.group<{[keys:string]: AbstractControl}>({});
   createdFormGroup: FormGroup|null = null;
 
   computedFormGroup () {
@@ -53,6 +54,7 @@ export class HostTestFormComponent {
       const formGroup=this.formGroup();
       this.createdFormGroup=formGroup??generateFormGroup(this.formDescription());
     }
+  //  this.parentFormGroup.addControl(this.controlName()??HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
     return this.createdFormGroup;
   }
 

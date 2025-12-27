@@ -10,6 +10,7 @@ Must enable:
 - Workflow View One per category => Edit
 - Workflow New Element
 - Workflow Select from SubList => New Element
+- Workflow list + report: Display a report in realtime (total expense, monthly expense) while displaying and editing elements of the list
 
 Configuration:
 - Menu to Workflow

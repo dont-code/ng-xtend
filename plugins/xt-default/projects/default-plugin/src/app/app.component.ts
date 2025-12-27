@@ -99,7 +99,10 @@ const BOOK_AUTHOR_TYPES:XtTypeInfo = {
     }
   },
   bookGenreType: {
-    name:'string'
+    displayTemplate:'<%=it.name%>',
+    children:{
+      name:'string'
+    }
   },
   bookType: {
     children:{

@@ -23,7 +23,12 @@ export function registerWebPlugin (resolverService:XtResolverService):string {
             componentClass:WebRatingComponent,
             typesHandled: ['rating']
           }
-        ]
+        ],
+      types: {
+        'image':'string',
+        'link':'string',
+        'rating': 'number'
+      }
     });
     return pluginName;
 }

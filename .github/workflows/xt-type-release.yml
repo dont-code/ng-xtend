@@ -55,7 +55,7 @@ jobs:
 
       - name: Test
         run: |
-          node common/scripts/install-run-rush-pnpm.js -s vitest run --reporter=dot
+          node ../../common/scripts/install-run-rush-pnpm.js -s vitest run --reporter=dot
         env:
           CI: true
         working-directory: libs/xt-type
@@ -72,6 +72,6 @@ jobs:
 
       - name: publish to JSR
         run: |
-          node common/scripts/install-run-rush-pnpm.js dlx jsr publish
+          node ../../common/scripts/install-run-rush-pnpm.js dlx jsr publish
         working-directory: libs/xt-type
 

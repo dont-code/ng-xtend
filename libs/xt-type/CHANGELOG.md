@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.0...xt-type-v0.9.1) (2025-12-29)
+
+
+### Features
+
+* Reworked release-please process ([6ac77de](https://github.com/dont-code/ng-xtend/commit/6ac77dea303ea527d1fe1f59e068c220e5671db1))
+
 ## [0.9.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.0...xt-type-v0.9.0) (2025-12-29)
 
 
@@ -17,5 +24,3 @@
 * full manifest path ([5aaa12c](https://github.com/dont-code/ng-xtend/commit/5aaa12c7343c74bdbd1c61bef21fa15993848e63))
 * only release xt-type ([6ba75ac](https://github.com/dont-code/ng-xtend/commit/6ba75acaac25502e54239b8011b29374c5c1a303))
 * release please ([cce3caf](https://github.com/dont-code/ng-xtend/commit/cce3caf32bf622a0a36e1b2280c3a74378c44715))
-
-

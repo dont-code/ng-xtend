@@ -25,7 +25,7 @@ jobs:
       - id: rp
         uses: googleapis/release-please-action@v4
         with:
-          config-file: release-please-config.json
+          config-file: 'libs/xt-type/release-please-config.json'
           path: 'libs/xt-type'
 
   publish:

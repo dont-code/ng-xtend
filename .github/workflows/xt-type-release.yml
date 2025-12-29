@@ -26,6 +26,7 @@ jobs:
         uses: googleapis/release-please-action@v4
         with:
           config-file: 'libs/xt-type/release-please-config.json'
+          manifest-file: 'libs/xt-type/.release-please-manifest.json'
           path: 'libs/xt-type'
 
   publish:

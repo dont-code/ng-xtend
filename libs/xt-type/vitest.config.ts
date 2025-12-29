@@ -1,17 +1,17 @@
-// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { defineConfig } from "vitest/config";
 
-import tsconfigPaths from 'vite-tsconfig-paths';
-
-export default defineConfig(({ mode }) => ({
-  plugins: [tsconfigPaths()],
+export default defineConfig({
   test: {
-    globals: true,
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    reporters: ['default']
+    coverage: {
+      provider: "istanbul",
+      reporter: ["lcov"],
+      include: ["src/**/*.ts"],
+      thresholds: {
+        branches: 30,
+        functions: 50,
+        lines: 50,
+        statements: 40,
+      },
+    },
   },
-  define: {
-    'import.meta.vitest': mode !== 'production',
-  },
-}));
+});

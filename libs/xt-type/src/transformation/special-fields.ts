@@ -1,5 +1,5 @@
 import { MappingHelper } from './mapping-helper';
-import { Eta, TemplateFunction } from 'eta/core';
+import { Eta, type TemplateFunction } from 'eta/core';
 
 export class SpecialFields<Type>
 {

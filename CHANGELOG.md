@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.2](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.1...xt-type-v0.9.2) (2025-12-29)
+
+
+### Bug Fixes
+
+* Missing stage environment variable ([b8ab197](https://github.com/dont-code/ng-xtend/commit/b8ab197845f2554b5aa116aa5520f31611f1c097))
+
 ## [0.9.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.0...xt-type-v0.9.1) (2025-12-29)
 
 

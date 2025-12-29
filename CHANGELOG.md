@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.0...xt-type-v0.9.1) (2025-12-29)
+
+
+### Bug Fixes
+
+* fixed publish xt-type ([9a7c63b](https://github.com/dont-code/ng-xtend/commit/9a7c63b5cd34920f54120f7101180f01801e3ee9))
+
 ## [0.9.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.0...xt-type-v0.9.0) (2025-12-29)
 
 

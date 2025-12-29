@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.4](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.3...xt-type-v0.9.4) (2025-12-29)
+
+
+### Bug Fixes
+
+* Correct vitest command ([093cad6](https://github.com/dont-code/ng-xtend/commit/093cad6bfcd142f411c4203a4c9e80d4a14c7b5b))
+
 ## [0.9.3](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.2...xt-type-v0.9.3) (2025-12-29)
 
 

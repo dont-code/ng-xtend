@@ -1,6 +1,6 @@
 {
-  "name": "@bgub/ts-base",
-  "version": "1.0.2",
+  "name": "ts-type",
+  "version": "0.9.0",
   "license": "MIT",
   "exports": "./src/index.ts",
   "publish": {

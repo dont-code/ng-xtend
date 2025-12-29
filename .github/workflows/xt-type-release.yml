@@ -3,6 +3,9 @@ name: xt-type release
 on:
   push:
     branches: [main] # updates/opens the release PR when commits land on main
+    paths:
+      - 'libs/xt-type/**'
+      - '.github/workflows/xt-type-release.yml'
   workflow_dispatch:
 
 permissions:
@@ -23,8 +26,8 @@ jobs:
       - id: rp
         uses: googleapis/release-please-action@v4
         with:
-          config-file: 'libs/xt-type/release-please-config.json'
-          manifest-file: 'libs/xt-type/.release-please-manifest.json'
+          config-file: 'release-please-config.json'
+          manifest-file: '.release-please-manifest.json'
           path: 'libs/xt-type'
 
   publish:

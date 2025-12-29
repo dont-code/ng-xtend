@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.3](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.2...xt-type-v0.9.3) (2025-12-29)
+
+
+### Features
+
+* Reworked release-please process ([6ac77de](https://github.com/dont-code/ng-xtend/commit/6ac77dea303ea527d1fe1f59e068c220e5671db1))
+
 ## [0.9.2](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.1...xt-type-v0.9.2) (2025-12-29)
 
 

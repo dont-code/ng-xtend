@@ -3,9 +3,6 @@ name: xt-type release
 on:
   push:
     branches: [main] # updates/opens the release PR when commits land on main
-    paths:
-      - 'libs/xt-type/**'
-      - '.github/workflows/xt-type-release.yml'
   workflow_dispatch:
 
 permissions:

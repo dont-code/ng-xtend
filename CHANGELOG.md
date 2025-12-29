@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.3](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.2...xt-type-v0.9.3) (2025-12-29)
+
+
+### Bug Fixes
+
+* Calling the right script ([281d29e](https://github.com/dont-code/ng-xtend/commit/281d29e786de00ac794ef4dd5170d385dca58e08))
+
 ## [0.9.2](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.1...xt-type-v0.9.2) (2025-12-29)
 
 

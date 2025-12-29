@@ -55,7 +55,7 @@ jobs:
 
       - name: Test
         run: |
-          node ../../common/scripts/install-run-rush-pnpm.js -s vitest run --reporter=dot
+          node ../../common/scripts/install-run-rush-pnpm.js --rush-skip-checks vitest run --reporter=dot
         env:
           CI: true
         working-directory: libs/xt-type

@@ -50,7 +50,7 @@ jobs:
 
       - name: Build
         run: |
-          node common/scripts/install-run-rush.js build-deploy-${{env.stage}}
+          node common/scripts/install-run-rush.js build-deploy-${{env.stage}} --only xt-type
 
       - name: Test
         run: |
@@ -67,6 +67,10 @@ jobs:
           else
             npm publish --access public --provenance
           fi
+        working-directory: libs/xt-type
 
       - name: publish to JSR
-        run: pnpm dlx jsr publish
+        run: |
+          node common/scripts/install-run-rush-pnpm.js dlx jsr publish
+        working-directory: libs/xt-type
+

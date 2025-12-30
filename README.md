@@ -1,5 +1,85 @@
-# ![ng-xtend logo](docs/logos/logo-xtend-angular-red-small-transparent.png) ng-xtend Framework 
-Enable plugins in your Angular application ! 
+# ![ng-xtend logo](docs/logos/logo-xtend-angular-red-small-transparent.png) ng-xtend Framework
+
+> **Empower your Angular applications with a flexible, scalable plugin ecosystem!** 🚀
+
+[![Try Live Demo](https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen)](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
+[![GitHub license](https://img.shields.io/github/license/dont-code/ng-xtend)](LICENSE)
+
+## 💡 Why ng-xtend?
+
+The most successful web platforms—like WordPress, Nextcloud, or Drupal—thrive because of their massive plugin ecosystems. They make it effortless to extend functionality without touching the core.
+
+In the Angular & TypeScript world, achieving this level of modularity has always been a challenge. **ng-xtend was built to bridge that gap.** It allows you to build "extensible by design" applications where external teams can contribute features seamlessly.
+
+## ✨ Key Features
+
+ng-xtend is an Angular library that enables you to:
+
+*   🧩 **Define once, render anywhere:** Focus on your data structures; let plugins handle the UI.
+*   ⚡ **Dynamic Loading:** Load and install plugins at runtime—no rebuild required.
+*   💾 **Storage Agnostic:** Save, load, and update data to any backend or storage.
+*   🔌 **Seamless Interop:** Plugins work together intelligently, even without knowing each other exists.
+
+---
+
+## 📸 See it in Action
+
+### ☕ Coffee Bean Evaluation
+A real-world example of an app handling complex data (lists, views, and editions) entirely through dynamic plugins.
+[![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png)](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
+
+### 🛠️ Plugin Tester
+Curious about how plugins are dynamically injected? Try the dedicated tester:
+[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png)](https://test.dont-code.net/apps/latest/plugin-tester)
+
+---
+
+## 🛠️ Supported Plugin Types
+
+Currently, ng-xtend supports four major extension points:
+
+| Type | Description |
+| :--- | :--- |
+| **Simple Components** | Turn regular Angular components into pluggable units for specific data types. |
+| **Complex Components** | Components that provide their own extension points. *Example: A "Money" plugin delegating "Currency" selection to another plugin.* |
+| **List Components** | Effortlessly display collections of objects by delegating item rendering to the right plugins. |
+| **Action Handlers** ✨ | Add logic and actionable buttons to your UI dynamically. |
+
+---
+
+## 🚀 How it Works (The Magic)
+
+The host application doesn't need to know its plugins at compile time. It simply sets **Render Points (`xt-render`)**:
+
+1.  **Configuration:** A simple JSON file defines which plugins to load from which remote URLs.
+2.  **Registration:** Upon loading, the plugin registers itself and declares which data types or actions it supports.
+3.  **Resolution:** When ng-xtend encounters a specific type (e.g., `Rating`, `Currency`), it automatically finds and injects the correct component from the loaded plugins.
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Dynamic insertion of simple components
+- [x] Plugin registry system
+- [x] Support for complex components and lists
+- [x] Strong type support
+- [x] Remote dynamic loading
+- [x] Action components support
+- [ ] **v1.0 Release!** 🏁
+- [ ] Enhanced component selection (context-aware)
+- [ ] v2.0 & beyond
+
+---
+
+## 🧑‍💻 Getting Started
+
+### Developing a Plugin
+We use a monorepo structure powered by [Rush](https://rushjs.io/).
+```bash
+npm install -g @microsoft/rush
+rush update
+rush build
+```
 
 ## ng-xtend, what for?
 

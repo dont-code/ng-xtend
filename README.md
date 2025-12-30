@@ -26,10 +26,12 @@ ng-xtend is an Angular library that enables you to:
 
 ### ☕ Coffee Bean Evaluation
 A real-world example of an app handling complex data (lists, views, and editions) entirely through dynamic plugins.
+
 [![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png)](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
 
 ### 🛠️ Plugin Tester
 Curious about how plugins are dynamically injected? Try the dedicated tester:
+
 [![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png)](https://test.dont-code.net/apps/latest/plugin-tester)
 
 ---

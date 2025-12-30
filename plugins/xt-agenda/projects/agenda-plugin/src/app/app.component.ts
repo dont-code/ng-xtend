@@ -19,6 +19,7 @@ export class AppComponent {
     // Let's use the Test Store Helper for Web Images
     StoreTestHelper.ensureTestProviderOnly();
     registerDefaultPlugin(this.resolverService);
+    this.resolverService.registerTypes({image:'string'});
     registerAgendaPlugin(this.resolverService);
   }
 

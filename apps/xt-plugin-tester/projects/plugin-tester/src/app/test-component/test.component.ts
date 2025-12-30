@@ -89,7 +89,7 @@ export class TestComponent implements OnInit, OnDestroy {
   componentSwitch($event: AutoCompleteSelectEvent) {
     // Reset the mainForm
     this.mainForm.removeControl('TestComponent');
-    attachToFormGroup(this.mainForm,'TestComponent',{},this.findTypeFor ($event.value), this.xtResolver.typeResolver);
+    attachToFormGroup(this.mainForm,'TestComponent',null,this.findTypeFor ($event.value), this.xtResolver.typeResolver);
     this.component.set($event.value);
   }
 

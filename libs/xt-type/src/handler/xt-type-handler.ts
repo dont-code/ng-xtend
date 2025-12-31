@@ -57,7 +57,29 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     }
   }
 
-  abstract createNew (): Type;
+  createNew (): Type {
+    // Try to create an element of the right type
+    const targetType = this.type?.type;
+    if (targetType!=null) {
+      switch (targetType) {
+        case 'string': return '' as Type;
+        case 'number': return 0 as Type;
+        case 'boolean': return false as Type;
+        case 'date':
+        case 'time':
+        case 'date-time':
+          return new Date() as Type;
+        default:
+          if (targetType.includes('[]'))
+            return [] as Type;
+          else
+            return { } as Type;
+      }
+    }
+
+    return { } as Type;
+
+  }
 
   fromJson(json: any): void {
     if( json==null) return;

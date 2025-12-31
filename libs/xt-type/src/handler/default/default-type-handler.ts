@@ -10,8 +10,4 @@ export class DefaultTypeHandler<Type> extends AbstractTypeHandler<Type> {
         if (fields?.idField!=null) throw new Error('DefaultTypeHandler does not support idField. Use ManagedDataHandler instead.');
     }
 
-    createNew(): Type {
-        return {} as Type;
-    }
-
 }

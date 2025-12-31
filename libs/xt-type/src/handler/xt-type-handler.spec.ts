@@ -4,6 +4,8 @@ import { xtTypeManager } from '../globals';
 import { SpecialFields } from '../transformation/special-fields';
 import { ManagedDataHandler } from '../managed-data/managed-data-handler';
 import { ManagedData } from '../managed-data/managed-data';
+import { DefaultTypeHandler } from './default/default-type-handler.ts';
+import { XtBaseTypeHierarchy } from '../resolver/xt-type-resolver.ts';
 
 describe('Type Handler', () => {
   it('should support json date translation', () => {
@@ -194,7 +196,20 @@ describe('Type Handler', () => {
 
     const mapping = testToHandler.getOrCreateMappingFrom('fromBadType', resolver);
     expect(mapping).toBeUndefined();
-  })
+  });
+
+  it ('should create correct new values', () => {
+    let defaultHandler=new DefaultTypeHandler();
+    let typeHierarchy=new XtBaseTypeHierarchy('string', defaultHandler);
+    typeHierarchy.initHandler();
+
+    expect(defaultHandler.createNew()).toEqual('');
+
+    defaultHandler=new DefaultTypeHandler();
+    typeHierarchy=new XtBaseTypeHierarchy('pizza', defaultHandler);
+    typeHierarchy.initHandler();
+    expect(defaultHandler.createNew()).toEqual({});
+  });
 
 });
 

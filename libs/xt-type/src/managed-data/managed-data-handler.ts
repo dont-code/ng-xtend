@@ -18,10 +18,6 @@ export class ManagedDataHandler<Type extends ManagedData = ManagedData> extends 
     this.findDateFields();
   }
 
-  createNew(): Type {
-    return { } as Type;
-  }
-
   protected findDateFields () {
     if (this.type?.children!=null) {
       this.fields.clearDateFields();

@@ -2,7 +2,7 @@
   <ng-container [formGroup]="formGroup()">
     @switch (typeOf ()) {
       @case ("number") {
-        <p-inputnumber mode="decimal" [name]="componentNameInForm ()" [formControlName]="formControlName()" [fluid]="true"></p-inputnumber>
+        <p-inputnumber mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="2" [name]="componentNameInForm ()" [formControlName]="formControlName()" [fluid]="true"></p-inputnumber>
       }
       @case ("bigint") {
         <p-inputnumber [name]="componentNameInForm ()" [formControlName]="formControlName()" [fluid]="true"></p-inputnumber>
@@ -25,5 +25,29 @@
     }
   </ng-container>
 } @else {
-  {{ displayValue() }}
+  @let value=displayValue();
+  @switch (typeOf ()) {
+    @case ("number") {
+      {{value | number}}
+    }
+    @case ("bigint") {
+      {{value | number}}
+    }
+    @case ("boolean") {
+      <p-checkbox [binary]="true" [readonly]="true" [disabled]="true" [ngModel]="value" />
+    }
+    @case ("time") {
+      {{ value | date: 'mediumTime'}}
+    }
+    @case ("date") {
+      {{ value | date: 'mediumDate'}}
+    }
+    @case ("date-time") {
+      {{ value | date: 'medium'}}
+    }
+    @default {
+      {{ value }}
+    }
+  }
+
 }

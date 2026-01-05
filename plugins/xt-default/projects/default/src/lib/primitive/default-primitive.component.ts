@@ -9,12 +9,13 @@ import {
   signal
 } from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
 import { Checkbox } from 'primeng/checkbox';
 import { InputNumber } from 'primeng/inputnumber';
 import { DatePicker } from 'primeng/datepicker';
 import { Subscription } from 'rxjs';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 /**
  * Displays / edits primitive types (string, numeric) using text inputs to ensure at least something is managed.
@@ -26,7 +27,10 @@ import { Subscription } from 'rxjs';
     InputText,
     Checkbox,
     InputNumber,
-    DatePicker
+    DatePicker,
+    DecimalPipe,
+    FormsModule,
+    DatePipe
   ],
   templateUrl: './default-primitive.component.html',
   styleUrl: './default-primitive.component.css',

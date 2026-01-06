@@ -17,10 +17,26 @@
       "draft": false,
       "prerelease": false
     },
+    "plugins/xt-idb-store": {
+      "release-type": "node",
+      "package-name": "xt-idb-store",
+      "extra-files": ["projects/idb-store/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
+    },
     "libs/xt-components": {
       "release-type": "node",
       "package-name": "xt-components",
       "extra-files": ["projects/xt-components/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
+    },
+    "libs/xt-plugin-sample": {
+      "release-type": "node",
+      "package-name": "xt-plugin-sample",
+      "extra-files": ["projects/sample/package.json"],
       "prerelease-type": "beta",
       "draft": false,
       "prerelease": false
@@ -32,6 +48,46 @@
       "prerelease-type": "beta",
       "draft": false,
       "prerelease": false
+    },
+    "plugins/xt-intl": {
+      "release-type": "node",
+      "package-name": "xt-plugin-intl",
+      "extra-files": ["projects/intl/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
+    },
+    "plugins/xt-finance": {
+      "release-type": "node",
+      "package-name": "xt-plugin-finance",
+      "extra-files": ["projects/finance/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
+    },
+    "plugins/xt-web": {
+      "release-type": "node",
+      "package-name": "xt-plugin-web",
+      "extra-files": ["projects/web/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
+    },
+    "plugins/xt-agenda": {
+      "release-type": "node",
+      "package-name": "xt-plugin-agenda",
+      "extra-files": ["projects/agenda/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
     }
-  }
+
+  },
+  "plugins": [ {
+    "type": "linked-versions",
+    "groupName": "xt-components",
+    "components": [
+      "xt-store", "xt-idb-store","xt-components","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda"
+    ]
+  }]
 }

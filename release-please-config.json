@@ -87,7 +87,7 @@
     "type": "linked-versions",
     "groupName": "xt-components",
     "components": [
-      "xt-store", "xt-idb-store","xt-components","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda"
+      "xt-store", "xt-idb-store","xt-components","xt-plugin-sample","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda"
     ]
   }]
 }

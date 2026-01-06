@@ -1,6 +1,6 @@
 {
   "name": "xt-components",
-  "version": "0.0.1",
+  "version": "0.5.5",
   "peerDependencies": {
     "@angular/animations": "^20.2.3",
     "@angular/common": "^20.2.3",

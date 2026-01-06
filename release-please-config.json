@@ -8,6 +8,13 @@
       "prerelease-type": "beta",
       "draft": false,
       "prerelease": false
+    },
+    "libs/xt-components": {
+      "release-type": "node",
+      "package-name": "xt-components",
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
     }
   }
 }

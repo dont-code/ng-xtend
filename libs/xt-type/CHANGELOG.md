@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.0...xt-type-v0.10.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* Force release 0.9.1 ([c3291d3](https://github.com/dont-code/ng-xtend/commit/c3291d3186a6061f870a7fc4738e95664e363feb))
+
 ## [0.10.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.9.0...xt-type-v0.10.0) (2026-01-04)
 
 

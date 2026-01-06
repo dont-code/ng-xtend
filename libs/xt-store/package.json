@@ -1,6 +1,6 @@
 {
   "name": "xt-store",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,7 +13,6 @@
     "directory": "dist/store",
     "linkDirectory": true
   },
-
   "private": false,
   "dependencies": {
     "@angular/animations": "^20.3.9",
@@ -36,7 +35,7 @@
     "happy-dom": "^18.0.1",
     "ng-packagr": "^20.3.0",
     "typescript": "^5.9.3",
-    "@analogjs/vite-plugin-angular":"^1.22.4",
+    "@analogjs/vite-plugin-angular": "^1.22.4",
     "@analogjs/vitest-angular": "^1.22.4",
     "jsdom": "^26.1.0",
     "vite": "^7.1.12",

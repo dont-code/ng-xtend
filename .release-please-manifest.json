@@ -1,3 +1,3 @@
 {
-  "libs/xt-type":"0.10.0", "libs/xt-components": "0.5.5"
+  "libs/xt-type":"0.10.0", "libs/xt-components": "0.5.5", "libs/xt-store": "0.5.5", "plugins/xt-default": "0.5.5"
 }

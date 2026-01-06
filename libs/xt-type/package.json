@@ -1,6 +1,6 @@
 {
   "name": "xt-type",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Simple but powerful typescript library for dynamic type support.",
   "keywords": [
     "dynamic type",

@@ -1,4 +1,4 @@
-name: xt-type release
+name: versioning release
 
 on:
   push:

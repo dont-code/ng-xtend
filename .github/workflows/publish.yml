@@ -44,10 +44,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Display Versions
         run: |
-          XT-TYPE-VERSION=$(node -p "require('./libs/xt-type/package.json').version")
-          echo "XT-TYPE-VERSION : $XT-TYPE-VERSION"
-          XT-VERSION=$(node -p "require('./libs/xt-components/package.json').version")
-          echo "XT-VERSION : $XT-VERSION"
+          XT_TYPE_VERSION=$(node -p "require('./libs/xt-type/package.json').version")
+          echo "XT_TYPE_VERSION : $XT_TYPE_VERSION"
+          XT_VERSION=$(node -p "require('./libs/xt-components/package.json').version")
+          echo "XT_VERSION : $XT_VERSION"
       - name: Install
         run: |
           node common/scripts/install-run-rush.js install

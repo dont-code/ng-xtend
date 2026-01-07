@@ -44,9 +44,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Display Versions
         run: |
-          XT-TYPE-VERSION=$(node -p "require('libs/xt-type/package.json').version")
+          XT-TYPE-VERSION=$(node -p "require('./libs/xt-type/package.json').version")
           echo "XT-TYPE-VERSION : $XT-TYPE-VERSION"
-          XT-VERSION=$(node -p "require('libs/xt-components/package.json').version")
+          XT-VERSION=$(node -p "require('./libs/xt-components/package.json').version")
           echo "XT-VERSION : $XT-VERSION"
       - name: Install
         run: |

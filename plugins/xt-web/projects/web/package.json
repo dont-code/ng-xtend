@@ -1,6 +1,9 @@
 {
   "name": "xt-plugin-web",
   "version": "0.6.0",
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
   "peerDependencies": {
     "@angular/animations": "^20.2.3",
     "@angular/common": "^20.2.3",

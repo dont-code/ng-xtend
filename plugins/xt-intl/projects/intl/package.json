@@ -1,6 +1,9 @@
 {
   "name": "xt-plugin-intl",
   "version": "0.6.0",
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
   "peerDependencies": {
     "@angular/animations": "^19.0.5",
     "@angular/common": "^19.0.5",

@@ -13,7 +13,7 @@
     "@angular/platform-browser": "^20.2.3",
     "@angular/platform-browser-dynamic": "^20.2.3",
     "@angular/router": "^20.2.3",
-    "xt-components": "workspace:^",
+    "xt-components": "^0.6.0",
     "rxjs": "^7.8.2",
     "primeng": "^20.0.1",
     "primeicons": "^7.0.0"

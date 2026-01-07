@@ -1,6 +1,6 @@
 {
   "name": "xt-plugin-intl",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "peerDependencies": {
     "@angular/animations": "^19.0.5",
     "@angular/common": "^19.0.5",

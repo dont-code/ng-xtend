@@ -1,6 +1,6 @@
 {
   "name": "xt-idb-store",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -31,7 +31,7 @@
     "@angular-devkit/build-angular": "^20.3.8",
     "@angular/cli": "^20.3.8",
     "@angular/compiler-cli": "^20.3.9",
-    "@analogjs/vite-plugin-angular":"^1.22.4",
+    "@analogjs/vite-plugin-angular": "^1.22.4",
     "@analogjs/vitest-angular": "^1.22.4",
     "jsdom": "^26.1.0",
     "vite": "^7.1.12",

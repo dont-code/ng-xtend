@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v0.6.0...xt-store-v0.6.0) (2026-01-07)
+
+
+### Miscellaneous Chores
+
+* **xt-store:** Synchronize xt-components versions
+
 ## [0.6.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v0.5.5...xt-store-v0.6.0) (2026-01-06)
 
 

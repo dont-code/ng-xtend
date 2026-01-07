@@ -1,6 +1,6 @@
 {
   "name": "xt-plugin-finance",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -45,7 +45,7 @@
     "@angular/build": "^20.3.8",
     "ng-packagr": "^20.3.0",
     "typescript": "^5.9.3",
-    "@analogjs/vite-plugin-angular":"^1.22.4",
+    "@analogjs/vite-plugin-angular": "^1.22.4",
     "@analogjs/vitest-angular": "^1.22.4",
     "jsdom": "^26.1.0",
     "vite": "^7.1.12",

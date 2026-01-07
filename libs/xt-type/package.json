@@ -35,7 +35,9 @@
     "size": "size-limit"
   },
   "author": "Ng-Xtend <contact@ng-xtend.dev>",
-  "repository": "github:dont-code/ng-xtend",
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
   "bugs": {
     "url": "https://github.com/dont-code/ng-xtend/issues"
   },

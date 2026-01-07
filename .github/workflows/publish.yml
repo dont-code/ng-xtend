@@ -56,6 +56,7 @@ jobs:
           node common/scripts/install-run-rush.js build-deploy-${{env.stage}}
       - name: Publish libraries to ${{env.stage}}
         run: |
+          unset NODE_AUTH_TOKEN
           cd libs/xt-type
           node ../../common/scripts/install-run-rush-pnpm.js publish --access public --tag ${{env.stage}}
           cd ../..
@@ -64,6 +65,7 @@ jobs:
           npm publish libs/xt-plugin-sample/dist/xt-plugin-sample --access public --tag ${{env.stage}}
       - name: Publish plugins to ${{env.stage}}
         run: |
+          unset NODE_AUTH_TOKEN
           npm publish plugins/xt-idb-store/dist/store --access public --tag ${{env.stage}}
           npm publish plugins/xt-default/dist/xt-plugin-default --access public --tag ${{env.stage}}
           npm publish plugins/xt-web/dist/xt-plugin-web --access public --tag ${{env.stage}}

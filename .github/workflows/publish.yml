@@ -60,15 +60,15 @@ jobs:
           cd libs/xt-type
           node ../../common/scripts/install-run-rush-pnpm.js publish --access public --tag ${{env.stage}}
           cd ../..
-          npm publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
-          npm publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}
-          npm publish libs/xt-plugin-sample/dist/xt-plugin-sample --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish libs/xt-plugin-sample/dist/xt-plugin-sample --access public --tag ${{env.stage}}
       - name: Publish plugins to ${{env.stage}}
         run: |
           unset NODE_AUTH_TOKEN
-          npm publish plugins/xt-idb-store/dist/store --access public --tag ${{env.stage}}
-          npm publish plugins/xt-default/dist/xt-plugin-default --access public --tag ${{env.stage}}
-          npm publish plugins/xt-web/dist/xt-plugin-web --access public --tag ${{env.stage}}
-          npm publish plugins/xt-intl/dist/xt-plugin-intl --access public --tag ${{env.stage}}
-          npm publish plugins/xt-finance/dist/xt-plugin-finance --access public --tag ${{env.stage}}
-          npm publish plugins/xt-agenda/dist/xt-plugin-agenda --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish plugins/xt-idb-store/dist/store --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish plugins/xt-default/dist/xt-plugin-default --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish plugins/xt-web/dist/xt-plugin-web --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish plugins/xt-intl/dist/xt-plugin-intl --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish plugins/xt-finance/dist/xt-plugin-finance --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish plugins/xt-agenda/dist/xt-plugin-agenda --access public --tag ${{env.stage}}

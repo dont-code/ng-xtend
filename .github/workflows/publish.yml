@@ -12,6 +12,9 @@ on:
         type: string
         default: 'main'
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
 
 jobs:
   build:
@@ -20,10 +23,6 @@ jobs:
       stage: ${{ inputs.next == true && 'next' || 'latest' }}
       build: ${{ inputs.next == true && 'next' || 'production' }}
       ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'
-
-    permissions:
-      id-token: write  # Required for OIDC
-      contents: read
 
     runs-on: ubuntu-latest
 
@@ -58,7 +57,7 @@ jobs:
       - name: Publish libraries to ${{env.stage}}
         run: |
           cd libs/xt-type
-          npm publish --access public --tag ${{env.stage}}
+          node common/scripts/install-run-rush-pnpm.js publish --access public --tag ${{env.stage}}
           cd ../..
           npm publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
           npm publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}

@@ -25,10 +25,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        browser: [chromium]
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,13 +47,32 @@ jobs:
       - name: Build
         run: |
           node common/scripts/install-run-rush.js build-deploy-${{ env.stage }}
+      - name: Prepare files to deploy
+        run: |
+          mkdir -p ./to-deploy/${{env.stage}}
+          mv ./dist/${{env.stage}}/plugin-tester/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/plugin-tester 
+          mv ./dist/${{env.stage}}/host/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/host 
+          mv ./dist/${{env.stage}}/sample-plugin/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/sample-plugin 
+          mv ./dist/${{env.stage}}/default-plugin/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/default-plugin 
+          mv ./dist/${{env.stage}}/intl-plugin/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/intl-plugin 
+          mv ./dist/${{env.stage}}/web-plugin/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/web-plugin 
+          mv ./dist/${{env.stage}}/finance-plugin/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/finance-plugin 
+          mv ./dist/${{env.stage}}/agenda-plugin/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/agenda-plugin
       - name: Deploy to test.dont-code.net apps with ${{env.stage}}
-        if: ${{ success() && (matrix.browser == 'chromium') && ( inputs.deploy == true ) }}
+        if: inputs.deploy == true
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
           username: ${{secrets.DONTCODE_APPS_WEBSITE_USER}}
           password: ${{secrets.DONTCODE_APPS_WEBSITE_PASSWORD}}
-          local_path: './dist/${{env.stage}}/*'
+          local_path: './to-deploy/${{env.stage}}/*'
           remote_path: '/www/${{env.stage}}'
           server: 'test.${{secrets.DONTCODE_WEBSITE_HOST}}'
           port: ${{secrets.DONTCODE_WEBSITE_SSH_PORT}}

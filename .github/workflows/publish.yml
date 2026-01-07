@@ -6,24 +6,25 @@ on:
         description: Is it a dev / next release ?
         required: true
         type: boolean
-      version:
-        description: The version of the release, if needed (x.y.z-p)
-        required: false
+      branch:
+        description: Branch to publish from
+        required: true
         type: string
+        default: 'main'
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   build:
     env:
-      branch: ${{ inputs.next == true && 'Development' || 'main' }}
+      branch: ${{ inputs.branch }}
       stage: ${{ inputs.next == true && 'next' || 'latest' }}
       build: ${{ inputs.next == true && 'next' || 'production' }}
-      version: ${{ inputs.next == true && 'patch' || 'minor' }}
       ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'
 
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        browser: [chromium]
 
     steps:
       - uses: actions/checkout@v4
@@ -35,108 +36,18 @@ jobs:
       - name: Git config user
         uses: snow-actions/git-config-user@v1.0.0
         with:
-          name: Dont-code
-          email: developer@dont-code.net
+          name: Ng-Xtend team
+          email: contact@ng-xtend.dev
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
-      - name: Set libs & plugins versions
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version != '') }}
+      - name: Display Versions
         run: |
-          PACKAGE_VERSION=${{inputs.version}}
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          cd libs/xt-type
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd ../xt-store
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd projects/store
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../xt-components
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd projects/xt-components
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../xt-plugin-sample
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd projects/sample
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../../plugins/xt-web
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd projects/web
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../../plugins/xt-idb-store
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd projects/idb-store
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd ../../../xt-default
-          npm version $PACKAGE_VERSION --allow-same-version
-          cd projects/default
-          npm version $PACKAGE_VERSION --allow-same-version
-      - name: Increase xt-type version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view xt-type versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-        working-directory: 'libs/xt-type'
-      - name: Increase xt-store version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view xt-store versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-        working-directory: 'libs/xt-store'
-      - name: Increase xt-components version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view xt-components versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-        working-directory: 'libs/xt-components'
-      - name: Increase xt-idb-store version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view xt-idb-store versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-        working-directory: 'plugins/xt-idb-store'
-      - name: Increase xt-plugin-sample version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view xt-plugin-sample versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-          cd projects/sample
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-        working-directory: 'libs/xt-plugin-sample'
-      - name: Increase xt-plugin-default version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view xt-plugin-default versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-          cd projects/default
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-        working-directory: 'plugins/xt-default'
-      - name: Increase xt-plugin-web version
-        if: ${{ ( matrix.browser == 'chromium' ) && ( inputs.version == '') }}
-        run: |
-          PACKAGE_VERSION=$(npm view xt-plugin-web versions --json | jq -r '.[-1]')
-          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-          cd projects/web
-          npm version $PACKAGE_VERSION --allow-same-version
-          npm version ${{env.version}}
-        working-directory: 'plugins/xt-web'
+          XT-TYPE-VERSION=$(node -p "require('libs/xt-type/package.json').version")
+          echo "XT-TYPE-VERSION : $XT-TYPE-VERSION"
+          XT-VERSION=$(node -p "require('libs/xt-components/package.json').version")
+          echo "XT-VERSION : $XT-VERSION"
       - name: Install
         run: |
           node common/scripts/install-run-rush.js install
@@ -144,18 +55,18 @@ jobs:
         run: |
           node common/scripts/install-run-rush.js build-deploy-${{env.stage}}
       - name: Publish libraries to ${{env.stage}}
-        if: ${{ success() && ( matrix.browser == 'chromium' ) }}
         run: |
+          cd libs/xt-type
+          npm publish --access public --tag ${{env.stage}}
+          cd ../..
           npm publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
           npm publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}
           npm publish libs/xt-plugin-sample/dist/xt-plugin-sample --access public --tag ${{env.stage}}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish plugins to ${{env.stage}}
-        if: ${{ success() && ( matrix.browser == 'chromium' ) }}
         run: |
           npm publish plugins/xt-idb-store/dist/store --access public --tag ${{env.stage}}
           npm publish plugins/xt-default/dist/xt-plugin-default --access public --tag ${{env.stage}}
           npm publish plugins/xt-web/dist/xt-plugin-web --access public --tag ${{env.stage}}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm publish plugins/xt-intl/dist/xt-plugin-intl --access public --tag ${{env.stage}}
+          npm publish plugins/xt-finance/dist/xt-plugin-finance --access public --tag ${{env.stage}}
+          npm publish plugins/xt-agenda/dist/xt-plugin-agenda --access public --tag ${{env.stage}}

@@ -57,7 +57,7 @@ jobs:
       - name: Publish libraries to ${{env.stage}}
         run: |
           cd libs/xt-type
-          node common/scripts/install-run-rush-pnpm.js publish --access public --tag ${{env.stage}}
+          node ../../common/scripts/install-run-rush-pnpm.js publish --access public --tag ${{env.stage}}
           cd ../..
           npm publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
           npm publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}

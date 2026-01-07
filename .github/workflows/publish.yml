@@ -38,10 +38,9 @@ jobs:
         with:
           name: Ng-Xtend team
           email: contact@ng-xtend.dev
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
-          registry-url: 'https://registry.npmjs.org'
       - name: Display Versions
         run: |
           XT_TYPE_VERSION=$(node -p "require('./libs/xt-type/package.json').version")

@@ -93,8 +93,13 @@ describe('DefaultObjectSetComponent', () => {
       return ret;
     });
 
-    expect(secondElementValues).toEqual(['hola',new Date(1972, 2, 2).toString(), "12", "true"]);
-  }),
+    expect(secondElementValues).toEqual(['hola','Mar 2, 1972', "12", ""]);
+    const booleanCheckbox = rows[1].query(By.css('input[type="checkbox"]'));
+    expect(booleanCheckbox).toBeDefined();
+    expect(booleanCheckbox.properties['readOnly']).toBeTruthy();
+    expect(booleanCheckbox.properties['disabled']).toBeTruthy();
+    expect(booleanCheckbox.properties['value']).toEqual('on');
+  });
 
   it('should enable element selection', () => {
     let component: DefaultObjectSetComponent<TestData>;

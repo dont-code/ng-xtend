@@ -10,6 +10,13 @@
     "test": "cd projects/idb-store && ../../node_modules/.bin/vitest"
   },
   "private": false,
+  "publishConfig": {
+    "directory": "dist/store",
+    "linkDirectory": true
+  },
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
   "dependencies": {
     "@angular/animations": "^20.3.9",
     "@angular/common": "^20.3.9",

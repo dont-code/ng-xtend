@@ -10,6 +10,9 @@
     "test": "cd projects/plugin-tester && ../../node_modules/.bin/vitest"
   },
   "private": false,
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
   "dependencies": {
     "@angular/animations": "^20.3.9",
     "@angular/common": "^20.3.9",

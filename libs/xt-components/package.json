@@ -9,6 +9,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/xt-components && ../../node_modules/.bin/vitest && cd ../tester-app && ../../node_modules/.bin/vitest"
   },
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
   "publishConfig": {
     "directory": "dist/xt-components",
     "linkDirectory": true

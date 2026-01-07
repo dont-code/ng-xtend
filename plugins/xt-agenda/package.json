@@ -13,6 +13,9 @@
     "directory": "dist/xt-plugin-agenda",
     "linkDirectory": true
   },
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
   "private": false,
   "dependencies": {
     "@angular/animations": "^20.3.9",

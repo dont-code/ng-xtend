@@ -1,6 +1,6 @@
 {
   "name": "xt-plugin-intl",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +8,6 @@
     "build-deploy": "APP=intl-plugin && MAIN_LIB=intl && ng build $MAIN_LIB --configuration=$BUILD && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://test.dont-code.net/apps/$STAGE/$APP/\"",
     "watch": "ng build --watch --configuration=development",
     "test": "cd projects/intl && ../../node_modules/.bin/vitest && cd ../intl-plugin && ../../node_modules/.bin/vitest"
-
   },
   "publishConfig": {
     "directory": "dist/xt-plugin-intl",
@@ -50,7 +49,7 @@
     "ng-packagr": "^20.3.0",
     "typescript": "^5.9.3",
     "happy-dom": "^18.0.1",
-    "@analogjs/vite-plugin-angular":"^1.22.4",
+    "@analogjs/vite-plugin-angular": "^1.22.4",
     "@analogjs/vitest-angular": "^1.22.4",
     "jsdom": "^26.1.0",
     "vite": "^7.1.12",

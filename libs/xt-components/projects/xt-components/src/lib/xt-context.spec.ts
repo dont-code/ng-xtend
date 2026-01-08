@@ -20,8 +20,12 @@ describe('XtContext', () => {
   it('should calculate isInForm correctly', () => {
     let context= new XtBaseContext('FULL_VIEW');
     expect(context.isInForm()).toBe(false);
-    context = new XtBaseContext('FULL_EDITABLE', undefined, new FormGroup([]));
+
+    context = new XtBaseContext('FULL_EDITABLE', undefined, undefined);
     expect(context.isInForm()).toBe(false);
+
+    context = new XtBaseContext('FULL_EDITABLE', undefined, new FormGroup([]));
+    expect(context.isInForm()).toBe(true);
 
     context = new XtBaseContext('FULL_EDITABLE', 'test', new FormGroup({test: new FormControl('')}));
     expect(context.isInForm()).toBe(true);

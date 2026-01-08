@@ -30,7 +30,7 @@ export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:str
     const subValue=(value!=null)?value[valueKey]:null;
     const subType=resolver?.findType(valueType, valueKey, subValue)??undefined;
     const subTypeName = isTypeReference(subType) ? subType.toType : subType?.type;
-    const primitive = resolver?.isPrimitiveType(subType, subValue);
+    const primitive = (resolver!=null)?resolver?.isPrimitiveType(subType, subValue): isPrimitive(subValue);
     if (toDelete.delete(valueKey)) {
       // Already a control
       const oldControl = formGroup.get(valueKey)!;

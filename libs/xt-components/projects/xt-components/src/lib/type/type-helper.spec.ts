@@ -33,7 +33,24 @@ describe('updateFormGroupWithValue', () => {
     const costGroup=parentGroup.get('cost') as unknown as FormGroup;
     expect(costGroup?.controls).toBeDefined();
     expect(costGroup?.controls['amount'].value).toEqual(234);
-  })
+  });
+
+  it('should support form generation without resolverservice', () => {
+    const parentGroup=new FormGroup({});
+    updateFormGroupWithValue(parentGroup, {
+      name:'Test',
+      cost:{
+        amount:234,
+        currency:'EUR',
+        shop:'CoffeeShop'
+      }
+    });
+
+    expect(parentGroup.get('name')).toBeDefined();
+    const costGroup=parentGroup.get('cost') as unknown as FormGroup;
+    expect(costGroup?.controls).toBeDefined();
+    expect(costGroup?.controls['amount'].value).toEqual(234);
+  });
 
   it('should support described types', () => {
     const parentGroup=new FormGroup({});

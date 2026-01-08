@@ -5,8 +5,8 @@
     "url": "https://github.com/dont-code/ng-xtend.git"
   },
   "peerDependencies": {
-    "@angular/common": "^19.1.0",
-    "@angular/core": "^19.1.0",
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
     "xt-type": "^0.9.0"
   },
   "dependencies": {

@@ -74,6 +74,9 @@ The host application doesn't need to know its plugins at compile time. It simply
 ---
 
 ## 🧑‍💻 Getting Started
+### Using the Framework
+The repository [ng-xtend-examples](https://github.com/dont-code/ng-xtend-examples) shows many examples (from basic to complex) using ng-xtend.
+You should have a look at it to get started.
 
 ### Developing a Plugin
 We use a monorepo structure powered by [Rush](https://rushjs.io/).

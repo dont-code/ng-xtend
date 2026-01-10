@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.6.1...xt-components-v0.6.2) (2026-01-10)
+
+
+### Bug Fixes
+
+* Remove controls of undefined values in updateFormGroupWithValue ([fae20d1](https://github.com/dont-code/ng-xtend/commit/fae20d1c31ddc201448f8808f6bcd285e31afd5c))
+
 ## [0.6.1](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.6.0...xt-components-v0.6.1) (2026-01-08)
 
 

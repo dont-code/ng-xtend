@@ -228,6 +228,61 @@ describe('DefaultObjectSetComponent', () => {
     expect(component.selectedElement()).toBeNull();
   });
 
+  it('should keep selection even without Ids', () => {
+    let component: DefaultObjectSetComponent<TestData>;
+    let fixture: ComponentFixture<DefaultObjectSetComponent<TestData>>;
+
+    fixture = TestBed.createComponent(DefaultObjectSetComponent<TestData>);
+    let context = new XtBaseContext<TestData[]>("LIST_VIEW");
+    const values: Array<TestData>= [{
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }, {
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }];
+
+    context.setDisplayValue(values);
+
+    fixture.componentRef.setInput("context", context);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component).toBeTruthy();
+    const rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    rows[1].nativeElement.click();
+    fixture.detectChanges();
+
+    expect(component.selectedElement()).toBeTruthy();
+    expect(component.selectedElement()?.simpleNumber).toEqual(12);
+
+    // Now refresh the display values, did he keep the element selected ?
+    values[1].simpleNumber=14;
+    context.setDisplayValue([...values]);
+
+    expect(component.selectedElement()).toBeTruthy();
+    expect(component.selectedElement()?.simpleNumber).toEqual(14);
+    // Is it kept while deleting another element ?
+
+    context.setDisplayValue(values.slice(0,2));
+    expect(component.selectedElement()).toBeTruthy();
+    expect(component.selectedElement()?.simpleNumber).toEqual(14);
+
+    // Now refresh the values without the selected element, is it now null ?
+    context.setDisplayValue(values.slice(0,1));
+
+    expect(component.selectedElement()).toBeNull();
+  });
+
   it('should support references', async () => {
     // Register types with references
     resolverService.registerPlugin({

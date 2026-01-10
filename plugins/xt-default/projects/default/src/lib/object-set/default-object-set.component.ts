@@ -38,9 +38,15 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
        //   console.log("Trying to reselect existing element");
             // Otherwise reselect the element if still there
           return source.find((toCheck) => {
-            const ret= (toCheck as any)._id==(previous.value as any)._id;
-         //   if (ret) console.log("Found existing element to reselect");
-            return ret;
+            if  ((toCheck as any)._id!=null) {
+              const ret= (toCheck as any)._id==(previous.value as any)._id;
+           //   if (ret) console.log("Found existing element to reselect");
+              return ret;
+            } else {
+                // Without identity key, just compare the elements
+              const ret= toCheck===previous.value;
+              return ret;
+            }
           })??null;
         }
       }

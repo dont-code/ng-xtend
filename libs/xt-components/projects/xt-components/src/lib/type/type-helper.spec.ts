@@ -80,6 +80,14 @@ describe('updateFormGroupWithValue', () => {
     const costGroup=parentGroup.get('cost') as unknown as FormGroup;
     expect(costGroup?.controls).toBeDefined();
     expect(costGroup?.controls['amount'].value).toEqual(234);
+
+    // Should remove controls of the existing group if value is undefined
+    updateFormGroupWithValue(parentGroup, {
+      name:'Test'
+    }, "EvaluationTest2", resolver.typeResolver);
+
+    expect(parentGroup.get('cost')).toBeNull();
+
   })
 
   it('should handle missing type', () => {

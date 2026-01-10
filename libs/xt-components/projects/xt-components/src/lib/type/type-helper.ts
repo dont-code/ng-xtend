@@ -27,7 +27,7 @@ export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:str
   }
 
   for (const valueKey of keySet) {
-    const subValue=(value!=null)?value[valueKey]:null;
+    const subValue=(value!=null)?value[valueKey]:undefined;
     const subType=resolver?.findType(valueType, valueKey, subValue)??undefined;
     const subTypeName = isTypeReference(subType) ? subType.toType : subType?.type;
     const primitive = (resolver!=null)?resolver?.isPrimitiveType(subType, subValue): isPrimitive(subValue);
@@ -39,7 +39,7 @@ export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:str
         // Must be an FormControl2
         if ((oldControl as any).controls === undefined) {
           // It's ok, just set the value
-          oldControl.setValue(value[valueKey]);
+          oldControl.setValue(subValue);
         } else {
           formGroup.setControl(valueKey, new FormControl(subValue));
         }
@@ -51,7 +51,12 @@ export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:str
           updateFormGroupWithValue(newFormGroup, subValue, subTypeName, resolver);
         } else {
           // It was already a formgroup, so just update it
-          updateFormGroupWithValue(oldControl as FormGroup, subValue, subTypeName, resolver);
+          if (subValue!==undefined)
+            updateFormGroupWithValue(oldControl as FormGroup, subValue, subTypeName, resolver);
+          else {
+            // Just remove the control as there is no value to set
+            formGroup.removeControl(valueKey);
+          }
         }
       }
     } else {

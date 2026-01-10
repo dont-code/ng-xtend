@@ -198,7 +198,7 @@ export class XtBaseContext<T> implements XtContext<T>{
     });
 
     isInForm (): boolean {
-        return ((this.subName != null) && (this.formGroup()!=null));
+        return (this.formGroup()!=null);
     }
 
     formControlNameOrNull():string|null {

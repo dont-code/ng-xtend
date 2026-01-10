@@ -6,15 +6,17 @@ import {
   StoreSupport,
   StoreTestHelper,
   XtBaseContext,
-  XtResolverService
+  XtResolverService,XtRenderComponent
 } from 'xt-components';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { Component, inject, provideZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ManyToOneRefComponent } from '../reference/many-to-one-ref.component';
 import { XtTypeInfo } from 'xt-type';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 describe('DefaultObjectComponent', () => {
   let resolverService: XtResolverService;
@@ -51,6 +53,16 @@ describe('DefaultObjectComponent', () => {
 
     expect (fixture.nativeElement.textContent).toContain('test22');
   });
+
+
+  it ('should edit without subName', () => {
+    const hostFixture = TestBed.createComponent(TestSimpleFormRenderComponent);
+    const comp = hostFixture.componentInstance;
+
+    expect(comp).toBeTruthy();
+    hostFixture.detectChanges();
+
+  })
 
   it('should edit complex type', () => {
     const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
@@ -183,4 +195,23 @@ const BOOK_AUTHOR_TYPES:XtTypeInfo = {
       }
     }
   }
+}
+
+@Component({
+  selector: 'test-simple-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, XtRenderComponent],
+  template: '<form [formGroup]="simpleFormGroup"><xt-render displayMode="FULL_EDITABLE" [formGroup]="simpleFormGroup"></xt-render> </form>'
+})
+export class TestSimpleFormRenderComponent {
+  fb = inject(FormBuilder);
+
+  simpleFormGroup = this.fb.group({
+      name:[''],
+      sub: this.fb.group({
+        subName:[''],
+        subValue:[134]
+      }),
+      date:[new Date()]
+  });
 }

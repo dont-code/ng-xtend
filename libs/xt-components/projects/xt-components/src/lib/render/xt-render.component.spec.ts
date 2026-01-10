@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { XtRenderComponent } from './xt-render.component';
-import { Component, output, provideZonelessChangeDetection } from '@angular/core';
+import { Component, inject, output, provideZonelessChangeDetection } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HostTestFormComponent, HostTestSimpleComponent } from '../test/xt-test-helper-components';
 import { Button } from 'primeng/button';
 import { By } from '@angular/platform-browser';
@@ -130,4 +130,3 @@ export class TestOutputComponent extends XtSimpleComponent<number> {
     this.storeValue.emit(this.displayValue()!);
   }
 }
-

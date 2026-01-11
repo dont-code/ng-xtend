@@ -68,6 +68,7 @@ describe('updateFormGroupWithValue', () => {
     });
 
     updateFormGroupWithValue(parentGroup, {
+      _id:'testId',
       name:'Test',
       cost:{
         amount:234,
@@ -80,6 +81,24 @@ describe('updateFormGroupWithValue', () => {
     const costGroup=parentGroup.get('cost') as unknown as FormGroup;
     expect(costGroup?.controls).toBeDefined();
     expect(costGroup?.controls['amount'].value).toEqual(234);
+      // Fields that are undeclared should still be in the form. Up to the component to manage it or not
+    expect(parentGroup.get('_id')).toBeDefined();
+      // But the value remains
+    expect((parentGroup.value as any)['_id']).toBe('testId');
+
+    // Should remove _id or any other field if undefined
+    updateFormGroupWithValue(parentGroup, {
+      name:'Test2',
+      cost:{
+        amount:24,
+        currency:'USD',
+        shop:'TestShop'
+      }
+    }, "EvaluationTest2", resolver.typeResolver);
+
+    expect((parentGroup.value as any)['name']).toEqual('Test2');
+    expect((parentGroup.value as any)['_id']).toBeUndefined();
+    expect(parentGroup.get('_id')).toBeNull();
 
     // Should remove controls of the existing group if value is undefined
     updateFormGroupWithValue(parentGroup, {

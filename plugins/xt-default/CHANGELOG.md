@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.6.1...xt-plugin-default-v0.6.2) (2026-01-11)
+
+
+### Bug Fixes
+
+* keep selection even without Ids ([9cf2b1d](https://github.com/dont-code/ng-xtend/commit/9cf2b1d9ec42fd95b78232105c8164df784273e9))
+
 ## [0.6.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.6.0...xt-plugin-default-v0.6.1) (2026-01-08)
 
 

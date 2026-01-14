@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { signalStore } from '@ngrx/signals';
-import { ManagedData } from 'xt-type';
+import { ManagedData, XtTypeResolver } from 'xt-type';
 import { xtStoreManager } from '../store-manager/xt-store-manager';
 import { withXtStoreProvider, XtSignalStore } from '../store-entity/store-entity-feature';
 import { XtStoreProvider } from '../store-provider/xt-store-provider';
+import { withXtTypeProvider } from '../store-entity/store-entity-ref-feature';
 
 @Injectable({
   providedIn: 'root'
@@ -16,17 +17,26 @@ export class XtStoreManagerService {
   constructor() {
   }
 
-  getStoreFor<T extends ManagedData>(entityName: string): XtSignalStore<T> {
+  getStoreFor<T extends ManagedData>(entityName: string, typeMgr?:XtTypeResolver): XtSignalStore<T> {
     let store = this.entityToStoreMap.get(entityName);
     if (store == null) {
       const provider = this.storeManager.getProvider<T>(entityName);
       if (provider == null) {
         throw new Error('No provider found for entity ' + entityName);
       } else {
-        const res = signalStore(
-          withXtStoreProvider(entityName, provider)
-        );
-        store= new res();
+        if( typeMgr==null) {
+          const res = signalStore(
+            withXtStoreProvider(entityName, provider)
+          );
+          store= new res();
+        } else {
+            // We have a type mgr, so let's use it in our store
+          const res = signalStore(
+            withXtTypeProvider(entityName, this.storeManager, typeMgr)
+          );
+          store= new res();
+
+        }
       }
       this.entityToStoreMap.set(entityName, store);
     }

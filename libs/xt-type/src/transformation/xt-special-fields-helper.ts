@@ -1,5 +1,5 @@
 import { SpecialFields } from './special-fields';
-import { XtTypeHierarchy } from '../resolver/xt-type-resolver';
+import { XtTypeHierarchy, XtTypeReference } from '../resolver/xt-type-resolver';
 
 /**
  * Some code to discover and handle fields that requires special treatment
@@ -24,7 +24,7 @@ export class XtSpecialFieldsHelper {
    * @param entity
    * @protected
    */
-  public static findSpecialFields<Type> (name:string, entity:XtTypeHierarchy):SpecialFields<Type> {
+  public static findSpecialFields<Type> (name:string, entity:XtTypeHierarchy, basis?:SpecialFields<Type>):SpecialFields<Type> {
     let specialFields = XtSpecialFieldsHelper.specialFieldsCache.get(name);
     if (specialFields!=null) return specialFields;
 
@@ -32,29 +32,30 @@ export class XtSpecialFieldsHelper {
     const curNumericalScore: {score:number, field:any} = {score:-1, field:null}
     const curDisplayScore: {score:number, field:any} = {score:-1, field:null}
 
-    specialFields = new SpecialFields();
+    specialFields = basis??new SpecialFields();
     const fields = entity.children;
     if( fields!=null) {
       let prop: keyof typeof fields;
       for (prop in fields) {
         // Finds the date fields that will need to be converted from json to javascript Date
         if (fields[prop]?.type==='date' || fields[prop]?.type==='date-time' || fields[prop]?.type==='time') {
-          specialFields.addDateField(prop);
+          if ((specialFields.dateFields==null)||(specialFields.dateFields.length==0))
+            specialFields.addDateField(prop);
         } else {
-          XtSpecialFieldsHelper.scoreIdFieldFromEntityField(fields[prop], curIdScore);
-          XtSpecialFieldsHelper.scoreNumericalFieldFromEntityField(fields[prop], curNumericalScore);
-          XtSpecialFieldsHelper.scoreDisplayFieldFromEntityField(fields[prop], curDisplayScore);
+          XtSpecialFieldsHelper.scoreIdFieldFromEntityField(prop,fields[prop], curIdScore);
+          XtSpecialFieldsHelper.scoreNumericalFieldFromEntityField(prop,fields[prop], curNumericalScore);
+          XtSpecialFieldsHelper.scoreDisplayFieldFromEntityField(prop,fields[prop], curDisplayScore);
         }
       }
     }
-    if (curIdScore.score>0) {
+    if ((curIdScore.score>0)&&(specialFields?.idField==null)) {
       specialFields.idField=curIdScore.field;
     }
-    if( curNumericalScore.score>0) {
+    if( (curNumericalScore.score>0) && (specialFields?.numericValueField==null)) {
       specialFields.setNumericValueField(curNumericalScore.field);
     }
-    if( curDisplayScore.score>0) {
-      specialFields.setDisplayTemplate('<%='+curDisplayScore.field+'%>');
+    if( (curDisplayScore.score>0) && (specialFields?.displayTemplate==null)) {
+      specialFields.setDisplayTemplate('<%=it.'+curDisplayScore.field+'%>');
     }
     XtSpecialFieldsHelper.specialFieldsCache.set(name, specialFields);
 
@@ -91,15 +92,19 @@ export class XtSpecialFieldsHelper {
     }
   }
 
-  protected static scoreIdFieldFromEntityField (prop:any, score:{score:number, field:any}): boolean {
-    return XtSpecialFieldsHelper.scoreIdFieldFromProperty(prop?.name, null, score);
+  protected static scoreIdFieldFromEntityField (propName:string, prop:XtTypeHierarchy|XtTypeReference, score:{score:number, field:any}): boolean {
+    return XtSpecialFieldsHelper.scoreIdFieldFromProperty(propName, null, score);
   }
 
-  protected static scoreNumericalFieldFromEntityField (prop:any, score:{score:number, field:any}): boolean {
-    return XtSpecialFieldsHelper.scoreNumericalFieldFromProperty(prop?.name, null, score);
+  protected static scoreNumericalFieldFromEntityField (propName:string, prop:XtTypeHierarchy|XtTypeReference, score:{score:number, field:any}): boolean {
+    if (prop.type=='number') {
+      return XtSpecialFieldsHelper.scoreNumericalFieldFromProperty(propName, null, score);
+    } else return false;
   }
-  protected static scoreDisplayFieldFromEntityField (prop:any, score:{score:number, field:any}): boolean {
-    return XtSpecialFieldsHelper.scoreDisplayFieldFromProperty(prop?.name, null, score);
+  protected static scoreDisplayFieldFromEntityField (propName:string, prop:XtTypeHierarchy|XtTypeReference, score:{score:number, field:any}): boolean {
+    if (prop.type=='string') {
+      return XtSpecialFieldsHelper.scoreDisplayFieldFromProperty(propName, null, score);
+    }else return false;
   }
 
   protected static scoreDisplayFieldFromProperty (name:string, value:any, score:{score:number, field:any}): boolean {
@@ -109,7 +114,7 @@ export class XtSpecialFieldsHelper {
       score.field=name;
       score.score=100;
       return true;
-    } else if (typeof value==='string') {
+    } else if ((value==null) || (typeof value==='string')) {
       if (score.score<60) {
         score.score=60;
         score.field=name;
@@ -134,7 +139,7 @@ export class XtSpecialFieldsHelper {
   protected static scoreNumericalFieldFromProperty (name:string, value:any, score:{score:number, field:any}): boolean {
     if ((name==null)&&(value==null)) return false;
     const propName=name.toLowerCase();
-    if (typeof value==='number') {
+    if ((value==null) || (typeof value==='number')) {
       if( score.score<60) {
         score.field = name;
         score.score = 60;

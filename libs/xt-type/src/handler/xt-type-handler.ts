@@ -52,9 +52,7 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
     this.type=context;
     if (context.displayTemplate!=null) this.fields.setDisplayTemplate(context.displayTemplate);
     if (context.numericField!=null) this.fields.setNumericValueField(context.numericField as keyof Type);
-    if (this.fields.isEmpty ()) {
-      this.fields = XtSpecialFieldsHelper.findSpecialFields(context.type, context);
-    }
+    this.fields = XtSpecialFieldsHelper.findSpecialFields(context.type, context, this.fields);
   }
 
   createNew (): Type {

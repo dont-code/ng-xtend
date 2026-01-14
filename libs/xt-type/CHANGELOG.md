@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.3](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.2...xt-type-v0.10.3) (2026-01-14)
+
+
+### Bug Fixes
+
+* Better readme for xt-type ([90609bc](https://github.com/dont-code/ng-xtend/commit/90609bc0d363bb017d2ac84ffc0eded0bb6d2cc0))
+* Special fields helper improvements ([a132ceb](https://github.com/dont-code/ng-xtend/commit/a132ceb0b2938ead7ce86364425e3d2c6d7ee5f3))
+
 ## [0.10.2](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.1...xt-type-v0.10.2) (2026-01-08)
 
 

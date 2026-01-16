@@ -142,9 +142,12 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
   }
 
   stringToDisplay(value: Type): string {
-    let ret= this.fields.runDisplayTemplate(value);
-    if (ret==null) {
-      ret=this.getId(value)?.toString() ?? JSON.stringify(value);
+    let ret= null;
+    if (value!=null) {
+      ret=this.fields.runDisplayTemplate(value);
+      if (ret==null) {
+        ret=this.getId(value)?.toString() ?? JSON.stringify(value);
+      }
     }
     return ret as string;
   }

@@ -153,7 +153,7 @@ describe('DefaultObjectComponent', () => {
     await hostFixture.whenStable();
 
     // Check the value is correct
-    expect(host.createdFormGroup?.value.value['authorRef']).toEqual(philipKDick);
+    expect(host.createdFormGroup()?.value.value['authorRef']).toEqual(philipKDick);
 
   });
 

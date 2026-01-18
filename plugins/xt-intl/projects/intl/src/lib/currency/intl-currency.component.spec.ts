@@ -65,7 +65,7 @@ describe('XtCurrencyComponent', () => {
 
     expect(input.nativeElement.value).toEqual ('EUR');
 
-    host.computeFormGroup().patchValue({'currency':"USD"});
+    host.patchValue('currency',"USD");
     hostFixture.detectChanges();
     expect(input.nativeElement.value).toEqual ("USD");
 

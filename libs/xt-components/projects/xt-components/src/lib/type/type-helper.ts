@@ -6,11 +6,11 @@ export function   attachToFormGroup(formGroup: FormGroup, controlName:string, va
   if (((value!=null) && (isPrimitive(value))
   || (resolver?.isPrimitiveType(valueType)))) {
     const simpleControl = new FormControl(value);
-    formGroup.addControl(controlName, simpleControl);
+    formGroup.setControl(controlName, simpleControl);
   } else {
     const complexGroup = new FormGroup({});
     updateFormGroupWithValue(complexGroup, value, valueType, resolver);
-    formGroup.addControl(controlName, complexGroup);
+    formGroup.setControl(controlName, complexGroup);
   }
 }
 

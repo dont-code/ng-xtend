@@ -35,7 +35,7 @@ export class HostTestSimpleComponent {
   selector:'test-form-host',
   standalone:true,
   imports: [CommonModule, XtRenderComponent, ReactiveFormsModule],
-  template: '<h1>Test Form Component</h1> <form [formGroup]="computedFormGroup()"> <xt-render [componentType]="type()" displayMode="FULL_EDITABLE" [subName]="controlName()" [formGroup]="computedFormGroup()"></xt-render></form>'
+  template: '<h1>Test Form Component</h1> <form [formGroup]="parentFormGroup"> <xt-render [componentType]="type()" displayMode="FULL_EDITABLE" [subName]="controlName()" [formGroup]="createdFormGroup()"></xt-render></form>'
 })
 export class HostTestFormComponent {
   builder = inject(FormBuilder);
@@ -46,30 +46,29 @@ export class HostTestFormComponent {
   // Or set the FormGroup directly
   formGroup= input<FormGroup>();
 
-//  parentFormGroup = this.builder.group<{[keys:string]: AbstractControl}>({});
-  createdFormGroup: FormGroup|null = null;
+  parentFormGroup = this.builder.group<{ [keys: string]: AbstractControl }>({});
 
-  computedFormGroup () {
-    if( this.createdFormGroup==null) {
-      const formGroup=this.formGroup();
-      this.createdFormGroup=formGroup??generateFormGroup(this.formDescription());
-    }
-  //  this.parentFormGroup.addControl(this.controlName()??HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
-    return this.createdFormGroup;
+  createdFormGroup = computed<FormGroup>(() => {
+    return this.computeFormGroup();
+  });
+
+  protected computeFormGroup ():FormGroup {
+    const formGroup=this.formGroup();
+    let createdFormGroup=formGroup??generateFormGroup(this.formDescription());
+    this.parentFormGroup.addControl(this.controlName() ?? HostTestTypedFormComponent.CONTROL_NAME, createdFormGroup);
+    return createdFormGroup;
   }
 
   patchValue (newVal:any) {
     const patch:{[key:string]:any}={};
     patch[this.controlName()]=newVal;
-    if (this.createdFormGroup!=null)
-      this.createdFormGroup.patchValue(patch);
-    else throw new Error ("FormGroup not yet created. Did you set formGroup or formDescription property ?");
+    const createdFormGroup=this.createdFormGroup();
+    createdFormGroup.patchValue(patch);
   }
 
   retrieveValue (): any {
-    if (this.createdFormGroup!=null)
-      return this.createdFormGroup.value[this.controlName()];
-    else throw new Error ("FormGroup not yet created. Did you set formGroup or formDescription property ?");
+    const createdFormGroup=this.createdFormGroup();
+    return createdFormGroup.value[this.controlName()];
   }
 }
 
@@ -110,67 +109,66 @@ export class HostTestTypedComponent {
   imports: [CommonModule, ReactiveFormsModule, XtRenderSubComponent],
   template: '<h1>Test Typed Form Component</h1> <form [formGroup]="parentFormGroup"> <xt-render-sub [context]="subContext()"></xt-render-sub></form>'
 })
-export class HostTestTypedFormComponent implements OnInit{
+export class HostTestTypedFormComponent implements OnInit {
   builder = inject(FormBuilder);
   resolver = inject(XtResolverService);
 
-  static readonly CONTROL_NAME='ForTest';
+  static readonly CONTROL_NAME = 'ForTest';
 
-  valueType = input<string> ();
+  valueType = input<string>();
   controlName = input<string>();
   // You can send the description to be used in a FormBuilder to create the formgroup;
-  formDescription = input<any> (null);
+  formDescription = input<any>(null);
   // Or set the FormGroup directly
-  formGroup= input<FormGroup>();
+  formGroup = input<FormGroup>();
 
-  parentFormGroup = this.builder.group<{[keys:string]: AbstractControl}>({});
+  parentFormGroup = this.builder.group<{ [keys: string]: AbstractControl }>({});
 
-  createdFormGroup: FormGroup|null = null;
+  createdFormGroup = computed<FormGroup>(() => {
+    return this.computeFormGroup();
+  });
 
   ngOnInit(): void {
-    this.computeFormGroup();
   }
 
-  computeFormGroup () {
-    if( this.createdFormGroup==null) {
-      const formGroup=this.formGroup();
-      if( this.formDescription()!=null) {
-        this.createdFormGroup=formGroup??generateFormGroup(this.formDescription());
-      } else {
-        this.createdFormGroup=this.builder.group({});
-        if (this.valueType()!=null) {
-          updateFormGroupWithValue(this.createdFormGroup, {}, this.valueType(), this.resolver.typeResolver);
-        }
+  protected computeFormGroup(): FormGroup {
+    let createdFormGroup = null;
+    const formGroup = this.formGroup();
+    if (this.formDescription() != null) {
+      createdFormGroup = formGroup ?? generateFormGroup(this.formDescription());
+    } else {
+      createdFormGroup = this.builder.group({});
+      if (this.valueType() != null) {
+        updateFormGroupWithValue(createdFormGroup, {}, this.valueType(), this.resolver.typeResolver);
       }
-      this.parentFormGroup.addControl(this.controlName()??HostTestTypedFormComponent.CONTROL_NAME, this.createdFormGroup);
     }
-    return this.createdFormGroup;
-  };
+    this.parentFormGroup.addControl(this.controlName() ?? HostTestTypedFormComponent.CONTROL_NAME, createdFormGroup);
+    return createdFormGroup;
+  }
 
-  subContext () {
-    this.computeFormGroup(); // Make sure the subformgroups are created
-
+  subContext= computed(()=> {
     const ctrlName = this.controlName();
+    const createdFormGroup = this.createdFormGroup();
     let ret:XtBaseContext<any>|null = null;
     if (ctrlName==null){
       ret = new XtBaseContext('FULL_EDITABLE', HostTestTypedFormComponent.CONTROL_NAME, this.parentFormGroup);
     }
     else{
-      ret = new XtBaseContext('FULL_EDITABLE', ctrlName, this.createdFormGroup!);
+      ret = new XtBaseContext('FULL_EDITABLE', ctrlName, createdFormGroup);
     }
     ret.valueType=this.valueType();
 
     return ret;
-  };
+  });
 
   patchValue (controlName:string, newVal:any) {
     const patch:{[key:string]:any}={};
     patch[controlName]=newVal;
-    this.computeFormGroup().patchValue(patch);
+    this.createdFormGroup().patchValue(patch);
   }
 
   retrieveValue (controlName:string): any {
-    return this.computeFormGroup().value[controlName];
+    return this.createdFormGroup().value[controlName];
   }
 
 }

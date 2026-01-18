@@ -1,9 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component, computed,
+  effect,
+  inject,
+  linkedSignal,
+  OnDestroy,
+  OnInit,
+  signal, untracked
+} from '@angular/core';
 import { XtBaseContext, XtContext, XtRenderSubComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XtTypeHandler, XtTypeReference } from 'xt-type';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscriber, Subscription } from 'rxjs';
 
 @Component({
   selector: 'xt-many-to-one-ref',
@@ -17,7 +26,7 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './many-to-one-ref.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit{
+export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit, OnDestroy{
   resolver = inject(XtResolverService);
   filteredReferences=signal<any[]>([]);
 
@@ -27,25 +36,70 @@ export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit{
 
   typeHandler:XtTypeHandler<any>|null=null;
 
-  /**
+  formSubscription:Subscription |null= null;
+
+  formControlValue=signal<any>(null);
+
+  protected oldContext:XtContext<any>|null=null;
+
+  contextChangeEffect=effect(() => {
+      // Whenever the context changes, we need to update the values displayed
+      const context=this.context();
+      console.log('Start effect '+context.subName);
+      if (this.oldContext===context) return;
+
+      this.oldContext=context;
+      const value=context.formControlValue();
+
+      untracked(() => {
+        this.typeHandler =this.resolver.findTypeHandlerOf(context, undefined, value)?.handler??null;
+        console.log('Call references '+context.subName);
+        firstValueFrom(this.resolver.findPossibleReferences(context)).then((references: any[]) => {
+        console.log('Start references '+context.subName);
+        this.allReferences = references.map((item) => {
+          this.allSourceReferences.push(item);  // Store the original value
+          return this.withDisplayLabel(item);
+        });
+        this.formControlValue.set(value);
+        console.log('End references '+context.subName);
+        this.allReferencesLoaded=true;
+      });
+
+    // Now listen to changes in the form and update the selectedReference accordingly
+    const form = this.formGroup();
+    if( form!=null) {
+      if (this.formSubscription!=null) {
+        this.formSubscription.unsubscribe();
+      }
+      this.formSubscription = (context.formGroup()!.valueChanges.subscribe({
+        next: (newValue) => {
+          const context=this.context();
+          console.log('Start valueChanges '+context.subName);
+          this.formControlValue.set(context.formControlValue());
+          console.log('End valueChanges '+context.subName);
+        }
+      }));
+    }
+
+    });
+
+    console.log('End effect');
+});
+
+/**
    * We have to go through a ngModel for the selection as we need to calculate the displayedLabel
    */
-  selectedReference= signal<any>(null);
+  selectedReference= linkedSignal<any>(() => {
+    const toSet=this.formControlValue();
+    return this.findReferenceOf(toSet);
+  });
+
+  constructor() {
+    super();
+  }
 
   override ngOnInit(): void {
     super.ngOnInit();
-    const context=this.context();
-    const value=context.formControlValue();
-
-    this.typeHandler =this.resolver.findTypeHandlerOf(context, undefined, value)?.handler??null;
-    firstValueFrom(this.resolver.findPossibleReferences(context)).then((references: any[]) => {
-      this.allReferences = references.map((item) => {
-        this.allSourceReferences.push(item);  // Store the original value
-        return this.withDisplayLabel(item);
-      });
-      this.allReferencesLoaded=true;
-    });
-    this.selectedReference.set(this.withDisplayLabel(value));
   }
 
   withDisplayLabel(item:any):any {
@@ -93,13 +147,22 @@ export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit{
   }
 
   changeSelection($event: any) {
-    this.selectedReference.set($event);
     if( $event == null) {
       this.context().setFormValue($event,true);
     }else {
       const ref=this.allSourceReferences.find((ref) => ref._id==$event._id);
       this.context().setFormValue(ref,true);
     }
+    this.selectedReference.set($event);
   }
 
+  ngOnDestroy(): void {
+    this.formSubscription?.unsubscribe();
+  }
+
+  protected findReferenceOf(value: any):any {
+    if( value==null) return null;
+    const ref=this.allReferences.find((ref) => ref._id==value._id);
+    return ref;
+  }
 }

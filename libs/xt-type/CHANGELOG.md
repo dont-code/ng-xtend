@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.4](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.3...xt-type-v0.10.4) (2026-01-18)
+
+
+### Bug Fixes
+
+* Support display of null value ([bdf3a32](https://github.com/dont-code/ng-xtend/commit/bdf3a32efbc5144ae44760da15bd9f4341f13991))
+
 ## [0.10.3](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.2...xt-type-v0.10.3) (2026-01-14)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "xt-plugin-sample",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "scripts": {
     "build": "cd .. && ng build sample-plugins",
     "watch": "cd .. && ng build --watch --configuration development",

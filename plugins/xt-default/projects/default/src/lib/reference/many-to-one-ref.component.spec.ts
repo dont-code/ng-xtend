@@ -7,7 +7,6 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import {
-  attachToFormGroup,
   HostTestTypedFormComponent,
   StoreSupport,
   StoreTestHelper,
@@ -98,7 +97,7 @@ describe('ManyToOneRefComponent', () => {
 
     // Check the number of suggestion items
     let suggestionItems = autocomplete.queryAll(By.directive(TestAuthorComponent));
-    /*expect(suggestionItems.length).toBe(2);
+    expect(suggestionItems.length).toBe(2);
 
     // Select the first author
     expect(suggestionItems[0].nativeElement.textContent).toEqual('Philip K. Dick(Chicago)');
@@ -106,7 +105,7 @@ describe('ManyToOneRefComponent', () => {
     hostFixture.detectChanges();
 
     // Check the value is correct
-    expect(host.createdFormGroup?.value.value['authorRef']).toEqual(philipKDick);
+    expect(host.createdFormGroup()?.value.value['authorRef']).toEqual(philipKDick);
     expect(autocomplete.query(By.css('input')).nativeElement.value).toEqual('Philip K. Dick(Chicago)');
 
       // Now select another reference
@@ -128,15 +127,15 @@ describe('ManyToOneRefComponent', () => {
     await hostFixture.whenStable();
 
     // Check the value is correct
-    expect(host.createdFormGroup!.value.value['authorRef']).toEqual(annLeckie);
+    expect(host.createdFormGroup()!.value.value['authorRef']).toEqual(annLeckie);
 
     // Check that changing the value in the form changes as well the display
-    host.createdFormGroup!.get('value.authorRef')!.setValue(philipKDick);
+    host.createdFormGroup()!.get('value.authorRef')!.setValue(philipKDick);
     hostFixture.detectChanges();
     await hostFixture.whenStable();
 
     expect(autocomplete.query(By.css('input')).nativeElement.value).toEqual('Philip K. Dick(Chicago)');
-*/
+
     console.log('********************* Changing the Form');
     // Check that changing the form itself changes the display
     hostFixture.componentRef.setInput('formDescription',  {

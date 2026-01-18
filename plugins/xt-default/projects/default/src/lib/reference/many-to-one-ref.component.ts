@@ -1,18 +1,19 @@
 import {
   ChangeDetectionStrategy,
-  Component, computed,
+  Component,
   effect,
   inject,
   linkedSignal,
   OnDestroy,
   OnInit,
-  signal, untracked
+  signal,
+  untracked
 } from '@angular/core';
 import { XtBaseContext, XtContext, XtRenderSubComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XtTypeHandler, XtTypeReference } from 'xt-type';
-import { firstValueFrom, Subscriber, Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 
 @Component({
   selector: 'xt-many-to-one-ref',
@@ -40,28 +41,20 @@ export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit, 
 
   formControlValue=signal<any>(null);
 
-  protected oldContext:XtContext<any>|null=null;
 
   contextChangeEffect=effect(() => {
       // Whenever the context changes, we need to update the values displayed
       const context=this.context();
-      console.log('Start effect '+context.subName);
-      if (this.oldContext===context) return;
-
-      this.oldContext=context;
       const value=context.formControlValue();
 
       untracked(() => {
         this.typeHandler =this.resolver.findTypeHandlerOf(context, undefined, value)?.handler??null;
-        console.log('Call references '+context.subName);
         firstValueFrom(this.resolver.findPossibleReferences(context)).then((references: any[]) => {
-        console.log('Start references '+context.subName);
         this.allReferences = references.map((item) => {
           this.allSourceReferences.push(item);  // Store the original value
           return this.withDisplayLabel(item);
         });
         this.formControlValue.set(value);
-        console.log('End references '+context.subName);
         this.allReferencesLoaded=true;
       });
 
@@ -74,16 +67,12 @@ export class ManyToOneRefComponent extends XtSimpleComponent implements OnInit, 
       this.formSubscription = (context.formGroup()!.valueChanges.subscribe({
         next: (newValue) => {
           const context=this.context();
-          console.log('Start valueChanges '+context.subName);
           this.formControlValue.set(context.formControlValue());
-          console.log('End valueChanges '+context.subName);
         }
       }));
     }
 
     });
-
-    console.log('End effect');
 });
 
 /**

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v0.6.3...xt-plugin-intl-v0.6.4) (2026-01-18)
+
+
+### Bug Fixes
+
+* Tests Helpers refactor to avoid unnecessary computations ([22f18c7](https://github.com/dont-code/ng-xtend/commit/22f18c7a8cbe408bdd49ed5e650ba1c71b589ea9))
+
 ## [0.6.3](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v0.6.2...xt-plugin-intl-v0.6.3) (2026-01-14)
 
 

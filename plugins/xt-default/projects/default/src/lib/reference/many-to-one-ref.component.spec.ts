@@ -136,7 +136,6 @@ describe('ManyToOneRefComponent', () => {
 
     expect(autocomplete.query(By.css('input')).nativeElement.value).toEqual('Philip K. Dick(Chicago)');
 
-    console.log('********************* Changing the Form');
     // Check that changing the form itself changes the display
     hostFixture.componentRef.setInput('formDescription',  {
       value: {

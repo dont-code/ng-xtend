@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-agenda-v0.6.3...xt-plugin-agenda-v0.6.4) (2026-01-18)
+
+
+### Miscellaneous Chores
+
+* **xt-plugin-agenda:** Synchronize xt-components versions
+
 ## [0.6.3](https://github.com/dont-code/ng-xtend/compare/xt-plugin-agenda-v0.6.2...xt-plugin-agenda-v0.6.3) (2026-01-14)
 
 

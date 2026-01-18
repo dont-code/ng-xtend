@@ -1,12 +1,12 @@
 {
-  "libs/xt-type": "0.10.3",
-  "libs/xt-store": "0.6.3",
-  "libs/xt-components": "0.6.3",
-  "libs/xt-plugin-sample": "0.6.3",
-  "plugins/xt-idb-store": "0.6.3",
-  "plugins/xt-default": "0.6.3",
-  "plugins/xt-intl": "0.6.3",
-  "plugins/xt-finance": "0.6.3",
-  "plugins/xt-web": "0.6.3",
-  "plugins/xt-agenda": "0.6.3"
+  "libs/xt-type": "0.10.4",
+  "libs/xt-store": "0.6.4",
+  "libs/xt-components": "0.6.4",
+  "libs/xt-plugin-sample": "0.6.4",
+  "plugins/xt-idb-store": "0.6.4",
+  "plugins/xt-default": "0.6.4",
+  "plugins/xt-intl": "0.6.4",
+  "plugins/xt-finance": "0.6.4",
+  "plugins/xt-web": "0.6.4",
+  "plugins/xt-agenda": "0.6.4"
 }

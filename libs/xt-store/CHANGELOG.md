@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/dont-code/ng-xtend/compare/xt-store-v0.6.2...xt-store-v0.6.3) (2026-01-14)
+
+
+### Bug Fixes
+
+* Supports for signal store with references ([5ebd83a](https://github.com/dont-code/ng-xtend/commit/5ebd83ae85e79fe11db35ddc343fd1e85ffdffca))
+
 ## [0.6.2](https://github.com/dont-code/ng-xtend/compare/xt-store-v0.6.1...xt-store-v0.6.2) (2026-01-11)
 
 

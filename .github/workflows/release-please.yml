@@ -25,3 +25,31 @@ jobs:
         with:
           config-file: 'release-please-config.json'
           manifest-file: '.release-please-manifest.json'
+      - name: Delete Old v0.6 Releases
+        uses: nikhilbadyal/ghaction-rm-releases@v0.7.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          RELEASE_PATTERN: "v0.6*"
+          RELEASES_TO_KEEP: 2 # Optional: Keep the 5 most recent releases matching the pattern
+          DRY_RUN: 'true'
+      - name: Delete Old v0.5 Releases
+        uses: nikhilbadyal/ghaction-rm-releases@v0.7.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          RELEASE_PATTERN: "v0.5*"
+          RELEASES_TO_KEEP: 1 # Optional: Keep the 5 most recent releases matching the pattern
+          DRY_RUN: 'true'
+      - name: Delete Xt-Type v0.9 Releases
+        uses: nikhilbadyal/ghaction-rm-releases@v0.7.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          RELEASE_PATTERN: "v0.9*"
+          RELEASES_TO_KEEP: 1 # Optional: Keep the 5 most recent releases matching the pattern
+          DRY_RUN: 'true'
+      - name: Delete old Xt-Type v0.10 Releases
+        uses: nikhilbadyal/ghaction-rm-releases@v0.7.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          RELEASE_PATTERN: "v0.10*"
+          RELEASES_TO_KEEP: 2 # Optional: Keep the 5 most recent releases matching the pattern
+          DRY_RUN: 'true'

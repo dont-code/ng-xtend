@@ -2,12 +2,12 @@
 
 > **Empower your Angular applications with a flexible, scalable plugin ecosystem!** 🚀
 
-[![Try Live Demo](https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen)](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
+[![Try Live Demo](https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen)](https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
 [![GitHub license](https://img.shields.io/github/license/dont-code/ng-xtend)](LICENSE)
 
 ## 💡 Why ng-xtend?
 
-The most successful web platforms—like WordPress, Nextcloud, or Drupal—thrive because of their massive plugin ecosystems. They make it effortless to extend functionality without touching the core.
+The most successful web platforms —like WordPress, Nextcloud, or Drupal— thrive because of their massive plugin ecosystems. They make it effortless to extend functionality without touching the core.
 
 In the Angular & TypeScript world, achieving this level of modularity has always been a challenge. **ng-xtend was built to bridge that gap.** It allows you to build "extensible by design" applications where external teams can contribute features seamlessly.
 
@@ -15,10 +15,10 @@ In the Angular & TypeScript world, achieving this level of modularity has always
 
 ng-xtend is an Angular library that enables you to:
 
-*   🧩 **Define once, render anywhere:** Focus on your data structures; let plugins handle the UI.
+*   🧩 **Define once, render anywhere:** Focus on your data structures; let the plugins handle the UI.
 *   ⚡ **Dynamic Loading:** Load and install plugins at runtime—no rebuild required.
 *   💾 **Storage Agnostic:** Save, load, and update data to any backend or storage.
-*   🔌 **Seamless Interop:** Plugins work together intelligently, even without knowing each other exists.
+*   🔌 **Seamless Interop:** Plugins work together intelligently, even without knowing each others.
 
 ---
 
@@ -28,6 +28,22 @@ ng-xtend is an Angular library that enables you to:
 A real-world example of an app handling complex data (lists, views, and editions) entirely through dynamic plugins.
 
 [![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png)](https://test.dont-code.net/apps/latest/xt-host/?project=Coffee%20Beans%20Evaluation)
+
+### ️Repository of examples
+To better understand the real-world usage of ng-xtend, we've developed a set of example projects, in the [ng-xtend examples](https://github.com/dont-code/ng-xtend-examples) repository.
+
+Here is a short description of each one:
+
+| Example                                                                          | Description                                                                                                                                                                   |
+|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [basic-example](https://github.com/dont-code/ng-xtend-examples/tree/main/basic)  | Displays any object in various format in a generic way                                                                                                                        |
+| [typed-example](https://github.com/dont-code/ng-xtend-examples/tree/main/typed)  | By describing the type handled, ng-xtend supports more use cases                                                                                                              |
+| [plugin-example](https://github.com/dont-code/ng-xtend-examples/tree/main/plugin) | Countries and Money fields looks nicer thanks to the newly added plugins. They are discovered and used transparently by the ng-xtend framework                                |
+| [inout-example](https://github.com/dont-code/ng-xtend-examples/tree/main/inout)  | A full list / edit / view flow is setup thanks to inputs / outputs connecting unknown components together.                                                                    |
+| [store-example](https://github.com/dont-code/ng-xtend-examples/tree/main/store)  | Edited elements are persisted between sessions thanks to the xt-store library included with the ng-xtend framework.                                                           |
+| [advanced-type-example](https://github.com/dont-code/ng-xtend-examples/tree/main/advanced-type)                                           | Showcase support for advanced types and models (like references)                                                                                                              |
+| [dynamic-example](https://github.com/dont-code/ng-xtend-examples/tree/main/dynamic)                                                       | Loads all plugins dynamically from another website using [Native-Federation](https://github.com/angular-architects/module-federation-plugin/tree/main/libs/native-federation)|
+
 
 ### 🛠️ Plugin Tester
 Curious about how plugins are dynamically injected? Try the dedicated tester:
@@ -84,6 +100,7 @@ rush build
 ```
 
 ## News
+- ***2026-01-27:*** Added repository with multiple examples of ng-xtend usage. => [ng-xtend-examples](https://github.com/dont-code/ng-xtend-examples)
 - ***2026-01-04:*** Version 0.5.5, supports for many to one references
 - ***2025-11-02:*** Added support for actions, allowing plugins to add features dynamically, and added the agenda plugin, with support for recurrent tasks
 - ***2025-09-06:*** Version 0.5, moved to Angular 20.2, added country selection plugin.

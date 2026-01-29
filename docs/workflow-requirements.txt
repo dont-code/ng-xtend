@@ -2,6 +2,7 @@ Workflow support
 
 Must enable:
 - Menu Item = Type + Workflow
+- Configurable data filtering, sorting and element selection. For example, sort by appointment date and show only future appointments. Pre-select the closest appointment
 - Workflow can be implemented with Tabs (list <-> edit), or Wizards (next / previous), or page (replacing the previous one, when no return back is possible)
 - It can be full screen or in a modal dialog (from a SubList)
 - Workflow List, Edit
@@ -14,6 +15,9 @@ Must enable:
 
 Configuration:
 - Menu to Workflow
+- Plugin components as workflow
+- Workflow provides sort, filtering info, read-only or not
+Default workflow is a generic one
 - Workflow is list of Components, with outputs to next component
 - Page input and outputs. Outputs are triggering the next page
 

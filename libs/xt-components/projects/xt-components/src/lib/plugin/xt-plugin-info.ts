@@ -9,6 +9,11 @@ export type XtComponentInfo<T> = {
     outputs?: XtOutputType[]
 }
 
+export type XtWorkflowInfo<T> = {
+  workflowName: string;
+  workflowClass: T;
+}
+
 export type XtTypeHandlerInfo<T> = {
   typesHandled: string[];
   handlerClass: T;
@@ -32,6 +37,7 @@ export type XtPluginInfo ={
     name: string;
     uriLogo?: string;
     components?: XtComponentInfo<any>[];
+    workflows?: XtWorkflowInfo<any>[];
     types?: XtTypeInfo;
     typeHandlers?: XtTypeHandlerInfo<any>[];
     actionHandlers?: XtActionHandlerInfo<any>[];

@@ -361,6 +361,12 @@
       "packageName": "xt-host",
       "projectFolder": "apps/xt-host",
       "shouldPublish": false
+    },
+    {
+      "packageName": "dont-code-workflow",
+      "projectFolder": "libs/dc-workflow",
+      "shouldPublish": true,
+      "publishFolder": "dist/dc-workflow"
     }
     // {
     //   /**

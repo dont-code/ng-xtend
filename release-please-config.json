@@ -80,6 +80,14 @@
       "prerelease-type": "beta",
       "draft": false,
       "prerelease": false
+    },
+    "libs/dc-workflow": {
+      "release-type": "node",
+      "package-name": "dont-code-workflow",
+      "extra-files": [],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
     }
 
   },

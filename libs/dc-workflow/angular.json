@@ -1,0 +1,130 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "dc-workflow": {
+      "projectType": "library",
+      "root": "projects/dc-workflow",
+      "sourceRoot": "projects/dc-workflow/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/dc-workflow/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dc-workflow/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/dc-workflow/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "tsConfig": "projects/dc-workflow/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "wfw-tester": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
+      "root": "projects/wfw-tester",
+      "sourceRoot": "projects/wfw-tester/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/wfw-tester",
+            "index": "projects/wfw-tester/src/index.html",
+            "browser": "projects/wfw-tester/src/main.ts",
+            "preserveSymlinks": true,
+            "tsConfig": "projects/wfw-tester/tsconfig.app.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/wfw-tester/public"
+              }
+            ],
+            "styles": [
+              "projects/wfw-tester/src/styles.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "wfw-tester:build:production"
+            },
+            "development": {
+              "buildTarget": "wfw-tester:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "tsConfig": "projects/wfw-tester/tsconfig.spec.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/wfw-tester/public"
+              }
+            ],
+            "styles": [
+              "projects/wfw-tester/src/styles.css"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "packageManager": "pnpm",
+    "analytics": "af715fa5-7248-48cd-a4c2-05820f0f991d",
+    "cache": {
+      "enabled": true
+    }
+  }
+}

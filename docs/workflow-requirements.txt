@@ -17,7 +17,8 @@ Configuration:
 - Menu to Workflow
 - Plugin components as workflow
 - Workflow provides sort, filtering info, read-only or not
-Default workflow is a generic one
+
+Default workflow as a generic one
 - Workflow is list of Components, with outputs to next component
 - Page input and outputs. Outputs are triggering the next page
 

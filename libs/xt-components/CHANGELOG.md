@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.6.4...xt-components-v0.7.0) (2026-02-01)
+
+
+### Features
+
+* create workflow project ([15c73ba](https://github.com/dont-code/ng-xtend/commit/15c73ba7b1e8c0a09dfe08c5af9e5a3674ffd549))
+
+
+### Bug Fixes
+
+* versioning of dependencies for the angular packages ([44e82f0](https://github.com/dont-code/ng-xtend/commit/44e82f0a32e66ebf735991adc5dff9bfcd40f104))
+
 ## [0.6.4](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.6.3...xt-components-v0.6.4) (2026-01-18)
 
 

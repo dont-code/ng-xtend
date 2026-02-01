@@ -101,6 +101,9 @@ Curious about how plugins are dynamically injected? Try the dedicated tester:
 ---
 
 ## 🧑‍💻 Getting Started
+### Using the Framework
+The repository [ng-xtend-examples](https://github.com/dont-code/ng-xtend-examples) shows many examples (from basic to complex) using ng-xtend.
+You should have a look at it to get started.
 
 ### ️Repository of examples
 To better understand the real-world usage of ng-xtend, we've developed a set of example projects, in the [ng-xtend examples](https://github.com/dont-code/ng-xtend-examples) repository.

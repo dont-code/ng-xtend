@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.6.4...xt-plugin-web-v0.7.0) (2026-02-01)
+
+
+### Bug Fixes
+
+* versioning of dependencies for the angular packages ([44e82f0](https://github.com/dont-code/ng-xtend/commit/44e82f0a32e66ebf735991adc5dff9bfcd40f104))
+
 ## [0.6.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.6.3...xt-plugin-web-v0.6.4) (2026-01-18)
 
 

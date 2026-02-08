@@ -9,6 +9,7 @@ export * from './lib/resolver/xt-resolver';
 export * from './lib/registry/xt-plugin-registry'
 export * from './lib/plugin/xt-plugin-info'
 export * from './lib/action/xt-action-handler';
+export * from './lib/workflow/xt-workflow';
 export * from './globals';
 
 export * from './lib/angular/xt-tokens';

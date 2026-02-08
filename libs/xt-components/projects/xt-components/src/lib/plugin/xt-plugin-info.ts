@@ -1,6 +1,7 @@
 import { XtTypeInfo } from 'xt-type';
 import { XtOutputType } from '../xt-component';
 import { XtActionHandler } from '../action/xt-action-handler';
+import { XtWorkflow } from '../workflow/xt-workflow';
 
 export type XtComponentInfo<T> = {
     componentName: string;
@@ -9,7 +10,7 @@ export type XtComponentInfo<T> = {
     outputs?: XtOutputType[]
 }
 
-export type XtWorkflowInfo<T> = {
+export type XtWorkflowInfo<T extends XtWorkflow> = {
   workflowName: string;
   workflowClass: T;
 }

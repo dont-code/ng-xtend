@@ -363,10 +363,16 @@
       "shouldPublish": false
     },
     {
-      "packageName": "dont-code-workflow",
+      "packageName": "dc-workflow",
       "projectFolder": "libs/dc-workflow",
       "shouldPublish": true,
       "publishFolder": "dist/dc-workflow"
+    },
+    {
+      "packageName": "xt-plugin-workflow",
+      "projectFolder": "plugins/xt-workflow",
+      "shouldPublish": true,
+      "publishFolder": "dist/xt-workflow"
     }
     // {
     //   /**

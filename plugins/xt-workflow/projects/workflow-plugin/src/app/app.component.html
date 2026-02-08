@@ -1,0 +1,12 @@
+<div class="text-3xl text-center text-shadow-md">Default Plugin Testing app</div>
+<p-toolbar>
+  <ng-template #start>
+    <div class="flex items-center gap-2">
+      <p-button icon="pi pi-bullseye" label="Simple" [disabled]="currentPage()=='/'" (onClick)="router.navigate(['/'])" pTooltip="Allow you to test simple data"></p-button>
+      <p-button icon="pi pi-objects-column" label="Objects" [disabled]="currentPage()=='/object'" (onClick)="router.navigate(['/object'])" pTooltip="Here you can test more complex data objects"></p-button>
+      <p-button icon="pi pi-list-check" label="Lists" [disabled]="currentPage()=='/set'" (onClick)="router.navigate(['/set'])" pTooltip="Lets you check list of objects"></p-button>
+    </div>
+  </ng-template>
+</p-toolbar>
+
+<router-outlet />

@@ -1,0 +1,133 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "cli": {
+    "cache": {
+      "enabled": true
+    }
+  },
+  "projects": {
+    "workflow": {
+      "projectType": "library",
+      "root": "projects/workflow",
+      "sourceRoot": "projects/workflow/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/workflow/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/workflow/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/workflow/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "tsConfig": "projects/workflow/tsconfig.spec.json",
+            "polyfills": [
+            ]
+          }
+        }
+      }
+    },
+    "workflow-plugin": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
+      "root": "projects/workflow-plugin",
+      "sourceRoot": "projects/workflow-plugin/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/workflow-plugin",
+            "index": "projects/workflow-plugin/src/index.html",
+            "browser": "projects/workflow-plugin/src/main.ts",
+            "polyfills": [],
+            "tsConfig": "projects/workflow-plugin/tsconfig.app.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/workflow-plugin/public"
+              }
+            ],
+            "styles": [
+              "projects/workflow-plugin/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1MB",
+                  "maximumError": "2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "workflow-plugin:build:production"
+            },
+            "development": {
+              "buildTarget": "workflow-plugin:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "polyfills": [],
+            "tsConfig": "projects/workflow-plugin/tsconfig.spec.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/workflow-plugin/public"
+              }
+            ],
+            "styles": [
+              "projects/workflow-plugin/src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  }
+}

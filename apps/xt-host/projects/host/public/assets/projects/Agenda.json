@@ -32,6 +32,27 @@
         "sharing": {
           "with": "Dont-code users"
         }
+      },
+      "workflows": {
+        "Agenda": {
+          "entity": "Agenda",
+          "workflow": "list-detail",
+          "data": {
+            "sort": {
+              "Day": "ascending"
+            }
+          },
+          "display": {
+            "fields": {
+              "Day": "current-and-after"
+            }
+          },
+          "selection": {
+            "fields": {
+              "Day": "after-closest"
+            }
+          }
+        }
       }
     }
   }

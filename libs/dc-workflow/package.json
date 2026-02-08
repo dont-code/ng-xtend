@@ -1,10 +1,10 @@
 {
-  "name": "dont-code-workflow",
+  "name": "dc-workflow",
   "version": "0.6.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build dc-workflow --configuration=development && ng build wfw-tester --configuration=development",
     "build-deploy": "APP=dc-workflow && ng build $APP --configuration=$BUILD",
     "watch": "ng build --watch --configuration development",
     "test": "cd projects/dc-workflow && ../../node_modules/.bin/vitest && cd ../wfw-tester && ../../node_modules/.bin/vitest"

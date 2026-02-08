@@ -49,6 +49,17 @@
       "sharing": {
         "with": "Dont-code users"
       }
+    },
+    "workflows": {
+      "Coffees": {
+        "entity": "Coffee Evaluation",
+        "workflow": "list-detail",
+        "data": {
+          "sort": {
+            "name": "ascending"
+          }
+        }
+      }
     }
   }
 }

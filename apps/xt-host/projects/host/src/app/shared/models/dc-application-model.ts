@@ -1,4 +1,5 @@
 import { XtTypeReference } from 'xt-type';
+import { DcWorkflowModel } from 'dc-workflow';
 
 export type DcApplicationModel = {
   name:string,
@@ -8,6 +9,9 @@ export type DcApplicationModel = {
       type?: string,
       entities?: {
         [key:string]:DcEntityModel
+      },
+      workflows?: {
+        [key:string]: DcWorkflowModel
       },
       sharing?: {
         with: 'Dont-code users'|'No-one'|'Volatile'
@@ -29,3 +33,4 @@ export type DcFieldModel = {
   type: string,
   reference?: XtTypeReference
 }
+

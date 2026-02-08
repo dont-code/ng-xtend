@@ -1,0 +1,22 @@
+<span class="text-2xl">Testing Object Types</span>
+
+<div class="flex flex-wrap mt-6 mb-6">
+  <p-panel header="Selection">
+    <label class="text-xl m-3" for="TypeSelector">Select the object to use</label>
+    <div class="m-3" id="TypeSelector">
+      <p-autocomplete [suggestions]="listOfObjects()" [ngModel]="selectedObject()" (onSelect)="objectSwitch($event)" [dropdown]="true"></p-autocomplete>
+    </div>
+  </p-panel>
+  <p-panel header="Edit Mode">
+    <form class="m-3" id="editView" [formGroup]="mainForm()">
+      <xt-render [componentType]="objectComponentType()" displayMode="FULL_EDITABLE" subName="TestObject" [formGroup]="mainForm()" [valueType]="valueType()"></xt-render>
+    </form>
+    <span class="m-3 mt-6">Form Value is <pre>{{mainForm().value | json}}</pre>, Form is {{mainForm().pristine?"pristine":"Dirty"}}</span>
+  </p-panel>
+  <p-panel header="View Inline Mode">
+    <xt-render id="inlineView" [componentType]="objectComponentType()" displayMode="INLINE_VIEW" [valueType]="valueType()" [value]="value()" ></xt-render>
+  </p-panel>
+  <p-panel header="Full View Mode">
+    <xt-render id="fullView" [componentType]="objectComponentType()" displayMode="FULL_VIEW" [valueType]="valueType()" [value]="value()"></xt-render>
+  </p-panel>
+</div>

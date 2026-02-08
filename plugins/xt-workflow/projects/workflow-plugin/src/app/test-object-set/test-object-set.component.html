@@ -1,0 +1,15 @@
+<span class="text-2xl">Testing Object List</span>
+
+<div class="flex flex-wrap mt-6 mb-6">
+  <p-panel class="grow-0" header="Selection">
+    <label class="text-xl m-3" for="TypeSelector">Select the object to use</label>
+    <div class="m-3" id="TypeSelector">
+      <p-autocomplete [suggestions]="listOfObjects()" [ngModel]="selectedObject()" (onSelect)="objectSwitch($event)" [dropdown]="true"></p-autocomplete>
+    </div>
+  </p-panel>
+  <p-panel header="List View Mode">
+    <xt-render id="listView" [componentType]="objectComponentType()" displayMode="LIST_VIEW" (outputs)="componentOutputChange($event)" [valueType]="valueType()" [value]="value()" ></xt-render>
+    <span class="m-3 mt-6">Selected element is {{selectedValue() | json}}</span>
+  </p-panel>
+</div>
+

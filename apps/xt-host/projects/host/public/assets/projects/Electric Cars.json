@@ -1,0 +1,196 @@
+{
+  "name": "Electric cars",
+  "template": false,
+  "description": "Comparing Electric cars to buy",
+  "imgUrl": "https://dont-code.net/assets/images/apps/voiture-electrique.jpg",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Electric Cars",
+      "entities": {
+        "a": {
+          "from": "",
+          "name": "Car",
+          "fields": {
+            "aa": {
+              "name": "Name",
+              "type": "string"
+            },
+            "ab": {
+              "name": "Brand",
+              "reference": {
+                "toType": "Car Brand",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "ac": {
+              "name": "Type",
+              "reference": {
+                "toType": "Car Type",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "ad": {
+              "name": "Picture",
+              "type": "image"
+            },
+            "ae": {
+              "name": "Range",
+              "reference": {
+                "toType": "Car Range",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "af": {
+              "name": "Charge 20->80",
+              "reference": {
+                "toType": "Charge Duration Range",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "ag": {
+              "name": "Charge Platform",
+              "reference": {
+                "toType": "Charge Capacity Type",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "aj": {
+              "name": "Drive Assistance",
+              "reference": {
+                "toType": "Assistance Type",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "ak": {
+              "name": "Infotainment",
+              "reference": {
+                "toType": "Infotainment Type",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "al": {
+              "name": "Price",
+              "reference": {
+                "toType": "Price Range",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            },
+            "am": {
+              "name": "Comfort",
+              "reference": {
+                "toType": "Comfort Category",
+                "field": "Name",
+                "type": "MANY-TO-ONE"
+              }
+            }
+          }
+        },
+        "b": {
+          "name": "Car Brand",
+          "fields": {
+            "ba": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        },
+        "c": {
+          "name": "Car Type",
+          "fields": {
+            "ca": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        },
+        "d": {
+          "name": "Car Range",
+          "fields": {
+            "ba": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        },
+        "e": {
+          "name": "Charge Duration Range",
+          "fields": {
+            "ea": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        },
+        "f": {
+          "name": "Charge Capacity Type",
+          "fields": {
+            "fa": {
+              "name": "Name",
+              "type": "string"
+            },
+            "fb": {
+              "name": "AC Max",
+              "type": "number"
+            },
+            "fc": {
+              "name": "DC Max",
+              "type": "number"
+            },
+            "fd": {
+              "name": "Volts",
+              "type": "number"
+            }
+          }
+        },
+        "i": {
+          "name": "Assistance Type",
+          "fields": {
+            "ia": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        },
+        "j": {
+          "name": "Infotainment Type",
+          "fields": {
+            "fa": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        },
+        "k": {
+          "name": "Price Range",
+          "fields": {
+            "ka": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        },
+        "l": {
+          "name": "Comfort Category",
+          "fields": {
+            "la": {
+              "name": "Name",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "sharing": {
+        "with": "Dont-code users"
+      }
+    }
+  }
+}

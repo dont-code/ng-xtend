@@ -21,7 +21,7 @@
         @if (store?.loading()) {
           <p-progress-spinner />
         } @else {
-          <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (outputs)="outputChanged($event)" [valueType]="entityName()" ></xt-render>
+          <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (models)="listModelChanged($event)" [models]="listModel" [valueType]="entityName()" ></xt-render>
         }
       </p-tabpanel>
 

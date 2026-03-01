@@ -1,26 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TestObjectComponent } from './test-object.component';
+import { TestWorkflowComponent } from './test-workflow.component';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { registerDefaultPlugin } from '../../../../default/src/lib/register';
+import { registerDefaultPlugin } from 'xt-plugin-default';
 import { XtResolverService } from 'xt-components';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideZonelessChangeDetection } from '@angular/core';
 
-describe('TestObjectComponent', () => {
-  let component: TestObjectComponent;
-  let fixture: ComponentFixture<TestObjectComponent>;
+describe('TestComponent', () => {
+  let component: TestWorkflowComponent;
+  let fixture: ComponentFixture<TestWorkflowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestObjectComponent],
+      imports: [TestWorkflowComponent],
       providers: [provideNoopAnimations(), provideZonelessChangeDetection()]
     })
     .compileComponents();
 
-    registerDefaultPlugin(TestBed.inject(XtResolverService));
+    const resolverService=TestBed.inject(XtResolverService);
+    registerDefaultPlugin(resolverService);
+    registerDefaultPlugin(resolverService);
 
-    fixture = TestBed.createComponent(TestObjectComponent);
+    fixture = TestBed.createComponent(TestWorkflowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

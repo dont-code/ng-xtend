@@ -1,9 +1,10 @@
-import { Component, computed, input, OnInit, output } from '@angular/core';
+import { Component, computed, input, model, OnInit, output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
-import { XtComponent, XtComponentOutput } from '../xt-component';
+import { XtComponent, XtComponentModel, XtComponentOutput } from '../xt-component';
 import { XtBaseOutput } from '../output/xt-base-output';
 import { XtBaseInput } from '../output/xt-base-input';
+import { XtBaseModel } from '../output/xt-base-model';
 
 /**
  * An XtSimpleComponent just displays the given value or element in a form.
@@ -18,7 +19,9 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
   context = input.required<XtContext<T>>();
   outputsObject = new XtBaseOutput();
   inputsObject = new XtBaseInput();
+
   outputs=output<XtComponentOutput>();
+  models=model<XtComponentModel>();
 
   isInForm = computed<boolean> ( () => {
     return this.context()?.isInForm()??false;

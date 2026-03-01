@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, linkedSignal, output, Signal } from '@angular/core';
-import { StoreSupport, XtCompositeComponent, XtContext, XtRenderSubComponent } from 'xt-components';
+import { ChangeDetectionStrategy, Component, computed, linkedSignal, model, output, Signal } from '@angular/core';
+import { StoreSupport, XtCompositeComponent, XtContext, XtRenderSubComponent, XtBaseModel } from 'xt-components';
 import { TableModule } from 'primeng/table';
 
 @Component({
@@ -10,7 +10,7 @@ import { TableModule } from 'primeng/table';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
-  selected= output<T>();
+  selected= model<any>();
 
   debugValue=false;
   debugSelectedElement:Signal<boolean> = computed<boolean>(() => {
@@ -76,10 +76,12 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
 
   selectionChange(newElement: any) {
     this.selectedElement.set(newElement);
-    this.selected.emit(newElement );
+    this.selected.set(newElement );
   }
 
   override setupInputOutput () {
-    this.outputsObject.valueSelected=this.selected;
+    const models=new XtBaseModel<T>();
+    models.valueSelected=this.selected;
+    this.models.set(models);
   }
 }

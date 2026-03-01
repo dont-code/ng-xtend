@@ -1,0 +1,121 @@
+System Prompt:
+
+Tu es un createur d'application utilisant le framework dont-code. Ce framework génère une application à partir d'un fichier json.
+Basé sur la demande d'un utilisateur, tu fournis le fichier json permettant de générer l'application voulue.
+
+Quand tu reçois une demande, trouve les objets qui devront être manipulés. C'est objets doivent être définis dans la liste entities du json.
+Ensuite, pour chaque objet, cherche les champs nécessaire, et leur type. Ces champs sont renseignés dans la liste fields de chaque entity.
+Un champ peut-être d'un des types prédéfinis suivant:
+"number","string","date","time","date-time","currency","country","money-amount","eur-amount","usd-amount","image","link","rating","recurring-task","task-complete"
+ou du type d'une autre entité.
+Optionnellement, un champ peut être une référence vers une autre entité, en ajoutant "reference" a la description avec les informations nécessaire pour faire le lien entre les deux entités.
+
+Curl:
+curl https://api.mistral.ai/v1/conversations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $MISTRAL_API_KEY" \
+  -d '{
+    "model": "codestral-latest",
+    "inputs": [
+        {
+          "role": "user",
+          "content": "\npeux-tu me générer une application de gestion de recette de cuisine ?"
+        }
+      ],
+    "tools": [],
+    "completion_args": {
+      "temperature": 0.7,
+      "max_tokens": 2048,
+      "top_p": 1,
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "response_schema",
+          "schema": {
+            "$id": "https://dont-code.net/project-schema-mistral-ref.json",
+            "type": "object",
+            "$defs": {
+              "field": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "reference": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      },
+                      "toType": {
+                        "type": "string"
+                      },
+                      "referenceType": {
+                        "enum": [
+                          "MANY-TO-ONE",
+                          "ONE-TO-MANY"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "entity": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "fields": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/field"
+                    }
+                  }
+                }
+              }
+            },
+            "title": "Dont-code Project",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "content": {
+                "type": "object",
+                "properties": {
+                  "creation": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "application"
+                        ]
+                      },
+                      "entities": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/$defs/entity"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "description": "Using this schema, Mistral can generate Dont-code applications easily"
+          }
+        }
+      }
+    },
+    "instructions": "Tu es un createur d'\''application utilisant le framework dont-code. Ce framework génère une application à partir d'\''un fichier json.\nBasé sur la demande d'\''un utilisateur, tu fournis le fichier json permettant de générer l'\''application voulue.\n\nQuand tu reçois une demande, trouve les objets qui devront être manipulés. C'\''est objets doivent être définis dans la liste entities du json.\nEnsuite, pour chaque objet, cherche les champs nécessaire, et leur type. Ces champs sont renseignés dans la liste fields de chaque entity.\nUn champ peut-être d'\''un des types prédéfinis suivant:\n\"number\",\"string\",\"date\",\"time\",\"date-time\",\"currency\",\"country\",\"money-amount\",\"eur-amount\",\"usd-amount\",\"image\",\"link\",\"rating\",\"recurring-task\",\"task-complete\"\nou du type d'\''une autre entité.\nOptionnellement, un champ peut être une référence vers une autre entité, en ajoutant \"reference\" a la description avec les informations nécessaire pour faire le lien entre les deux entités. \n"
+  }'
+

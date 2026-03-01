@@ -20,6 +20,10 @@ export * from './lib/render/xt-render-sub.component';
 export * from './lib/xt-simple/xt-simple.component';
 export * from './lib/xt-composite/xt-composite.component';
 
+export * from './lib/output/xt-base-model';
+export * from './lib/output/xt-base-output';
+export * from './lib/output/xt-base-input';
+
 export * from './lib/angular/xt-message-handler.service';
 export * from './lib/store/store-support';
 export * from './lib/type/type-helper';

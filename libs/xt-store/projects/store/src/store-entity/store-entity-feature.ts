@@ -48,7 +48,7 @@ export type XtSignalStore<T> = {
   safeLoadEntity (id:string): Promise<T>;
   storeEntity (toStore:T):Promise<T>;
   deleteEntity (id:string): Promise<boolean>;
-  searchEntities(...criteria: XtStoreCriteria[]): Observable<T[]>;
+  searchEntities(...criteria: XtStoreCriteria<T>[]): Observable<T[]>;
 }
 
 /**
@@ -145,7 +145,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
           patchState(store, {loading:false});
         });
       },
-      searchEntities(...criteria: XtStoreCriteria[]): Observable<T[]> {
+      searchEntities(...criteria: XtStoreCriteria<T>[]): Observable<T[]> {
         patchState(store, { loading: true });
         try {
           const listEntities = store.entities();

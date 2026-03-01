@@ -31,6 +31,7 @@
     "xt-type": "workspace:^",
     "xt-store": "workspace:^",
     "dc-workflow": "workspace:^",
+    "xt-plugin-default": "workspace:^",
     "rxjs": "^7.8.2",
     "primeng": "^20.3.0",
     "primeicons": "^7.0.0",

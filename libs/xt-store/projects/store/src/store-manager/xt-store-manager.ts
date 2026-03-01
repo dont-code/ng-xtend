@@ -98,8 +98,8 @@ export class XtStoreManager {
     this.removeProvider();
   }
 
-  newStoreCriteria(name: string, value: any, operator: XtStoreCriteriaOperator): XtStoreCriteria {
-    return new XtStoreCriteria(name, value, operator);
+  newStoreCriteria<T extends ManagedData>(name: string, value: any, operator: XtStoreCriteriaOperator): XtStoreCriteria<T> {
+    return new XtStoreCriteria<T>(name, value, operator);
   }
 
   storeEntity<T extends ManagedData = ManagedData>(name: string, entity: T): Promise<T> {
@@ -120,17 +120,17 @@ export class XtStoreManager {
 
   searchEntities<T extends ManagedData = ManagedData>(
     name: string,
-    ...criteria: XtStoreCriteria[]
+    ...criteria: XtStoreCriteria<T>[]
   ): Observable<Array<T>> {
     return this.getProviderSafe<T>(name).searchEntities(name, ...criteria);
   }
 
   searchAndPrepareEntities<T extends ManagedData = ManagedData>(
     name: string,
-    sort?:XtSortBy,
-    groupBy?:XtGroupBy,
+    sort?:XtSortBy<T>,
+    groupBy?:XtGroupBy<T>,
     dataTransformer?:XtDataTransformer,
-    ...criteria: XtStoreCriteria[]
+    ...criteria: XtStoreCriteria<T>[]
   ): Observable<DontCodeStorePreparedEntities<T>> {
     return this.getProviderSafe<T>(name).searchAndPrepareEntities(name, sort, groupBy, dataTransformer, ...criteria);
   }

@@ -1397,6 +1397,9 @@ importers:
       xt-components:
         specifier: workspace:^
         version: link:../../libs/xt-components/dist/xt-components
+      xt-plugin-default:
+        specifier: workspace:^
+        version: link:../xt-default/dist/xt-plugin-default
       xt-store:
         specifier: workspace:^
         version: link:../../libs/xt-store/dist/store

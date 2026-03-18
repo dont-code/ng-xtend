@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "APP=dc-workflow && ng build $APP",
     "build-deploy": "APP=dc-workflow && ng build $APP --configuration=$BUILD",
-    "watch": "ng build --watch --configuration development",
+    "watch": "APP=dc-workflow && ng build $APP --watch --configuration development",
     "test": "cd projects/dc-workflow && ../../node_modules/.bin/vitest && cd ../wfw-tester && ../../node_modules/.bin/vitest"
   },
   "prettier": {

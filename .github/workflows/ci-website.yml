@@ -29,7 +29,7 @@ jobs:
         with:
           name: Dont-code
           email: developer@dont-code.net
-      - name: Update test.dont-code.net website from branch ${{env.branch}}
+      - name: Update dont-code.net website from branch ${{env.branch}}
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
           username: ${{secrets.DONTCODE_WEBSITE_USER}}

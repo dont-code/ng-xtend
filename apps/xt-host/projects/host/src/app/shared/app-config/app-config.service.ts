@@ -11,7 +11,8 @@ export class AppConfigService {
 
   protected configResources = {
     configName: signal<string|undefined>(undefined),
-    projectName: signal<string|undefined>(undefined)
+    projectName: signal<string|undefined>(undefined),
+    projectDefinition: signal<string|undefined>(undefined)
   }
 
   protected resolverService = inject (XtResolverService);
@@ -96,25 +97,30 @@ export class AppConfigService {
       const ret= {
         pluginsLoaded: (this.plugins.status()=='resolved')||(this.plugins.status()=='local'),
         projectUrl:this.config.value()?.projectApiUrl,
-        projectName: this.configResources.projectName()
+        projectName: this.configResources.projectName(),
+        projectDefinition: this.configResources.projectDefinition()
       }
       return ret;
     },
     loader: (options) => {
-      if ((options.params.pluginsLoaded) && (options.params.projectName!=null)) {
-        let projectUrl = options.params.projectUrl;
-        if (projectUrl==null) {
-          projectUrl='assets/projects/'+encodeURIComponent (options.params.projectName)+'.json';
-        } else {
-          projectUrl = new URL (options.params.projectName, projectUrl.endsWith('/')?projectUrl:projectUrl+'/').toString();
+      if (options.params.pluginsLoaded) {
+        if (options.params.projectDefinition!=null) {
+          return Promise.resolve(options.params.projectDefinition);
+        } else if (options.params.projectName!=null) {
+          let projectUrl = options.params.projectUrl;
+          if (projectUrl==null) {
+            projectUrl='assets/projects/'+encodeURIComponent (options.params.projectName)+'.json';
+          } else {
+            projectUrl = new URL (options.params.projectName, projectUrl.endsWith('/')?projectUrl:projectUrl+'/').toString();
+          }
+          return fetch(projectUrl).then ((response) => {
+            return response.json();
+          });
+        }else {
+          return Promise.reject('No project name to load');
         }
-        return fetch(projectUrl).then ((response) => {
-          return response.json();
-        });
-      } else if (!options.params.pluginsLoaded) {
-        return Promise.resolve();
       } else {
-        return Promise.reject('No project name to load');
+        return Promise.resolve();
       }
     }
   });
@@ -153,5 +159,10 @@ export class AppConfigService {
   updateProjectName (newName:string) {
     this.configResources.projectName.set(newName);
   }
+
+  updateProjectDefinition (prjDef:string) {
+    this.configResources.projectDefinition.set(prjDef);
+  }
+
 
 }

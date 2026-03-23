@@ -37,13 +37,23 @@ export class ProjectLoadComponent implements OnInit {
   private readonly injector = inject(Injector);
 
   ngOnInit() {
-    let projectName = this.route.snapshot.paramMap.get('projectName');
-    if ((projectName==null) || (projectName.length==0)) {
-      projectName = this.route.snapshot.queryParamMap.get('project')??'Coffee Beans Evaluation';
+      // Either we get the complete project definition, or only the name to be read from project API
+    let projectName:string = 'Coffee Beans Evaluation';
+    let project = this.route.snapshot.queryParamMap.get('prjDef');
+    if (project==null) {
+      let givenPrjName = this.route.snapshot.paramMap.get('projectName');
+      if ((givenPrjName==null) || (givenPrjName.length==0)) {
+        projectName = this.route.snapshot.queryParamMap.get('project')??projectName;
+      } else projectName=givenPrjName;
     }
+
     const repoName = this.route.snapshot.paramMap.get('repoName') ?? this.route.snapshot.queryParamMap.get('repository')?? 'default';
     this.appConfig.updateConfigName(repoName); // Load the default config
-    this.appConfig.updateProjectName(projectName);
+    if (project!=null) {
+      this.appConfig.updateProjectDefinition(project);
+    }else {
+      this.appConfig.updateProjectName(projectName);
+    }
   }
 
   combinedloadingStatus = linkedSignal( () => {

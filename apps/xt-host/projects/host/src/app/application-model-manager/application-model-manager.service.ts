@@ -103,7 +103,11 @@ export class ApplicationModelManagerService {
   protected toNewProjectModel(value: OldDcApplicationModel): DcApplicationModel {
     const ret ={ name:value.name,
       description: value.description,
-      content: { creation: { entities:new Array<DcEntityModel>()}}
+      content: { creation: {
+        type:value.content.creation.type,
+          entities:new Array<DcEntityModel>(),
+        sharing: value.content.creation.sharing
+      }}
     } as DcApplicationModel;
 
     for (const entity of Object.values(value.content.creation.entities??{})) {

@@ -1,5 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { DcApplicationModel, DcFieldModel } from '../shared/models/dc-application-model';
+import {
+  DcApplicationModel, DcEntityModel,
+  DcFieldModel,
+  isOldProjectModel,
+  OldDcApplicationModel
+} from '../shared/models/dc-application-model';
 import { XtTypeInfo } from 'xt-type';
 import { Title } from '@angular/platform-browser';
 
@@ -23,17 +28,21 @@ export class ApplicationModelManagerService {
       return null;
     }
 
-    return Object.keys(entities).length>0?entities[Object.keys(entities)[0]].name:null;
+    return entities.length>0?entities[0].name:null;
   }
 
-  setModel(value: DcApplicationModel) {
-    this.model = value;
+  setModel(value: DcApplicationModel|OldDcApplicationModel) {
+    if (isOldProjectModel(value)) {
+      this.model = this.toNewProjectModel (value);
+    } else
+      this.model = value;
+
     if (this.model?.content?.creation?.entities!=null){
       this.entityNames.set (Object.values(this.model?.content?.creation?.entities).map((entity) => entity.name));
     }else {
       this.entityNames.set([]);
     }
-    if (this.model.name!=null) {
+    if (this.model?.name!=null) {
       this.projectTitle.set(this.model.name);
       this.titleMgr.setTitle(this.model.name);
     }
@@ -50,7 +59,7 @@ export class ApplicationModelManagerService {
   getApplicationTypes (): XtTypeInfo|null {
     if (this.model?.content.creation.entities!=null) {
       const ret={} as XtTypeInfo;
-      for (const entity of Object.values(this.model!.content.creation.entities)) {
+      for (const entity of this.model!.content.creation.entities) {
         if (entity.fields!=null) {
           ret[entity.name] = this.getEntityFields (entity.fields);
         }
@@ -61,9 +70,9 @@ export class ApplicationModelManagerService {
     }
   }
 
-  getEntityFields(fields: { [key:string]:DcFieldModel}): XtTypeInfo {
+  getEntityFields(fields: Array<DcFieldModel>): XtTypeInfo {
     const ret = {} as XtTypeInfo;
-    for (const field of Object.values(fields)) {
+    for (const field of fields) {
       ret[field.name]= this.translate (field.type);
     }
     return ret;
@@ -84,5 +93,30 @@ export class ApplicationModelManagerService {
       default:
         return type.toLowerCase();
     }
+  }
+
+  /**
+   * Transform the old project model (that uses objects instead of arrays)
+   * @param value
+   * @protected
+   */
+  protected toNewProjectModel(value: OldDcApplicationModel): DcApplicationModel {
+    const ret ={ name:value.name,
+      description: value.description,
+      content: { creation: {
+        type:value.content.creation.type,
+          entities:new Array<DcEntityModel>(),
+        sharing: value.content.creation.sharing
+      }}
+    } as DcApplicationModel;
+
+    for (const entity of Object.values(value.content.creation.entities??{})) {
+      const newEntity = { name:entity.name, fields:new Array<DcFieldModel>} as DcEntityModel;
+      for (const field of Object.values(entity.fields??{})) {
+        newEntity.fields!.push(field);
+      }
+      ret.content!.creation!.entities!.push(newEntity);
+    }
+    return ret;
   }
 }

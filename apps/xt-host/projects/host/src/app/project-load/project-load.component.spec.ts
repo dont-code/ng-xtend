@@ -28,4 +28,40 @@ describe('ProjectLoadComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
+
+const PRJ_DEFINITION={
+  "name": "Simple",
+  "template": false,
+  "description": "Simple project with no need for plugins",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Simple",
+      "entities": [
+        {
+          "from": "",
+          "name": "SimpleNote",
+          "fields": [
+            {
+              "name": "Text",
+              "type": "string"
+            },
+            {
+              "name": "Amount",
+              "type": "number"
+            },
+            {
+              "name": "Check",
+              "type": "boolean"
+            }
+          ]
+        }
+      ],
+      "sharing": {
+        "with": "Dont-code users"
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+Base 64:
+ewogICJuYW1lIjogIlNpbXBsZSIsCiAgInRlbXBsYXRlIjogZmFsc2UsCiAgImRlc2NyaXB0aW9uIjogIlNpbXBsZSBwcm9qZWN0IHdpdGggbm8gbmVlZCBmb3IgcGx1Z2lucyIsCiAgImNvbnRlbnQiOiB7CiAgICAiY3JlYXRpb24iOiB7CiAgICAgICJ0eXBlIjogIkFwcGxpY2F0aW9uIiwKICAgICAgIm5hbWUiOiAiU2ltcGxlIiwKICAgICAgImVudGl0aWVzIjogWwogICAgICAgIHsKICAgICAgICAgICJmcm9tIjogIiIsCiAgICAgICAgICAibmFtZSI6ICJTaW1wbGVOb3RlIiwKICAgICAgICAgICJmaWVsZHMiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAibmFtZSI6ICJUZXh0IiwKICAgICAgICAgICAgICAidHlwZSI6ICJzdHJpbmciCiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAibmFtZSI6ICJBbW91bnQiLAogICAgICAgICAgICAgICJ0eXBlIjogIm51bWJlciIKICAgICAgICAgICAgfSwKICAgICAgICAgICAgewogICAgICAgICAgICAgICJuYW1lIjogIkNoZWNrIiwKICAgICAgICAgICAgICAidHlwZSI6ICJib29sZWFuIgogICAgICAgICAgICB9CiAgICAgICAgICBdCiAgICAgICAgfQogICAgICBdLAogICAgICAic2hhcmluZyI6IHsKICAgICAgICAid2l0aCI6ICJEb250LWNvZGUgdXNlcnMiCiAgICAgIH0KICAgIH0KICB9Cn0K
+
+{
+  "name": "Simple",
+  "template": false,
+  "description": "Simple project with no need for plugins",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Simple",
+      "entities": [
+        {
+          "from": "",
+          "name": "SimpleNote",
+          "fields": [
+            {
+              "name": "Text",
+              "type": "string"
+            },
+            {
+              "name": "Amount",
+              "type": "number"
+            },
+            {
+              "name": "Check",
+              "type": "boolean"
+            }
+          ]
+        }
+      ],
+      "sharing": {
+        "with": "Dont-code users"
+      }
+    }
+  }
+}

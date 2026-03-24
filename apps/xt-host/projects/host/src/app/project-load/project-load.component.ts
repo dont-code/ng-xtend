@@ -119,3 +119,17 @@ export class ProjectLoadComponent implements OnInit {
   }
 
 }
+
+function bufferToString(buffer: ArrayBuffer): string {
+  return String.fromCharCode.apply(null, Array.from(new Uint16Array(buffer)));
+}
+
+function stringToBuffer(value: string): ArrayBuffer {
+  let buffer = new ArrayBuffer(value.length * 2); // 2 bytes per char
+  let view = new Uint16Array(buffer);
+  for (let i = 0, length = value.length; i < length; i++) {
+    view[i] = value.charCodeAt(i);
+  }
+  return buffer;
+}
+

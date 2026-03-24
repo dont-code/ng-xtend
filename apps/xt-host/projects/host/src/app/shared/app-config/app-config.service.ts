@@ -105,7 +105,8 @@ export class AppConfigService {
     loader: (options) => {
       if (options.params.pluginsLoaded) {
         if (options.params.projectDefinition!=null) {
-          return Promise.resolve(options.params.projectDefinition);
+          const jsonDef=JSON.parse(options.params.projectDefinition);
+          return Promise.resolve(jsonDef);
         } else if (options.params.projectName!=null) {
           let projectUrl = options.params.projectUrl;
           if (projectUrl==null) {

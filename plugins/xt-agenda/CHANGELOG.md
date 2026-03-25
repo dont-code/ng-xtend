@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-agenda-v0.6.4...xt-plugin-agenda-v0.7.0) (2026-03-25)
+
+
+### Bug Fixes
+
+* build to dont-code.net ([21f5d5d](https://github.com/dont-code/ng-xtend/commit/21f5d5d81f5abbb8de1d6a7cd433e45af7270676))
+* versioning of dependencies for the angular packages ([44e82f0](https://github.com/dont-code/ng-xtend/commit/44e82f0a32e66ebf735991adc5dff9bfcd40f104))
+
 ## [0.6.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-agenda-v0.6.3...xt-plugin-agenda-v0.6.4) (2026-01-18)
 
 

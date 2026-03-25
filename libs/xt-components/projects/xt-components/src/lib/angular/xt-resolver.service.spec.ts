@@ -53,6 +53,56 @@ describe('XtResolverService', () => {
     expect(result).toEqual(['subType2', 'subType21']);
   });
 
+  it ('should support type registration', () => {
+    service.registerTypes({
+      "Author": {
+        firstName:"string",
+        lastName:"string"
+      },
+      "Book": {
+        children: {
+          "title": "string",
+          "publishedYear":"number",
+          "author": {
+            toType:"Author",
+            referenceType:"MANY-TO-ONE",
+            field:"lastName"
+          }
+        }
+      }
+    });
+    expect(service.typeResolver.findType("Author")).toBeTruthy();
+    expect(service.typeResolver.findType("Book")).toBeTruthy();
+  });
+
+  it ('should support out of order type registration', () => {
+    service.registerTypes({
+      "NewBook": {
+        children: {
+          "title": "string",
+          "publishedYear":"number",
+          "author": {
+            toType:"NewAuthor",
+            referenceType:"MANY-TO-ONE",
+            field:"lastName"
+          },
+          type: "NewBookType"
+        }
+      },
+      "NewAuthor": {
+        firstName:"string",
+        lastName:"string"
+      },
+      "NewBookType": {
+        typeName:"string"
+      }
+    });
+    service.resolvePendingReferences();
+    expect(service.typeResolver.findType("NewAuthor")).toBeTruthy();
+    expect(service.typeResolver.findType("NewBook")).toBeTruthy();
+    expect(service.typeResolver.findType("NewBookType")).toBeTruthy();
+  });
+
   it('should properly set typeHandlers', () => {
     service.registerPlugin({
       name: 'resolverTest',

@@ -269,7 +269,10 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       if (!this.isPrimitiveType(typeHierarchy)) {
           // Find the reference to an non primitive type
         ret = this.types.get(typeHierarchy) as XtBaseTypeHierarchy??null;
-        if( ret==null) throw new Error('Type '+typeHierarchy+' not found in the type hierarchy.');
+        if( ret==null) {
+          // Either it's an unknown type, or the type is defined at a later stage. Let's keep a placeholder
+          ret = new UNRESOLVED_TYPE (typeHierarchy);
+        }
       } else {
           // Just create the hierarchy to the primitive type
         ret= new XtBaseTypeHierarchy(typeHierarchy, handler);
@@ -325,14 +328,25 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
 
   resolveAllTypeReferences ():void {
     for (const type of this.types.values()) {
-      const refs = type.listReferences();
-      for (const ref of Object.keys(refs)) {
-        if( refs[ref].type==XtBaseTypeReference.UNRESOLVED_TYPE) {
-          const refType = this.findType(refs[ref].toType, refs[ref].field);
-          if( refType!=null) {
-            refs[ref].type=refType.type;
-          }else {
-            throw new Error('Unable to resolve reference '+ref+' of type '+type.type);
+      if (type.children!=null) {
+        for (const ref of Object.keys(type.children)) {
+          const subType=type.children[ref];
+          if (isTypeReference(subType)) {
+            if( subType.type==XtBaseTypeReference.UNRESOLVED_TYPE) {
+              const refType = this.findType(subType.toType, subType.field);
+              if( refType!=null) {
+                subType.type=refType.type;
+              }else {
+                throw new Error('Unable to resolve reference '+ref+' of type '+type.type);
+              }
+            }
+          } else if (isUnresolvedType(subType)) {
+            const realType=this.findType(subType.unknownType);
+            if( realType!=null) {
+              type.children[ref]=realType;
+            } else {
+              throw new Error('Unable to resolve type '+ref+' of type '+type.type+'. '+subType.unknownType+' is not defined.');
+            }
           }
         }
       }
@@ -366,6 +380,7 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
   compatibleTypes?: string[];
   displayTemplate?:string;
   numericField?:string;
+
 
   constructor (type:string, handler?:XtTypeHandler<any> ) {
       this.type=type;
@@ -411,6 +426,22 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
     return ret;
   }
 }
+
+export class UNRESOLVED_TYPE extends XtBaseTypeHierarchy {
+  unknownType:string|null=null;
+
+  constructor(unknownType:string) {
+    super(unknownType);
+    this.unknownType=unknownType;
+  }
+}
+
+export function isUnresolvedType (type: XtTypeHierarchy): type is UNRESOLVED_TYPE {
+  if ((type as any).unknownType!==undefined) return true;
+  else
+    return false;
+}
+
 
 /**
  * Internally manages a link between two types

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { xtTypeManager } from '../globals';
+import { XtBaseTypeHierarchy } from './xt-type-resolver.ts';
 
 describe('Xt Type Resolver', () => {
   it ('should correctly calculates properties per types', () => {
@@ -34,7 +35,7 @@ describe('Xt Type Resolver', () => {
         name: 'string',
         author: {
           type: 'authorType',
-          referenceType:'ONE'
+          referenceType:'MANY-TO-ONE'
         }
       }
     });
@@ -42,6 +43,23 @@ describe('Xt Type Resolver', () => {
     const authorRef = resolver.findReference('bookType', 'author');
     expect(authorRef).toBeTruthy();
     expect(authorRef?.type).toEqual('authorType');
+  });
+
+  it ('should correctly managed unordered types', () => {
+    const resolver = xtTypeManager();
+    resolver.addRootType('newBookType', {
+      name: 'string',
+      author:'newAuthorType'
+    });
+    resolver.addRootType('newAuthorType', {
+      firstName: 'string',
+      lastName: 'string'
+    });
+
+    resolver.resolveAllTypeReferences();
+    const newBookType=resolver.findType('newBookType') as XtBaseTypeHierarchy;
+    expect((newBookType.children!['author'] as XtBaseTypeHierarchy).children).toBeDefined();
+
   });
 })
 

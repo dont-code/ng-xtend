@@ -37,6 +37,7 @@ export class ApplicationModelManagerService {
     } else
       this.model = value;
 
+    this.ensureCompatibility (this.model);
     if (this.model?.content?.creation?.entities!=null){
       this.entityNames.set (Object.values(this.model?.content?.creation?.entities).map((entity) => entity.name));
     }else {
@@ -76,6 +77,21 @@ export class ApplicationModelManagerService {
       ret[field.name]= this.translate (field.type);
     }
     return ret;
+  }
+
+  protected ensureCompatibility (entity: DcApplicationModel) {
+    // Reference types may be declared as OneToMany instead of "ONE-TO-MANY", due to some limitation (bug ?) in the json schema
+    for (const entity of this.model?.content?.creation.entities??[]) {
+      if (entity.fields!=null) {
+        for (const field of entity.fields) {
+          if ((field.reference?.referenceType as any)=="OneToMany") {
+            field.reference!.referenceType="ONE-TO-MANY";
+          } else if ((field.reference?.referenceType as any)=="ManyToOne") {
+            field.reference!.referenceType="MANY-TO-ONE";
+          }
+        }
+      }
+    }
   }
 
   protected translate(type: string): string {

@@ -24,203 +24,317 @@
   <meta name="twitter:image" content="https://ng-xtend.dev/docs/logos/logo-xtend-angular-red-small-transparent.png" />
 
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "ng-xtend",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Web",
-    "description": "An Angular plugin framework for building extensible applications with dynamic plugins and reusable render points.",
-    "url": "https://ng-xtend.dev/",
-    "image": "https://ng-xtend.dev/docs/logos/logo-xtend-angular-red-small-transparent.png",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ng-xtend",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "description": "An Angular plugin framework for building extensible applications with dynamic plugins and reusable render points.",
+      "url": "https://ng-xtend.dev/",
+      "image": "https://ng-xtend.dev/docs/logos/logo-xtend-angular-red-small-transparent.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
     }
-  }
   </script>
 
   <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
-    html {
-      font-size: 16pt;
-      color: #D1D5DB;
-      background-color: #13171F;
-      scroll-behavior: smooth;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 980px;
-      padding-left: 24px;
-      padding-right: 24px;
-      padding-top: 40px;
-      padding-bottom: 60px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-      line-height: 1.65;
-    }
-    @media (max-width: 600px) {
+      html {
+          font-size: 16px;
+          color: #D1D5DB;
+          background-color: #13171F;
+          scroll-behavior: smooth;
+      }
       body {
-        font-size: 0.95em;
-        padding: 14px;
+          margin: 0 auto;
+          max-width: 1040px;
+          padding: 40px 24px 64px;
+          hyphens: auto;
+          overflow-wrap: break-word;
+          text-rendering: optimizeLegibility;
+          font-kerning: normal;
+          line-height: 1.7;
+          background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 240px);
+      }
+      @media (max-width: 600px) {
+          body {
+              font-size: 0.96em;
+              padding: 16px;
+          }
+          h1 {
+              font-size: 1.9em;
+          }
+      }
+      @media print {
+          html {
+              background-color: #fff;
+          }
+          body {
+              background-color: transparent;
+              color: black;
+              font-size: 12pt;
+          }
+          p, h2, h3 {
+              orphans: 3;
+              widows: 3;
+          }
+          h2, h3, h4 {
+              page-break-after: avoid;
+          }
+      }
+      p {
+          margin: 1em 0;
+      }
+      a {
+          color: #FB7185;
+      }
+      a:visited {
+          color: #FB7185;
+      }
+      a:hover {
+          text-decoration-thickness: 2px;
+      }
+      img {
+          max-width: 100%;
+          border-radius: 12px;
+      }
+      svg {
+          height: auto;
+          max-width: 100%;
+      }
+      h1, h2, h3, h4, h5, h6 {
+          margin-top: 1.5em;
+          line-height: 1.2;
+          color: #F9FAFB;
       }
       h1 {
-        font-size: 1.8em;
+          margin-top: 0.25em;
+          font-size: 2.5em;
       }
-    }
-    a {
-      color: #FB7185;
-    }
-    a:visited {
-      color: #FB7185;
-    }
-    img {
-      max-width: 100%;
-      border-radius: 10px;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.6em;
-      line-height: 1.2;
-    }
-    h1 {
-      margin-top: 0.4em;
-      font-size: 2.4em;
-    }
-    h2 {
-      padding-bottom: 0.25rem;
-      border-bottom: 1px solid #243041;
-    }
-    p, li {
-      color: #D1D5DB;
-      font-size: 1.02em;
-    }
-    blockquote {
-      margin: 1.2em 0;
-      padding: 1rem 1.2rem;
-      border-left: 4px solid #FB7185;
-      color: #E5E7EB;
-      background: rgba(255,255,255,0.03);
-      border-radius: 10px;
-    }
-    table {
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    th, td {
-      border-color: #2B3545;
-    }
-    .hero {
-      display: grid;
-      gap: 1rem;
-      align-items: center;
-      padding: 1.2rem 0 0.5rem 0;
-    }
-    .hero-badges {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      margin: 1rem 0 0 0;
-    }
-    .quick-links {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-      margin: 1rem 0 0 0;
-    }
-    .quick-links a {
-      display: inline-block;
-      padding: 0.55rem 0.9rem;
-      border: 1px solid #334155;
-      border-radius: 999px;
-      text-decoration: none;
-      background: rgba(255,255,255,0.03);
-    }
-    .quick-links a:hover {
-      background: rgba(251, 113, 133, 0.12);
-      border-color: #FB7185;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin: 1rem 0 0 0;
-    }
-    .card {
-      border: 1px solid #243041;
-      border-radius: 14px;
-      padding: 1rem;
-      background: rgba(255,255,255,0.03);
-    }
-    .card strong {
-      display: block;
-      margin-bottom: 0.35rem;
-      color: #fff;
-    }
-    .sourceCode {
-      border-radius: 12px;
-      overflow: hidden;
-    }
+      h2 {
+          padding-bottom: 0.3rem;
+          border-bottom: 1px solid #243041;
+          font-size: 1.65em;
+      }
+      h3 {
+          font-size: 1.22em;
+      }
+      p, li, td, th {
+          color: #D1D5DB;
+          font-size: 1.02em;
+      }
+      blockquote {
+          margin: 1.2em 0;
+          padding: 1rem 1.2rem;
+          border-left: 4px solid #FB7185;
+          color: #E5E7EB;
+          background: rgba(255,255,255,0.03);
+          border-radius: 12px;
+      }
+      hr {
+          border: none;
+          border-top: 1px solid #243041;
+          height: 1px;
+          margin: 2em 0;
+      }
+      table {
+          margin: 1em 0;
+          border-collapse: collapse;
+          width: 100%;
+          overflow-x: auto;
+          display: block;
+          font-variant-numeric: lining-nums tabular-nums;
+          background: rgba(255,255,255,0.03);
+          border-radius: 12px;
+      }
+      table caption {
+          margin-bottom: 0.75em;
+      }
+      tbody {
+          border-top: 1px solid #D1D5DB;
+          border-bottom: 1px solid #D1D5DB;
+      }
+      th {
+          border-top: 1px solid #D1D5DB;
+          padding: 0.6em 0.8em;
+          text-align: left;
+      }
+      td {
+          padding: 0.6em 0.8em;
+          vertical-align: top;
+      }
+      code {
+          white-space: pre-wrap;
+          font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+          font-size: 85%;
+          margin: 0;
+          hyphens: manual;
+          color: #F9A8D4;
+      }
+      pre {
+          margin: 1em 0;
+          overflow: auto;
+          border-radius: 12px;
+      }
+      pre code {
+          padding: 0;
+          overflow: visible;
+          overflow-wrap: normal;
+          color: inherit;
+      }
+      .sourceCode {
+          background-color: transparent;
+          overflow: visible;
+      }
+      div.sourceCode {
+          margin: 1em 0;
+          border: 1px solid #243041;
+          border-radius: 12px;
+          background: #1B2230;
+      }
+      pre.sourceCode {
+          margin: 0;
+          padding: 0.9rem 1rem;
+      }
+      .hero {
+          padding-bottom: 1rem;
+      }
+      .hero-meta {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 1rem;
+          margin-top: 1.2rem;
+      }
+      .hero-card {
+          border: 1px solid #243041;
+          border-radius: 14px;
+          padding: 1rem;
+          background: rgba(255,255,255,0.03);
+      }
+      .hero-card strong {
+          display: block;
+          margin-bottom: 0.35rem;
+          color: #fff;
+      }
+      .hero-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          margin: 1.2rem 0 0;
+      }
+      .hero-actions a {
+          display: inline-block;
+          padding: 0.65rem 1rem;
+          border: 1px solid #334155;
+          border-radius: 999px;
+          text-decoration: none;
+          background: rgba(255,255,255,0.03);
+      }
+      .hero-actions a:hover {
+          background: rgba(251, 113, 133, 0.12);
+          border-color: #FB7185;
+      }
+      .badge-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.6rem;
+          margin-top: 1rem;
+          align-items: center;
+      }
+      .badge-row img {
+          vertical-align: middle;
+      }
+      ul.task-list[class] {
+          list-style: none;
+          padding-left: 0;
+      }
+      .toc-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.6rem;
+          margin: 1rem 0 0;
+      }
+      .toc-links a {
+          text-decoration: none;
+      }
   </style>
 
   <!-- Matomo -->
   <script>
-      var _paq = window._paq = window._paq || [];
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      (function() {
-          var u="//collinfr.net/matomo/";
-          _paq.push(['setTrackerUrl', u+'matomo.php']);
-          _paq.push(['setSiteId', '2']);
-          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-          g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-      })();
+    var _paq = window._paq = window._paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//collinfr.net/matomo/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '2']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
   </script>
   <!-- End Matomo Code -->
 </head>
 <body>
 <section class="hero">
   <h1 id="ng-xtend-logo-ng-xtend-framework"><img src="docs/logos/logo-xtend-angular-red-small-transparent.png" alt="ng-xtend logo" /> ng-xtend Framework</h1>
+
   <blockquote>
     <p><strong>Build extensible Angular applications with dynamic plugins.</strong> Add features at runtime, keep your core small, and let teams extend your UI safely.</p>
   </blockquote>
 
-  <div class="hero-badges">
-    <a href="https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation"><img src="https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen" alt="Try Live Demo" /></a>
+  <div class="badge-row">
+    <a href="https://dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation"><img src="https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen" alt="Try Live Demo" /></a>
+    <a href="https://dont-code.net/dashboard/repo/default?action=generate"><img src="https://img.shields.io/badge/Generate-your%20App-brightgreen" alt="Try App Generator" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/github/license/dont-code/ng-xtend" alt="GitHub license" /></a>
   </div>
 
-  <div class="quick-links">
-    <a href="#quick-start">Quick start</a>
+  <div class="hero-actions" aria-label="Quick navigation">
+    <a href="#why-ng-xtend">Why ng-xtend</a>
     <a href="#key-features">Features</a>
     <a href="#see-it-in-action">Demos</a>
-    <a href="#getting-started">Docs</a>
+    <a href="#quick-start">Quick start</a>
+    <a href="#getting-started">Developer guide</a>
+  </div>
+
+  <div class="hero-meta">
+    <div class="hero-card">
+      <strong>For Angular teams</strong>
+      <span>Perfect when you want plug-ins, reusable render points, or dynamic UI composition.</span>
+    </div>
+    <div class="hero-card">
+      <strong>For plugin authors</strong>
+      <span>Create reusable components that can register themselves and integrate with the host app.</span>
+    </div>
+    <div class="hero-card">
+      <strong>For product owners</strong>
+      <span>Ship features faster by extending the application instead of rebuilding it from scratch.</span>
+    </div>
   </div>
 </section>
 
 <section>
   <h2 id="why-ng-xtend">Why ng-xtend?</h2>
-  <p>Most successful platforms succeed because they are easy to extend. ng-xtend brings that same idea to Angular: define a clear data model, expose render points, and let plugins provide the right UI and behavior.</p>
-  <p>It is especially useful when you want to:</p>
-  <div class="cards">
-    <div class="card"><strong>Reduce boilerplate</strong><span>Reuse generic components instead of hand-coding every field and screen.</span></div>
-    <div class="card"><strong>Load features dynamically</strong><span>Install plugins at runtime without rebuilding the host application.</span></div>
-    <div class="card"><strong>Scale teams safely</strong><span>Let different teams ship extensions without tightly coupling their code.</span></div>
-  </div>
+  <p>Successful platforms like WordPress, Nextcloud, and Drupal became powerful because they were designed to be extended. ng-xtend brings that same model to Angular and TypeScript.</p>
+  <p>Instead of hard-coding every screen, ng-xtend helps you define a clean data model and expose render points where plugins can contribute the right component, action, or view.</p>
+  <p>This makes it easier to build applications that are:</p>
+  <ul>
+    <li><strong>Extensible</strong> — add capabilities without changing the core app every time.</li>
+    <li><strong>Type-aware</strong> — reuse plugin registration based on data types and modes.</li>
+    <li><strong>Developer-friendly</strong> — keep logic understandable, testable, and modular.</li>
+  </ul>
 </section>
 
 <section>
   <h2 id="key-features">Key Features</h2>
   <ul>
-    <li><strong>Define once, render anywhere:</strong> focus on your data structures; let plugins handle the UI.</li>
-    <li><strong>Dynamic loading:</strong> load and install plugins at runtime — no rebuild required.</li>
-    <li><strong>Storage agnostic:</strong> save, load, and update data to any backend or storage.</li>
-    <li><strong>Seamless interop:</strong> plugins can work together even when they do not know each other.</li>
+    <li>🧩 <strong>Define once, render anywhere:</strong> focus on your data structures; let plugins handle the UI.</li>
+    <li>⚡ <strong>Dynamic loading:</strong> load and install plugins at runtime — no rebuild required.</li>
+    <li>💾 <strong>Storage agnostic:</strong> save, load, and update data to any backend or storage.</li>
+    <li>🔌 <strong>Seamless interop:</strong> plugins can work together even when they do not know each other.</li>
+    <li>✨ <strong>Action handlers:</strong> add buttons and behaviors dynamically to the interface.</li>
   </ul>
 </section>
 
@@ -228,22 +342,255 @@
   <h2 id="see-it-in-action">See it in Action</h2>
   <h3 id="coffee-bean-evaluation">Coffee Bean Evaluation</h3>
   <p>A real-world example showing list, view, and edition flows powered entirely by dynamic plugins.</p>
-  <p><a href="https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation"><img src="docs/screenshots/xt-host-list-view-plugins.png" alt="Coffee Bean Evaluation" /></a></p>
+  <p><a href="https://dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation"><img src="docs/screenshots/xt-host-list-view-plugins.png" alt="Coffee Bean Evaluation" /></a></p>
 
   <h3 id="other-demos">Other Demos</h3>
-  <p><a href="https://dont-code.net/apps/repo/default/"><img src="docs/screenshots/dont-code-demo-apps.png" alt="Dont-code Demo Apps" /></a></p>
+  <p>More live demo applications are available here:</p>
+  <p><a href="https://dont-code.net/dashboard/repo/default/"><img src="docs/screenshots/dont-code-demo-apps.png" alt="Dont-code Demo Apps" /></a></p>
+
+  <h3 id="plugin-tester">Plugin Tester</h3>
+  <p>Curious about how plugins are dynamically injected? Try the dedicated tester:</p>
+  <p><a href="https://dont-code.net/apps/latest/plugin-tester"><img src="docs/screenshots/plugin-tester-web-plugin-details.png" alt="Plugin tester" /></a></p>
 </section>
 
-<section id="quick-start">
-  <h2>Quick start for developers</h2>
-  <p>New here? Start with the examples repository. It contains guided samples from basic usage to more advanced plugin scenarios.</p>
+<section>
+  <h2 id="quick-start">Quick start</h2>
+  <p>If you want the shortest path to value, start here:</p>
+  <ol>
+    <li>Explore the <a href="https://github.com/dont-code/ng-xtend-examples">ng-xtend-examples</a> repository.</li>
+    <li>Open the <a href="apps/xt-plugin-tester/index.html">plugin tester documentation</a>.</li>
+    <li>Review the sample plugin in <a href="https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample">xt-plugin-sample</a>.</li>
+    <li>Try a live demo to understand how host and plugins work together.</li>
+  </ol>
+</section>
+
+<section>
+  <h2 id="how-it-works-the-magic">How it works</h2>
+  <p>The host application does not need to know its plugins at compile time. It simply defines render points and lets the runtime resolve the right extension.</p>
+  <ol>
+    <li><strong>Configuration:</strong> a JSON configuration defines which plugins to load from which remote URLs.</li>
+    <li><strong>Registration:</strong> when a plugin loads, it registers itself and declares the types or actions it supports.</li>
+    <li><strong>Resolution:</strong> when ng-xtend encounters a specific type such as <code>Rating</code> or <code>Currency</code>, it injects the correct component from the loaded plugins.</li>
+  </ol>
+</section>
+
+<section>
+  <h2 id="supported-plugin-types">Supported plugin types</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><strong>Simple components</strong></td>
+      <td>Turn regular Angular components into pluggable units for specific data types.</td>
+    </tr>
+    <tr>
+      <td><strong>Complex components</strong></td>
+      <td>Components that provide their own extension points. Example: a Money plugin delegating Currency selection to another plugin.</td>
+    </tr>
+    <tr>
+      <td><strong>List components</strong></td>
+      <td>Effortlessly display collections of objects by delegating item rendering to the right plugins.</td>
+    </tr>
+    <tr>
+      <td><strong>Action handlers</strong></td>
+      <td>Add logic and actionable buttons to your UI dynamically.</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2 id="news">News</h2>
   <ul>
-    <li><a href="https://github.com/dont-code/ng-xtend-examples">ng-xtend-examples</a> — the fastest way to understand the framework.</li>
-    <li><a href="https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample">xt-plugin-sample</a> — a good starting point for your own plugin.</li>
-    <li><a href="apps/xt-plugin-tester/index.html">Plugin tester docs</a> — try plugins in a dedicated test app.</li>
+    <li><strong><em>2026-03-31:</em></strong> Try our  <a href="https://dont-code.net/dashboard/repo/default?action=generate">AI based application generator!</a> You can now just describe the application you want, and it will generate it based on the ng-xtend framework & plugins !</li>
+    <li><strong><em>2026-01-27:</em></strong> Added repository with multiple examples of ng-xtend usage. => <a href="https://github.com/dont-code/ng-xtend-examples">ng-xtend-examples</a></li>
+    <li><strong><em>2026-01-04:</em></strong> Version 0.5.5, supports for many to one references</li>
+    <li><strong><em>2025-11-02:</em></strong> Added support for actions, allowing plugins to add features dynamically, and added the agenda plugin, with support for recurrent tasks</li>
+    <li><strong><em>2025-09-06:</em></strong> Version 0.5, moved to Angular 20.2, added country selection plugin.</li>
+    <li><strong><em>2025-08-24:</em></strong> Published of apps developed: <a href="https://dont-code.net/dashboard/repo/default">Dashboard</a></li>
+    <li><strong><em>2025-07-14:</em></strong> First release, with support for dynamic plugins (thanks to <a href="https://github.com/angular-architects/module-federation-plugin">Angular architects!</a>) and a few plugins for Financial, Web and International applications. As well, added a default plugin to edit any data.</li>
   </ul>
 </section>
 
-<!-- ... existing content continues ... -->
+<section>
+  <h2 id="examples">Examples and use cases</h2>
+  <p>ng-xtend is built to support real-world scenarios where several plugins collaborate together without tight coupling.</p>
+  <p>Here are screenshots of an application automatically handling list, view, and edition of complex data using ng-xtend, a <a href="https://dont-code.net/" target="_blank" rel="noreferrer">dont-code application</a>, and the <a href="https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default" target="_blank" rel="noreferrer">default plugin</a> and <a href="https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-web" target="_blank" rel="noreferrer">web plugin</a>.</p>
+  <p>You can see how the different plugins work together without knowing each other. Even the host application does not know them.</p>
+  <p><img src="docs/screenshots/xt-host-list-view-split.png" alt="List view screenshot" /> <img src="docs/screenshots/xt-host-edit-view-split.png" alt="Edit object screenshot" /></p>
+</section>
+
+<section>
+  <h2 id="getting-started">Getting started</h2>
+
+  <h3 id="using-the-framework">Using the framework</h3>
+  <p>The <a href="https://github.com/dont-code/ng-xtend-examples">ng-xtend-examples</a> repository shows many examples, from basic usage to more advanced plugin scenarios.</p>
+
+  <h3 id="repository-of-examples">Repository of examples</h3>
+  <p>To better understand real-world usage, explore the example projects below:</p>
+  <table>
+    <thead>
+    <tr>
+      <th>Example</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><a href="https://github.com/dont-code/ng-xtend-examples/tree/main/basic">basic-example</a></td>
+      <td>Displays any object in various formats in a generic way.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dont-code/ng-xtend-examples/tree/main/typed">typed-example</a></td>
+      <td>By describing the type handled, ng-xtend supports more use cases.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dont-code/ng-xtend-examples/tree/main/plugin">plugin-example</a></td>
+      <td>Countries and Money fields look nicer thanks to the newly added plugins.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dont-code/ng-xtend-examples/tree/main/inout">inout-example</a></td>
+      <td>A full list / edit / view flow is set up thanks to inputs and outputs connecting unknown components together.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dont-code/ng-xtend-examples/tree/main/store">store-example</a></td>
+      <td>Edited elements are persisted between sessions thanks to the xt-store library included with ng-xtend.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dont-code/ng-xtend-examples/tree/main/advanced-type">advanced-type-example</a></td>
+      <td>Showcase support for advanced types and models, like references.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dont-code/ng-xtend-examples/tree/main/dynamic">dynamic-example</a></td>
+      <td>Loads all plugins dynamically from another website using Native Federation.</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3 id="developing-a-plugin">Developing a plugin</h3>
+  <p>We use a monorepo structure powered by <a href="https://rushjs.io/">Rush</a>.</p>
+  <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">-g</span> @microsoft/rush</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">rush</span> update</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">rush</span> build</span></code></pre></div>
+
+  <h3 id="detailed-plugin-development-guide">Detailed plugin development guide</h3>
+  <ol>
+    <li>Checkout the repository <a href="https://github.com/dont-code/ng-xtend" target="_blank" rel="noreferrer">ng-xtend</a>.</li>
+    <li>It’s a monorepo using the <a href="https://rushjs.io/">Rush build system</a>, so run:</li>
+  </ol>
+  <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> install <span class="at">-g</span> @microsoft/rush</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">rush</span> update</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">rush</span> build</span></code></pre></div>
+  <ol start="3">
+    <li>Use a copy of <a href="https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample">libs/xt-plugin-sample</a> to develop your own plugins and components.</li>
+    <li>Unit test your components using vitest
+      <ul>
+        <li>ng-xtend provides pre-defined test pages for different cases that will easily embed your component for testing.</li>
+        <li>See <a href="https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/currency/sample-currency.component.spec.ts" target="_blank" rel="noreferrer">currency simple component test</a>.</li>
+        <li>Or <a href="https://github.com/dont-code/ng-xtend/blob/main/libs/xt-plugin-sample/projects/sample/src/lib/money/sample-money.component.spec.ts" target="_blank" rel="noreferrer">money complex component test</a>.</li>
+      </ul>
+    </li>
+    <li>Test your components using plugin-tester
+      <ul>
+        <li>More details in plugin-tester <a href="apps/xt-plugin-tester/index.html">user documentation</a>.</li>
+        <li>Run your plugin tester application, for example <code>ng serve sample-tester</code> for the sample plugin.</li>
+        <li>Run the xt-plugin-tester with <code>ng serve plugin-tester</code> in xt-plugin-tester directory.</li>
+        <li>In the Plugin Tester app, load your plugin by entering its URL in the Plugin url field.</li>
+        <li>Once loaded, go to the test screen, select your component in the second screen, and play with it.</li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<section>
+  <h2 id="use-plugins-in-my-application">Use plugins in my application</h2>
+  <p>To use ng-xtend plugins in your own Angular application, <a href="apps/xt-host/index.html">xt-host project</a> is a great example. It does:</p>
+  <ul>
+    <li>Install xt-components and the default plugin in your package.json.</li>
+  </ul>
+  <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> install xt-components xt-type xt-store</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> install xt-plugin-default</span></code></pre></div>
+  <ul>
+    <li>Configure your application to load your plugins.</li>
+  </ul>
+  <div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> resolverService <span class="op">=</span> <span class="fu">inject</span>(XtResolverService)<span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">resolverService</span><span class="op">.</span><span class="fu">loadPlugin</span>(url)<span class="op">;</span></span></code></pre></div>
+  <p>The plugins will register themselves automatically.</p>
+  <ul>
+    <li>Describe the data type you want to manipulate.</li>
+  </ul>
+  <div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">resolverService</span><span class="op">.</span><span class="fu">registerTypes</span>({</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      <span class="dt">money</span><span class="op">:</span> {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">amount</span><span class="op">:</span> <span class="st">'number'</span><span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">currency</span><span class="op">:</span> <span class="st">'currency'</span> <span class="co">/** Type provided by the finance plugin **/</span></span>
+<span id="cb6-5"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      },</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">book</span><span class="op">:</span> {</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">name</span><span class="op">:</span> <span class="st">'string'</span><span class="op">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">publication</span><span class="op">:</span> <span class="st">'date'</span><span class="op">,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">price</span><span class="op">:</span> <span class="st">'money'</span><span class="op">,</span></span>
+<span id="cb6-10"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">notation</span><span class="op">:</span> <span class="st">'rating'</span> <span class="co">/** Type provided by the web plugin **/</span></span>
+<span id="cb6-11"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb6-12"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    });</span></code></pre></div>
+  <ul>
+    <li>Set insertion points in your Angular pages.
+      <ul>
+        <li>For example, to display a table of books.</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="sourceCode" id="cb7"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>List of books<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">xt-render</span><span class="ot"> [displayMode]</span><span class="op">=</span><span class="st">&quot;LIST_VIEW&quot;</span><span class="ot"> [valueType]</span><span class="op">=</span><span class="st">&quot;book&quot;</span><span class="ot"> [value]</span><span class="op">=</span><span class="st">&quot;listOfBooks&quot;</span><span class="ot">&gt;&lt;/</span><span class="kw">xt-render</span><span class="dt">&gt;</span></span></code></pre></div>
+  <p>Or allow editing a book’s information:</p>
+  <div class="sourceCode" id="cb9"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Enter your book details<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> form</span><span class="op">=</span><span class="st">&quot;bookForm&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;</span><span class="kw">xt-render</span><span class="ot"> [displayMode]</span><span class="op">=</span><span class="st">&quot;FULL_EDITABLE&quot;</span><span class="ot"> [valueType]</span><span class="op">=</span><span class="st">&quot;book&quot;</span><span class="ot"> [formGroup]</span><span class="op">=</span><span class="st">&quot;bookForm&quot;</span><span class="ot"> subName</span><span class="op">=</span><span class="st">&quot;book&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">xt-render</span><span class="dt">&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        &lt;/div&gt;</span></code></pre></div>
+  <p>For more complex scenarios, use:</p>
+  <div class="sourceCode" id="cb11"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&lt;</span><span class="kw">xt-render-sub</span><span class="ot"> [context]</span><span class="op">=</span><span class="st">&quot;context()&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">xt-render-sub</span><span class="dt">&gt;</span></span></code></pre></div>
+  <p>with <code>context()</code> returning type information necessary to select the right component.</p>
+</section>
+
+<section>
+  <h2 id="roadmap">Roadmap</h2>
+  <ul class="task-list">
+    <li><label><input type="checkbox" checked="" />Dynamic insertion of simple components</label></li>
+    <li><label><input type="checkbox" checked="" />Plugin registry system</label></li>
+    <li><label><input type="checkbox" checked="" />Support for complex components and lists</label></li>
+    <li><label><input type="checkbox" checked="" />Strong type support</label></li>
+    <li><label><input type="checkbox" checked="" />Remote dynamic loading</label></li>
+    <li><label><input type="checkbox" checked="" />Action components support</label></li>
+    <li><label><input type="checkbox" />Workflows</label></li>
+    <li><label><input type="checkbox" />Enhanced modelization support</label></li>
+    <li><label><input type="checkbox" /><strong>v1.0 Release!</strong> 🏁</label></li>
+    <li><label><input type="checkbox" />AI application generation</label></li>
+    <li><label><input type="checkbox" />Enhanced plugin isolation</label></li>
+    <li><label><input type="checkbox" />v2.0 &amp; beyond</label></li>
+  </ul>
+</section>
+
+<section>
+  <h2 id="faq">FAQ</h2>
+  <h3>Is ng-xtend only for Angular?</h3>
+  <p>ng-xtend is designed around Angular and TypeScript, so it fits naturally into Angular applications and libraries.</p>
+
+  <h3>Do I need to rebuild the host app when adding a plugin?</h3>
+  <p>No. One of the main goals of ng-xtend is dynamic loading, so plugins can be loaded at runtime.</p>
+
+  <h3>Can plugins work together?</h3>
+  <p>Yes. Plugins can expose types, renderers, and actions that other plugins resolve dynamically.</p>
+
+  <h3>Where should I start?</h3>
+  <p>The best starting point is the <a href="https://github.com/dont-code/ng-xtend-examples">examples repository</a>, then the <a href="apps/xt-plugin-tester/index.html">plugin tester docs</a>.</p>
+</section>
+
+<section>
+  <h2 id="thank-you">Thank you</h2>
+  <p>Please check my other project <a href="https://dont-code.net" target="_blank" rel="noreferrer">Dont-code</a>. If you want to discuss the framework or suggest improvements, you can reach out at <a href="mailto:contact@ng-xtend.dev">contact@ng-xtend.dev</a> or <a href="mailto:developer@dont-code.net">developer@dont-code.net</a>.</p>
+</section>
 </body>
 </html>

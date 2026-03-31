@@ -2,7 +2,8 @@
 
 > **Empower your Angular applications with a flexible, scalable plugin ecosystem!** 🚀
 
-[![Try Live Demo](https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen)](https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
+[![Try Live Demo](https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen)](https://dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
+[![Try App Generator](https://img.shields.io/badge/Generate-your%20App-brightgreen)](https://dont-code.net/dashboard/repo/default?action=generate)
 [![GitHub license](https://img.shields.io/github/license/dont-code/ng-xtend)](LICENSE)
 
 ## 💡 Why ng-xtend?
@@ -27,13 +28,13 @@ ng-xtend is an Angular library that enables you to:
 ### ☕ Coffee Bean Evaluation
 A real-world example of an app handling complex data (lists, views, and editions) entirely through dynamic plugins.
 
-[![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png)](https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
+[![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png)](https://dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
 
 ### Other Demos
 
 Demo applications can be seen here:
 
-[![Dont-code Demo Apps](docs/screenshots/dont-code-demo-apps.png)](https://dont-code.net/apps/repo/default/)
+[![Dont-code Demo Apps](docs/screenshots/dont-code-demo-apps.png)](https://dont-code.net/default/repo/default/)
 
 ---
 
@@ -42,7 +43,7 @@ Demo applications can be seen here:
 - ***2026-01-04:*** Version 0.5.5, supports for many to one references
 - ***2025-11-02:*** Added support for actions, allowing plugins to add features dynamically, and added the agenda plugin, with support for recurrent tasks
 - ***2025-09-06:*** Version 0.5, moved to Angular 20.2, added country selection plugin.
-- ***2025-08-24:*** Published of apps developed: [Dashboard](https://dont-code.net/apps/repo/default)
+- ***2025-08-24:*** Published of apps developed: [Dashboard](https://dont-code.net/dashboard/repo/default)
 - ***2025-07-14:*** First release, with support for dynamic plugins (thanks to [Angular architects!](https://github.com/angular-architects/module-federation-plugin)) and a few plugins for Financial, Web and International applications. As well, added a default plugin to edit any data.
 
 
@@ -79,7 +80,7 @@ You can see how the different plugins work together without knowing each other. 
 ### 🛠️ Plugin Tester
 Curious about how plugins are dynamically injected? Try the dedicated tester:
 
-[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png)](https://test.dont-code.net/apps/latest/plugin-tester)
+[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png)](https://dont-code.net/apps/latest/plugin-tester)
 
 ---
 

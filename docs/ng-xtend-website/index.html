@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  <title>ng-xtend | Angular plugin framework for extensible apps</title>
+  <meta name="description" content="ng-xtend is an Angular plugin framework for building extensible applications with dynamic plugins, reusable render points, and type-safe integrations." />
+  <meta name="keywords" content="Angular plugin framework, dynamic plugins, extensible Angular apps, TypeScript plugin architecture, ng-xtend" />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <link rel="canonical" href="https://ng-xtend.dev/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ng-xtend | Angular plugin framework for extensible apps" />
+  <meta property="og:description" content="Build extensible Angular apps with dynamic plugins, reusable render points, and a developer-friendly architecture." />
+  <meta property="og:url" content="https://ng-xtend.dev/" />
+  <meta property="og:image" content="https://ng-xtend.dev/docs/logos/logo-xtend-angular-red-small-transparent.png" />
+  <meta property="og:image:alt" content="ng-xtend logo" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ng-xtend | Angular plugin framework for extensible apps" />
+  <meta name="twitter:description" content="Build extensible Angular apps with dynamic plugins, reusable render points, and a developer-friendly architecture." />
+  <meta name="twitter:image" content="https://ng-xtend.dev/docs/logos/logo-xtend-angular-red-small-transparent.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ng-xtend",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "description": "An Angular plugin framework for building extensible applications with dynamic plugins and reusable render points.",
+    "url": "https://ng-xtend.dev/",
+    "image": "https://ng-xtend.dev/docs/logos/logo-xtend-angular-red-small-transparent.png",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      font-size: 16pt;
+      color: #D1D5DB;
+      background-color: #13171F;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 980px;
+      padding-left: 24px;
+      padding-right: 24px;
+      padding-top: 40px;
+      padding-bottom: 60px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+      line-height: 1.65;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.95em;
+        padding: 14px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    a {
+      color: #FB7185;
+    }
+    a:visited {
+      color: #FB7185;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.6em;
+      line-height: 1.2;
+    }
+    h1 {
+      margin-top: 0.4em;
+      font-size: 2.4em;
+    }
+    h2 {
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid #243041;
+    }
+    p, li {
+      color: #D1D5DB;
+      font-size: 1.02em;
+    }
+    blockquote {
+      margin: 1.2em 0;
+      padding: 1rem 1.2rem;
+      border-left: 4px solid #FB7185;
+      color: #E5E7EB;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+    }
+    table {
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      border-color: #2B3545;
+    }
+    .hero {
+      display: grid;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.2rem 0 0.5rem 0;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 0 0;
+    }
+    .quick-links {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 0 0;
+    }
+    .quick-links a {
+      display: inline-block;
+      padding: 0.55rem 0.9rem;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      text-decoration: none;
+      background: rgba(255,255,255,0.03);
+    }
+    .quick-links a:hover {
+      background: rgba(251, 113, 133, 0.12);
+      border-color: #FB7185;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0 0 0;
+    }
+    .card {
+      border: 1px solid #243041;
+      border-radius: 14px;
+      padding: 1rem;
+      background: rgba(255,255,255,0.03);
+    }
+    .card strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: #fff;
+    }
+    .sourceCode {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+  </style>
+
+  <!-- Matomo -->
+  <script>
+      var _paq = window._paq = window._paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+          var u="//collinfr.net/matomo/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '2']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+      })();
+  </script>
+  <!-- End Matomo Code -->
+</head>
+<body>
+<section class="hero">
+  <h1 id="ng-xtend-logo-ng-xtend-framework"><img src="docs/logos/logo-xtend-angular-red-small-transparent.png" alt="ng-xtend logo" /> ng-xtend Framework</h1>
+  <blockquote>
+    <p><strong>Build extensible Angular applications with dynamic plugins.</strong> Add features at runtime, keep your core small, and let teams extend your UI safely.</p>
+  </blockquote>
+
+  <div class="hero-badges">
+    <a href="https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation"><img src="https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen" alt="Try Live Demo" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/dont-code/ng-xtend" alt="GitHub license" /></a>
+  </div>
+
+  <div class="quick-links">
+    <a href="#quick-start">Quick start</a>
+    <a href="#key-features">Features</a>
+    <a href="#see-it-in-action">Demos</a>
+    <a href="#getting-started">Docs</a>
+  </div>
+</section>
+
+<section>
+  <h2 id="why-ng-xtend">Why ng-xtend?</h2>
+  <p>Most successful platforms succeed because they are easy to extend. ng-xtend brings that same idea to Angular: define a clear data model, expose render points, and let plugins provide the right UI and behavior.</p>
+  <p>It is especially useful when you want to:</p>
+  <div class="cards">
+    <div class="card"><strong>Reduce boilerplate</strong><span>Reuse generic components instead of hand-coding every field and screen.</span></div>
+    <div class="card"><strong>Load features dynamically</strong><span>Install plugins at runtime without rebuilding the host application.</span></div>
+    <div class="card"><strong>Scale teams safely</strong><span>Let different teams ship extensions without tightly coupling their code.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2 id="key-features">Key Features</h2>
+  <ul>
+    <li><strong>Define once, render anywhere:</strong> focus on your data structures; let plugins handle the UI.</li>
+    <li><strong>Dynamic loading:</strong> load and install plugins at runtime — no rebuild required.</li>
+    <li><strong>Storage agnostic:</strong> save, load, and update data to any backend or storage.</li>
+    <li><strong>Seamless interop:</strong> plugins can work together even when they do not know each other.</li>
+  </ul>
+</section>
+
+<section>
+  <h2 id="see-it-in-action">See it in Action</h2>
+  <h3 id="coffee-bean-evaluation">Coffee Bean Evaluation</h3>
+  <p>A real-world example showing list, view, and edition flows powered entirely by dynamic plugins.</p>
+  <p><a href="https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation"><img src="docs/screenshots/xt-host-list-view-plugins.png" alt="Coffee Bean Evaluation" /></a></p>
+
+  <h3 id="other-demos">Other Demos</h3>
+  <p><a href="https://dont-code.net/apps/repo/default/"><img src="docs/screenshots/dont-code-demo-apps.png" alt="Dont-code Demo Apps" /></a></p>
+</section>
+
+<section id="quick-start">
+  <h2>Quick start for developers</h2>
+  <p>New here? Start with the examples repository. It contains guided samples from basic usage to more advanced plugin scenarios.</p>
+  <ul>
+    <li><a href="https://github.com/dont-code/ng-xtend-examples">ng-xtend-examples</a> — the fastest way to understand the framework.</li>
+    <li><a href="https://github.com/dont-code/ng-xtend/tree/main/libs/xt-plugin-sample">xt-plugin-sample</a> — a good starting point for your own plugin.</li>
+    <li><a href="apps/xt-plugin-tester/index.html">Plugin tester docs</a> — try plugins in a dedicated test app.</li>
+  </ul>
+</section>
+
+<!-- ... existing content continues ... -->
+</body>
+</html>

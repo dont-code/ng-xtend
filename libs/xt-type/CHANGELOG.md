@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.4...xt-type-v0.11.0) (2026-03-31)
+
+
+### Features
+
+* support for out of order type definition ([f14d6a6](https://github.com/dont-code/ng-xtend/commit/f14d6a6a34f9e090c101d4367d89d949e756bcc2))
+
 ## [0.10.4](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.3...xt-type-v0.10.4) (2026-01-18)
 
 

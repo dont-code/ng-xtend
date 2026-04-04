@@ -1,7 +1,7 @@
  {
   "$schema": "https://dont-code.net/schemas/v1/repository-schema.json",
-  "name": "Stable Collinfr Repository",
-  "description": "Repository provided by Dont-code using stable versions of plugins to connect to Collinfr services",
+  "name": "Next Collinfr Repository",
+  "description": "Repository provided by Dont-code using next versions of plugins to connect to Collinfr services",
   "webSocketUrl": "ws://collinfr.net/dont-code/preview",
   "storeApiUrl": "https://collinfr.net/dont-code/data",
   "projectApiUrl": "https://collinfr.net/dont-code/project",
@@ -12,7 +12,7 @@
       "display-name": "Web plugin",
       "version": "1.0.0",
       "info": {
-        "remote-entry":"https://dont-code.net/apps/latest/web-plugin/remoteEntry.json"
+        "remote-entry":"https://dont-code.net/apps/next/web-plugin/remoteEntry.json"
       },
       "config": {}
     },    {
@@ -20,7 +20,7 @@
       "display-name": "International plugin",
       "version": "1.0.0",
       "info": {
-        "remote-entry":"https://dont-code.net/apps/latest/intl-plugin/remoteEntry.json"
+        "remote-entry":"https://dont-code.net/apps/next/intl-plugin/remoteEntry.json"
       },
       "config": {}
     },    {
@@ -28,7 +28,7 @@
       "display-name": "Finance plugin",
       "version": "1.0.0",
       "info": {
-        "remote-entry":"https://dont-code.net/apps/latest/finance-plugin/remoteEntry.json"
+        "remote-entry":"https://dont-code.net/apps/next/finance-plugin/remoteEntry.json"
       },
       "config": {}
     },    {
@@ -36,7 +36,7 @@
       "display-name": "Agenda plugin",
       "version": "1.0.0",
       "info": {
-        "remote-entry":"https://dont-code.net/apps/latest/agenda-plugin/remoteEntry.json"
+        "remote-entry":"https://dont-code.net/apps/next/agenda-plugin/remoteEntry.json"
       },
       "config": {}
     }

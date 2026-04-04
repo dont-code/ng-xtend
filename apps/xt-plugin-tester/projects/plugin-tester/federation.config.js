@@ -1,7 +1,7 @@
 const { withNativeFederation, shareAll, share } = require('@angular-architects/native-federation/config');
 
 module.exports = withNativeFederation({
-
+  name: 'xt-plugin-tester',
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
     ...share({

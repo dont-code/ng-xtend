@@ -121,7 +121,6 @@
     }
   },
   "cli": {
-    "packageManager": "pnpm",
     "analytics": "af715fa5-7248-48cd-a4c2-05820f0f991d",
     "cache": {
       "enabled": true

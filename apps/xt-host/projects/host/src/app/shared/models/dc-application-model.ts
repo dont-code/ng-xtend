@@ -3,9 +3,11 @@ import { XtTypeReference } from 'xt-type';
 export type DcApplicationModel = {
   name:string,
   description?: string,
+  imgUrl?:string,
   content: {
     creation: {
       type?: string,
+      name?: string,
       entities?: Array<DcEntityModel>,
       sharing?: {
         with: 'Dont-code users'|'No-one'|'Volatile'
@@ -17,21 +19,24 @@ export type DcApplicationModel = {
 export type DcEntityModel = {
   name: string,
   fields?: Array<DcFieldModel>,
-  compatibleWith?: string[]
+  compatibleWith?: string[],
+  from?:string
 }
 
 export type DcFieldModel = {
   name: string,
   type: string,
-  reference?: XtTypeReference
+  reference?: XtTypeReference|null
 }
 
 export type OldDcApplicationModel = {
   name:string,
   description?: string,
+  imgUrl?:string,
   content: {
     creation: {
       type?: string,
+      name?:string,
       entities?: {
         [key:string]:OldDcEntityModel
       },

@@ -4,7 +4,6 @@
   "newProjectRoot": "projects",
   "cli": {
     "analytics": "f0db59f5-7848-4024-bdcc-ef3bc8a3554a",
-    "packageManager": "pnpm",
     "cache": {
       "enabled": true
     }

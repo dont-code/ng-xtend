@@ -50,6 +50,7 @@ jobs:
           echo "XT_VERSION : $XT_VERSION"
       - name: Install
         run: |
+          npm install -g pnpm@latest 
           node common/scripts/install-run-rush.js install
       - name: Build
         run: |

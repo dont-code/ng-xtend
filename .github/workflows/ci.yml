@@ -36,7 +36,9 @@ jobs:
 #      - name: Verify Change Logs
 #        run: node common/scripts/install-run-rush.js change --verify
       - name: Rush Install
-        run: node common/scripts/install-run-rush.js install
+        run: |
+          npm install -g pnpm@latest 
+          node common/scripts/install-run-rush.js install
       - name: Rush rebuild
         run: node common/scripts/install-run-rush.js rebuild
       - name: Unit Tests

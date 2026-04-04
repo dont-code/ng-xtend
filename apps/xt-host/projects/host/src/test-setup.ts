@@ -7,11 +7,13 @@ import { NgModule, provideZonelessChangeDetection } from '@angular/core';
 import { vi } from 'vitest';
 
 // Mock the ResizeObserver
-const ResizeObserverMock = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+const ResizeObserverMock = vi.fn(class {
+  disconnect = () => {};
+  observe = (target: Element, options?: ResizeObserverOptions) => {
+  };
+  unobserve = (target: Element)=> {
+  };
+});
 
 // Stub the global ResizeObserver
 vi.stubGlobal('ResizeObserver', ResizeObserverMock);

@@ -20,7 +20,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.branch }}
           token: ${{secrets.DONTCODE_ACTIONS_TOKEN}}
@@ -30,9 +30,9 @@ jobs:
         with:
           name: Dont-code
           email: developer@dont-code.net
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
 #      - name: Verify Change Logs
 #        run: node common/scripts/install-run-rush.js change --verify
       - name: Rush Install
@@ -41,7 +41,7 @@ jobs:
         run: node common/scripts/install-run-rush.js rebuild
       - name: Unit Tests
         run: node common/scripts/install-run-rush.js test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
          name: test-logs

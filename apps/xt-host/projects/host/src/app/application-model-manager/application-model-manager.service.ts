@@ -5,7 +5,7 @@ import {
   isOldProjectModel,
   OldDcApplicationModel
 } from '../shared/models/dc-application-model';
-import { XtTypeInfo } from 'xt-type';
+import { XtTypeDetail, XtTypeInfo, XtTypeReference } from 'xt-type';
 import { Title } from '@angular/platform-browser';
 
 @Injectable({
@@ -71,10 +71,15 @@ export class ApplicationModelManagerService {
     }
   }
 
-  getEntityFields(fields: Array<DcFieldModel>): XtTypeInfo {
-    const ret = {} as XtTypeInfo;
+  getEntityFields(fields: Array<DcFieldModel>): XtTypeDetail {
+    const ret = {children:{}} as XtTypeDetail;
+
     for (const field of fields) {
-      ret[field.name]= this.translate (field.type);
+      if (field.reference==null) {
+        ret.children![field.name]= this.translate (field.type);
+      } else {
+        ret.children![field.name] = field.reference as XtTypeReference;
+      }
     }
     return ret;
   }
@@ -94,6 +99,11 @@ export class ApplicationModelManagerService {
     }
   }
 
+  /**
+   * Translates old type names into the ng-xtend new ones.
+   * @param type
+   * @protected
+   */
   protected translate(type: string): string {
     switch (type) {
       case 'Date & Time':
@@ -106,8 +116,18 @@ export class ApplicationModelManagerService {
         return 'usd-amount';
       case 'Other currency':
         return 'money-amount';
-      default:
+      case 'String':
+      case 'Number':
+      case 'Date':
+      case 'Time':
+      case 'Boolean':
+      case 'Currency':
+      case 'Country':
+      case 'Image':
+      case 'Rating':
         return type.toLowerCase();
+      default:
+        return type;
     }
   }
 

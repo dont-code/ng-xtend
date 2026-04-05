@@ -13,18 +13,7 @@ module.exports = withNativeFederation({
 
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-    ...share({
-      "@primeuix/themes/aura": {
-        singleton: true,
-        strictVersion: true,
-        requiredVersion: "auto",
-        includeSecondaries: false,
-        build: 'separate',
-        packageInfo: {
-          entryPoint: 'node_modules/@primeuix/themes/dist/aura/index.mjs'
-        }
-      }
-    })},
+},
 
   features: {
     ignoreUnusedDeps:true
@@ -35,6 +24,7 @@ module.exports = withNativeFederation({
     'rxjs/testing',
     'rxjs/webSocket',
     // Add further packages you don't need at runtime
+    /^@primeuix\//,
     'chart.js/auto',
     'primeng/chart',
     'primeicons'

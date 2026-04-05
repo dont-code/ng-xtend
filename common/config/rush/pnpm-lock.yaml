@@ -49,7 +49,7 @@ importers:
         specifier: ^3.3.6
         version: 3.5.5
       es-module-shims:
-        specifier: ^2.6.2
+        specifier: ^2.8.0
         version: 2.8.0
       primeicons:
         specifier: ^7.0.0
@@ -167,7 +167,7 @@ importers:
         specifier: ^3.3.6
         version: 3.5.5
       es-module-shims:
-        specifier: ^2.6.2
+        specifier: ^2.8.0
         version: 2.8.0
       primeicons:
         specifier: ^7.0.0
@@ -475,7 +475,7 @@ importers:
         specifier: ^3.3.6
         version: 3.5.5
       es-module-shims:
-        specifier: ^2.6.2
+        specifier: ^2.8.0
         version: 2.8.0
       primeicons:
         specifier: ^7.0.0
@@ -687,7 +687,7 @@ importers:
         specifier: ~4.1.0
         version: 4.1.0
       es-module-shims:
-        specifier: ^2.6.2
+        specifier: ^2.8.0
         version: 2.8.0
       primeicons:
         specifier: ^7.0.0
@@ -910,7 +910,7 @@ importers:
         specifier: ^3.3.6
         version: 3.5.5
       es-module-shims:
-        specifier: ^2.6.2
+        specifier: ^2.8.0
         version: 2.8.0
       primeicons:
         specifier: ^7.0.0
@@ -1109,7 +1109,7 @@ importers:
         specifier: ~2.1.0
         version: 2.1.0
       es-module-shims:
-        specifier: ^2.6.2
+        specifier: ^2.8.0
         version: 2.8.0
       primeicons:
         specifier: ^7.0.0
@@ -1225,7 +1225,7 @@ importers:
         specifier: ^3.3.6
         version: 3.5.5
       es-module-shims:
-        specifier: ^2.6.2
+        specifier: ^2.8.0
         version: 2.8.0
       primeicons:
         specifier: ^7.0.0

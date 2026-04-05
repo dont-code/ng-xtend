@@ -25,6 +25,15 @@ body {
   color: #e5e7eb;
 }
 
+.app-toolbar {
+  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--surface-0) 82%, transparent);
+}
+
+.app-dark .app-toolbar {
+  background: color-mix(in srgb, var(--surface-900) 84%, transparent);
+}
+
 .p-card {
   border-radius: 1.25rem;
   box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
@@ -32,6 +41,67 @@ body {
 
 .app-dark .p-card {
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+/* Toolbar */
+.p-toolbar {
+  background: var(--surface-0);
+  color: #0f172a;
+}
+
+.app-dark .p-toolbar {
+  background: var(--surface-900);
+  color: #e5e7eb;
+}
+
+/* Menu */
+.p-menu {
+  border-radius: 1rem;
+  background: var(--surface-0);
+  color: #0f172a;
+}
+
+.app-dark .p-menu {
+  background: var(--surface-900);
+  color: #e5e7eb;
+}
+
+.p-menu .p-menuitem-link {
+  background: transparent;
+  color: inherit;
+}
+
+.app-dark .p-menu .p-menuitem-link,
+.app-dark .p-menu .p-menuitem-text,
+.app-dark .p-menu .p-menuitem-icon {
+  color: #e5e7eb;
+}
+
+/* Tabs / TabMenu / TabView / Tabs */
+.p-tabmenu,
+.p-tabview,
+.p-tabs {
+  background: var(--surface-0);
+  color: #0f172a;
+}
+
+.app-dark .p-tabmenu,
+.app-dark .p-tabview,
+.app-dark .p-tabs {
+  background: var(--surface-900);
+  color: #e5e7eb;
+}
+
+.app-dark .p-tabmenu .p-tabmenu-nav,
+.app-dark .p-tabview .p-tabview-nav {
+  background: var(--surface-900);
+  border-color: var(--surface-700);
+}
+
+.app-dark .p-tabmenu .p-tabmenu-nav .p-menuitem-link,
+.app-dark .p-tabview .p-tabview-nav .p-tab,
+.app-dark .p-tabs .p-tab {
+  color: #e5e7eb;
 }
 
 .p-button {

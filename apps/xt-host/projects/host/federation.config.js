@@ -3,19 +3,7 @@ const { withNativeFederation, shareAll,share } = require('@angular-architects/na
 module.exports = withNativeFederation({
 name: 'xt-host',
   shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-    ...share({
-      "@primeuix/themes/aura": {
-        singleton: true,
-        strictVersion: true,
-        requiredVersion: "auto",
-        includeSecondaries: false,
-        build: 'separate',
-        packageInfo: {
-          entryPoint: 'node_modules/@primeuix/themes/dist/aura/index.mjs'
-        }
-      }
-    })
+    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
   },
   features: {
     ignoreUnusedDeps:true
@@ -26,6 +14,7 @@ name: 'xt-host',
     'rxjs/testing',
     'rxjs/webSocket',
     // Add further packages you don't need at runtime
+    /^@primeuix\//,
     'chart.js/auto',
     'primeng/chart',
     'primeicons'

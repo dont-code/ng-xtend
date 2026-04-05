@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<p-toolbar>
+<p-toolbar styleClass="app-toolbar">
   <ng-template #start>
     <a routerLink="/"><img src="assets/images/logo-xtend-transparent.png" class="size-16 md:size-32"/></a>
     <p-button class="md:hidden" rounded="true" variant="outlined" icon="pi pi-bars" (click)="invertSidePanelVisibility()"></p-button>
@@ -7,8 +7,21 @@
   <ng-template #center>
     <div id="mainTitle" class="text-3xl [text-shadow:_2px_2px_4px_rgba(128,128,128,0.5)]">{{appMgr.projectTitle()}}</div>
   </ng-template>
-  <ng-template #end></ng-template>
+
+  <ng-template #end>
+    <p-button
+      [icon]="getThemeButtonIcon()"
+      [label]="getThemeButtonLabel()"
+      [severity]="getThemeButtonSeverity()"
+      variant="outlined"
+      rounded="true"
+      (click)="themeMenu.toggle($event)">
+    </p-button>
+
+    <p-menu #themeMenu [model]="themeOptions" [popup]="true"></p-menu>
+  </ng-template>
 </p-toolbar>
+
 <div class="md:hidden">
   <p-drawer id="mainLeftDrawer" [style]="{width:'15em', 'z-index':2000}" [(visible)]="leftDrawerVisible" [modal]="false" [closeOnEscape]="true" [closable]="true">
     <ng-template #header>
@@ -17,6 +30,7 @@
     <app-host-menu (menuClick)="onMenuClick()"></app-host-menu>
   </p-drawer>
 </div>
+
 <div class="grid grid-cols-[auto_1fr] gap-4">
   <div class="hidden md:block">
     <app-host-menu></app-host-menu>

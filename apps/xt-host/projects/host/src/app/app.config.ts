@@ -17,7 +17,8 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: Aura
-      }
+      },
+      ripple: true
     }),
     provideRouter(routes),
     provideHttpClient(),

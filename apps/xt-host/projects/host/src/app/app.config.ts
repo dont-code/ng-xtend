@@ -25,8 +25,7 @@ const AppPreset = definePreset(Aura, {
       800: '{indigo.800}',
       900: '{indigo.900}',
       950: '{indigo.950}'
-    },
-    colorScheme: {
+    },colorScheme: {
       light: {
         surface: {
           0: '#ffffff',
@@ -45,18 +44,18 @@ const AppPreset = definePreset(Aura, {
       },
       dark: {
         surface: {
-          0: '#0b1220',
-          50: '#111827',
-          100: '#1f2937',
-          200: '#374151',
-          300: '#4b5563',
-          400: '#6b7280',
-          500: '#9ca3af',
-          600: '#cbd5e1',
-          700: '#e5e7eb',
-          800: '#f3f4f6',
-          900: '#f8fafc',
-          950: '#ffffff'
+          950: '#0b1220',
+          900: '#111827',
+          800: '#1f2937',
+          700: '#374151',
+          600: '#4b5563',
+          500: '#6b7280',
+          400: '#9ca3af',
+          300: '#cbd5e1',
+          200: '#e5e7eb',
+          100: '#f3f4f6',
+          50: '#f8fafc',
+          0: '#ffffff'
         }
       }
     }

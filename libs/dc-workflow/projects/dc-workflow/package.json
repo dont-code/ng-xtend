@@ -1,21 +1,21 @@
 {
   "name": "dont-code-workflow",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "repository": {
     "url": "https://github.com/dont-code/ng-xtend.git"
   },
   "peerDependencies": {
-    "@angular/animations": "^20.2.3",
-    "@angular/common": "^20.2.3",
-    "@angular/compiler": "^20.2.3",
-    "@angular/core": "^20.2.3",
-    "@angular/forms": "^20.2.3",
-    "@angular/platform-browser": "^20.2.3",
-    "@angular/platform-browser-dynamic": "^20.2.3",
-    "@angular/router": "^20.2.3",
+    "@angular/animations": "^21.2.7",
+    "@angular/common": "^21.2.7",
+    "@angular/compiler": "^21.2.7",
+    "@angular/core": "^21.2.7",
+    "@angular/forms": "^21.2.7",
+    "@angular/platform-browser": "^21.2.7",
+    "@angular/platform-browser-dynamic": "^21.2.7",
+    "@angular/router": "^21.2.7",
     "xt-type": ">= 0.10.4",
-    "xt-store": ">= 0.6.4",
-    "xt-components": ">= 0.6.4",
+    "xt-store": ">= 0.7.0",
+    "xt-components": ">= 0.7.0",
     "rxjs": "~7.8.2"
   },
   "dependencies": {

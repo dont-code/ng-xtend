@@ -196,8 +196,9 @@ describe('EntityManagerComponent', () => {
 
     //expect(deleteSpy).toHaveBeenCalledOnce();
     list = harness.fixture.debugElement.query(By.directive(Table));
-    const rows = list.queryAll(By.css('tbody tr'));
-    expect(rows).toHaveLength(0);
+    expect(list).toBeNull();
+    /*const rows = list.queryAll(By.css('tbody tr'));
+    expect(rows).toHaveLength(0);*/
 
   });
 

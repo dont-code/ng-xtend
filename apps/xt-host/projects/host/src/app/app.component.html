@@ -1,52 +1,60 @@
 <p-toast></p-toast>
 
 <div class="app-shell">
-  <p-toolbar styleClass="app-toolbar">
-    <ng-template #start>
-      <a routerLink="/" class="app-brand">
-        <img src="assets/images/logo-xtend-transparent.png" alt="Xtend" class="app-logo" />
-      </a>
+  <header class="app-header">
+    <p-toolbar styleClass="app-toolbar">
+      <ng-template #start>
+        <a routerLink="/" class="app-brand">
+          <img src="assets/images/logo-xtend-transparent.png" alt="Xtend" class="app-logo" />
+          <span class="app-brand-text">Xtend</span>
+        </a>
 
-      <p-button
-        class="md:hidden"
-        rounded="true"
-        variant="outlined"
-        icon="pi pi-bars"
-        (click)="invertSidePanelVisibility()">
-      </p-button>
-    </ng-template>
+        <p-button
+          class="md:hidden app-icon-button"
+          rounded="true"
+          variant="outlined"
+          icon="pi pi-bars"
+          (click)="invertSidePanelVisibility()">
+        </p-button>
+      </ng-template>
 
-    <ng-template #center>
-      <div id="mainTitle" class="app-title">
-        {{ appMgr.projectTitle() }}
-      </div>
-    </ng-template>
+      <ng-template #center>
+        <div class="app-title-wrap">
+          <div id="mainTitle" class="app-title">
+            {{ appMgr.projectTitle() }}
+          </div>
+        </div>
+      </ng-template>
 
-    <ng-template #end>
-      <p-button
-        [icon]="getThemeButtonIcon()"
-        [label]="getThemeButtonLabel()"
-        [severity]="getThemeButtonSeverity()"
-        variant="outlined"
-        rounded="true"
-        (click)="themeMenu.toggle($event)">
-      </p-button>
+      <ng-template #end>
+        <div class="app-actions">
+          <p-button
+            [icon]="getThemeButtonIcon()"
+            [label]="getThemeButtonLabel()"
+            [severity]="getThemeButtonSeverity()"
+            variant="outlined"
+            rounded="true"
+            (click)="themeMenu.toggle($event)">
+          </p-button>
 
-      <p-menu #themeMenu [model]="themeOptions" [popup]="true"></p-menu>
-    </ng-template>
-  </p-toolbar>
+          <p-menu #themeMenu [model]="themeOptions" [popup]="true"></p-menu>
+        </div>
+      </ng-template>
+    </p-toolbar>
+  </header>
 
   <div class="md:hidden">
     <p-drawer
       id="mainLeftDrawer"
-      [style]="{ width: '16rem', 'z-index': 2000 }"
+      [style]="{ width: '17rem', 'z-index': 2000 }"
       [(visible)]="leftDrawerVisible"
       [modal]="false"
       [closeOnEscape]="true"
       [closable]="true">
       <ng-template #header>
-        <a routerLink="/" class="app-brand">
+        <a routerLink="/" class="app-brand app-brand--drawer">
           <img src="assets/images/logo-xtend-transparent.png" alt="Xtend" class="app-logo app-logo--drawer" />
+          <span class="app-brand-text">Xtend</span>
         </a>
       </ng-template>
 
@@ -56,7 +64,9 @@
 
   <div class="app-layout">
     <aside class="app-sidebar hidden md:block">
-      <app-host-menu></app-host-menu>
+      <div class="app-sidebar-surface">
+        <app-host-menu></app-host-menu>
+      </div>
     </aside>
 
     <main class="app-content">

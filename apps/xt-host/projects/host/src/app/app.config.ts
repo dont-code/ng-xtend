@@ -40,6 +40,9 @@ const AppPreset = definePreset(Aura, {
           800: '#2a2f3c',
           900: '#171a22',
           950: '#0b0d12'
+        },
+        content: {
+          background: '{ surface.50}'
         }
       },
       dark: {
@@ -56,7 +59,11 @@ const AppPreset = definePreset(Aura, {
           100: '#f3f5fa',
           50: '#fafbfe',
           0: '#ffffff'
+        },
+        content: {
+          background: '{ surface.950}'
         }
+
       }
     }
   },

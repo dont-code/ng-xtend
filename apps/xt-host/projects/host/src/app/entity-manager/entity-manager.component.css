@@ -48,11 +48,15 @@
 
 .entity-manager__tabs {
   display: block;
+  border-radius: 1.25rem;
+}
+
+.entity-manager__panels {
+  background: none;
 }
 
 .entity-manager__panel {
   border-radius: 1.5rem;
-  padding: 1rem;
   background: color-mix(in srgb, var(--p-surface-0) 92%, var(--p-primary-50) 8%);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 40px rgb(0 0 0 / 0.06);
 }
@@ -112,11 +116,6 @@
 
   .entity-manager__actions > * {
     flex: 1 1 auto;
-  }
-
-  .entity-manager__panel {
-    padding: 0.85rem;
-    border-radius: 1.25rem;
   }
 
   .entity-manager__state {

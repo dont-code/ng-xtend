@@ -10,7 +10,7 @@
         </p>
       </div>
 
-      <p-toolbar styleClass="entity-manager__toolbar">
+      <p-toolbar class="entity-manager__toolbar">
         <ng-template #center>
           <div class="entity-manager__actions">
             <p-button
@@ -55,13 +55,13 @@
       </p-toolbar>
     </header>
 
-    <p-tabs [value]="viewMode()" styleClass="entity-manager__tabs">
+    <p-tabs [value]="viewMode()" class="entity-manager__tabs">
       <p-tablist>
         <p-tab value="list">List</p-tab>
         <p-tab value="edit" [disabled]="!canEdit()">Edit</p-tab>
       </p-tablist>
 
-      <p-tabpanels>
+      <p-tabpanels class="entity-manager__panels">
         <p-tabpanel value="list">
           @if (store?.loading()) {
             <div class="entity-manager__state">

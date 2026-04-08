@@ -81,8 +81,10 @@ export class ProjectLoadComponent implements OnInit {
         this.updateDefaultStore (this.appMgr.getDefaultSharing());
         // Register the types defined in the project
         const newTypes = this.appMgr.getApplicationTypes ();
-        if (newTypes!=null)
+        if (newTypes!=null) {
           this.resolver.registerTypes(newTypes);
+          this.resolver.resolvePendingReferences();
+        }
 
         const entityName = this.appMgr.retrieveFirstEntity();
         if (entityName != null)

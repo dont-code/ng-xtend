@@ -149,7 +149,7 @@ const PRJ_REF_DEFINITION=
                   referenceType: 'ManyToOne'
                 },
                 name: 'restaurant',
-                type: 'string'
+                type: 'Restaurant'
               },
               {
                 reference: null,

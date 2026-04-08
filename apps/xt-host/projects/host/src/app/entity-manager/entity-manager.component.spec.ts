@@ -197,8 +197,8 @@ describe('EntityManagerComponent', () => {
     //expect(deleteSpy).toHaveBeenCalledOnce();
     list = harness.fixture.debugElement.query(By.directive(Table));
     expect(list).toBeNull();
-    /*const rows = list.queryAll(By.css('tbody tr'));
-    expect(rows).toHaveLength(0);*/
+    const emptyMsg = harness.fixture.debugElement.query(By.css('.entity-manager__state--empty'));
+    expect(emptyMsg.nativeElement.textContent.indexOf("No entity found")).not.toEqual(-1);
 
   });
 

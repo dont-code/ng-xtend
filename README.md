@@ -34,7 +34,7 @@ A real-world example of an app handling complex data (lists, views, and editions
 
 Demo applications can be seen here:
 
-[![Dont-code Demo Apps](docs/screenshots/dont-code-demo-apps.png)](https://dont-code.net/default/repo/default/)
+[![Dont-code Demo Apps](docs/screenshots/dont-code-demo-apps.png)](https://dont-code.net/dashboard/repo/default/)
 
 ---
 

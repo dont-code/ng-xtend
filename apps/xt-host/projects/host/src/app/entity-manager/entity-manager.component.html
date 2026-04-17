@@ -1,41 +1,114 @@
-@let entName=entityName();
+@let entName = entityName();
 
-@if (entName!=null) {
+@if (entName != null) {
+  <section class="entity-manager">
+    <header class="entity-manager__header">
+      <div class="entity-manager__heading">
+        <h1 class="entity-manager__title">{{ entName }}</h1>
+        <p class="entity-manager__subtitle">
+          Manage records, edit selected items, and keep the list in sync.
+        </p>
+      </div>
 
-<h1>{{entName}}</h1>
-  <p-toolbar>
-    <ng-template #center>
-      <p-button id="btn-new" icon="pi pi-plus" (onClick)="newEntity()" [loading]="newing()"></p-button>
-      <p-button id="btn-reload" icon="pi pi-refresh" [disabled]="!canReload()" (onClick)="reloadList()" [loading]="updating()"></p-button>
-      <p-button id="btn-delete" icon="pi pi-trash" [disabled]="!selectedEntity()" (onClick)="deleteSelected()" [loading]="deleting()"></p-button>
-      <p-button id="btn-save" icon="pi pi-save" [disabled]="!canSave()" (onClick)="save()" [loading]="saving()"></p-button>
-    </ng-template>
-  </p-toolbar>
-  <p-tabs [value]="viewMode()" >
-    <p-tablist >
-      <p-tab value="list">List</p-tab>
-      <p-tab value="edit" [disabled]="!canEdit()">Edit</p-tab>
-    </p-tablist>
-    <p-tabpanels>
-      <p-tabpanel value="list" >
-        @if (store?.loading()) {
-          <p-progress-spinner />
-        } @else {
-          <xt-render displayMode="LIST_VIEW" [value]="store?.entities()" (models)="listModelChanged($event)" [models]="listModel" [valueType]="entityName()" ></xt-render>
-        }
-      </p-tabpanel>
+      <p-toolbar class="entity-manager__toolbar">
+        <ng-template #center>
+          <div class="entity-manager__actions">
+            <p-button
+              id="btn-new"
+              icon="pi pi-plus"
+              label="New"
+              severity="secondary"
+              [loading]="newing()"
+              (onClick)="newEntity()">
+            </p-button>
 
-      <p-tabpanel value="edit">
-        @if (canEdit()) {
-          @let mainForm=editForm();
-          <div [formGroup]="mainForm">
-            <xt-render displayMode="FULL_EDITABLE" [formGroup]="mainForm" subName="editor" [valueType]="entityName()" ></xt-render>
+            <p-button
+              id="btn-reload"
+              icon="pi pi-refresh"
+              label="Reload"
+              severity="secondary"
+              [disabled]="!canReload()"
+              [loading]="updating()"
+              (onClick)="reloadList()">
+            </p-button>
+
+            <p-button
+              id="btn-delete"
+              icon="pi pi-trash"
+              label="Delete"
+              severity="danger"
+              [disabled]="!selectedEntity()"
+              [loading]="deleting()"
+              (onClick)="deleteSelected()">
+            </p-button>
+
+            <p-button
+              id="btn-save"
+              icon="pi pi-save"
+              label="Save"
+              [disabled]="!canSave()"
+              [loading]="saving()"
+              (onClick)="save()">
+            </p-button>
           </div>
-          }
-      </p-tabpanel>
-    </p-tabpanels>
-  </p-tabs>
+        </ng-template>
+      </p-toolbar>
+    </header>
 
+    <p-tabs [value]="viewMode()" class="entity-manager__tabs">
+      <p-tablist>
+        <p-tab value="list">List</p-tab>
+        <p-tab value="edit" [disabled]="!canEdit()">Edit</p-tab>
+      </p-tablist>
+
+      <p-tabpanels class="entity-manager__panels">
+        <p-tabpanel value="list">
+          @if (store?.loading()) {
+            <div class="entity-manager__state">
+              <p-progress-spinner />
+              <span>Loading {{ entName }}…</span>
+            </div>
+          } @else if ((store?.entities()?.length ?? 0) === 0) {
+            <div class="entity-manager__state entity-manager__state--empty">
+              <i class="pi pi-inbox"></i>
+              <span>No entity found.</span>
+              <small>Try creating a new item with the toolbar above.</small>
+            </div>
+          } @else {
+            <div class="entity-manager__panel">
+              <xt-render
+                displayMode="LIST_VIEW"
+                [value]="store?.entities()"
+                (models)="listModelChanged($event)" [models]="listModel"
+                [valueType]="entityName()">
+              </xt-render>
+            </div>
+          }
+        </p-tabpanel>
+
+        <p-tabpanel value="edit">
+          @if (canEdit()) {
+            @let mainForm = editForm();
+            <div class="entity-manager__panel">
+              <div [formGroup]="mainForm" class="entity-manager__form">
+                <xt-render
+                  displayMode="FULL_EDITABLE"
+                  [formGroup]="mainForm"
+                  subName="editor"
+                  [valueType]="entityName()">
+                </xt-render>
+              </div>
+            </div>
+          }
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </section>
 } @else {
-  <h1>No entity to manage.</h1>
+  <section class="entity-manager entity-manager--empty">
+    <div class="entity-manager__state entity-manager__state--empty">
+      <i class="pi pi-database"></i>
+      <span>No entity to manage.</span>
+    </div>
+  </section>
 }

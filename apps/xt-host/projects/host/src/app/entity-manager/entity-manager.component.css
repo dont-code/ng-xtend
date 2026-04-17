@@ -1,0 +1,125 @@
+:host {
+  display: block;
+}
+
+.entity-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.entity-manager__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.entity-manager__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.entity-manager__title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.entity-manager__subtitle {
+  margin: 0;
+  opacity: 0.72;
+  font-size: 0.95rem;
+}
+
+.entity-manager__toolbar {
+  border-radius: 1.25rem;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 10px 28px rgb(0 0 0 / 0.05);
+}
+
+.entity-manager__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.entity-manager__tabs {
+  display: block;
+  border-radius: 1.25rem;
+}
+
+.entity-manager__panels {
+  background: none;
+}
+
+.entity-manager__panel {
+  border-radius: 1.5rem;
+  background: color-mix(in srgb, var(--p-surface-0) 92%, var(--p-primary-50) 8%);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 40px rgb(0 0 0 / 0.06);
+}
+
+.entity-manager__form {
+  min-width: 0;
+}
+
+.entity-manager__state {
+  min-height: 18rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  background: color-mix(in srgb, var(--p-surface-0) 94%, var(--p-primary-50) 6%);
+  color: var(--p-text-color);
+}
+
+.entity-manager__state i {
+  font-size: 2rem;
+  opacity: 0.55;
+}
+
+.entity-manager__state span {
+  font-weight: 600;
+}
+
+.entity-manager__state small {
+  opacity: 0.7;
+}
+
+.entity-manager__state--empty {
+  min-height: 16rem;
+}
+
+.entity-manager--empty {
+  padding-top: 0.5rem;
+}
+
+:host-context(.app-dark) .entity-manager__panel,
+:host-context(.app-dark) .entity-manager__state {
+  background: color-mix(in srgb, var(--p-surface-900) 94%, var(--p-primary-950) 6%);
+}
+
+@media (max-width: 767px) {
+  .entity-manager__toolbar {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .entity-manager__actions {
+    width: 100%;
+  }
+
+  .entity-manager__actions > * {
+    flex: 1 1 auto;
+  }
+
+  .entity-manager__state {
+    min-height: 14rem;
+    padding: 1.5rem;
+  }
+}

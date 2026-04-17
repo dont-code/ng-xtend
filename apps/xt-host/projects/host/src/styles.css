@@ -10,5 +10,7 @@ body {
   margin: 0;
   padding: 0;
 }
-/* You can add global styles to this file, and also import other style files */
 
+.main-area {
+  background: var( --p-form-field-background)
+}

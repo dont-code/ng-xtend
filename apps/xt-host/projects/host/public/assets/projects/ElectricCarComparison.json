@@ -1,0 +1,66 @@
+{
+  "name": "ElectricCarComparison",
+  "description": "An application for comparing electric cars based on brand, range, and charging speed.",
+  "content": {
+    "creation": {
+      "entities": [
+        {
+          "name": "Brand",
+          "fields": [
+            {
+              "reference": null,
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "reference": null,
+              "name": "country",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "CarModel",
+          "fields": [
+            {
+              "reference": null,
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "reference": {
+                "toType": "Brand",
+                "field": "name",
+                "referenceType": "ManyToOne",
+                "type": "string"
+              },
+              "name": "brand",
+              "type": "Brand"
+            },
+            {
+              "reference": null,
+              "name": "range",
+              "type": "number"
+            },
+            {
+              "reference": null,
+              "name": "chargingSpeed",
+              "type": "number"
+            },
+            {
+              "reference": null,
+              "name": "comment",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "name": "ElectricCarComparisonApp",
+      "type": "application",
+      "sharing": {
+        "with": "Dont-code users"
+      }
+    }
+  },
+  "lastUpdated": "2026-04-03T14:28:14.237Z"
+}

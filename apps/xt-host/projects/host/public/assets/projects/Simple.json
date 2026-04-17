@@ -6,28 +6,28 @@
     "creation": {
       "type": "Application",
       "name": "Simple",
-      "entities": {
-        "a": {
+      "entities": [
+        {
           "from": "",
           "name": "SimpleNote",
-          "fields": {
-            "a": {
+          "fields": [
+            {
               "name": "Text",
               "type": "string"
             },
-            "b": {
+            {
               "name": "Amount",
               "type": "number"
             },
-            "c": {
+            {
               "name": "Check",
               "type": "boolean"
             }
-          }
-        },
-        "sharing": {
-          "with": "Dont-code users"
+          ]
         }
+      ],
+      "sharing": {
+        "with": "Dont-code users"
       }
     }
   }

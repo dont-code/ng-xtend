@@ -2,7 +2,8 @@
 
 > **Empower your Angular applications with a flexible, scalable plugin ecosystem!** 🚀
 
-[![Try Live Demo](https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen)](https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
+[![Try Live Demo](https://img.shields.io/badge/Try%20it-Live%20Demo-brightgreen)](https://dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
+[![Try App Generator](https://img.shields.io/badge/Generate-your%20App-brightgreen)](https://dont-code.net/dashboard/repo/default?action=generate)
 [![GitHub license](https://img.shields.io/github/license/dont-code/ng-xtend)](LICENSE)
 
 ## 💡 Why ng-xtend?
@@ -27,22 +28,23 @@ ng-xtend is an Angular library that enables you to:
 ### ☕ Coffee Bean Evaluation
 A real-world example of an app handling complex data (lists, views, and editions) entirely through dynamic plugins.
 
-[![Coffee Bean Evaluation](docs/screenshots/xt-host-list-view-plugins.png)](https://test.dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
+[![Coffee Bean Evaluation](docs/screenshots/revamped-dont-code-list.png)](https://dont-code.net/apps/latest/host/?project=Coffee%20Beans%20Evaluation)
 
 ### Other Demos
 
 Demo applications can be seen here:
 
-[![Dont-code Demo Apps](docs/screenshots/dont-code-demo-apps.png)](https://dont-code.net/apps/repo/default/)
+[![Dont-code Demo Apps](docs/screenshots/dont-code-demo-apps.png)](https://dont-code.net/dashboard/repo/default/)
 
 ---
 
 ## News
+- ***2026-03-31:*** Try our [AI based application generator!](https://dont-code.net/dashboard/repo/default?action=generate). You can now just describe the application you want, and it will generate it based on the ng-xtend framework & plugins !
 - ***2026-01-27:*** Added repository with multiple examples of ng-xtend usage. => [ng-xtend-examples](https://github.com/dont-code/ng-xtend-examples)
 - ***2026-01-04:*** Version 0.5.5, supports for many to one references
 - ***2025-11-02:*** Added support for actions, allowing plugins to add features dynamically, and added the agenda plugin, with support for recurrent tasks
 - ***2025-09-06:*** Version 0.5, moved to Angular 20.2, added country selection plugin.
-- ***2025-08-24:*** Published of apps developed: [Dashboard](https://dont-code.net/apps/repo/default)
+- ***2025-08-24:*** Published of apps developed: [Dashboard](https://dont-code.net/dashboard/repo/default)
 - ***2025-07-14:*** First release, with support for dynamic plugins (thanks to [Angular architects!](https://github.com/angular-architects/module-federation-plugin)) and a few plugins for Financial, Web and International applications. As well, added a default plugin to edit any data.
 
 
@@ -73,13 +75,13 @@ Currently, ng-xtend supports four major extension points:
 Here are screenshots of an application automatically handling list, view and edition of complex data (evaluations of coffee beans) using ng-xtend, a [dont-code application](https://dont-code.net/){target="_blank"}, and the [default plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-default) and [web plugin](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-web)  
 You can see how the different plugins work together without knowing each other. Even the host application does not know them.
 
-![List view screenshot](docs/screenshots/xt-host-list-view-split.png)
-![Edit object screenshot](docs/screenshots/xt-host-edit-view-split.png)
+![List view screenshot](docs/screenshots/revamped-dont-code-list-split.png)
+![Edit object screenshot](docs/screenshots/revamped-dont-code-edit-split.png)
 
 ### 🛠️ Plugin Tester
 Curious about how plugins are dynamically injected? Try the dedicated tester:
 
-[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png)](https://test.dont-code.net/apps/latest/plugin-tester)
+[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png)](https://dont-code.net/apps/latest/plugin-tester)
 
 ---
 
@@ -92,9 +94,9 @@ Curious about how plugins are dynamically injected? Try the dedicated tester:
 - [x] Remote dynamic loading
 - [x] Action components support
 - [ ] Workflows
-- [ ] Enhanced modelization support
+- [-] Enhanced modelization support
+- [x] AI application generation
 - [ ] **v1.0 Release!** 🏁
-- [ ] AI application generation
 - [ ] Enhanced plugin isolation
 - [ ] v2.0 & beyond
 

@@ -37,13 +37,23 @@ export class ProjectLoadComponent implements OnInit {
   private readonly injector = inject(Injector);
 
   ngOnInit() {
-    let projectName = this.route.snapshot.paramMap.get('projectName');
-    if ((projectName==null) || (projectName.length==0)) {
-      projectName = this.route.snapshot.queryParamMap.get('project')??'Coffee Beans Evaluation';
+      // Either we get the complete project definition, or only the name to be read from project API
+    let projectName:string = 'Coffee Beans Evaluation';
+    let project = this.route.snapshot.queryParamMap.get('prjDef');
+    if (project==null) {
+      let givenPrjName = this.route.snapshot.paramMap.get('projectName');
+      if ((givenPrjName==null) || (givenPrjName.length==0)) {
+        projectName = this.route.snapshot.queryParamMap.get('project')??projectName;
+      } else projectName=givenPrjName;
     }
+
     const repoName = this.route.snapshot.paramMap.get('repoName') ?? this.route.snapshot.queryParamMap.get('repository')?? 'default';
     this.appConfig.updateConfigName(repoName); // Load the default config
-    this.appConfig.updateProjectName(projectName);
+    if (project!=null) {
+      this.appConfig.updateProjectDefinition(project);
+    }else {
+      this.appConfig.updateProjectName(projectName);
+    }
   }
 
   combinedloadingStatus = linkedSignal( () => {
@@ -71,8 +81,10 @@ export class ProjectLoadComponent implements OnInit {
         this.updateDefaultStore (this.appMgr.getDefaultSharing());
         // Register the types defined in the project
         const newTypes = this.appMgr.getApplicationTypes ();
-        if (newTypes!=null)
+        if (newTypes!=null) {
           this.resolver.registerTypes(newTypes);
+          this.resolver.resolvePendingReferences();
+        }
 
         const entityName = this.appMgr.retrieveFirstEntity();
         if (entityName != null)
@@ -109,3 +121,17 @@ export class ProjectLoadComponent implements OnInit {
   }
 
 }
+
+function bufferToString(buffer: ArrayBuffer): string {
+  return String.fromCharCode.apply(null, Array.from(new Uint16Array(buffer)));
+}
+
+function stringToBuffer(value: string): ArrayBuffer {
+  let buffer = new ArrayBuffer(value.length * 2); // 2 bytes per char
+  let view = new Uint16Array(buffer);
+  for (let i = 0, length = value.length; i < length; i++) {
+    view[i] = value.charCodeAt(i);
+  }
+  return buffer;
+}
+

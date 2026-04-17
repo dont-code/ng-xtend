@@ -1,6 +1,6 @@
 {
   "name": "xt-type",
-  "version": "0.10.4",
+  "version": "0.11.0",
   "description": "Simple but powerful typescript library for dynamic type support.",
   "keywords": [
     "dynamic type",
@@ -11,7 +11,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     },
     "./browser": {
@@ -52,16 +52,16 @@
     }
   ],
   "dependencies": {
-    "eta": "~4.5.0"
+    "eta": "~4.5.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.3",
-    "@size-limit/preset-small-lib": "^8.2.4",
-    "@types/node": "^22.18.1",
-    "@vitest/coverage-istanbul": "3.2.4",
-    "size-limit": "^8.2.4",
-    "tsdown": "^0.15.0",
+    "@biomejs/biome": "^2.4.10",
+    "@size-limit/preset-small-lib": "^12.0.1",
+    "@types/node": "^24.12.2",
+    "size-limit": "^12.0.1",
+    "tsdown": "^0.21.7",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.2",
+    "@vitest/coverage-istanbul": "^4.1.2"
   }
 }

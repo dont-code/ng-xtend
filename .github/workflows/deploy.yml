@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ env.branch }}
@@ -37,12 +37,13 @@ jobs:
         with:
           name: Dont-code
           email: developer@dont-code.net
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
       - name: Install
         run: |
+          npm install -g pnpm@latest 
           node common/scripts/install-run-rush.js install
       - name: Build
         run: |
@@ -66,15 +67,15 @@ jobs:
           mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/finance-plugin 
           mv ./dist/${{env.stage}}/agenda-plugin/browser ./to-deploy/${{env.stage}}
           mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/agenda-plugin
-      - name: Deploy to test.dont-code.net apps with ${{env.stage}}
+      - name: Deploy to dont-code.net apps with ${{env.stage}}
         if: inputs.deploy == true
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
-          username: ${{secrets.DONTCODE_APPS_WEBSITE_USER}}
-          password: ${{secrets.DONTCODE_APPS_WEBSITE_PASSWORD}}
+          username: ${{secrets.DONTCODE_WEBSITE_USER}}
+          password: ${{secrets.DONTCODE_WEBSITE_PASSWORD}}
           local_path: './to-deploy/${{env.stage}}/*'
-          remote_path: '/www/${{env.stage}}'
-          server: 'test.${{secrets.DONTCODE_WEBSITE_HOST}}'
+          remote_path: '/www/apps/${{env.stage}}'
+          server: ${{secrets.DONTCODE_WEBSITE_HOST}}
           port: ${{secrets.DONTCODE_WEBSITE_SSH_PORT}}
           sftp_only: 'true'
           delete_remote_files: 'false'

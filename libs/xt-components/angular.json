@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "pnpm",
+
     "analytics": "1249a0bb-fe8d-4ab1-947a-7689ae7ef5db",
     "cache": {
       "enabled": true

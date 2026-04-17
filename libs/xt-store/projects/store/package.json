@@ -1,11 +1,11 @@
 {
   "name": "xt-store",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "repository": {
     "url": "https://github.com/dont-code/ng-xtend.git"
   },
   "peerDependencies": {
-    "@angular/common": "^20.0.0",
+    "@angular/common": "^21.0.0",
     "@angular/core": "^20.0.0",
     "xt-type": ">= 0.10.4"
   },

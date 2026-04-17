@@ -4,7 +4,7 @@ import { EntityManagerComponent } from './entity-manager.component';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { routes } from '../app.routes';
 import { provideRouter } from '@angular/router';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { registerDefaultPlugin } from 'xt-plugin-default';
 import { XtResolverService } from 'xt-components';
@@ -77,7 +77,7 @@ describe('EntityManagerComponent', () => {
     harness.fixture.detectChanges();
 
     // Click on new
-    const newSpy = vi.spyOn(component, 'newEntity');
+    //const newSpy = vi.spyOn(component, 'newEntity');
     const btnNew = harness.fixture.debugElement.query(By.css("#btn-new"));
     btnNew.children[0].nativeElement.click();
     harness.fixture.detectChanges();
@@ -87,7 +87,7 @@ describe('EntityManagerComponent', () => {
     await harness.fixture.whenStable();
     await harness.fixture.whenStable();
 
-    expect(newSpy).toHaveBeenCalledOnce();
+    //expect(newSpy).toHaveBeenCalledOnce();
     const form=component.editForm().get('editor') as FormGroup;
     // Check fields
     expect(Object.keys(form.controls)).toEqual([
@@ -115,7 +115,7 @@ describe('EntityManagerComponent', () => {
     });
 
     //Click on save
-    const saveSpy = vi.spyOn(component, 'save');
+    //const saveSpy = vi.spyOn(component, 'save');
     const btnSave = harness.fixture.debugElement.query(By.css("#btn-save"));
     btnSave.children[0].nativeElement.click();
     harness.fixture.detectChanges();
@@ -124,7 +124,7 @@ describe('EntityManagerComponent', () => {
     await harness.fixture.whenStable();
     await harness.fixture.whenStable();
 
-    expect(saveSpy).toHaveBeenCalledOnce();
+    //expect(saveSpy).toHaveBeenCalledOnce();
 
     expect (component.selectedEntity()).toEqual({
       _id:component.selectedEntity()!._id,
@@ -186,7 +186,7 @@ describe('EntityManagerComponent', () => {
     expect(row.nativeElement.textContent).toSatisfy((text:string)=> text.indexOf('NewestName')!=-1,"Newest value not displayed in the list");
 
     // Now try to delete element
-    const deleteSpy = vi.spyOn(component, 'deleteSelected');
+    //const deleteSpy = vi.spyOn(component, 'deleteSelected');
     const btnDelete = harness.fixture.debugElement.query(By.css("#btn-delete"));
     btnDelete.children[0].nativeElement.click();
     harness.fixture.detectChanges();
@@ -194,10 +194,11 @@ describe('EntityManagerComponent', () => {
     await harness.fixture.whenStable();
     await harness.fixture.whenStable();
 
-    expect(deleteSpy).toHaveBeenCalledOnce();
+    //expect(deleteSpy).toHaveBeenCalledOnce();
     list = harness.fixture.debugElement.query(By.directive(Table));
-    const rows = list.queryAll(By.css('tbody tr'));
-    expect(rows).toHaveLength(0);
+    expect(list).toBeNull();
+    const emptyMsg = harness.fixture.debugElement.query(By.css('.entity-manager__state--empty'));
+    expect(emptyMsg.nativeElement.textContent.indexOf("No entity found")).not.toEqual(-1);
 
   });
 

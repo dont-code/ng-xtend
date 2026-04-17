@@ -1,21 +1,9 @@
 const { withNativeFederation, shareAll, share } = require('@angular-architects/native-federation/config');
 
 module.exports = withNativeFederation({
-
+  name: 'xt-plugin-tester',
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-    ...share({
-      "@primeuix/themes/aura": {
-        singleton: true,
-        strictVersion: true,
-        requiredVersion: "auto",
-        includeSecondaries: false,
-        build: 'separate',
-        packageInfo: {
-          entryPoint: 'node_modules/@primeuix/themes/dist/aura/index.mjs'
-        }
-      }
-    })
   },
   features: {
     ignoreUnusedDeps:true
@@ -27,6 +15,7 @@ module.exports = withNativeFederation({
     'rxjs/webSocket',
     // Add further packages you don't need at runtime
     'chart.js/auto',
+    /^@primeuix\//,
     'primeng/chart',
     'primeicons'
   ]

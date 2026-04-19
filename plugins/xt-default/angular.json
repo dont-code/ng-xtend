@@ -16,10 +16,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/default/ng-package.json"
-          },
+          "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
               "tsConfig": "projects/default/tsconfig.lib.prod.json"
@@ -31,35 +28,27 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-builders/jest:run",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/default/tsconfig.spec.json",
-            "polyfills": [
-            ]
+            "tsConfig": "projects/default/tsconfig.spec.json"
           }
         }
       }
     },
     "default-plugin": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "css"
-        }
-      },
+      "schematics": {},
       "root": "projects/default-plugin",
       "sourceRoot": "projects/default-plugin/src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/default-plugin",
             "index": "projects/default-plugin/src/index.html",
             "browser": "projects/default-plugin/src/main.ts",
-            "polyfills": [],
             "tsConfig": "projects/default-plugin/tsconfig.app.json",
-            "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
@@ -68,8 +57,7 @@
             ],
             "styles": [
               "projects/default-plugin/src/styles.css"
-            ],
-            "scripts": []
+            ]
           },
           "configurations": {
             "production": {
@@ -96,7 +84,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "default-plugin:build:production"
@@ -107,26 +95,8 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
         "test": {
-          "builder": "@analogjs/vitest-angular:test",
-          "options": {
-            "polyfills": [],
-            "tsConfig": "projects/default-plugin/tsconfig.spec.json",
-            "inlineStyleLanguage": "css",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/default-plugin/public"
-              }
-            ],
-            "styles": [
-              "projects/default-plugin/src/styles.css"
-            ],
-            "scripts": []
-          }
+          "builder": "@angular/build:unit-test"
         }
       }
     }

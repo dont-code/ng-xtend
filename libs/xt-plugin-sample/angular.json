@@ -17,10 +17,7 @@
 			"prefix": "lib",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:ng-packagr",
-					"options": {
-						"project": "projects/sample/ng-package.json"
-					},
+          "builder": "@angular/build:ng-packagr",
 					"configurations": {
 						"production": {
 							"tsConfig": "projects/sample/tsconfig.lib.prod.json"
@@ -32,10 +29,9 @@
 					"defaultConfiguration": "development"
 				},
 				"test": {
-					"builder": "@analogjs/vitest-angular:test",
+          "builder": "@angular/build:unit-test",
 					"options": {
-						"tsConfig": "projects/sample/tsconfig.spec.json",
-						"polyfills": []
+						"tsConfig": "projects/sample/tsconfig.spec.json"
 					}
 				}
 			}
@@ -43,9 +39,6 @@
 		"sample-plugin": {
 			"projectType": "application",
 			"schematics": {
-				"@schematics/angular:component": {
-					"style": "css"
-				}
 			},
 			"root": "projects/sample-plugin",
 			"sourceRoot": "projects/sample-plugin/src",
@@ -71,11 +64,15 @@
 						"target": "sample-plugin:serve-original:development",
 						"rebuildDelay": 0,
 						"dev": true,
+            "cacheExternalArtifacts": false,
 						"port": 0
 					}
 				},
+        "test": {
+          "builder": "@angular/build:unit-test"
+        },
 				"esbuild": {
-					"builder": "@angular-devkit/build-angular:application",
+					"builder": "@angular/build:application",
 					"options": {
 						"outputPath": "dist/xt-sample-plugin",
 						"index": "projects/sample-plugin/src/index.html",
@@ -85,7 +82,6 @@
 							"es-module-shims"
 						],
 						"tsConfig": "projects/sample-plugin/tsconfig.app.json",
-						"inlineStyleLanguage": "css",
 						"assets": [
 							{
 								"glob": "**/*",
@@ -94,8 +90,7 @@
 						],
 						"styles": [
 							"projects/sample-plugin/src/styles.css"
-						],
-						"scripts": []
+						]
 					},
 					"configurations": {
 						"production": {
@@ -122,7 +117,7 @@
 					"defaultConfiguration": "development"
 				},
 				"serve-original": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
 					"configurations": {
 						"production": {
 							"buildTarget": "sample-plugin:esbuild:production"
@@ -135,28 +130,7 @@
 					"options": {
 						"port": 4201
 					}
-				},
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
-        "test": {
-          "builder": "@analogjs/vitest-angular:test",
-          "options": {
-            "polyfills": [],
-            "tsConfig": "projects/sample-plugin/tsconfig.spec.json",
-            "inlineStyleLanguage": "css",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/sample-plugin/public"
-              }
-            ],
-            "styles": [
-              "projects/sample-plugin/src/styles.css"
-            ],
-            "scripts": []
-          }
-        }
+				}
       }
 		}
 	}

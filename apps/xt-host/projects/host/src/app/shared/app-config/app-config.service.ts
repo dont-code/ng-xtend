@@ -3,6 +3,7 @@ import { XtResolverService } from 'xt-components';
 
 import { registerDefaultPlugin } from 'xt-plugin-default';
 import { DcPluginModel, DcRepositoryModel } from '../models/dc-repository-model';
+import { loadRemoteModule } from '@angular-architects/native-federation';
 
 @Injectable({
   providedIn: 'root'
@@ -149,8 +150,11 @@ export class AppConfigService {
   async loadPlugin (plugin:DcPluginModel): Promise<boolean> {
     const url=plugin.info['remote-entry'];
     if (url==null) throw new Error ("No url for plugin "+ plugin['display-name']);
-    await this.resolverService.loadPlugin(url);
-    return true;
+    const module = await loadRemoteModule({
+      remoteEntry: url,
+      exposedModule: './Register'
+    });
+    return this.resolverService.registerPluginModule (module, url);
   }
 
   updateConfigName (newUrl:string ) {

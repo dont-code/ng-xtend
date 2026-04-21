@@ -16,10 +16,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/workflow/ng-package.json"
-          },
+          "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
               "tsConfig": "projects/workflow/tsconfig.lib.prod.json"
@@ -31,28 +28,22 @@
           "defaultConfiguration": "development"
         },
         "test": {
-					"builder": "@analogjs/vitest-angular:test",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/workflow/tsconfig.spec.json",
-            "polyfills": [
-            ]
+            "tsConfig": "projects/workflow/tsconfig.spec.json"
           }
         }
       }
     },
     "workflow-plugin": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "css"
-        }
-      },
+      "schematics": {},
       "root": "projects/workflow-plugin",
       "sourceRoot": "projects/workflow-plugin/src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/workflow-plugin",
             "index": "projects/workflow-plugin/src/index.html",
@@ -62,7 +53,6 @@
               "es-module-shims"
             ],
             "tsConfig": "projects/workflow-plugin/tsconfig.app.json",
-            "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
@@ -71,8 +61,7 @@
             ],
             "styles": [
               "projects/workflow-plugin/src/styles.css"
-            ],
-            "scripts": []
+            ]
           },
           "configurations": {
             "production": {
@@ -99,7 +88,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "workflow-plugin:build:production"
@@ -110,26 +99,8 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
         "test": {
-          "builder": "@analogjs/vitest-angular:test",
-          "options": {
-            "polyfills": [],
-            "tsConfig": "projects/workflow-plugin/tsconfig.spec.json",
-            "inlineStyleLanguage": "css",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/workflow-plugin/public"
-              }
-            ],
-            "styles": [
-              "projects/workflow-plugin/src/styles.css"
-            ],
-            "scripts": []
-          }
+          "builder": "@angular/build:unit-test"
         }
       }
     }

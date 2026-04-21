@@ -38,7 +38,7 @@ export class TestStoreManager implements IStoreManager {
     return this.defaultProvider;
   }
 
-  newStoreCriteria(name: string, value: any, operator: IStoreCriteriaOperator): IStoreCriteria {
+  newStoreCriteria<T=any>(name: keyof T, value: any, operator: IStoreCriteriaOperator): IStoreCriteria<T> {
     return new TestStoreCriteria(name, value, operator);
   }
 
@@ -90,7 +90,7 @@ export class TestStoreProvider<T = never> implements IStoreProvider<T> {
         return Promise.resolve( this.getOrCreateArray(name).delete(key));
     }
 
-    searchEntities(name: string, ...criteria: TestStoreCriteria[]): Observable<T[]> {
+    searchEntities(name: string, ...criteria: IStoreCriteria<T>[]): Observable<T[]> {
       // No criteria defined, just send the full list
       const ret=new Array<T>();
       if( (criteria==null)||(criteria.length==0)) {
@@ -100,7 +100,7 @@ export class TestStoreProvider<T = never> implements IStoreProvider<T> {
       } else {
         for (const toAdd of this.getOrCreateArray(name).values()) {
           let canAdd=true;
-          for (const criter of criteria) {
+          for (const criter of criteria as TestStoreCriteria<T>[]) {
             if (!criter.filter(toAdd)) {
               canAdd=false;
               break;
@@ -142,13 +142,13 @@ export class TestDocumentInfo implements IDocumentInfo {
   }
 }
 
-export class TestStoreCriteria implements IStoreCriteria {
-  name: string;
+export class TestStoreCriteria<T=any> implements IStoreCriteria<T> {
+  name: keyof T;
   value: any;
   operator: '='|'<='|'<';
 
   constructor(
-    name: string,
+    name: keyof T,
     value: any,
     operator?: IStoreCriteriaOperator
   ) {

@@ -86,7 +86,7 @@ export class IndexedDbStorageService<T extends ManagedData = ManagedData> extend
     });
   }
 
-  override searchEntities(name: string, ...criteria: XtStoreCriteria[]): Observable<Array<T>> {
+  override searchEntities(name: string, ...criteria: XtStoreCriteria<T>[]): Observable<Array<T>> {
     return from (
       this.ensurePositionCanBeStored(name, false).then(table => {
       return table.toArray().then(list => {

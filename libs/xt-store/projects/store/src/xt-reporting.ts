@@ -6,11 +6,11 @@ import {
   XtSortByDirection
 } from './xt-store-parameters';
 
-export interface DontCodeReportType {
+export interface DontCodeReportType<T> {
   title: string;
   for: string;
-  groupedBy?: {[key:string]:XtGroupBy};
-  sortedBy?: {[key:string]:XtSortBy};
+  groupedBy?: {[key:string]:XtGroupBy<T>};
+  sortedBy?: {[key:string]:XtSortBy<T>};
   as?: {[key:string]:DontCodeReportDisplayType};
 }
 
@@ -21,20 +21,20 @@ export interface DontCodeReportDisplayType {
   title: string;
 }
 
-export class XtStoreSortBy implements XtSortBy {
+export class XtStoreSortBy<T> implements XtSortBy<T> {
 
   direction: XtSortByDirection;
 
-  constructor(public by: string, direction?:XtSortByDirection, public subSort?:XtSortBy) {
+  constructor(public by: keyof T, direction?:XtSortByDirection, public subSort?:XtSortBy<T>) {
     if (direction==null)   this.direction=XtSortByDirection.None;
     else this.direction=direction;
   }
 }
 
-export class XtStoreGroupBy implements XtGroupBy {
-  display:{[key:string]:XtStoreGroupByAggregate};
+export class XtStoreGroupBy<T> implements XtGroupBy<T> {
+  display:{[key:string]:XtStoreGroupByAggregate<T>};
 
-  constructor(public of:string, display?:{[key:string]:XtStoreGroupByAggregate}, public show?:XtGroupByShow) {
+  constructor(public of:keyof T, display?:{[key:string]:XtStoreGroupByAggregate<T>}, public show?:XtGroupByShow) {
     if (display==null) this.display={};
     else this.display=display;
   }
@@ -45,8 +45,8 @@ export class XtStoreGroupBy implements XtGroupBy {
     return false;
   }
 
-  getRequiredListOfFields(): Set<string> {
-    const ret = new Set<string>();
+  getRequiredListOfFields(): Set<keyof T> {
+    const ret = new Set<keyof T>();
     if( this.display!=null) {
       for (const aggregate of Object.values(this.display)) {
         ret.add(aggregate.of);
@@ -56,8 +56,8 @@ export class XtStoreGroupBy implements XtGroupBy {
   }
 }
 
-export class XtStoreGroupByAggregate implements XtGroupByAggregate{
-  constructor(public of:string, public operation:XtGroupByOperation) {
+export class XtStoreGroupByAggregate<T> implements XtGroupByAggregate<T>{
+  constructor(public of:keyof T, public operation:XtGroupByOperation) {
   }
 }
 

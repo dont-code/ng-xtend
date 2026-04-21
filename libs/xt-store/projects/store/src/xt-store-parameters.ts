@@ -1,13 +1,13 @@
 
 export type XtStoreCriteriaOperator = '='|'<'|'<=';
 
-export class XtStoreCriteria {
-  name: string;
+export class XtStoreCriteria<T> {
+  name: keyof T;
   value: any;
   operator: XtStoreCriteriaOperator;
 
   constructor(
-    name: string,
+    name: keyof T,
     value: any,
     operator?: XtStoreCriteriaOperator
   ) {
@@ -35,8 +35,8 @@ export class XtStoreCriteria {
 
 }
 
-export type XtSortBy ={
-  by:string,
+export type XtSortBy<T> ={
+  by:keyof T,
   direction: XtSortByDirection
 }
 
@@ -59,19 +59,19 @@ export enum XtGroupByOperation {
   Maximum="Maximum"
 }
 
-export type XtGroupBy= {
-  of: string,
-  display:{[key:string]:XtGroupByAggregate};
+export type XtGroupBy<T>= {
+  of: keyof T,
+  display:{[key:string]:XtGroupByAggregate<T>};
   show?:XtGroupByShow,
   label?:string
 
   atLeastOneGroupIsRequested (): boolean;
-  getRequiredListOfFields(): Set<string>;
+  getRequiredListOfFields(): Set<keyof T>;
 }
 
-export type XtGroupByAggregate = {
+export type XtGroupByAggregate<T> = {
   operation: XtGroupByOperation;
-  of:string,
+  of:keyof T,
   label?:string
 }
 

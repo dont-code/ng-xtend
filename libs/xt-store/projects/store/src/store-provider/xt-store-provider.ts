@@ -29,15 +29,15 @@ export type XtStoreProvider<T extends ManagedData = ManagedData>= {
 
   searchEntities(
     name: string,
-    ...criteria: XtStoreCriteria[]
+    ...criteria: XtStoreCriteria<T>[]
   ): Observable<Array<T>>;
 
   searchAndPrepareEntities(
     name: string,
-    sort?:XtSortBy,
-    groupBy?:XtGroupBy,
+    sort?:XtSortBy<T>,
+    groupBy?:XtGroupBy<T>,
     transformer?: XtDataTransformer<T>,
-    ...criteria: XtStoreCriteria[]
+    ...criteria: XtStoreCriteria<T>[]
   ): Observable<DontCodeStorePreparedEntities<T>>;
 
   canStoreDocument(): boolean;
@@ -84,7 +84,7 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
    * @param position
    * @param criteria
    */
-  searchEntities(name: string, ...criteria: XtStoreCriteria[]): Observable<T[]> {
+  searchEntities(name: string, ...criteria: XtStoreCriteria<T>[]): Observable<T[]> {
     return this.listEntities(name).pipe(
       map (value => {
         return XtStoreProviderHelper.applyFilters(value, ...criteria) as T[];
@@ -101,7 +101,7 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
     return this.searchEntities(name);
   }
 
-  searchAndPrepareEntities(name: string, sort?: XtSortBy, groupBy?: XtGroupBy, transformer?: XtDataTransformer<T>, ...criteria: XtStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
+  searchAndPrepareEntities(name: string, sort?: XtSortBy<T>, groupBy?: XtGroupBy<T>, transformer?: XtDataTransformer<T>, ...criteria: XtStoreCriteria<T>[]): Observable<DontCodeStorePreparedEntities<T>> {
     return this.searchEntities(name, ...criteria).pipe(
       map (value => {
         // Run the transformation if any
@@ -109,7 +109,7 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
         else return value;
       }),
       map (value => {
-        let groupedByValues:DontCodeStoreGroupedByEntities|undefined;
+        let groupedByValues:DontCodeStoreGroupedByEntities<T>|undefined;
         if((sort!=null) || (groupBy?.atLeastOneGroupIsRequested()===true)) {
           value = XtStoreProviderHelper.multiSortArray(value, this.calculateSortHierarchy(sort, groupBy)) as T[];
           if (groupBy!=null) {
@@ -130,9 +130,9 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
   abstract storeEntity(position: string, entity: T): Promise<T>;
 
 
-  protected calculateSortHierarchy(sort?: XtSortBy, groupBy?: XtGroupBy ):XtSortBy|undefined {
+  protected calculateSortHierarchy(sort?: XtSortBy<T>, groupBy?: XtGroupBy<T> ):XtSortBy<T>|undefined {
     // We must first sort by the groupBy, and then by the sort
-    let rootSort:XtSortBy|undefined;
+    let rootSort:XtSortBy<T>|undefined;
     if (groupBy!=null) {
       rootSort=new XtStoreSortBy(groupBy.of, undefined, sort);
     } else {

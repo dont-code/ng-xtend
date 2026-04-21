@@ -12,7 +12,7 @@ export class XtStoreProviderHelper {
    * @param list
    * @param criteria
    */
-  public static applyFilters<T> (list:Array<T>, ...criteria: XtStoreCriteria[]): Array<T> {
+  public static applyFilters<T> (list:Array<T>, ...criteria: XtStoreCriteria<T>[]): Array<T> {
     if ((criteria==null)||(criteria.length==0)) return list;
     return list.filter(element => {
       for (const criterium of criteria) {
@@ -121,7 +121,7 @@ export class XtStoreProviderHelper {
    * @param toSort
    * @param sortOptions
    */
-  static multiSortArray<T>(toSort: T[], sortOptions?: XtSortBy): T[] {
+  static multiSortArray<T>(toSort: T[], sortOptions?: XtSortBy<T>): T[] {
     if( sortOptions==null)
       return toSort;
     return toSort;
@@ -135,7 +135,7 @@ export class XtStoreProviderHelper {
    * @param position
    * @param item
    */
-  static calculateGroupedByValues<T>(name: string, values: T[], groupBy: XtGroupBy):DontCodeStoreGroupedByEntities|undefined {
+  static calculateGroupedByValues<T>(name: string, values: T[], groupBy: XtGroupBy<T>):DontCodeStoreGroupedByEntities<T>|undefined {
       // We are counting per different value of the groupedBy Item
     if ((groupBy!=null) && (groupBy.display!=null)) {
       let fieldToGroupBy=groupBy.of as keyof T;
@@ -230,9 +230,9 @@ export class XtStoreProviderHelper {
       }
 
       // Now that we have all the counters, let's generate the GroupedFields
-      let ret: DontCodeStoreGroupedByEntities|undefined;
+      let ret: DontCodeStoreGroupedByEntities<T>|undefined;
       if (counters.size>0) {
-        ret = new DontCodeStoreGroupedByEntities(groupBy, new Map<any,DontCodeStoreGroupedByValues[]>);
+        ret = new DontCodeStoreGroupedByEntities(groupBy, new Map<any,DontCodeStoreGroupedByValues<T>[]>);
         for (const groupKey of counters.keys()) {
           const group=counters.get(groupKey)!;
 
@@ -266,7 +266,7 @@ export class XtStoreProviderHelper {
               }
               let listOfValues= ret.values?.get(groupKey);
               if (listOfValues==null) {
-                listOfValues = new Array<DontCodeStoreGroupedByValues>();
+                listOfValues = new Array<DontCodeStoreGroupedByValues<T>>();
                   ret.values?.set(groupKey, listOfValues);
               }
               listOfValues.push(new DontCodeStoreGroupedByValues(aggregate, value));
@@ -282,19 +282,19 @@ export class XtStoreProviderHelper {
 
 
 export class DontCodeStorePreparedEntities<T> {
-  constructor(public sortedData:T[], public sortInfo?:XtSortBy, public groupedByEntities?:DontCodeStoreGroupedByEntities) {
+  constructor(public sortedData:T[], public sortInfo?:XtSortBy<T>, public groupedByEntities?:DontCodeStoreGroupedByEntities<T>) {
   }
 }
 
-export class DontCodeStoreGroupedByEntities {
-  constructor(public groupInfo:XtGroupBy, public values?:Map<any,DontCodeStoreGroupedByValues[]>) {
+export class DontCodeStoreGroupedByEntities<T> {
+  constructor(public groupInfo:XtGroupBy<T>, public values?:Map<any,DontCodeStoreGroupedByValues<T>[]>) {
     if (values==null)
-      this.values=new Map<any,DontCodeStoreGroupedByValues[]>();
+      this.values=new Map<any,DontCodeStoreGroupedByValues<T>[]>();
   }
 }
 
-export class DontCodeStoreGroupedByValues {
-  constructor(public forAggregate:XtGroupByAggregate, public value:any) {
+export class DontCodeStoreGroupedByValues<T> {
+  constructor(public forAggregate:XtGroupByAggregate<T>, public value:any) {
   }
 }
 

@@ -23,8 +23,9 @@ export class StoreSupport {
     StoreSupport.testStoreManager = testStoreManager;
   }
 
-  static newStoreCriteria (name:string, value:any, operator?:IStoreCriteriaOperator): IStoreCriteria {
-    return new TestStoreCriteria(name, value, operator);
+  static newStoreCriteria<T = any> (name:keyof T, value:any, operator?:IStoreCriteriaOperator): IStoreCriteria<T> {
+    if (operator==null) operator='=';
+    return StoreSupport.getStoreManager().newStoreCriteria(name, value, operator);
   }
 
 }
@@ -52,10 +53,21 @@ export interface IDocumentInfo {
 
 export type IStoreCriteriaOperator = '='|'<'|'<=';
 
-export interface IStoreCriteria {
-  name: string;
+export interface IStoreCriteria<T> {
+  name: keyof T;
   value: any;
   operator: IStoreCriteriaOperator;
+}
+
+export type ISortBy<T> ={
+  by:keyof T,
+  direction: ISortByDirection
+}
+
+export enum ISortByDirection {
+  None = "None",
+  Ascending = "Ascending",
+  Descending = "Descending"
 }
 
 export interface IStoreProvider<T> {
@@ -73,12 +85,12 @@ export interface IStoreProvider<T> {
 
   searchEntities(
     name: string,
-    ...criteria: IStoreCriteria[]
+    ...criteria: IStoreCriteria<T>[]
   ): Observable<Array<T>>;
 
   searchAndPrepareEntities(
     name: string,
-    sort?:any,
+    sort?:ISortBy<T>,
     groupBy?:any,
     transformer?: IDataTransformer<T>,
     ...criteria: any[]
@@ -115,5 +127,5 @@ export interface IStoreManager {
 
   getDefaultProviderSafe<T=never>(): IStoreProvider<T>;
 
-  newStoreCriteria (name:string, value:any, operator: IStoreCriteriaOperator): IStoreCriteria;
+  newStoreCriteria<T=never> (name:keyof T, value:any, operator: IStoreCriteriaOperator): IStoreCriteria<T>;
 }

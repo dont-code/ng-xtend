@@ -1,4 +1,5 @@
 import { XtTypeReference } from 'xt-type';
+import { DcWorkflowModel } from 'dc-workflow';
 
 export type DcApplicationModel = {
   name:string,
@@ -9,6 +10,9 @@ export type DcApplicationModel = {
       type?: string,
       name?: string,
       entities?: Array<DcEntityModel>,
+      workflows?: {
+        [key:string]: DcWorkflowModel
+      },
       sharing?: {
         with: 'Dont-code users'|'No-one'|'Volatile'
       }
@@ -40,6 +44,9 @@ export type OldDcApplicationModel = {
       entities?: {
         [key:string]:OldDcEntityModel
       },
+      workflows?: {
+        [key:string]: DcWorkflowModel
+      },
       sharing?: {
         with: 'Dont-code users'|'No-one'|'Volatile'
       }
@@ -60,3 +67,4 @@ export function isOldProjectModel(prj:DcApplicationModel|OldDcApplicationModel):
     return !Array.isArray(prj.content.creation.entities);
   } else return false;
 }
+

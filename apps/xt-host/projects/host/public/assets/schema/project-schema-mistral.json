@@ -1,0 +1,82 @@
+{
+  "$id": "https://dont-code.net/project-schema-mistral.json",
+  "title": "Dont-code Project",
+  "description": "Using this schema, Mistral can generate Dont-code applications easily",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type":"string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "creation": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": ["application"]
+            },
+            "name": {
+              "type": "string"
+            },
+            "entities": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/entity"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "entity": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/field"
+          }
+        }
+      }
+    },
+    "field": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "toType": {
+              "type":"string"
+            },
+            "referenceType": {
+              "enum": [
+                "MANY-TO-ONE",
+                "ONE-TO-MANY"
+              ]
+            },
+            "field":{
+              "type":"string"
+            }
+          }
+        }
+      }
+
+    }
+  }
+}
+

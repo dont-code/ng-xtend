@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { updateFormGroupWithValue, XtComponentOutput, XtRenderComponent, XtResolverService } from 'xt-components';
+import { updateFormGroupWithValue,
+  XtBaseModel, XtComponentModel, XtComponentOutput, XtRenderComponent, XtResolverService } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
 import { ManagedData } from 'xt-type';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
@@ -71,6 +72,8 @@ export class EntityManagerComponent implements OnDestroy {
   deleting = signal (false);
   updating = signal (false);
 
+  listModel =new XtBaseModel<any>();
+
   private subscriptions=new Subscription();
 
   constructor() {
@@ -103,7 +106,8 @@ export class EntityManagerComponent implements OnDestroy {
     }
   }
 
-  outputChanged(newValue: XtComponentOutput | null) {
+  listModelChanged($event : any) {
+    const newValue=$event as XtComponentModel;
     if (newValue?.valueSelected!=null) {
       newValue?.valueSelected.subscribe (selected => {
         this.selectedEntity.set(selected);

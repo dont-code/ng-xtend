@@ -9,6 +9,7 @@ export * from './lib/resolver/xt-resolver';
 export * from './lib/registry/xt-plugin-registry'
 export * from './lib/plugin/xt-plugin-info'
 export * from './lib/action/xt-action-handler';
+export * from './lib/workflow/xt-workflow';
 export * from './globals';
 
 export * from './lib/angular/xt-tokens';
@@ -18,6 +19,10 @@ export * from './lib/render/xt-render.component';
 export * from './lib/render/xt-render-sub.component';
 export * from './lib/xt-simple/xt-simple.component';
 export * from './lib/xt-composite/xt-composite.component';
+
+export * from './lib/output/xt-base-model';
+export * from './lib/output/xt-base-output';
+export * from './lib/output/xt-base-input';
 
 export * from './lib/angular/xt-message-handler.service';
 export * from './lib/store/store-support';

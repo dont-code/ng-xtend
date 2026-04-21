@@ -255,7 +255,7 @@ export class XtResolverService {
       throw new Error ('No Store provider found for type '+ref.type);
     }
 
-    const ret= await firstValueFrom(storeProvider.searchEntities(ref.toType, storeMgr.newStoreCriteria(ref.field, context.value(),'=')));
+    const ret= await firstValueFrom(storeProvider.searchEntities(ref.toType, storeMgr.newStoreCriteria(ref.field as keyof U, context.value(),'=')));
     if (ret.length == 0) return null;
       if (ref.referenceType=='MANY-TO-ONE') {
         if (ret.length > 1) throw new Error('Multiple values for many to one relation between ' + context.valueType + ' and ' + ref.type + ' with value ' + context.value());

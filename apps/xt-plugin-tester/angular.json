@@ -12,28 +12,21 @@
 		"plugin-tester": {
 			"projectType": "application",
 			"schematics": {
-				"@schematics/angular:component": {
-					"style": "css"
-				}
 			},
 			"root": "projects/plugin-tester",
 			"sourceRoot": "projects/plugin-tester/src",
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-architects/native-federation:build",
-					"options": {
-            "preserveSymlinks": true,
-            "verbose": true
-          },
+          "builder": "@angular-architects/native-federation:build",
+          "options": {},
 					"configurations": {
 						"production": {
 							"target": "plugin-tester:esbuild:production"
 						},
 						"development": {
 							"target": "plugin-tester:esbuild:development",
-							"dev": true,
-              "devServer": false
+							"dev": true
 						}
 					},
 					"defaultConfiguration": "production"
@@ -41,37 +34,19 @@
 				"serve": {
 					"builder": "@angular-architects/native-federation:build",
 					"options": {
-            "verbose": true,
-            "preserveSymlinks": true,
             "target": "plugin-tester:serve-original:development",
-						"rebuildDelay": 0,
+						"rebuildDelay": 500,
 						"dev": true,
-						"port": 0
-					}
-				},
-				"extract-i18n": {
-					"builder": "@angular-devkit/build-angular:extract-i18n"
+            "cacheExternalArtifacts": false,
+						"port": 0,
+            "preserveSymlinks": true
+          }
 				},
 				"test": {
-					"builder": "@analogjs/vitest-angular:test",
-					"options": {
-						"polyfills": [],
-						"tsConfig": "projects/plugin-tester/tsconfig.spec.json",
-						"inlineStyleLanguage": "css",
-						"assets": [
-							{
-								"glob": "**/*",
-								"input": "projects/plugin-tester/public"
-							}
-						],
-						"styles": [
-							"projects/plugin-tester/src/styles.css"
-						],
-						"scripts": []
-					}
+          "builder": "@angular/build:unit-test"
 				},
 				"esbuild": {
-					"builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
 					"options": {
 						"outputPath": "dist/plugin-tester",
 						"index": "projects/plugin-tester/src/index.html",
@@ -90,8 +65,7 @@
 						],
 						"styles": [
 							"projects/plugin-tester/src/styles.css"
-						],
-						"scripts": []
+						]
 					},
 					"configurations": {
 						"production": {
@@ -103,8 +77,8 @@
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kB",
-									"maximumError": "4kB"
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
 								}
 							],
 							"outputHashing": "all"
@@ -118,7 +92,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve-original": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
 					"configurations": {
 						"production": {
 							"buildTarget": "plugin-tester:esbuild:production"

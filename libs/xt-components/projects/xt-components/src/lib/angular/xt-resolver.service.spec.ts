@@ -5,7 +5,6 @@ import { XtBaseContext, XtContext } from '../xt-context';
 import { AbstractTypeHandler, XtTypeHierarchy } from 'xt-type';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
-import { IStoreProvider } from '../store/store-support';
 
 describe('XtResolverService', () => {
   let service: XtResolverService;

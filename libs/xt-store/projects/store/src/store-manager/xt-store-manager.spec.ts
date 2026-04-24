@@ -15,7 +15,7 @@ import { ManagedData } from 'xt-type';
 describe('Store Manager', () => {
   it('should correctly return the default provider', () => {
     const storeManager = new XtStoreManager();
-    const defaultProvider = new DummyStoreProvider<never>();
+    const defaultProvider = new DummyStoreProvider<any>();
 
     storeManager.setProvider(defaultProvider);
     expect(storeManager.getProvider() == defaultProvider).toBeTruthy();
@@ -24,7 +24,7 @@ describe('Store Manager', () => {
       storeManager.getProvider('anyposition') == defaultProvider
     ).toBeTruthy();
 
-    const newProvider = new DummyStoreProvider<never>();
+    const newProvider = new DummyStoreProvider<any>();
     storeManager.setDefaultProvider(newProvider);
     expect(storeManager.getProvider() == newProvider).toBeTruthy();
     expect(storeManager.getDefaultProvider() == newProvider).toBeTruthy();
@@ -41,8 +41,8 @@ describe('Store Manager', () => {
 
   it('should correctly return other providers', () => {
     const storeManager = new XtStoreManager();
-    const defaultProvider = new DummyStoreProvider<never>();
-    const testProvider = new DummyStoreProvider<never>();
+    const defaultProvider = new DummyStoreProvider<any>();
+    const testProvider = new DummyStoreProvider<any>();
 
     storeManager.setProvider(defaultProvider);
     storeManager.setProvider(testProvider, 'test/position');
@@ -54,7 +54,7 @@ describe('Store Manager', () => {
       storeManager.getProvider('test/position') == testProvider
     ).toBeTruthy();
 
-    const newProvider = new DummyStoreProvider<never>();
+    const newProvider = new DummyStoreProvider<any>();
     storeManager.setProvider(newProvider, 'test/position');
     expect(
       storeManager.getProvider('test/position') == newProvider
@@ -82,12 +82,12 @@ class DummyStoreProvider<T extends ManagedData = ManagedData> extends AbstractXt
 
   override searchEntities(
     name: string,
-    ...criteria: XtStoreCriteria[]
+    ...criteria: XtStoreCriteria<any>[]
   ): Observable<Array<T>> {
     return of([]);
   }
-  override searchAndPrepareEntities(name: string, sort?: XtSortBy | undefined, groupBy?: XtGroupBy | undefined, transformer?:XtDataTransformer,...criteria: XtStoreCriteria[]): Observable<DontCodeStorePreparedEntities<T>> {
-    return of (new DontCodeStorePreparedEntities([]));
+  override searchAndPrepareEntities(name: string, sort?: XtSortBy<T> | undefined, groupBy?: XtGroupBy<T> | undefined, transformer?:XtDataTransformer,...criteria: XtStoreCriteria<T>[]): Observable<DontCodeStorePreparedEntities<T>> {
+    return of (new DontCodeStorePreparedEntities<T>([]));
   }
 
   storeDocuments(

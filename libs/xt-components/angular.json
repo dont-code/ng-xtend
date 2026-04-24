@@ -38,11 +38,7 @@
     },
     "tester-app": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "css"
-        }
-      },
+      "schematics": {},
       "root": "projects/tester-app",
       "sourceRoot": "projects/tester-app/src",
       "prefix": "app",

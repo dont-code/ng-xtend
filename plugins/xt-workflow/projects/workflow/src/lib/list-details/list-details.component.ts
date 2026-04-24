@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, OnDestroy, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+  OnDestroy,
+  OnInit,
+  signal
+} from '@angular/core';
 import {
   updateFormGroupWithValue,
   XtBaseModel,
@@ -23,7 +32,7 @@ import { AbstractDcWorkflow } from 'dc-workflow';
   styleUrl: './list-details.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkflow<T> implements OnDestroy {
+export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkflow<T> implements OnInit, OnDestroy {
   protected readonly formBuilder = inject(FormBuilder);
   protected readonly errorHandler = inject(XtMessageHandler);
 
@@ -61,6 +70,10 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
 
   constructor() {
     super();
+  }
+
+  override ngOnInit () {
+    super.ngOnInit();
     this.fetchFromStore();
   }
 

@@ -7,7 +7,7 @@
     "build": "ng build plugin-tester --configuration=development",
     "build-deploy": "APP=plugin-tester && ng build $APP --configuration=$BUILD --output-path=\"../../dist/$STAGE/$APP\" --base-href=\"https://dont-code.net/apps/$STAGE/$APP/\"",
     "watch": "ng build --watch --configuration development",
-    "test": "cd projects/plugin-tester && ../../node_modules/.bin/vitest"
+    "test": "ng test plugin-tester"
   },
   "private": false,
   "repository": {
@@ -34,12 +34,14 @@
     "primeicons": "^7.0.0",
     "@primeuix/themes": "^2.0.3",
     "tailwindcss": "~4.2.2",
-    "@angular-architects/native-federation": "^21.2.3",
     "@softarc/native-federation-runtime": "^3.3.6"
   },
   "devDependencies": {
+    "@angular-architects/native-federation": "^21.2.3",
     "@primeuix/utils": "^0.7.1",
     "@primeuix/styled": "^0.7.2",
+    "@primeuix/styles": "^2.0.3",
+    "@primeuix/motion": "^0.1.1",
     "@tailwindcss/postcss": "~4.2.2",
     "postcss": "~8.5.6",
     "@angular-devkit/build-angular": "^21.2.6",
@@ -48,11 +50,9 @@
     "@angular/build": "^21.2.6",
     "ng-packagr": "^21.2.2",
     "typescript": "^5.9.3",
+    "@types/node": "^24.12.2",
     "happy-dom": "^20.8.9",
-    "@analogjs/vite-plugin-angular":"^2.4.0",
-    "@analogjs/vitest-angular": "^2.4.0",
     "jsdom": "^29.0.1",
-    "vite": "^8.0.3",
     "vitest": "^4.1.2"
   }
 }

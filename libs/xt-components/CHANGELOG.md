@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.7.0...xt-components-v0.8.0) (2026-04-25)
+
+
+### Bug Fixes
+
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgrade and selection through model working ([e865380](https://github.com/dont-code/ng-xtend/commit/e8653809682a716359dd88f9530faa0882b286f9))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* workflow vitest ([c2854ca](https://github.com/dont-code/ng-xtend/commit/c2854cad133516453dce88caaf4bf187cde51134))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.6.4...xt-components-v0.7.0) (2026-03-31)
 
 

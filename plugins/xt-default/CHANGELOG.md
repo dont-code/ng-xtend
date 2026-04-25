@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.7.0...xt-plugin-default-v0.8.0) (2026-04-25)
+
+
+### Features
+
+* working default plugin ([3d8052e](https://github.com/dont-code/ng-xtend/commit/3d8052e9cad312934b08050de5de77d870e3e75b))
+
+
+### Bug Fixes
+
+* nicest so far ([ca817bb](https://github.com/dont-code/ng-xtend/commit/ca817bb22876c4f572421c261c205d33b8b53fa6))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgrade and selection through model working ([e865380](https://github.com/dont-code/ng-xtend/commit/e8653809682a716359dd88f9530faa0882b286f9))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.6.4...xt-plugin-default-v0.7.0) (2026-03-31)
 
 

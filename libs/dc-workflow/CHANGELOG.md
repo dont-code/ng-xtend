@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/dont-code/ng-xtend/compare/dont-code-workflow-v1.0.0...dont-code-workflow-v1.0.1) (2026-04-25)
+
+
+### Bug Fixes
+
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+
 ## 1.0.0 (2026-03-31)
 
 

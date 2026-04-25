@@ -5,7 +5,7 @@ import {
   inject,
   input,
   model,
-  output,
+  output, signal,
   Signal,
   Type,
   viewChild
@@ -60,7 +60,7 @@ export class XtRenderComponent<T> implements AfterViewInit {
 
   inputs = input<XtBaseInput>();
   outputs = output<XtComponentOutput>();
-  models = model<XtComponentModel> (new XtBaseModel());
+  models = input<XtComponentModel> ();
 
   outlet = viewChild.required(NgComponentOutlet);
 
@@ -130,19 +130,6 @@ export class XtRenderComponent<T> implements AfterViewInit {
       if (hasOneOutput) {
         this.outputs.emit(this.outputsObject);
       }
-    }
-
-    const instanceModels=instance?.models?instance?.models():null;
-    if ((instanceModels!=null) &&
-        (Object.keys(instanceModels).length>0) ) {
-      const models=this.models();
-
-        // Sets the model values defined as inputs
-      for (const key of Object.keys(instanceModels) as XtModelType[] ) {
-        instanceModels[key] = models[key];
-      }
-          // Bind the component model to this model
-      this.models.set(instanceModels);
     }
 
     const inputs = this.inputs();

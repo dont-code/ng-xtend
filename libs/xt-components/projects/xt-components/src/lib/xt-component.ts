@@ -7,8 +7,9 @@ export type XtComponent<T=any> = {
 
     inputsObject?: XtComponentInput;
     outputsObject?: XtComponentOutput;
+    modelsObject?: XtComponentModel;
 
-    models?: ModelSignal<XtComponentModel|undefined>;
+    models?: InputSignal<XtComponentModel|undefined>;
     inputs?: InputSignal<XtComponentInput>;
     outputs?: OutputEmitterRef<XtComponentOutput>;
 
@@ -26,7 +27,7 @@ export type XtInputType = 'valueSelected';
 export type XtModelType = 'valueSelected' | 'sortBy' | 'filterBy';
 
 export type XtComponentModel = {
-  [key in XtModelType]: ModelSignal<any>|undefined;
+  [key in XtModelType]?: ModelSignal<any>|undefined;
 }
 
 export type XtComponentOutput = {

@@ -21,7 +21,7 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
   inputsObject = new XtBaseInput();
 
   outputs=output<XtComponentOutput>();
-  models=model<XtComponentModel>();
+  models=input<XtComponentModel>();
 
   isInForm = computed<boolean> ( () => {
     return this.context()?.isInForm()??false;

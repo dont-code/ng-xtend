@@ -80,8 +80,9 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   }
 
   override setupInputOutput () {
-    const models=new XtBaseModel<T>();
-    models.valueSelected=this.selected;
-    this.models.set(models);
+    const parentModel=this.models();
+    if (parentModel?.valueSelected != null) {
+      this.selected=parentModel.valueSelected;
+    }
   }
 }

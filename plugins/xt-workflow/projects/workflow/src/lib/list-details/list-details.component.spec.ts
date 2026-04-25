@@ -39,7 +39,7 @@ describe('ListDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display list of entity',async () => {
+/*  it('should display list of entity',async () => {
     await storeTestBed.defineTestDataFor('Test',[{
       _id:"1",
       testString:'string1',
@@ -59,7 +59,7 @@ describe('ListDetailsComponent', () => {
     expect(debugElement.nativeElement.textContent).toContain( 'string1');
   });
 
-/*  it('should support full lifecycle for simple values',async () => {
+  it('should support full lifecycle for simple values',async () => {
     const resolver = TestBed.inject(XtResolverService);
 
     resolver.registerTypes({

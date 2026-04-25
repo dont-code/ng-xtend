@@ -82,10 +82,8 @@ describe('EntityManagerComponent', () => {
     btnNew.children[0].nativeElement.click();
     harness.fixture.detectChanges();
     // For some reasons, we have to wait multiple times for stability
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
+    for (let i=0;i<10;i++)
+      await harness.fixture.whenStable();
 
     //expect(newSpy).toHaveBeenCalledOnce();
     const form=component.editForm().get('editor') as FormGroup;
@@ -119,10 +117,8 @@ describe('EntityManagerComponent', () => {
     const btnSave = harness.fixture.debugElement.query(By.css("#btn-save"));
     btnSave.children[0].nativeElement.click();
     harness.fixture.detectChanges();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
+    for (let i=0;i<10;i++)
+      await harness.fixture.whenStable();
 
     //expect(saveSpy).toHaveBeenCalledOnce();
 
@@ -150,10 +146,8 @@ describe('EntityManagerComponent', () => {
     row.children[0].nativeElement.click();
     row.children[0].nativeElement.click();
     harness.fixture.detectChanges();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
+    for (let i=0;i<10;i++)
+      await harness.fixture.whenStable();
 
     //It should have switched to edit mode
     expect (component.viewMode()).toEqual("edit");
@@ -164,11 +158,8 @@ describe('EntityManagerComponent', () => {
 
     btnSave.children[0].nativeElement.click();
     harness.fixture.detectChanges();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
+    for (let i=0;i<10;i++)
+      await harness.fixture.whenStable();
 
 
     expect (component.selectedEntity()).toEqual({
@@ -190,9 +181,8 @@ describe('EntityManagerComponent', () => {
     const btnDelete = harness.fixture.debugElement.query(By.css("#btn-delete"));
     btnDelete.children[0].nativeElement.click();
     harness.fixture.detectChanges();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
-    await harness.fixture.whenStable();
+    for (let i=0;i<10;i++)
+      await harness.fixture.whenStable();
 
     //expect(deleteSpy).toHaveBeenCalledOnce();
     list = harness.fixture.debugElement.query(By.directive(Table));

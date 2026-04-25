@@ -122,6 +122,11 @@ describe('updateFormGroupWithValue', () => {
       expect(true).toBeFalsy();// We should go there
     } catch (e) {
       // Ok
+      resolver.registerTypes({
+        'missingType2': {
+          name:'string'
+        }
+      })
     }
   });
 });

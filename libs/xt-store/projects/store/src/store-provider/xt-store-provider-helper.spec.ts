@@ -115,7 +115,9 @@ describe('Store Provider Helper', () => {
 
   it('should calculate groups correctly', () => {
   //    XtStoreProviderHelper.clearConfigCache();
-      const resp=XtStoreProviderHelper.calculateGroupedByValues("test",[{
+      // @ts-ignore
+      // @ts-ignore
+      const resp=XtStoreProviderHelper.calculateGroupedByValues<any>("test",[{
         id:'id1',
         type:'type1',
         text:'text1',
@@ -169,24 +171,23 @@ describe('Store Provider Helper', () => {
           id:'idUndefined',
           type:'type2'
         }],
-        new XtStoreGroupBy('type', {
-          'aaa': new XtStoreGroupByAggregate('text',XtGroupByOperation.Count ),
-          'aba': new XtStoreGroupByAggregate('value',XtGroupByOperation.Count ),
-          'abb': new XtStoreGroupByAggregate('value',XtGroupByOperation.Minimum ),
-          'abc': new XtStoreGroupByAggregate('value',XtGroupByOperation.Maximum ),
-          'abd': new XtStoreGroupByAggregate('value',XtGroupByOperation.Sum ),
-          'abe': new XtStoreGroupByAggregate('value',XtGroupByOperation.Average ),
-          'aca': new XtStoreGroupByAggregate('money',XtGroupByOperation.Count ),
-          'acb': new XtStoreGroupByAggregate('money',XtGroupByOperation.Minimum ),
-          'acc': new XtStoreGroupByAggregate('money',XtGroupByOperation.Maximum ),
-          'acd': new XtStoreGroupByAggregate('money',XtGroupByOperation.Sum ),
-          'ace': new XtStoreGroupByAggregate('money',XtGroupByOperation.Average ),
-          'ada': new XtStoreGroupByAggregate('date',XtGroupByOperation.Count ),
-          'adb': new XtStoreGroupByAggregate('date',XtGroupByOperation.Minimum ),
-          'adc': new XtStoreGroupByAggregate('date',XtGroupByOperation.Maximum ),
-          'add': new XtStoreGroupByAggregate('date',XtGroupByOperation.Sum ),
-          'ade': new XtStoreGroupByAggregate('date',XtGroupByOperation.Average )
-
+        new XtStoreGroupBy<any>('type', {
+          'aaa': new XtStoreGroupByAggregate<any>('text',XtGroupByOperation.Count ),
+          'aba': new XtStoreGroupByAggregate<any>('value',XtGroupByOperation.Count ),
+          'abb': new XtStoreGroupByAggregate<any>('value',XtGroupByOperation.Minimum ),
+          'abc': new XtStoreGroupByAggregate<any>('value',XtGroupByOperation.Maximum ),
+          'abd': new XtStoreGroupByAggregate<any>('value',XtGroupByOperation.Sum ),
+          'abe': new XtStoreGroupByAggregate<any>('value',XtGroupByOperation.Average ),
+          'aca': new XtStoreGroupByAggregate<any>('money',XtGroupByOperation.Count ),
+          'acb': new XtStoreGroupByAggregate<any>('money',XtGroupByOperation.Minimum ),
+          'acc': new XtStoreGroupByAggregate<any>('money',XtGroupByOperation.Maximum ),
+          'acd': new XtStoreGroupByAggregate<any>('money',XtGroupByOperation.Sum ),
+          'ace': new XtStoreGroupByAggregate<any>('money',XtGroupByOperation.Average ),
+          'ada': new XtStoreGroupByAggregate<any>('date',XtGroupByOperation.Count ),
+          'adb': new XtStoreGroupByAggregate<any>('date',XtGroupByOperation.Minimum ),
+          'adc': new XtStoreGroupByAggregate<any>('date',XtGroupByOperation.Maximum ),
+          'add': new XtStoreGroupByAggregate<any>('date',XtGroupByOperation.Sum ),
+          'ade': new XtStoreGroupByAggregate<any>('date',XtGroupByOperation.Average )
         }));
 
       expect(resp?.values?.size).toEqual(2);

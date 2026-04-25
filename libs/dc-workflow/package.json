@@ -1,6 +1,6 @@
 {
-  "name": "dont-code-workflow",
-  "version": "1.0.0",
+  "name": "dc-workflow",
+  "version": "0.6.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -16,10 +16,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/store/ng-package.json"
-          },
+          "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
               "tsConfig": "projects/store/tsconfig.lib.prod.json"
@@ -31,11 +28,9 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@analogjs/vitest-angular:test",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/store/tsconfig.spec.json",
-            "polyfills": [
-            ]
+            "tsConfig": "projects/store/tsconfig.spec.json"
           }
         }
       }

@@ -22,6 +22,7 @@ import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { Subscription } from 'rxjs';
 import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-displayer.component';
 import { httpResource } from '@angular/common/http';
+import { loadRemoteModule } from '@angular-architects/native-federation';
 
 @Component({
   selector: 'app-plugin-manager',
@@ -114,24 +115,26 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
     }));
   }
 
-  loadPlugin() {
+  async loadPlugin() {
     if( !this.formValid()) {
       this.errorHandler.errorOccurred(new Error("Form is not valid"), "Form is not valid");
     } else {
-      let url = this.form.value['pluginUrl']!;
-      this.listUrls.update((oldList) => {
-        oldList.add(url);
-        return new Set(oldList.values());
-      });
-      if (!url.endsWith("remoteEntry.json")) {
-        url = url+(url.endsWith('/')?'':'/')+'remoteEntry.json';
-      }
-
-      this.resolverService.loadPlugin(url).catch((error) => {
-        this.errorHandler.errorOccurred(error, "Error while loading plugin.");
-      });
-
       try {
+        let url = this.form.value['pluginUrl']!;
+        this.listUrls.update((oldList) => {
+          oldList.add(url);
+          return new Set(oldList.values());
+        });
+        if (!url.endsWith("remoteEntry.json")) {
+          url = url+(url.endsWith('/')?'':'/')+'remoteEntry.json';
+        }
+        const module = await loadRemoteModule({
+          remoteEntry: url,
+          exposedModule: './Register'
+        });
+
+        this.resolverService.registerPluginModule(module, url);
+
         this.resolverService.resolvePendingReferences();
       } catch (error) {
         this.errorHandler.errorOccurred(error, "Error while resolving pending references.");

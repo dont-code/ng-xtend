@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
-import { Panel } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'xt-default-object',
-  imports: [XtRenderSubComponent, Panel, TableModule],
+  imports: [XtRenderSubComponent, TableModule],
   templateUrl: './default-object.component.html',
   styleUrl: './default-object.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

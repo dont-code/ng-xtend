@@ -1,0 +1,69 @@
+{
+  "name": "Mexican Food Restaurant Tracker",
+  "description": "An application to track visits to Mexican restaurants, including price and ratings.",
+  "content": {
+    "creation": {
+      "entities": [
+        {
+          "name": "Restaurant",
+          "fields": [
+            {
+              "reference": null,
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "reference": null,
+              "name": "location",
+              "type": "string"
+            },
+            {
+              "reference": null,
+              "name": "cuisineType",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "name": "Visit",
+          "fields": [
+            {
+              "reference": null,
+              "name": "date",
+              "type": "date"
+            },
+            {
+              "reference": null,
+              "name": "totalPrice",
+              "type": "eur-amount"
+            },
+            {
+              "reference": null,
+              "name": "rating",
+              "type": "rating"
+            },
+            {
+              "reference": {
+                "toType": "Restaurant",
+                "field": "name",
+                "referenceType": "ManyToOne"
+              },
+              "name": "restaurant",
+              "type": "Restaurant"
+            },
+            {
+              "reference": null,
+              "name": "notes",
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "name": "MexicanFoodRestaurantTracker",
+      "type": "application",
+      "sharing": {
+        "with": "Dont-code users"
+      }
+    }
+  }
+}

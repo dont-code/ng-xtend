@@ -6,7 +6,6 @@ import { XtResolvedComponent } from '../xt-resolved-component';
 import {
   ManagedDataHandler,
   MappingHelper,
-  XtSpecialFieldsHelper,
   XtTypeHandler,
   XtTypeInfo,
   xtTypeManager,
@@ -16,7 +15,6 @@ import {
 import { XtComponentInfo, XtPluginInfo, XtTypeHandlerInfo } from '../plugin/xt-plugin-info';
 import { XtResolver } from '../resolver/xt-resolver';
 import { XtComponent } from '../xt-component';
-import { loadRemoteModule } from '@angular-architects/native-federation';
 import { XtAction } from '../action/xt-action';
 import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
 import { IStoreManager, StoreSupport } from '../store/store-support';
@@ -178,14 +176,11 @@ export class XtResolverService {
   /**
    * Dynamically load a register a plugin from the given url
    * The plugin must export at least a Register entrypoint that will be called right after loading..
-   * @param url
    * @returns a Promise with the module loaded and already registered.
+   * @param module
    */
-  loadPlugin (url:URL|string):Promise<any> {
-    return loadRemoteModule({
-      remoteEntry: url.toString(),
-      exposedModule: './Register'
-    }).then((module:any) => {
+  registerPluginModule (module: {registerPlugin : (resolver:XtResolverService) => string}, url:URL|string):boolean {
+
       const pluginName = module.registerPlugin(this);
       // Transform the configured Uris to real urls
       const pluginConfig=this.pluginRegistry.pluginRegistry.get(pluginName);
@@ -195,9 +190,7 @@ export class XtResolverService {
         urlString = urlString.substring(0, lastSlash+1)+pluginConfig?.uriLogo;
         pluginConfig.uriLogo=urlString;
       }
-      return module;
-    });
-
+      return true;
   }
 
   /**
@@ -255,7 +248,7 @@ export class XtResolverService {
       throw new Error ('No Store provider found for type '+ref.type);
     }
 
-    const ret= await firstValueFrom(storeProvider.searchEntities(ref.toType, storeMgr.newStoreCriteria(ref.field, context.value(),'=')));
+    const ret= await firstValueFrom(storeProvider.searchEntities(ref.toType, storeMgr.newStoreCriteria(ref.field as keyof U, context.value(),'=')));
     if (ret.length == 0) return null;
       if (ref.referenceType=='MANY-TO-ONE') {
         if (ret.length > 1) throw new Error('Multiple values for many to one relation between ' + context.valueType + ' and ' + ref.type + ' with value ' + context.value());

@@ -1,16 +1,17 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
+  computed, effect,
   inject,
   input,
   linkedSignal,
+  model, ModelSignal,
   OnDestroy,
   signal
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { updateFormGroupWithValue, XtComponentOutput, XtRenderComponent, XtResolverService } from 'xt-components';
+import { updateFormGroupWithValue, XtBaseModel, XtRenderComponent, XtResolverService } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
 import { ManagedData } from 'xt-type';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
@@ -19,7 +20,7 @@ import { Button } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { XtStoreManagerService, XtSignalStore } from 'xt-store';
+import { XtSignalStore, XtStoreManagerService } from 'xt-store';
 
 @Component({
   selector: 'app-entity-manager',
@@ -49,8 +50,6 @@ export class EntityManagerComponent implements OnDestroy {
 
   editForm = signal<FormGroup>(this.formBuilder.group ({ editor: this.formBuilder.group({}) }));
 
-  selectedEntity = signal<ManagedData|null>(null);
-
   canEdit= computed(()=> {
     if (this.selectedEntity()!=null)
       return true;
@@ -71,9 +70,19 @@ export class EntityManagerComponent implements OnDestroy {
   deleting = signal (false);
   updating = signal (false);
 
+  selectedEntity= model<any>();
+
+  listModel = new XtBaseModel<any>();
+
+  selectedEntityChanged= effect( ()=> {
+    const selected=this.selectedEntity();
+    this.updateEditForm();
+  });
+
   private subscriptions=new Subscription();
 
   constructor() {
+    this.listModel.valueSelected=this.selectedEntity;
     this.updateStore();
     this.route.paramMap.pipe(
       takeUntilDestroyed(),
@@ -103,15 +112,6 @@ export class EntityManagerComponent implements OnDestroy {
     }
   }
 
-  outputChanged(newValue: XtComponentOutput | null) {
-    if (newValue?.valueSelected!=null) {
-      newValue?.valueSelected.subscribe (selected => {
-        this.selectedEntity.set(selected);
-        this.updateEditForm();
-      });
-    }
-  }
-
   updateEditForm () {
     const entity = this.selectedEntity();
     const form = this.formBuilder.group({}, {updateOn: 'change'});
@@ -132,7 +132,7 @@ export class EntityManagerComponent implements OnDestroy {
       this.saving.set(true);
       const savedValue = await this.safeStore().storeEntity (toSave);
       this.selectedEntity.set(savedValue);
-      this.updateEditForm();
+      //this.updateEditForm();
       this.canSave.set(false);
       this.viewMode.set("list");
     } catch (error) {
@@ -178,7 +178,7 @@ export class EntityManagerComponent implements OnDestroy {
     if (deleted) {
       this.selectedEntity.set(null);
       this.viewMode.set("list");
-      this.updateEditForm();
+      //this.updateEditForm();
     }
     }
 
@@ -187,7 +187,7 @@ export class EntityManagerComponent implements OnDestroy {
       this.newing.set(true);
       const newOne = await this.safeStore().storeEntity({} as ManagedData);
       this.selectedEntity.set(newOne);
-      this.updateEditForm();
+      //this.updateEditForm();
       this.viewMode.set("edit");
 
     } catch (error) {

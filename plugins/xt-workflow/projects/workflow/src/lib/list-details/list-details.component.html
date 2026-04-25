@@ -1,0 +1,114 @@
+@let entName = entityName();
+
+@if (entName != null) {
+  <section class="list-details">
+    <header class="list-details__header">
+      <div class="list-details__heading">
+        <h1 class="list-details__title">{{ entName }}</h1>
+        <p class="list-details__subtitle">
+          Manage records, edit selected items, and keep the list in sync.
+        </p>
+      </div>
+
+      <p-toolbar class="list-details__toolbar">
+        <ng-template #center>
+          <div class="list-details__actions">
+            <p-button
+              id="btn-new"
+              icon="pi pi-plus"
+              label="New"
+              severity="secondary"
+              [loading]="newing()"
+              (onClick)="newEntity()">
+            </p-button>
+
+            <p-button
+              id="btn-reload"
+              icon="pi pi-refresh"
+              label="Reload"
+              severity="secondary"
+              [disabled]="!canReload()"
+              [loading]="updating()"
+              (onClick)="reloadList()">
+            </p-button>
+
+            <p-button
+              id="btn-delete"
+              icon="pi pi-trash"
+              label="Delete"
+              severity="danger"
+              [disabled]="!selectedEntity()"
+              [loading]="deleting()"
+              (onClick)="deleteSelected()">
+            </p-button>
+
+            <p-button
+              id="btn-save"
+              icon="pi pi-save"
+              label="Save"
+              [disabled]="!canSave()"
+              [loading]="saving()"
+              (onClick)="save()">
+            </p-button>
+          </div>
+        </ng-template>
+      </p-toolbar>
+    </header>
+
+    <p-tabs [value]="viewMode()" class="list-details__tabs">
+      <p-tablist>
+        <p-tab value="list">List</p-tab>
+        <p-tab value="edit" [disabled]="!canEdit()">Edit</p-tab>
+      </p-tablist>
+
+      <p-tabpanels class="list-details__panels">
+        <p-tabpanel value="list">
+          @if (store?.loading()) {
+            <div class="list-details__state">
+              <p-progress-spinner />
+              <span>Loading {{ entName }}…</span>
+            </div>
+          } @else if ((store?.entities()?.length ?? 0) === 0) {
+            <div class="list-details__state list-details__state--empty">
+              <i class="pi pi-inbox"></i>
+              <span>No entity found.</span>
+              <small>Try creating a new item with the toolbar above.</small>
+            </div>
+          } @else {
+            <div class="list-details__panel">
+              <xt-render
+                displayMode="LIST_VIEW"
+                [value]="store?.entities()"
+                (models)="listModelChanged($event)" [models]="listModel"
+                [valueType]="entityName()">
+              </xt-render>
+            </div>
+          }
+        </p-tabpanel>
+
+        <p-tabpanel value="edit">
+          @if (canEdit()) {
+            @let mainForm = editForm();
+            <div class="list-details__panel">
+              <div [formGroup]="mainForm" class="list-details__form">
+                <xt-render
+                  displayMode="FULL_EDITABLE"
+                  [formGroup]="mainForm"
+                  subName="editor"
+                  [valueType]="entityName()">
+                </xt-render>
+              </div>
+            </div>
+          }
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </section>
+} @else {
+  <section class="list-details list-details--empty">
+    <div class="list-details__state list-details__state--empty">
+      <i class="pi pi-database"></i>
+      <span>No entity to manage.</span>
+    </div>
+  </section>
+}

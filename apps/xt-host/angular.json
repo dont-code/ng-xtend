@@ -11,11 +11,7 @@
 	"projects": {
 		"host": {
 			"projectType": "application",
-			"schematics": {
-				"@schematics/angular:component": {
-					"style": "css"
-				}
-			},
+			"schematics": {},
 			"root": "projects/host",
 			"sourceRoot": "projects/host/src",
 			"prefix": "app",
@@ -39,34 +35,17 @@
 					"builder": "@angular-architects/native-federation:build",
 					"options": {
 						"target": "host:serve-original:development",
-						"rebuildDelay": 0,
+						"rebuildDelay": 500,
 						"dev": true,
+            "cacheExternalArtifacts": false,
 						"port": 0
 					}
 				},
-				"extract-i18n": {
-					"builder": "@angular-devkit/build-angular:extract-i18n"
-				},
 				"test": {
-					"builder": "@analogjs/vitest-angular:test",
-					"options": {
-						"polyfills": [],
-						"tsConfig": "projects/host/tsconfig.spec.json",
-						"inlineStyleLanguage": "css",
-						"assets": [
-							{
-								"glob": "**/*",
-								"input": "projects/host/public"
-							}
-						],
-						"styles": [
-							"projects/host/src/styles.css"
-						],
-						"scripts": []
-					}
+          "builder": "@angular/build:unit-test"
 				},
 				"esbuild": {
-					"builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
 					"options": {
 						"outputPath": "dist/host",
 						"index": "projects/host/src/index.html",
@@ -76,7 +55,6 @@
 							"es-module-shims"
 						],
 						"tsConfig": "projects/host/tsconfig.app.json",
-						"inlineStyleLanguage": "css",
 						"assets": [
 							{
 								"glob": "**/*",
@@ -85,8 +63,7 @@
 						],
 						"styles": [
 							"projects/host/src/styles.css"
-						],
-						"scripts": []
+						]
 					},
 					"configurations": {
 						"production": {
@@ -113,7 +90,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve-original": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
 					"configurations": {
 						"production": {
 							"buildTarget": "host:esbuild:production"

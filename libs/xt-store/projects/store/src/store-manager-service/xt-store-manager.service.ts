@@ -4,7 +4,6 @@ import { ManagedData, XtTypeResolver } from 'xt-type';
 import { xtStoreManager } from '../store-manager/xt-store-manager';
 import { withXtStoreProvider, XtSignalStore } from '../store-entity/store-entity-feature';
 import { XtStoreProvider } from '../store-provider/xt-store-provider';
-import { withXtTypeProvider } from '../store-entity/store-entity-ref-feature';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +31,7 @@ export class XtStoreManagerService {
         } else {
             // We have a type mgr, so let's use it in our store
           const res = signalStore(
-            withXtTypeProvider(entityName, this.storeManager, typeMgr)
+            withXtStoreProvider(entityName, provider, this.storeManager, typeMgr)
           );
           store= new res();
 

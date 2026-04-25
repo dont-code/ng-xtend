@@ -1,12 +1,31 @@
-import { AfterViewInit, Component, computed, inject, input, output, Signal, Type, viewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  inject,
+  input,
+  model,
+  output,
+  Signal,
+  Type,
+  viewChild
+} from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { XtContext } from '../xt-context';
-import { XtComponent, XtComponentInput, XtComponentOutput, XtInputType, XtOutputType } from '../xt-component';
+import {
+  XtComponent,
+  XtComponentInput,
+  XtComponentModel,
+  XtComponentOutput,
+  XtInputType, XtModelType,
+  XtOutputType
+} from '../xt-component';
 import { XtResolverService } from '../angular/xt-resolver.service';
 import { XtResolvedComponent } from '../xt-resolved-component';
 import { XtBaseOutput } from '../output/xt-base-output';
 import { XtBaseInput } from '../output/xt-base-input';
+import { XtBaseModel } from '../output/xt-base-model';
 
 /**
  * Dynamically render a component that will display the given subValue.
@@ -30,6 +49,7 @@ export class XtRenderSubComponent<T> implements AfterViewInit {
 
   inputs = input<XtBaseInput>();
   outputs = output<XtComponentOutput>();
+  models = input<XtComponentModel> ();
 
   outlet = viewChild.required(NgComponentOutlet);
 
@@ -76,6 +96,7 @@ export class XtRenderSubComponent<T> implements AfterViewInit {
         this.outputs.emit(this.outputsObject);
       }
     }
+
     const inputs = this.inputs();
     if ((inputs!=null) && (instance?.inputsObject!=null)) {
       for (const key of Object.keys(inputs) as XtInputType[] ) {

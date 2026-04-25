@@ -86,7 +86,7 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
     });
     }
 
-  override searchEntities(name: string, ...criteria: XtStoreCriteria[]): Observable<T[]> {
+  override searchEntities(name: string, ...criteria: XtStoreCriteria<T>[]): Observable<T[]> {
 
     return this.http.get(this.apiUrl+'/'+name, {observe:"body", responseType:"json"}).pipe(
         map(value => {

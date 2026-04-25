@@ -1,0 +1,17 @@
+{
+  "name": "xt-plugin-workflow",
+  "version": "0.6.4",
+  "repository": {
+    "url": "https://github.com/dont-code/ng-xtend.git"
+  },
+  "peerDependencies": {
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "xt-components": ">= 0.6.4",
+    "xt-store": ">= 0.6.4"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

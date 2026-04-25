@@ -5,13 +5,20 @@ import {
   inject,
   input,
   model,
-  output,
+  output, signal,
   Signal,
   Type,
   viewChild
 } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
-import { XtComponent, XtComponentOutput, XtInputType, XtOutputType } from '../xt-component';
+import {
+  XtComponent,
+  XtComponentModel,
+  XtComponentOutput,
+  XtInputType,
+  XtModelType,
+  XtOutputType
+} from '../xt-component';
 import { XtBaseContext, XtContext, XtDisplayMode } from '../xt-context';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { XtResolverService } from '../angular/xt-resolver.service';
@@ -19,6 +26,7 @@ import { XtResolvedComponent } from '../xt-resolved-component';
 import { XtBaseOutput } from '../output/xt-base-output';
 import { XtBaseInput } from '../output/xt-base-input';
 import { isTypeReference } from 'xt-type';
+import { XtBaseModel } from '../output/xt-base-model';
 
 /**
  * Offers a nice and easy to dynamically embed a component.
@@ -52,6 +60,7 @@ export class XtRenderComponent<T> implements AfterViewInit {
 
   inputs = input<XtBaseInput>();
   outputs = output<XtComponentOutput>();
+  models = input<XtComponentModel> ();
 
   outlet = viewChild.required(NgComponentOutlet);
 
@@ -122,6 +131,7 @@ export class XtRenderComponent<T> implements AfterViewInit {
         this.outputs.emit(this.outputsObject);
       }
     }
+
     const inputs = this.inputs();
     if ((inputs!=null) && (instance?.inputsObject!=null)) {
       for (const key of Object.keys(inputs) as XtInputType[] ) {

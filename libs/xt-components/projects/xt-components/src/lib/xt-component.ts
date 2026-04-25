@@ -1,4 +1,4 @@
-import { InputSignal, OutputEmitterRef } from '@angular/core';
+import { InputSignal, ModelSignal, OutputEmitterRef } from '@angular/core';
 import { XtContext } from './xt-context';
 import { FormGroup } from '@angular/forms';
 
@@ -7,7 +7,9 @@ export type XtComponent<T=any> = {
 
     inputsObject?: XtComponentInput;
     outputsObject?: XtComponentOutput;
+    modelsObject?: XtComponentModel;
 
+    models?: InputSignal<XtComponentModel|undefined>;
     inputs?: InputSignal<XtComponentInput>;
     outputs?: OutputEmitterRef<XtComponentOutput>;
 
@@ -22,6 +24,11 @@ export type XtComponent<T=any> = {
 
 export type XtOutputType = 'valueSelected';
 export type XtInputType = 'valueSelected';
+export type XtModelType = 'valueSelected' | 'sortBy' | 'filterBy';
+
+export type XtComponentModel = {
+  [key in XtModelType]?: ModelSignal<any>|undefined;
+}
 
 export type XtComponentOutput = {
   [key in XtOutputType]: OutputEmitterRef<any>|undefined;

@@ -34,7 +34,7 @@ export type XtStoreProvider<T extends ManagedData = ManagedData>= {
 
   searchAndPrepareEntities(
     name: string,
-    sort?:XtSortBy<T>,
+    sort?:XtSortBy<T>[],
     groupBy?:XtGroupBy<T>,
     transformer?: XtDataTransformer<T>,
     ...criteria: XtStoreCriteria<T>[]
@@ -101,7 +101,7 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
     return this.searchEntities(name);
   }
 
-  searchAndPrepareEntities(name: string, sort?: XtSortBy<T>, groupBy?: XtGroupBy<T>, transformer?: XtDataTransformer<T>, ...criteria: XtStoreCriteria<T>[]): Observable<DontCodeStorePreparedEntities<T>> {
+  searchAndPrepareEntities(name: string, sort?: XtSortBy<T>[], groupBy?: XtGroupBy<T>, transformer?: XtDataTransformer<T>, ...criteria: XtStoreCriteria<T>[]): Observable<DontCodeStorePreparedEntities<T>> {
     return this.searchEntities(name, ...criteria).pipe(
       map (value => {
         // Run the transformation if any
@@ -114,7 +114,7 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
           if (sort!=null) {
             const sortHierarchy=this.calculateSortHierarchy(sort, groupBy);
             if (sortHierarchy!=null)
-              value = XtStoreProviderHelper.multiSortArray(value, [sortHierarchy]) as T[];
+              value = XtStoreProviderHelper.multiSortArray(value, sortHierarchy) as T[];
           }
           if (groupBy!=null) {
             groupedByValues = XtStoreProviderHelper.calculateGroupedByValues(name, value, groupBy);
@@ -134,15 +134,15 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
   abstract storeEntity(position: string, entity: T): Promise<T>;
 
 
-  protected calculateSortHierarchy(sort?: XtSortBy<T>, groupBy?: XtGroupBy<T> ):XtSortBy<T>|undefined {
+  protected calculateSortHierarchy(sort?: XtSortBy<T>[], groupBy?: XtGroupBy<T> ):XtSortBy<T>[]|undefined {
     // We must first sort by the groupBy, and then by the sort
     let rootSort:XtSortBy<T>|undefined;
     if (groupBy!=null) {
-      rootSort=new XtStoreSortBy(groupBy.of, undefined, sort);
-    } else {
-      rootSort=sort;
+      rootSort = new XtStoreSortBy(groupBy.of, undefined);
+      if (sort != null) sort.splice(0, 0, rootSort);
+      else sort = [rootSort];
     }
-    return rootSort;
+    return sort;
   }
 
 }

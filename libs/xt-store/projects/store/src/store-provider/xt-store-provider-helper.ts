@@ -331,7 +331,7 @@ export class XtStoreProviderHelper {
 
 
 export class DontCodeStorePreparedEntities<T> {
-  constructor(public sortedData:T[], public sortInfo?:XtSortBy<T>, public groupedByEntities?:DontCodeStoreGroupedByEntities<T>) {
+  constructor(public sortedData:T[], public sortInfo?:XtSortBy<T>[], public groupedByEntities?:DontCodeStoreGroupedByEntities<T>) {
   }
 }
 

@@ -91,13 +91,28 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
 
       fetchEntities (): Promise<void> {
         patchState(store, {loading:true});
-        return lastValueFrom(store._storeProvider.searchEntities(entityName).pipe ( mergeMap((entities:T[]) => {
+        return lastValueFrom(this._callProviderSearchEntities().pipe ( mergeMap((entities:T[]) => {
           return this._resolveReferences(entities);
         }),map( (entities: T[]) => {
           patchState(store, setEntities (entities, store._entityConfig));
         }),finalize(() => {
           patchState(store, {loading:false});
         })));
+      },
+
+      _callProviderSearchEntities ():Observable<T[]> {
+        const sort=this._safeSort();
+        if( sort.length>0) {
+            // We call the full function but only needs the sorted & filtered data (no need for grouping)
+          return store._storeProvider.searchAndPrepareEntities(entityName, this._safeSort(),undefined,undefined,...this._safeFilter()).pipe(
+            map((value) => {
+              return value.sortedData;
+            })
+          )
+        } else {
+            // If we don't need sorting, then a simpler function can be called
+          return store._storeProvider.searchEntities(entityName, ...this._safeFilter());
+        }
       },
 
     /*  listEntities (): Observable<ManagedData[]> {
@@ -154,7 +169,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
           const listEntities = store.entities();
           const ret = new Array<T>();
           for (const entity of listEntities) {
-            if (!this._isFiltered(entity, criteria)){
+            if (this._isPassingFilter(entity, criteria)){
                 ret.push(entity);
             }
           }
@@ -223,7 +238,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
 
       _patchStateSetEntity (stored:T) {
         // Ensure the entity is still part of the list
-        if (this._isFiltered (stored)==false) {
+        if (this._isPassingFilter (stored)) {
           // It's still in the list, now check if sort needs to be applied
           if (this._safeSort().length>0) {
               // We remove it from the old sort
@@ -243,17 +258,17 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         }
 
       },
-      _isFiltered (element:T, criteria?:XtStoreCriteria<T>[]):boolean {
+      _isPassingFilter (element:T, criteria?:XtStoreCriteria<T>[]):boolean {
         if (criteria===undefined) {
           criteria=this._safeFilter();
         }
         for (const crit of criteria) {
-          if (crit.filter(element)) {
-            return true;
+          if (!crit.filter(element)) {
+            return false;
           }
 
         }
-        return false;
+        return true;
       },
       _safeFilter (): XtStoreCriteria<T>[] {
         const ret=store.filter?store.filter():null;

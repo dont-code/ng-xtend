@@ -127,7 +127,7 @@ export class XtStoreManager {
 
   searchAndPrepareEntities<T extends ManagedData = ManagedData>(
     name: string,
-    sort?:XtSortBy<T>,
+    sort?:XtSortBy<T>[],
     groupBy?:XtGroupBy<T>,
     dataTransformer?:XtDataTransformer,
     ...criteria: XtStoreCriteria<T>[]

@@ -25,7 +25,7 @@ export class XtStoreSortBy<T> implements XtSortBy<T> {
 
   direction: XtSortByDirection;
 
-  constructor(public by: keyof T, direction?:XtSortByDirection, public subSort?:XtSortBy<T>) {
+  constructor(public by: keyof T, direction?:XtSortByDirection) {
     if (direction==null)   this.direction=XtSortByDirection.None;
     else this.direction=direction;
   }

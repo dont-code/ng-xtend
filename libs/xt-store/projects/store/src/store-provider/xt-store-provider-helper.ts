@@ -147,8 +147,9 @@ export class XtStoreProviderHelper {
     } else {
       const compareFunction=this.compareFunction(sortOptions);
       for (let index=0;index<list.length;index++) {
-        if (list[index]>toInsert) {
-          return list.splice(index, 0, toInsert);
+        if (compareFunction(list[index],toInsert)>0) {
+          list.splice(index, 0, toInsert);
+          return list;
         }
       }
       list.push(toInsert);

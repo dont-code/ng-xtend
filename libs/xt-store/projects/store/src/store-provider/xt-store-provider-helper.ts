@@ -1,5 +1,12 @@
 import { Counters, ManagedData, XtTypeHandler, xtTypeManager } from 'xt-type';
-import { XtGroupBy, XtGroupByAggregate, XtGroupByOperation, XtSortBy, XtStoreCriteria } from '../xt-store-parameters';
+import {
+  XtGroupBy,
+  XtGroupByAggregate,
+  XtGroupByOperation,
+  XtSortBy,
+  XtSortByDirection,
+  XtStoreCriteria
+} from '../xt-store-parameters';
 
 /**
  * Helps handle metadata information about loaded items
@@ -121,10 +128,52 @@ export class XtStoreProviderHelper {
    * @param toSort
    * @param sortOptions
    */
-  static multiSortArray<T>(toSort: T[], sortOptions?: XtSortBy<T>): T[] {
+  static multiSortArray<T>(toSort: T[], sortOptions?: XtSortBy<T>[]): T[] {
     if( sortOptions==null)
       return toSort;
-    return toSort;
+    return toSort.sort(this.compareFunction(sortOptions));
+  }
+
+  /**
+   * Quickly insert an element in an already sorted list
+   * @param toInsert
+   * @param list
+   * @param sortOptions
+   */
+  static insertInSortedList<T>(toInsert: T, list:T[], sortOptions?:XtSortBy<T>[]): T[] {
+    if ((sortOptions==null) || (sortOptions.length==0)) {
+      list.push(toInsert);
+      return list;
+    } else {
+      const compareFunction=this.compareFunction(sortOptions);
+      for (let index=0;index<list.length;index++) {
+        if (list[index]>toInsert) {
+          return list.splice(index, 0, toInsert);
+        }
+      }
+      list.push(toInsert);
+      return list;
+    }
+  }
+
+  /**
+   * Returns a compare function based on the sort options given
+   * @param sortOptions
+   */
+  static compareFunction<T> (sortOptions:XtSortBy<T>[]): (a:T, b:T) => number {
+    return (a:T, b:T):number => {
+      for (const sortOption of sortOptions) {
+        const aVal=a[sortOption.by];
+        const bVal=b[sortOption.by];
+        let factor=1;
+        if (sortOption.direction==XtSortByDirection.Descending) factor=-1;
+        if (aVal < bVal) return -1*factor;
+        if (aVal > bVal) return 1*factor;
+        // If aVal == bVal, then it will loop to the lower sort
+      }
+        // Couldn't find any difference, then let's say they are equals
+      return 0;
+    }
   }
 
   /**

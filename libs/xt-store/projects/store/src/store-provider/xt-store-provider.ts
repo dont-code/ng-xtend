@@ -111,7 +111,11 @@ export abstract class AbstractXtStoreProvider<T extends ManagedData = ManagedDat
       map (value => {
         let groupedByValues:DontCodeStoreGroupedByEntities<T>|undefined;
         if((sort!=null) || (groupBy?.atLeastOneGroupIsRequested()===true)) {
-          value = XtStoreProviderHelper.multiSortArray(value, this.calculateSortHierarchy(sort, groupBy)) as T[];
+          if (sort!=null) {
+            const sortHierarchy=this.calculateSortHierarchy(sort, groupBy);
+            if (sortHierarchy!=null)
+              value = XtStoreProviderHelper.multiSortArray(value, [sortHierarchy]) as T[];
+          }
           if (groupBy!=null) {
             groupedByValues = XtStoreProviderHelper.calculateGroupedByValues(name, value, groupBy);
           }

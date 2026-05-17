@@ -3,7 +3,7 @@ import {
   EntityId,
   EntityMap,
   removeEntity,
-  SelectEntityId,
+  SelectEntityId, setAllEntities,
   setEntities,
   setEntity,
   withEntities
@@ -14,7 +14,8 @@ import { finalize, firstValueFrom, lastValueFrom, map, mergeMap, Observable, of 
 import { Signal } from '@angular/core';
 import { ManagedData, XtTypeResolver } from 'xt-type';
 import { XtStoreManager } from '../store-manager/xt-store-manager';
-import { XtStoreCriteria } from '../xt-store-parameters';
+import { XtSortBy, XtStoreCriteria } from '../xt-store-parameters';
+import { XtStoreProviderHelper } from '../store-provider/xt-store-provider-helper';
 
 export function selectId<T extends ManagedData=ManagedData>(): SelectEntityId<T> { return (data) => {
     if (data._id==null) throw new Error("ManagedData with no entity Id used in the store.", { cause: data });
@@ -30,9 +31,11 @@ export function xtStoreEntityConfig<T extends ManagedData=ManagedData> () {
 };
 
 
-export type StoreState = {
+export type StoreState<T extends ManagedData=ManagedData> = {
   entityName: string,
-  loading:boolean
+  loading:boolean,
+  sort?: XtSortBy<T>[],
+  filter?: XtStoreCriteria<T>[]
 };
 
 export type XtSignalStore<T> = {
@@ -72,14 +75,14 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
     withMethods ((store) => ({
       async storeEntity (toStore:T): Promise<T> {
         patchState(store, {loading:true});
-          return this.clearReferences(toStore).then((valAndRef) => {
+          return this._clearReferences(toStore).then((valAndRef) => {
             return store._storeProvider.storeEntity(entityName, valAndRef.newValue).then((stored) => {
               return { newValue: stored, references: valAndRef.references };
             });
           }).then((valAndRef) => {
-            return this.applyReferences(valAndRef.newValue, valAndRef.references);
+            return this._applyReferences(valAndRef.newValue, valAndRef.references);
           }).then((stored) => {
-          patchState(store, setEntity(stored, store._entityConfig));
+            this._patchStateSetEntity (stored);
           return stored;
         }).finally(() => {
           patchState(store, {loading:false});
@@ -89,7 +92,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
       fetchEntities (): Promise<void> {
         patchState(store, {loading:true});
         return lastValueFrom(store._storeProvider.searchEntities(entityName).pipe ( mergeMap((entities:T[]) => {
-          return this.resolveReferences(entities);
+          return this._resolveReferences(entities);
         }),map( (entities: T[]) => {
           patchState(store, setEntities (entities, store._entityConfig));
         }),finalize(() => {
@@ -111,7 +114,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         patchState(store, {loading:true});
         return store._storeProvider.loadEntity(entityName, id).then((loaded) => {
           if (loaded != null)
-            return this.resolveReferences([loaded]).then((results) => results[0]);
+            return this._resolveReferences([loaded]).then((results) => results[0]);
           return loaded;
         }).then ( (loaded)=> {
           if( loaded != null)
@@ -149,17 +152,11 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         patchState(store, { loading: true });
         try {
           const listEntities = store.entities();
-          let toAdd=true;
           const ret = new Array<T>();
           for (const entity of listEntities) {
-            toAdd=true;
-            for (const crit of criteria) {
-              if (!crit.filter(entity)) {
-                toAdd=false;
-                break;
-              }
+            if (!this._isFiltered(entity, criteria)){
+                ret.push(entity);
             }
-            if (toAdd) ret.push(entity);
           }
           return of(ret);
         } finally {
@@ -171,7 +168,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
        * Detects and replace all referenced objects by the key value that will be stored.
        * @param toClear
        */
-      async clearReferences(toClear: T): Promise<{ newValue: T, references: any }> {
+      async _clearReferences(toClear: T): Promise<{ newValue: T, references: any }> {
         if( typeRegistry==null) return  { newValue:toClear, references:{}};
 
         const refs = typeRegistry.listReferences(entityName);
@@ -190,7 +187,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
        * From the key values, assign the relevant referenced object so that it's transparent to the caller
        * @param values
        */
-      async resolveReferences(values: T[]): Promise<T[]> {
+      async _resolveReferences(values: T[]): Promise<T[]> {
         if ((typeRegistry==null)||(storeMgr==null)) return values;
 
         const refs = typeRegistry.listReferences(entityName);
@@ -217,11 +214,60 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
        * @param newValue
        * @param references
        */
-      async applyReferences(newValue: T, references: ManagedData): Promise<T> {
+      async _applyReferences(newValue: T, references: ManagedData): Promise<T> {
         if (references != null) {
           // Override the values with the references
           return { ...newValue, ...references } as T;
         } else return newValue;
+      },
+
+      _patchStateSetEntity (stored:T) {
+        // Ensure the entity is still part of the list
+        if (this._isFiltered (stored)==false) {
+          // It's still in the list, now check if sort needs to be applied
+          if (this._safeSort().length>0) {
+              // We remove it from the old sort
+            if (stored._id!=null)
+              patchState(store, removeEntity (stored._id));
+
+              // And find it's right position
+            const newList = XtStoreProviderHelper.insertInSortedList(stored, store.entities(), this._safeSort());
+            patchState (store, setAllEntities (newList, store._entityConfig));
+          } else {
+            patchState(store, setEntity(stored, store._entityConfig));
+          }
+        } else {
+          // Maybe it was in the list and it is no more due to the modification. Let's make sure by removing it
+          if (stored._id!=null)
+            patchState(store, removeEntity (stored._id));
+        }
+
+      },
+      _isFiltered (element:T, criteria?:XtStoreCriteria<T>[]):boolean {
+        if (criteria===undefined) {
+          criteria=this._safeFilter();
+        }
+        for (const crit of criteria) {
+          if (crit.filter(element)) {
+            return true;
+          }
+
+        }
+        return false;
+      },
+      _safeFilter (): XtStoreCriteria<T>[] {
+        const ret=store.filter?store.filter():null;
+        if ((ret!=null) && (ret.length>0)) {
+          return ret;
+        }
+        return [];
+      },
+      _safeSort (): XtSortBy<T>[] {
+        const ret=store.sort?store.sort():null;
+        if ((ret!=null) && (ret.length>0)) {
+          return ret;
+        }
+        return [];
       }
     })
   )

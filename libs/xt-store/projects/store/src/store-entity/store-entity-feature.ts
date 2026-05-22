@@ -16,6 +16,7 @@ import { ManagedData, XtTypeResolver } from 'xt-type';
 import { XtStoreManager } from '../store-manager/xt-store-manager';
 import { XtSortBy, XtStoreCriteria } from '../xt-store-parameters';
 import { XtStoreProviderHelper } from '../store-provider/xt-store-provider-helper';
+import { XtStoreSortBy } from '../xt-reporting';
 
 export function selectId<T extends ManagedData=ManagedData>(): SelectEntityId<T> { return (data) => {
     if (data._id==null) throw new Error("ManagedData with no entity Id used in the store.", { cause: data });
@@ -62,9 +63,9 @@ export type XtSignalStore<T> = {
  * @param storeMgr
  * @param typeRegistry
  */
-export function withXtStoreProvider<T extends ManagedData = ManagedData> (entityName:string, storeProvider?:XtStoreProvider<T>, storeMgr?:XtStoreManager, typeRegistry?: XtTypeResolver) {
+export function withXtStoreProvider<T extends ManagedData = ManagedData> (entityName:string, storeProvider?:XtStoreProvider<T>, storeMgr?:XtStoreManager, typeRegistry?: XtTypeResolver, options?: XtStoreEntityFeatureOptions) {
   return signalStoreFeature(
-    withState ({ entityName, loading:false} as StoreState),
+    withState ({ entityName, loading:false, sort:options?.sort, filter:options?.filter} as StoreState),
     withEntities(xtStoreEntityConfig<T> ()),
     withProps ( () => ({
       _storeProvider:storeProvider??storeMgr!.getProviderSafe<T>(entityName),
@@ -98,21 +99,6 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         }),finalize(() => {
           patchState(store, {loading:false});
         })));
-      },
-
-      _callProviderSearchEntities ():Observable<T[]> {
-        const sort=this._safeSort();
-        if( sort.length>0) {
-            // We call the full function but only needs the sorted & filtered data (no need for grouping)
-          return store._storeProvider.searchAndPrepareEntities(entityName, this._safeSort(),undefined,undefined,...this._safeFilter()).pipe(
-            map((value) => {
-              return value.sortedData;
-            })
-          )
-        } else {
-            // If we don't need sorting, then a simpler function can be called
-          return store._storeProvider.searchEntities(entityName, ...this._safeFilter());
-        }
       },
 
     /*  listEntities (): Observable<ManagedData[]> {
@@ -169,7 +155,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
           const listEntities = store.entities();
           const ret = new Array<T>();
           for (const entity of listEntities) {
-            if (this._isPassingFilter(entity, criteria)){
+            if (this._isPassingFilter(entity, false, criteria)){
                 ret.push(entity);
             }
           }
@@ -238,7 +224,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
 
       _patchStateSetEntity (stored:T) {
         // Ensure the entity is still part of the list
-        if (this._isPassingFilter (stored)) {
+        if (this._isPassingFilter (stored, true)) {
           // It's still in the list, now check if sort needs to be applied
           if (this._safeSort().length>0) {
               // We remove it from the old sort
@@ -258,15 +244,20 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         }
 
       },
-      _isPassingFilter (element:T, criteria?:XtStoreCriteria<T>[]):boolean {
+      _isPassingFilter (element:T, applyFilters:boolean=false, criteria?:XtStoreCriteria<T>[]):boolean {
         if (criteria===undefined) {
           criteria=this._safeFilter();
         }
         for (const crit of criteria) {
           if (!crit.filter(element)) {
-            return false;
+            // One filter is not met, but we may be allowed to set it automatically
+            if ((applyFilters)&& (crit.operator=='=') && (element[crit.name]==null)) {
+              // We enforce the criteria
+              element[crit.name]=crit.value;
+            }else {
+              return false;
+            }
           }
-
         }
         return true;
       },
@@ -283,8 +274,27 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
           return ret;
         }
         return [];
+      },
+      _callProviderSearchEntities ():Observable<T[]> {
+        const sort=this._safeSort();
+        if( sort.length>0) {
+          // We call the full function but only needs the sorted & filtered data (no need for grouping)
+          return store._storeProvider.searchAndPrepareEntities(entityName, this._safeSort(),undefined,undefined,...this._safeFilter()).pipe(
+            map((value) => {
+              return value.sortedData;
+            })
+          )
+        } else {
+          // If we don't need sorting, then a simpler function can be called
+          return store._storeProvider.searchEntities(entityName, ...this._safeFilter());
+        }
       }
     })
   )
 );
+}
+
+export type XtStoreEntityFeatureOptions<T extends ManagedData=ManagedData>= {
+  sort?:XtSortBy<T>[];
+  filter?:XtStoreCriteria<T>[];
 }

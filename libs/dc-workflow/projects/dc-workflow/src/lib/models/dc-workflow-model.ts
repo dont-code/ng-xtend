@@ -9,10 +9,12 @@ export type DcWorkflowModel = {
 }
 
 export type DcWorkflowSortModel = {
-  [key in DcMetadataTypes|string]: 'ascending' | 'descending' | {
+  [key in DcMetadataTypes|string]: DcWorkflowSortOption
+}
+
+export type DcWorkflowSortOption = 'ascending' | 'descending' | {
   direction: 'ascending' | 'descending',
   type: 'metadata'|'field',
-}
 }
 
 export type DcWorkflowDisplayModel = {

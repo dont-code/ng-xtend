@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { signalStore } from '@ngrx/signals';
 import { ManagedData, XtTypeResolver } from 'xt-type';
 import { xtStoreManager } from '../store-manager/xt-store-manager';
-import { withXtStoreProvider, XtSignalStore } from '../store-entity/store-entity-feature';
+import { withXtStoreProvider, XtSignalStore, XtStoreEntityFeatureOptions } from '../store-entity/store-entity-feature';
 import { XtStoreProvider } from '../store-provider/xt-store-provider';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class XtStoreManagerService {
   constructor() {
   }
 
-  getStoreFor<T extends ManagedData>(entityName: string, typeMgr?:XtTypeResolver): XtSignalStore<T> {
+  getStoreFor<T extends ManagedData>(entityName: string, typeMgr?:XtTypeResolver, options?:XtStoreEntityFeatureOptions<T>): XtSignalStore<T> {
     let store = this.entityToStoreMap.get(entityName);
     if (store == null) {
       const provider = this.storeManager.getProvider<T>(entityName);
@@ -25,13 +25,13 @@ export class XtStoreManagerService {
       } else {
         if( typeMgr==null) {
           const res = signalStore(
-            withXtStoreProvider(entityName, provider)
+            withXtStoreProvider(entityName, provider, undefined, undefined, options)
           );
           store= new res();
         } else {
             // We have a type mgr, so let's use it in our store
           const res = signalStore(
-            withXtStoreProvider(entityName, provider, this.storeManager, typeMgr)
+            withXtStoreProvider(entityName, provider, this.storeManager, typeMgr, options)
           );
           store= new res();
 

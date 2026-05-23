@@ -62,10 +62,11 @@ export type XtSignalStore<T> = {
  * @param storeProvider
  * @param storeMgr
  * @param typeRegistry
+ * @param options
  */
-export function withXtStoreProvider<T extends ManagedData = ManagedData> (entityName:string, storeProvider?:XtStoreProvider<T>, storeMgr?:XtStoreManager, typeRegistry?: XtTypeResolver, options?: XtStoreEntityFeatureOptions) {
+export function withXtStoreProvider<T extends ManagedData = ManagedData> (entityName:string, storeProvider?:XtStoreProvider<T>, storeMgr?:XtStoreManager, typeRegistry?: XtTypeResolver, options?: XtStoreEntityFeatureOptions<T>) {
   return signalStoreFeature(
-    withState ({ entityName, loading:false, sort:options?.sort, filter:options?.filter} as StoreState),
+    withState ({ entityName, loading:false, sort:options?.sort, filter:options?.filter} as StoreState<T>),
     withEntities(xtStoreEntityConfig<T> ()),
     withProps ( () => ({
       _storeProvider:storeProvider??storeMgr!.getProviderSafe<T>(entityName),
@@ -163,6 +164,11 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         } finally {
           patchState(store, { loading: false });
         }
+      },
+
+      async updateStoreOptions (option:XtStoreEntityFeatureOptions<T>):Promise<void> {
+        patchState(store, {sort:option.sort, filter:option.filter});
+        await this.fetchEntities();
       },
 
       /**

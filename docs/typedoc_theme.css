@@ -1,0 +1,30 @@
+:root {
+  --color-background: #13171f;
+  --color-background-secondary: #1f2937;
+  --color-text: #d1d5db;
+  --color-text-aside: #9ca3af;
+  --color-accent: #f43f5e;
+  --color-link: #f43f5e;
+  --color-focus-outline: #fb7185;
+}
+
+body {
+  background: #13171f;
+  color: #d1d5db;
+}
+
+a {
+  color: #f43f5e;
+}
+
+.tsd-page-toolbar,
+.tsd-navigation.settings,
+.tsd-navigation.primary,
+.tsd-navigation.secondary {
+  background: #111827;
+}
+
+code,
+pre {
+  background: #0f172a;
+}

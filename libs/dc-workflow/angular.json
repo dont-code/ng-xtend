@@ -10,10 +10,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/dc-workflow/ng-package.json"
-          },
+          "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
               "tsConfig": "projects/dc-workflow/tsconfig.lib.prod.json"
@@ -25,7 +22,7 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@analogjs/vitest-angular:test",
+          "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/dc-workflow/tsconfig.spec.json"
           }
@@ -35,23 +32,19 @@
     "wfw-tester": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": {
-          "style": "css"
-        }
       },
       "root": "projects/wfw-tester",
       "sourceRoot": "projects/wfw-tester/src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/wfw-tester",
             "index": "projects/wfw-tester/src/index.html",
             "browser": "projects/wfw-tester/src/main.ts",
             "preserveSymlinks": true,
             "tsConfig": "projects/wfw-tester/tsconfig.app.json",
-            "inlineStyleLanguage": "css",
             "assets": [
               {
                 "glob": "**/*",
@@ -87,7 +80,7 @@
           "defaultConfiguration": "development"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "wfw-tester:build:production"
@@ -98,28 +91,12 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
         "test": {
-          "builder": "@analogjs/vitest-angular:test",
-          "options": {
-            "tsConfig": "projects/wfw-tester/tsconfig.spec.json",
-            "inlineStyleLanguage": "css",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/wfw-tester/public"
-              }
-            ],
-            "styles": [
-              "projects/wfw-tester/src/styles.css"
-            ]
+          "builder": "@angular/build:unit-test"
           }
         }
       }
-    }
-  },
+    },
   "cli": {
     "analytics": "af715fa5-7248-48cd-a4c2-05820f0f991d",
     "cache": {

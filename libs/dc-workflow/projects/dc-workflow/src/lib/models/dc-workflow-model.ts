@@ -24,13 +24,14 @@ export type DcWorkflowDisplayModel = {
 }
 
 export type DcWorkflowSelectionModel = {
-  fields?: {
-    [key:string]: 'closest-after' | 'closest-before'
+  field?: {
+    key: string,
+    type: 'closest-after' | 'closest-before'
   },
 
   metadata?: {
-    [key in DcMetadataTypes]: 'latest-created' | 'latest-updated'
+    [key in DcMetadataTypes]: 'last' | 'fist' | 'current-user'
   }
 }
 
-export type DcMetadataTypes = 'creation-date' | 'last-update-date' | 'user-owned';
+export type DcMetadataTypes = 'creation-date' | 'last-update-date' | 'owner';

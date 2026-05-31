@@ -7,7 +7,7 @@
     "build": "APP=dc-workflow && ng build $APP",
     "build-deploy": "APP=dc-workflow && ng build $APP --configuration=$BUILD",
     "watch": "APP=dc-workflow && ng build $APP --watch --configuration development",
-    "test": "cd projects/dc-workflow && ../../node_modules/.bin/vitest && cd ../wfw-tester && ../../node_modules/.bin/vitest"
+    "test": "ng test dc-workflow && ng test wfw-tester"
   },
   "prettier": {
     "overrides": [
@@ -47,9 +47,6 @@
     "xt-components": "workspace:^"
   },
   "devDependencies": {
-    "@analogjs/vite-plugin-angular": "^2.4.0",
-    "@analogjs/vitest-angular": "^2.4.0",
-    "@angular-devkit/build-angular": "^21.2.6",
     "@angular/build": "^21.2.6",
     "@angular/cli": "^21.2.6",
     "@angular/compiler-cli": "^21.2.7",
@@ -57,7 +54,6 @@
     "jsdom": "^29.0.1",
     "ng-packagr": "^21.2.2",
     "typescript": "^5.9.3",
-    "vite": "^8.0.3",
     "vitest": "^4.1.2"
   }
 }

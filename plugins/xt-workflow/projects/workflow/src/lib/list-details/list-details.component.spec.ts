@@ -30,13 +30,32 @@ describe('ListDetailsComponent', () => {
 
   it(
     'should create', () => {
+      storeTestBed.defineTestDataFor('TestBook', [{
+        name: 'Test Book',
+        published: new Date(1970,10, 5)
+      }, {
+        name: 'Another Book',
+        published: new Date(2010,7, 15)
+      }
+      ]);
+
     fixture = TestBed.createComponent(ListDetailsComponent);
     fixture.componentRef.setInput("config", {
-      entity: 'Test'
+      entity: 'TestBook',
+      workflow: 'list-detail',
+      data: {
+        sort: {
+          'name':'ascending'
+        }
+      }
     } as DcWorkflowModel);
     component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component).toBeTruthy();
+
+    // Ensure list is sorted accordingly
+    const rows = fixture.debugElement.queryAll(By.css('#list-details'));
+    expect(rows).toHaveLength(2);
   });
 
 /*  it('should display list of entity',async () => {

@@ -1,8 +1,14 @@
 import { DcWorkflow } from '../definition/dc-workflow';
-import { Component, inject, input, InputSignal } from '@angular/core';
-import { DcWorkflowModel, DcWorkflowSortModel, DcWorkflowSortOption } from '../models/dc-workflow-model';
+import { Component, computed, inject, input } from '@angular/core';
+import { DcWorkflowModel, DcWorkflowSortOption } from '../models/dc-workflow-model';
 import { XtCompositeComponent, XtResolverService } from 'xt-components';
-import { XtSignalStore, XtSortBy, XtSortByDirection, XtStoreEntityFeatureOptions, XtStoreManagerService } from 'xt-store';
+import {
+  XtSignalStore,
+  XtSortBy,
+  XtSortByDirection,
+  XtStoreEntityFeatureOptions,
+  XtStoreManagerService
+} from 'xt-store';
 import { ManagedData } from 'xt-type';
 
 /**
@@ -39,6 +45,81 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
     if( ret == null) throw new Error ("No store found for entity named "+this.config().entity);
     return ret;
   }
+
+  /**
+   * Returns the element that should be selected given the config and the store content
+   * @protected
+   */
+  protected displayableElements = computed(() => {
+    const config = this.config();
+    const entities = this.safeFindStore().entities();
+    const selectConfig = config.display;
+    if ((selectConfig?.fields==null) || (Object.keys(selectConfig?.fields).length==0)) {
+      return entities;
+    }
+    return entities.filter((val)=>  {
+      const currentDate=new Date();
+      for (const key in selectConfig.fields) {
+        const value=val[key as keyof T];
+        if( selectConfig.fields[key]==='current-and-after') {
+          if ((value==null) || ((value as Date) < currentDate)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    });
+  });
+    /**
+   * Returns the element that should be selected given the config and the store content
+   * @protected
+   */
+  protected selectedElementThroughConfig = computed(() =>{
+    const config = this.config();
+    const selectConfig = config.selection;
+    const fieldKey=selectConfig?.field?.key;
+    if (fieldKey!=null) {
+      const elements = this.safeFindStore().entities();
+      let toCheck=[...elements];
+        // We can optimize the selection if the list is already sorted
+      const sortModel=(config.data?.sort!=null)?config.data?.sort![fieldKey]:null;
+      let isWellSorted:boolean|undefined=(sortModel=='ascending')? true:(sortModel=='descending')?false: sortModel?.direction=='ascending';
+      if( isWellSorted===false) {
+        toCheck=toCheck.reverse();
+        isWellSorted=true;
+      }
+      // Find the first element that matches the criteria
+      if(selectConfig!.field!.type=='closest-after' || selectConfig?.field?.type=='closest-before') {
+        let closestBefore: T|null=null;
+        let closestAfter:T|null=null;
+        let currentDate = new Date();
+
+        for (const elem of toCheck) {
+          if ((elem[fieldKey] !=null)&& ((typeof elem[fieldKey]!=='object') || ( elem[fieldKey] instanceof Date))) {
+            if( elem[fieldKey] > currentDate ) {
+                // We found an element after the current date
+              if( isWellSorted) {
+                  // The list is already sorted, so we can return immediately.
+                if (selectConfig!.field!.type=='closest-before') return closestBefore;
+                else return elem;
+              } else if (closestAfter==null) {
+                closestAfter=elem;
+              } else {
+                closestAfter=((closestAfter[fieldKey]! as Date) < elem[fieldKey])?closestAfter:elem;
+              }
+            } else if (closestBefore==null) {
+              closestBefore=elem;
+            } else {
+              closestBefore=((closestBefore[fieldKey]! as Date) > elem[fieldKey])?closestBefore:elem;
+            }
+          }
+        }
+
+        return (selectConfig!.field!.type=='closest-before')?closestBefore:closestAfter;
+      }
+    }
+    return null;
+  });
 
   protected generateStoreOptions (config: DcWorkflowModel): XtStoreEntityFeatureOptions<T> | undefined {
     const options = {sort:[]} as XtStoreEntityFeatureOptions<T>;

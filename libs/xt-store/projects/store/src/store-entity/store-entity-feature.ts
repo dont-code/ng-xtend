@@ -39,7 +39,10 @@ export type StoreState<T extends ManagedData=ManagedData> = {
   filter?: XtStoreCriteria<T>[]
 };
 
-export type XtSignalStore<T> = {
+/**
+ * A SignalStore that provides additional methods to manipulate ManagedDatas.
+ */
+export type XtSignalStore<T extends ManagedData=ManagedData> = {
   entityName: Signal<string>;
   loading: Signal<boolean>;
   entityMap: Signal<EntityMap<T>>;
@@ -53,10 +56,12 @@ export type XtSignalStore<T> = {
   storeEntity (toStore:T):Promise<T>;
   deleteEntity (id:string): Promise<boolean>;
   searchEntities(...criteria: XtStoreCriteria<T>[]): Observable<T[]>;
+
+  updateStoreOptions (option:XtStoreEntityFeatureOptions<T>|undefined):Promise<void>;
 }
 
 /**
- * Enables SignalStore to manipulate ManagedData entities through one providers or more.
+ * Enables SignalStore to manipulate ManagedData entities through one provider or more.
  * If given the typeRegistry, it uses the information in it to manage references
  * @param entityName
  * @param storeProvider
@@ -96,7 +101,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         return lastValueFrom(this._callProviderSearchEntities().pipe ( mergeMap((entities:T[]) => {
           return this._resolveReferences(entities);
         }),map( (entities: T[]) => {
-          patchState(store, setEntities (entities, store._entityConfig));
+          patchState(store, setAllEntities (entities, store._entityConfig));
         }),finalize(() => {
           patchState(store, {loading:false});
         })));
@@ -166,8 +171,8 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         }
       },
 
-      async updateStoreOptions (option:XtStoreEntityFeatureOptions<T>):Promise<void> {
-        patchState(store, {sort:option.sort, filter:option.filter});
+      async updateStoreOptions (option:XtStoreEntityFeatureOptions<T> | undefined):Promise<void> {
+        patchState(store, {sort:option?.sort, filter:option?.filter});
         await this.fetchEntities();
       },
 

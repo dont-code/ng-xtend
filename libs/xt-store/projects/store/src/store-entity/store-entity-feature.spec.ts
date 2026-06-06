@@ -263,6 +263,71 @@ describe('StoreEntityFeature', () => {
     expect(result.map(val => val.title)).toEqual(['Sheep', 'Ubik']);
 
   });
+
+  it ('should support updating sort / filter', async () => {
+    StoreTestBed.ensureMemoryProviderOnly();
+    const typeMgr = xtTypeManager();
+    typeMgr.addRootType('BookType3', {
+      title: 'string',
+      author: 'string',
+      releaseDate: 'date',
+      cost: 'number'
+    });
+
+    const storeMgr = xtStoreManager();
+
+    await storeMgr.getProviderSafe<BookType3>('BookType2').storeEntity('BookType3', {
+      title: 'Ubik',
+      author: 'Philip K. Dick',
+      releaseDate: new Date (1990,2,2),
+      cost:50
+    });
+
+    await storeMgr.getProviderSafe<BookType3>('BookType3').storeEntity('BookType3', {
+      title: 'Ancillaire',
+      author: 'Ann Leckie',
+      releaseDate: new Date (1970,2,2),
+      cost:70
+    });
+
+    await storeMgr.getProviderSafe<BookType3>('BookType3').storeEntity('BookType3', {
+      title: 'Sheep',
+      author: 'Philip K. Dick',
+      releaseDate: new Date (1997,2,2),
+      cost:40
+    });
+
+    // Let's try first the simple sort / filter
+    const storeType = signalStore(withXtStoreProvider<BookType2>("BookType3", undefined, storeMgr, typeMgr, {
+      sort: [{
+        by: 'title',
+        direction:XtSortByDirection.Ascending
+      } ],
+      filter: [new XtStoreCriteria('cost', 60, '<=')
+      ]
+    }));
+    const store = new storeType() as unknown as XtSignalStore<BookType3>;
+    await store.fetchEntities();
+    let result = store.entities();
+    expect(result.length).toEqual(2);
+    expect(result[0].title).toEqual('Sheep');
+
+    // Now change the sort & filter criteria
+    await store.updateStoreOptions({
+      sort: [{
+        by:'releaseDate',
+        direction:XtSortByDirection.Ascending
+      }],
+      filter: [new XtStoreCriteria('cost', 100,'<=')]
+      }
+    );
+
+    result = store.entities();
+    expect(result.length).toEqual(3);
+    expect(result[0].title).toEqual('Ancillaire');
+
+
+  });
 });
 
 type AuthorType=ManagedData&{
@@ -288,5 +353,12 @@ type StoredBookType =ManagedData&{
 }
 
 type StoredBookType2 = StoredBookType & {
+  cost:number
+}
+
+type BookType3 =ManagedData&{
+  title:string,
+  author:string,
+  releaseDate:Date,
   cost:number
 }

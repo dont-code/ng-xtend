@@ -1,5 +1,5 @@
 import { DcWorkflow } from '../definition/dc-workflow';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { DcWorkflowModel, DcWorkflowSortOption } from '../models/dc-workflow-model';
 import { XtCompositeComponent, XtResolverService } from 'xt-components';
 import {
@@ -31,6 +31,23 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
 
   protected store : XtSignalStore<T> | null | undefined = undefined;
 
+  protected configUpdated = effect( async ()=> {
+    const config = this.config();
+    const curStore = this.store;
+    if (curStore===undefined) return; // No curStore needed yet, config changes have no effects
+    if (curStore!==null) {
+      if (config.entity==curStore.entityName()) // Entity didn't change
+      {
+          // Let's just update the options
+        await curStore.updateStoreOptions(this.generateStoreOptions(config));
+      } else {
+        this.store = undefined; // Then next call to findStore will recreate a new store for the new entity
+      }
+    } else {
+      this.store=undefined; // Force a recalculation of the store
+    }
+  });
+
   protected findStore (): XtSignalStore<T> | null {
     if (this.store===undefined) {
       const config = this.config();
@@ -57,8 +74,8 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
     if ((selectConfig?.fields==null) || (Object.keys(selectConfig?.fields).length==0)) {
       return entities;
     }
+    const currentDate=new Date();
     return entities.filter((val)=>  {
-      const currentDate=new Date();
       for (const key in selectConfig.fields) {
         const value=val[key as keyof T];
         if( selectConfig.fields[key]==='current-and-after') {
@@ -136,7 +153,7 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
     const ret = { by:name } as XtSortBy<T>;
 
     if (sort==="ascending" || sort==="descending" ) {
-      ret.direction=(sort==="ascending")?XtSortByDirection.Ascending:XtSortByDirection.None;
+      ret.direction=(sort==="ascending")?XtSortByDirection.Ascending:XtSortByDirection.Descending;
     } else if (sort==null){
       ret.direction=XtSortByDirection.None;
     } else if (sort.type=='metadata') {

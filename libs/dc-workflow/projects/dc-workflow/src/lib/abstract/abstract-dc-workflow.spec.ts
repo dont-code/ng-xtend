@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { effect, provideZonelessChangeDetection } from '@angular/core';
 import { AbstractDcWorkflow } from './abstract-dc-workflow';
 import { XtBaseContext, XtResolverService } from 'xt-components';
 import { ManagedData } from 'xt-type';
 import { DcWorkflowModel } from '../models/dc-workflow-model';
 import { StoreTestBed } from 'xt-store';
+import { delay, find, firstValueFrom, lastValueFrom, map, range } from 'rxjs';
 
 describe('Abstract DC Workflow', () => {
 
@@ -25,7 +26,7 @@ describe('Abstract DC Workflow', () => {
   });
 
 
-  it('should instantiate', async () => {
+  it('should support sorting & filtering', async () => {
 
     resolverService.registerTypes({
       simpleTestWorkflow: {
@@ -66,6 +67,7 @@ describe('Abstract DC Workflow', () => {
 
     expect(component.peekValues().map(val=> val.name)).toEqual(['A','R','Y']);
 
+    component.initListUpdateWait();
     // Now we add filtering
     fixture.componentRef.setInput('config', {
       entity:'simpleTestWorkflow', workflow:'list-detail', data: {
@@ -80,9 +82,24 @@ describe('Abstract DC Workflow', () => {
     } as DcWorkflowModel);
 
     fixture.detectChanges();
-    expect(component.peekValues().map(val=> val.name)).toEqual(['A','Y']);
+    await component.waitForListUpdate();
+    expect(component.peekValues().map(val=> val.name)).toEqual(['Y']);
 
     // Now we test filtering works with the sort
+    component.initListUpdateWait();
+    await component.addValue ({
+      name:'G',
+      time: new Date(today.getTime()-1000*60*60*24*6) // Remove 6 days
+    });
+    await component.addValue ({
+      name:'U',
+      time: new Date(today.getTime()+1000*60*60*24*6) // Add 6 days
+    });
+    fixture.detectChanges();
+    await component.waitForListUpdate();
+    expect(component.peekValues().map(val=> val.name)).toEqual(['U', 'Y']);
+
+    component.initListUpdateWait();
     fixture.componentRef.setInput('config', {
       entity:'simpleTestWorkflow', workflow:'list-detail', data: {
         sort:{
@@ -95,19 +112,16 @@ describe('Abstract DC Workflow', () => {
       }
     } as DcWorkflowModel);
 
-    await component.addValue ({
-      name:'G',
-      time: new Date(today.getTime()-1000*60*60*24*6) // Remove 6 days
-    });
-    await component.addValue ({
-      name:'U',
-      time: new Date(today.getTime()+1000*60*60*24*6) // Add 6 days
-    });
-
     fixture.detectChanges();
-    expect(component.peekValues().map(val=> val.name)).toEqual(['A','Y', 'U']);
+/*    await component.waitFor(() => {
+      const values=component.peekValues();
+      return (values[0].name=='Y');
+    });*/
+    await component.waitForListUpdate();
+    expect(component.peekValues().map(val=> val.name)).toEqual(['Y', 'U']);
 
     // Now we test filtering works with the sort in the other direction
+    component.initListUpdateWait();
     fixture.componentRef.setInput('config', {
       entity:'simpleTestWorkflow', workflow:'list-detail', data: {
         sort:{
@@ -121,7 +135,8 @@ describe('Abstract DC Workflow', () => {
     } as DcWorkflowModel);
 
     fixture.detectChanges();
-    expect(component.peekValues().map(val=> val.name)).toEqual(['U', 'Y', 'A']);
+    await component.waitForListUpdate();
+    expect(component.peekValues().map(val=> val.name)).toEqual(['U', 'Y']);
 
   });
 
@@ -129,8 +144,40 @@ describe('Abstract DC Workflow', () => {
 
 class SimpleTestWorkflow<T extends ManagedData> extends AbstractDcWorkflow<T> {
 
+  protected listUpdated = false;
+
+  protected checkforListUpdated=effect(()=> {
+    const list=this.displayableElements();  // Create a dependency
+    this.listUpdated=true;
+  });
+
   fetchValues (): Promise<void> {
     return this.safeFindStore().fetchEntities();
+  }
+
+  initListUpdateWait ():void {
+    this.listUpdated=false;
+  }
+
+  async waitFor(test: any): Promise<void> {
+      await lastValueFrom(range(0, 10).pipe(
+        delay(50),
+        find(() => {
+          return test(this.safeFindStore().entities());
+        })
+      ));
+  }
+
+  async waitForListUpdate(): Promise<void> {
+    if (this.listUpdated) return Promise.resolve();
+    else {
+      await lastValueFrom(range(0, 10).pipe(
+        delay(50),
+        find(() => {
+          return this.listUpdated;
+        })
+      ));
+    }
   }
 
   peekValues(): T[] {

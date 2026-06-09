@@ -1,12 +1,24 @@
-import { XtActionHandlerInfo, XtActionInfo, XtComponentInfo, XtPluginInfo } from '../plugin/xt-plugin-info';
+import {
+  XtActionHandlerInfo,
+  XtActionInfo,
+  XtComponentInfo,
+  XtPluginInfo,
+  XtWorkflowInfo
+} from '../plugin/xt-plugin-info';
 import { signal, Type } from '@angular/core';
 import { XtComponent } from '../xt-component';
+import { XtWorkflow } from '../workflow/xt-workflow';
 
+/**
+ * Maintain the list of plugins loaded, with their components and actions
+ *
+ */
 export class XtPluginRegistry {
 
     pluginRegistry = new Map<string, XtPluginInfo> ();
     componentRegistry = new Map<string, XtComponentInfo<any>> ();
     componentByTypeCache = new Map<string, XtComponentInfo<any>[]> ();
+    protected workflowRegistry = new Map<string, XtWorkflowInfo<any>> ();
     protected actionByTypeRegistry = new Map<string, Map<string, XtActionInfo<any>>> ();
 
     listComponents = signal(new Array<XtComponentInfo<any>>());
@@ -58,6 +70,13 @@ export class XtPluginRegistry {
       }
     }
 
+    if (info.workflows!=null) {
+      for (const wfw of info.workflows) {
+        this.registerWorkflow (wfw);
+      }
+    }
+
+    // Updates the signal which list all plugins
     this.listPlugins.update((array) => {
           let found=false;
           for (let i=0; i<array.length; i++) {
@@ -73,7 +92,11 @@ export class XtPluginRegistry {
 
     }
 
-  registerComponent<T> (info:XtComponentInfo<T>) {
+    registerWorkflow<T extends XtWorkflow> (info:XtWorkflowInfo<T>) {
+      this.workflowRegistry.set(info.name, info);
+    }
+
+    registerComponent<T> (info:XtComponentInfo<T>) {
       this.componentRegistry.set (info.componentName, info);
       this.listComponents.update((array) => {
         let found=false;
@@ -160,6 +183,25 @@ export class XtPluginRegistry {
     const ret= this.findComponentInfo(type);
     if (ret==null) {throw new Error ("No component found with class "+type);}
     return ret;
+  }
+
+  /**
+   * Finds all the workflow components that can handle the given workflow type
+   * @param type
+   */
+  listWorkflowsForType (type:string): XtWorkflowInfo<any>[] {
+    const ret = [] as XtWorkflowInfo<any>[];
+    for (const info of this.workflowRegistry.values()) {
+      const index=info.workflowsHandled.findIndex((val)=>val==type);
+      if (index>=0) {
+        ret.push(info);
+      }
+    }
+    return ret;
+  }
+
+  findWorkflowInfo (name:string): XtWorkflowInfo<any>|undefined {
+    return this.workflowRegistry.get(name);
   }
 
   registerActionHandler<T>(handlerInfo:XtActionHandlerInfo<T>) {

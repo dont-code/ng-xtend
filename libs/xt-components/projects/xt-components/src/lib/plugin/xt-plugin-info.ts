@@ -11,8 +11,9 @@ export type XtComponentInfo<T> = {
 }
 
 export type XtWorkflowInfo<T extends XtWorkflow> = {
-  workflowName: string;
-  workflowClass: T;
+  name: string;
+  class: T;
+  workflowsHandled: string[];
 }
 
 export type XtTypeHandlerInfo<T> = {

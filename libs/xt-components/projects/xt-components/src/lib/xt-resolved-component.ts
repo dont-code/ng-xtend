@@ -5,8 +5,8 @@ export class XtResolvedComponent {
     componentClass: any;
     outputs:boolean;
 
-    constructor (componantName:string, componentClass:any, outputs:boolean=false) {
-        this.componentName = componantName;
+    constructor (componentName:string, componentClass:any, outputs:boolean=false) {
+        this.componentName = componentName;
         this.componentClass = componentClass;
         this.outputs = outputs;
     }

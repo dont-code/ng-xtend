@@ -1,2 +1,12 @@
-<span class="text-2xl">Testing Workflow</span>
-<wfw-render [workflowType]="workflowType()" [workflowConfig]="workflowConfig ()"></wfw-render>
+<span class="text-2xl">Testing the default List Details workflow</span>
+
+<div class="flex gap-2 my-2">
+  Select the default sort:
+  <p-button [label]="sortField() === 'name' ? (sortDir() === 'ascending' ? 'Name ↑' : 'Name ↓') : 'Name'" [icon]="sortField() === 'name' ? (sortDir() === 'ascending' ? 'pi pi-sort-up-alt' : 'pi pi-sort-down-alt') : 'pi pi-sort-alt'" [severity]="sortField() === 'name' ? 'primary' : 'secondary'" size="small" (click)="toggleSort('name')"></p-button>
+  <p-button [label]="sortField() === 'creationDate' ? (sortDir() === 'ascending' ? 'Creation Date ↑' : 'Creation Date ↓') : 'Creation Date'" [icon]="sortField() === 'creationDate' ? (sortDir() === 'ascending' ? 'pi pi-sort-up-alt' : 'pi pi-sort-down-alt') : 'pi pi-sort-alt'" [severity]="sortField() === 'creationDate' ? 'primary' : 'secondary'" size="small" (click)="toggleSort('creationDate')"></p-button>
+  <p-button [label]="sortField() === 'value' ? (sortDir() === 'ascending' ? 'Value ↑' : 'Value ↓') : 'Value'" [icon]="sortField() === 'value' ? (sortDir() === 'ascending' ? 'pi pi-sort-up-alt' : 'pi pi-sort-down-alt') : 'pi pi-sort-alt'" [severity]="sortField() === 'value' ? 'primary' : 'secondary'" size="small" (click)="toggleSort('value')"></p-button>
+</div>
+
+@if (dataLoaded()) {
+  <wfw-render [workflowConfig]="workflowConfig()"></wfw-render>
+}

@@ -5,14 +5,16 @@ import { WfwRender } from './wfw-render';
 import { WfwResolverService } from '../angular/wfw-resolver-service';
 import { XtResolvedComponent } from 'xt-components';
 import { DcWorkflowModel } from '../models/dc-workflow-model';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AbstractDcWorkflow } from 'dc-workflow';
 
 @Component({
   selector: 'mock-workflow',
   template: '',
   standalone: true,
 })
-class MockWorkflowComponent {
-  config = input<DcWorkflowModel>();
+class MockWorkflowComponent extends AbstractDcWorkflow{
+  //config = input<DcWorkflowModel>();
 }
 
 @Component({
@@ -20,8 +22,8 @@ class MockWorkflowComponent {
   template: '',
   standalone: true,
 })
-class MockWorkflowAltComponent {
-  config = input<DcWorkflowModel>();
+class MockWorkflowAltComponent extends AbstractDcWorkflow {
+  //config = input<DcWorkflowModel>();
 }
 
 describe('WfwRender', () => {

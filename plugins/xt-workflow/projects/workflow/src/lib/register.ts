@@ -9,7 +9,7 @@ export function registerWorkflowPlugin (resolverService:XtResolverService):boole
     workflows: [{
         name:'wfwListDetails',
         class:ListDetailsComponent,
-        workflowsHandled:['list-details']
+        workflowsHandled:['list-detail']
       }
     ]
   })

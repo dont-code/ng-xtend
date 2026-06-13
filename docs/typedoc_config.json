@@ -19,7 +19,6 @@
   "navigationLinks": {
     "Home": "../index.html",
     "Guides": "../guides/index.html",
-    "Libraries": "../libs/index.html",
     "GitHub": "https://github.com/dont-code/ng-xtend"
   },
   "customCss": "./typedoc_theme.css"

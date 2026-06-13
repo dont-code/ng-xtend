@@ -102,7 +102,17 @@ Curious about how plugins are dynamically injected? Try the dedicated tester:
 
 ---
 
-## 🧑‍💻 Getting Started
+## 📖 Documentation
+
+### API Reference & Guides
+
+Generated documentation is available for the core libraries and usage patterns:
+
+| Resource | Description |
+|----------|-------------|
+| [API Documentation](api/index.html) | Full API reference for `xt-components`, `xt-store`, and `xt-type` |
+| [How-To Guides](guides/index.html) | Step-by-step use cases: display, edit, create, persist, relations, and more |
+
 ### Using the Framework
 The repository [ng-xtend-examples](https://github.com/dont-code/ng-xtend-examples) shows many examples (from basic to complex) using ng-xtend.
 You should have a look at it to get started.

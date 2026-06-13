@@ -18,6 +18,7 @@
   "categorizeByGroup": true,
   "navigationLinks": {
     "Home": "../index.html",
+    "Guides": "../guides/index.html",
     "Libraries": "../libs/index.html",
     "GitHub": "https://github.com/dont-code/ng-xtend"
   },

@@ -26,11 +26,13 @@ jobs:
           node-version: 24
       - name: Install pandoc
         run: sudo apt-get update && sudo apt-get install -y pandoc
-      - name: Install docs dependencies
-        working-directory: ./docs
+      - name: Install monorepo dependencies
         run: |
           npm install -g pnpm@latest
-          pnpm install
+          node common/scripts/install-run-rush.js install
+      - name: Install docs dependencies
+        working-directory: ./docs
+        run: pnpm install
       - name: Generate API docs and website
         working-directory: ./docs
         run: pnpm docs:generate

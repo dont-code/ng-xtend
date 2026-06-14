@@ -11,7 +11,7 @@ cd docs
 cp ng-xtend-website/index.html ../dist/ng-xtend-website/
 cp -r logos ../dist/ng-xtend-website/docs
 cp -r screenshots ../dist/ng-xtend-website/docs
-cp -r guides ../dist/ng-xtend-website/guides
+cp -r ng-xtend-website/guides ../dist/ng-xtend-website/guides
 
 cd ../apps/xt-plugin-tester
 cp -r docs ../../dist/ng-xtend-website/apps/xt-plugin-tester

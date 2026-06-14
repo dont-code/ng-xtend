@@ -39,6 +39,7 @@ Demo applications can be seen here:
 ---
 
 ## News
+- ***2026-06-14:*** We now have an [API Doc](https://ng-xtend.dev/api/index.html) and step by step [Guidelines](https://ng-xtend.dev/guides/index.html). Thanks to [Opencode Big Pickle AI engine](https://opencode.ai)!
 - ***2026-03-31:*** Try our [AI based application generator!](https://dont-code.net/dashboard/repo/default?action=generate). You can now just describe the application you want, and it will generate it based on the ng-xtend framework & plugins !
 - ***2026-01-27:*** Added repository with multiple examples of ng-xtend usage. => [ng-xtend-examples](https://github.com/dont-code/ng-xtend-examples)
 - ***2026-01-04:*** Version 0.5.5, supports for many to one references

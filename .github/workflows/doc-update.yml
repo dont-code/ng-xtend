@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: 24
       - name: Install pandoc
-        run: sudo apt-get update && sudo apt-get install -y pandoc
+        uses: pandoc/actions/setup@v1
       - name: Install monorepo dependencies
         run: |
           npm install -g pnpm@latest

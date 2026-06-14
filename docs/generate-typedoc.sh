@@ -34,7 +34,7 @@ mkdir -p "$GUIDES_OUT"
 
 cp "$SCRIPT_DIR/pandoc_theme.css" "$GUIDES_OUT/theme.css"
 
-PANDOC_OPTS="-f markdown -t html --file-scope=true --standalone --syntax-highlighting=zenburn --css=theme.css"
+PANDOC_OPTS="-f markdown -t html --file-scope --standalone --syntax-highlighting=zenburn --css=theme.css"
 
 MATOMO="$SCRIPT_DIR/matomo-script.html"
 MATOMO_OPTS=""

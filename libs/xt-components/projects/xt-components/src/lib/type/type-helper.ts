@@ -1,6 +1,14 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { isPrimitive, isTypeReference, XtTypeHierarchy, XtTypeReference, XtTypeResolver } from 'xt-type';
 
+/**
+ * Attaches a value to a form group by creating either a FormControl or nested FormGroup based on the value type
+ * @param formGroup - The form group to attach to
+ * @param controlName - The control name within the form group
+ * @param value - The value to attach
+ * @param valueType - Optional type identifier for type resolution
+ * @param resolver - Optional type resolver for determining if the value is primitive
+ */
 export function   attachToFormGroup(formGroup: FormGroup, controlName:string, value:any, valueType?:string, resolver?:XtTypeResolver) {
   // If it's a single value, just create the control
   if (((value!=null) && (isPrimitive(value))
@@ -14,6 +22,13 @@ export function   attachToFormGroup(formGroup: FormGroup, controlName:string, va
   }
 }
 
+/**
+ * Updates a form group with the properties from a value object, adding, updating, or removing controls as needed
+ * @param formGroup - The form group to update
+ * @param value - The value object containing the properties to sync
+ * @param valueType - Optional type identifier for type resolution
+ * @param resolver - Optional type resolver for determining property types
+ */
 export function   updateFormGroupWithValue(formGroup: FormGroup, value:{[key:string]:any}, valueType?:string, resolver?:XtTypeResolver) {
 
   const toDelete = new Set<string>(Object.keys(formGroup.controls));

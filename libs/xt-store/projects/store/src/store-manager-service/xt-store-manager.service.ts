@@ -5,6 +5,10 @@ import { xtStoreManager } from '../store-manager/xt-store-manager';
 import { withXtStoreProvider, XtSignalStore, XtStoreEntityFeatureOptions } from '../store-entity/store-entity-feature';
 import { XtStoreProvider } from '../store-provider/xt-store-provider';
 
+/**
+ * Angular service that provides managed SignalStore instances for entities,
+ * backed by the global XtStoreManager provider resolution.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +20,13 @@ export class XtStoreManagerService {
   constructor() {
   }
 
+  /**
+   * Retrieves or creates a SignalStore for the given entity name.
+   * @param entityName - The entity name
+   * @param typeMgr - Optional type resolver for reference management
+   * @param options - Optional store feature options (sort, filter)
+   * @returns A SignalStore instance for the entity
+   */
   getStoreFor<T extends ManagedData>(entityName: string, typeMgr?:XtTypeResolver, options?:XtStoreEntityFeatureOptions<T>): XtSignalStore<T> {
     let store = this.entityToStoreMap.get(entityName);
     if (store == null) {
@@ -42,6 +53,10 @@ export class XtStoreManagerService {
     return store as XtSignalStore<T>;
   }
 
+  /**
+   * Sets the default store provider for all entities.
+   * @param provider - The provider to set as the global default
+   */
   setDefaultStoreProvider (provider: XtStoreProvider<ManagedData>) {
     this.storeManager.setDefaultProvider(provider);
   }

@@ -15,13 +15,20 @@ import { XtWorkflow } from '../workflow/xt-workflow';
  */
 export class XtPluginRegistry {
 
+    /** Map of all registered plugins by name */
     pluginRegistry = new Map<string, XtPluginInfo> ();
+    /** Map of all registered components by component name */
     componentRegistry = new Map<string, XtComponentInfo<any>> ();
+    /** Cache of components found by value type */
     componentByTypeCache = new Map<string, XtComponentInfo<any>[]> ();
+    /** Map of all registered workflows by name */
     protected workflowRegistry = new Map<string, XtWorkflowInfo<any>> ();
+    /** Map of actions registered by type, then by action name */
     protected actionByTypeRegistry = new Map<string, Map<string, XtActionInfo<any>>> ();
 
+    /** Signal listing all registered component infos */
     listComponents = signal(new Array<XtComponentInfo<any>>());
+    /** Signal listing all registered plugin infos */
     listPlugins = signal(new Array<XtPluginInfo>());
 
   /**
@@ -41,8 +48,10 @@ export class XtPluginRegistry {
    */
   public static readonly ANY_OBJECT_TYPE="ANY_OBJECT_TYPE";
 
+  /** Components can manage any set of primitive types */
   public static readonly ANY_PRIMITIVE_SET = "ANY_PRIMITIVE_SET";
 
+  /** Components can manage any set of object types */
   public static readonly ANY_OBJECT_SET = "ANY_OBJECT_SET";
 
   /**
@@ -50,8 +59,13 @@ export class XtPluginRegistry {
    */
   public static readonly ANY_SINGLE_REFERENCE = "ANY_SINGLE_REFERENCE";
 
+  /** Whenever a component can handle any type of reference to multiple entities */
   public static readonly ANY_MULTIPLE_REFERENCE = "ANY_MULTIPLE_REFERENCE";
 
+  /**
+   * Registers a plugin with its components, actions, and workflows
+   * @param info - The plugin information to register
+   */
   registerPlugin (info:XtPluginInfo) {
     this.pluginRegistry.set (info.name, info);
 
@@ -92,10 +106,18 @@ export class XtPluginRegistry {
 
     }
 
+    /**
+     * Registers a workflow component
+     * @param info - The workflow information to register
+     */
     registerWorkflow<T extends XtWorkflow> (info:XtWorkflowInfo<T>) {
       this.workflowRegistry.set(info.name, info);
     }
 
+    /**
+     * Registers a component in the component registry
+     * @param info - The component information to register
+     */
     registerComponent<T> (info:XtComponentInfo<T>) {
       this.componentRegistry.set (info.componentName, info);
       this.listComponents.update((array) => {
@@ -112,6 +134,12 @@ export class XtPluginRegistry {
       });
   }
 
+  /**
+   * Finds components that can handle the given value type
+   * @param valueType - The value type to search for, or null/undefined to infer from the value
+   * @param value - The optional value to infer the type from
+   * @returns An array of matching component infos
+   */
   findComponentsForType<T> (valueType:string|null|undefined, value?:T): XtComponentInfo<any>[] {
     let originalType=valueType;
     //console.debug('Finding type from '+valueType+' with value ',value);
@@ -165,10 +193,19 @@ export class XtPluginRegistry {
     return ret;
   }
 
+  /**
+   * Returns the global singleton plugin registry
+   * @returns The global XtPluginRegistry instance
+   */
   public static registry (): XtPluginRegistry {
     return XT_REGISTRY;
   }
 
+  /**
+   * Finds component info for the given component class type
+   * @param type - The component class type to search for
+   * @returns The component info or null if not found
+   */
   findComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any>|null {
     // Search for the component registered with this class
     for (const info of this.componentRegistry.values()) {
@@ -179,6 +216,12 @@ export class XtPluginRegistry {
     return null;
   }
 
+  /**
+   * Gets component info for the given component class type, throwing if not found
+   * @param type - The component class type to search for
+   * @returns The component info
+   * @throws Error if no component is found with the given class
+   */
   getComponentInfo(type: Type<XtComponent<any>>): XtComponentInfo<any> {
     const ret= this.findComponentInfo(type);
     if (ret==null) {throw new Error ("No component found with class "+type);}
@@ -200,10 +243,19 @@ export class XtPluginRegistry {
     return ret;
   }
 
+  /**
+   * Finds workflow info by name
+   * @param name - The workflow name to search for
+   * @returns The workflow info or undefined if not found
+   */
   findWorkflowInfo (name:string): XtWorkflowInfo<any>|undefined {
     return this.workflowRegistry.get(name);
   }
 
+  /**
+   * Registers action handlers grouped by type
+   * @param handlerInfo - The action handler information to register
+   */
   registerActionHandler<T>(handlerInfo:XtActionHandlerInfo<T>) {
     for (const type of handlerInfo.types) {
       const handlers = handlerInfo.actions;
@@ -218,6 +270,12 @@ export class XtPluginRegistry {
     }
   }
 
+  /**
+   * Finds action info for the given type and action name
+   * @param type - The type to look up
+   * @param actionName - The action name to find
+   * @returns The action info or undefined if not found
+   */
   findActionInfo<T>(type:string, actionName:string):XtActionInfo<T>|undefined {
     const handlers=this.actionByTypeRegistry.get(type);
     if (handlers!=null) {
@@ -226,6 +284,11 @@ export class XtPluginRegistry {
     return undefined;
   }
 
+  /**
+   * Lists all action infos registered for the given type
+   * @param type - The type to list actions for
+   * @returns An array of action name and info pairs
+   */
   listActionInfos<T> (type:string): {name:string, info: XtActionInfo<T>}[] {
     const handlers=this.actionByTypeRegistry.get(type);
     if (handlers!=null) {

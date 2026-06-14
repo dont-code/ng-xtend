@@ -18,12 +18,20 @@ import { XtSortBy, XtStoreCriteria } from '../xt-store-parameters';
 import { XtStoreProviderHelper } from '../store-provider/xt-store-provider-helper';
 import { XtStoreSortBy } from '../xt-reporting';
 
+/**
+ * Returns a selector function that extracts the `_id` field from ManagedData.
+ * @returns An entity ID selector for @ngrx/signals entities
+ */
 export function selectId<T extends ManagedData=ManagedData>(): SelectEntityId<T> { return (data) => {
     if (data._id==null) throw new Error("ManagedData with no entity Id used in the store.", { cause: data });
     return data._id;
   }
 }
 
+/**
+ * Creates an entity configuration for @ngrx/signals entities using the default ID selector.
+ * @returns An entity config for the given type
+ */
 export function xtStoreEntityConfig<T extends ManagedData=ManagedData> () {
   return entityConfig<T> ({
     entity: type<T>(),
@@ -32,6 +40,9 @@ export function xtStoreEntityConfig<T extends ManagedData=ManagedData> () {
 };
 
 
+/**
+ * Reactive state shape held by the SignalStore for a single entity type.
+ */
 export type StoreState<T extends ManagedData=ManagedData> = {
   entityName: string,
   loading:boolean,
@@ -80,6 +91,12 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
       _entityConfig:xtStoreEntityConfig<T>()
     })),
     withMethods ((store) => ({
+      /**
+       * Stores (creates or updates) an entity through the provider, handling reference
+       * clearing and re-application.
+       * @param toStore - The entity to store
+       * @returns A promise resolving to the stored entity
+       */
       async storeEntity (toStore:T): Promise<T> {
         patchState(store, {loading:true});
           return this._clearReferences(toStore).then((valAndRef) => {
@@ -96,6 +113,10 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         });
       },
 
+      /**
+       * Fetches all entities from the provider and replaces the store's entity collection.
+       * @returns A promise that resolves when entities are loaded
+       */
       fetchEntities (): Promise<void> {
         patchState(store, {loading:true});
         return lastValueFrom(this._callProviderSearchEntities().pipe ( mergeMap((entities:T[]) => {
@@ -117,6 +138,11 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         }));
       },*/
 
+      /**
+       * Loads a single entity by ID into the store.
+       * @param id - The entity identifier
+       * @returns A promise resolving to the entity or undefined
+       */
       async loadEntity (id:string): Promise<T|undefined> {
         patchState(store, {loading:true});
         return store._storeProvider.loadEntity(entityName, id).then((loaded) => {
@@ -131,6 +157,11 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
           patchState(store, {loading:false});
         });
       },
+      /**
+       * Loads a single entity by ID, throwing if not found.
+       * @param id - The entity identifier
+       * @returns A promise resolving to the entity
+       */
       async safeLoadEntity (id:string): Promise<T> {
         patchState(store, {loading:true});
         return store._storeProvider.loadEntity(entityName, id).then ( (loaded)=> {
@@ -144,6 +175,11 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
           patchState(store, {loading:false});
         });
       },
+      /**
+       * Deletes an entity by ID and removes it from the store.
+       * @param id - The entity identifier
+       * @returns A promise resolving to true if deletion succeeded
+       */
       async deleteEntity (id:string): Promise<boolean> {
         patchState(store, {loading:true});
         return store._storeProvider.deleteEntity(entityName, id).then((result)=> {
@@ -155,6 +191,11 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
           patchState(store, {loading:false});
         });
       },
+      /**
+       * Filters the currently loaded entities by the given criteria.
+       * @param criteria - Filter criteria to apply
+       * @returns An observable emitting the matching entities
+       */
       searchEntities(...criteria: XtStoreCriteria<T>[]): Observable<T[]> {
         patchState(store, { loading: true });
         try {
@@ -171,6 +212,10 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
         }
       },
 
+      /**
+       * Updates the store options (sort, filter) and re-fetches entities.
+       * @param option - The new store feature options
+       */
       async updateStoreOptions (option:XtStoreEntityFeatureOptions<T> | undefined):Promise<void> {
         patchState(store, {sort:option?.sort, filter:option?.filter});
         await this.fetchEntities();
@@ -305,6 +350,9 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
 );
 }
 
+/**
+ * Optional configuration for an entity SignalStore, including default sort and filter settings.
+ */
 export type XtStoreEntityFeatureOptions<T extends ManagedData=ManagedData>= {
   sort?:XtSortBy<T>[];
   filter?:XtStoreCriteria<T>[];

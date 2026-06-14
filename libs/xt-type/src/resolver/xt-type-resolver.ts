@@ -23,15 +23,31 @@ export type XtTypeResolver = {
 
 }
 
+/**
+ * A type resolver that supports dynamic updates: adding root types,
+ * setting handlers, and resolving type references.
+ */
 export type XtUpdatableTypeResolver = XtTypeResolver & {
   addRootType<Type> (typeName:string, type:XtTypeInfo|XtTypeDetail|string, handler?:XtTypeHandler<Type>):void;
   setHandler<Type> (typeName:string, handler:XtTypeHandler<Type>):void;
   resolveAllTypeReferences ():void;
 }
 
+/**
+ * Default implementation of {@link XtUpdatableTypeResolver}.
+ * Manages a registry of type hierarchies and their handlers,
+ * supports adding root types, resolving references, and querying type metadata.
+ */
 export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
+    /** Map of type names to their hierarchy definitions */
     types= new Map<string, XtTypeHierarchy> ();
 
+    /**
+     * Registers a root type in the resolver
+     * @param typeName The name of the root type
+     * @param type The type description (string, XtTypeInfo, or XtTypeDetail)
+     * @param handler Optional handler for the type
+     */
     addRootType<Type> (typeName:string, type:XtTypeInfo|XtTypeDetail|string, handler?:XtTypeHandler<Type>):void {
       if (handler==null) {
           handler = this.findTypeHandler<Type>(typeName)?.handler;
@@ -42,14 +58,29 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
 
     }
 
+    /**
+     * Retrieves a registered type hierarchy by name
+     * @param typeName The name of the type to retrieve
+     * @returns The type hierarchy or undefined if not found
+     */
     getType (typeName:string):XtTypeHierarchy|undefined {
       return this.types.get(typeName);
     }
 
+    /**
+     * @returns True since this resolver supports updates
+     */
     canUpdate(): boolean {
         return true;
     }
 
+    /**
+     * Finds the type name for a given type, optionally resolving a sub-type
+     * @param typeName The type name or null/undefined
+     * @param subName Optional sub-type name
+     * @param value Optional value to help determine the type
+     * @returns The resolved type name or undefined
+     */
     findTypeName(typeName: string | null | undefined, subName?: string, value?: any):string | null | undefined {
         if( typeName==null)
             return typeName;
@@ -91,6 +122,12 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     return selectedType;
   }
 
+  /**
+   * Finds a type reference by name within a given type
+   * @param typeName The parent type name
+   * @param refName The reference name to find
+   * @returns The type reference or undefined if not found
+   */
   findReference(typeName: string | null | undefined, refName: string):XtTypeReference | null | undefined {
     if( typeName==null)
       return typeName;
@@ -101,6 +138,11 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     return undefined;
   }
 
+  /**
+   * Lists all type references for a given type
+   * @param typeName The type name to list references for
+   * @returns A map of reference names to their XtTypeReference definitions
+   */
   listReferences(typeName: string | null | undefined):{[key:string ]: XtTypeReference} {
     let ret:{[key:string]: XtTypeReference} = {};
     if( typeName==null)
@@ -115,6 +157,12 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
   }
 
 
+  /**
+   * Checks if a type definition represents a primitive type
+   * @param typeDef The type definition (string name, hierarchy, or reference)
+   * @param value Optional value to help determine primitiveness
+   * @returns True if the type is primitive
+   */
   isPrimitiveType (typeDef:string | XtTypeHierarchy| XtTypeReference | null | undefined, value?:any):boolean {
 
       if (typeDef==null) {
@@ -144,6 +192,11 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       }
     }
 
+  /**
+   * Finds the primitive type hierarchy for a given value
+   * @param value The value to determine the type of
+   * @returns The primitive type hierarchy or undefined
+   */
   findPrimitiveType (value:any) : XtTypeHierarchy| undefined {
     if (value==null) return undefined;
     const simpleType = findPrimitiveType(value);
@@ -151,6 +204,12 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     else return undefined;
   }
 
+  /**
+   * Lists the names of sub-properties for a given type, optionally using a value to infer them
+   * @param typeName The type name to list sub-properties for
+   * @param value Optional value used to infer sub-properties if no type is registered
+   * @returns An array of sub-property names
+   */
   listSubNames (typeName:string | null | undefined, value?: any):string[] {
       let ret:string[] = [];
       if (typeName!=null) {
@@ -183,6 +242,11 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
       return ret;
     }
 
+  /**
+   * Groups sub-properties by their type name
+   * @param typeName The parent type name
+   * @returns A map of type names to arrays of property keys of that type
+   */
   calculateSubPropertiesPerType<Type> (typeName:string|null|undefined):Map<string, (keyof Type)[]> {
     const ret = new Map<string, (keyof Type)[]>();
     if (typeName!=null) {
@@ -228,10 +292,25 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     return [];
   }
 
+  /**
+   * Gets an existing type handler or creates a default one if none exists
+   * @param typeName The name of the type
+   * @param subName Optional sub-type name
+   * @param value Optional value to help determine the type
+   * @returns Object with the resolved typeName and its handler
+   */
   getOrCreateTypeHandler<Type>(typeName: string | null | undefined, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> } {
     return this.findTypeHandler(typeName, true, subName, value );
   }
 
+  /**
+   * Finds the type handler for a given type, optionally creating a default one
+   * @param typeName The name of the type to find the handler for
+   * @param createDefault If true, creates a default handler if none exists
+   * @param subName Optional sub-type name to resolve first
+   * @param value Optional value to help determine the type
+   * @returns Object with the resolved typeName and its handler (if found)
+   */
   findTypeHandler<Type>(typeName: string | null | undefined, createDefault?:boolean, subName?: string, value?: Type): {typeName?: string | null, handler?:XtTypeHandler<Type> } {
     if ((typeName!=null) && (subName!=null)) {
       typeName = this.findTypeName(typeName, subName, value);
@@ -246,12 +325,24 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     } else return {};
   }
 
+  /**
+   * Creates a default type handler for the given type hierarchy
+   * @param type The type hierarchy to create a handler for
+   * @param value Optional value to help determine handler behavior
+   * @returns A new DefaultTypeHandler instance
+   */
   createDefaultTypeHandler<Type> (type: XtTypeHierarchy, value?:Type): XtTypeHandler<Type> {
     const ret = new DefaultTypeHandler<Type>();
     ret.init(type);
     return ret;
   }
 
+  /**
+   * Sets a type handler for an already-registered type
+   * @param typeName The name of the type
+   * @param handler The handler to assign
+   * @throws Error if the type is not found
+   */
   setHandler<Type>(typeName: string, handler: XtTypeHandler<Type>): void {
     const ret= this.types.get(typeName);
     if (ret!=null) {
@@ -261,6 +352,15 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     }
   }
 
+  /**
+   * Recursively builds an XtTypeHierarchy from a type description
+   * @param typeHierarchy The type description (string, XtTypeInfo, or XtTypeDetail)
+   * @param name The name of the type
+   * @param handler Optional handler for the type
+   * @returns The constructed type hierarchy
+   * @see XtTypeInfo
+   * @see XtTypeDetail
+   */
   fromDescription (typeHierarchy:XtTypeInfo|XtTypeDetail|string, name:string, handler?:XtTypeHandler<any>): XtTypeHierarchy {
     let ret: XtBaseTypeHierarchy|null = null;
     let reference:XtTypeReference|null = null;
@@ -326,6 +426,12 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
     return ret;
   }
 
+  /**
+   * Resolves all unresolved type references in the hierarchy.
+   * Iterates over all registered types and replaces UNRESOLVED_TYPE placeholders
+   * and unresolved references with their actual resolved types.
+   * @throws Error if a reference cannot be resolved
+   */
   resolveAllTypeReferences ():void {
     for (const type of this.types.values()) {
       if (type.children!=null) {
@@ -355,6 +461,11 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
 
 }
 
+/**
+ * Represents a node in the type hierarchy tree.
+ * Each node has a type name, optional children (sub-properties), references to other types,
+ * a handler for data operations, and compatibility metadata.
+ */
 export type XtTypeHierarchy = {
     type:string;
     children?:{[key:string]: XtTypeHierarchy | XtTypeReference} ;
@@ -373,6 +484,10 @@ export type XtTypeHierarchy = {
     listReferences (): { [key:string]:XtTypeReference};
 }
 
+/**
+ * Default implementation of {@link XtTypeHierarchy}. Represents a node in the type hierarchy tree,
+ * holding type metadata, children, handler, and compatibility information.
+ */
 export class XtBaseTypeHierarchy implements XtTypeHierarchy {
   type:string;
   children?:{[key:string]: XtBaseTypeHierarchy | XtTypeReference} ;
@@ -382,36 +497,67 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
   numericField?:string;
 
 
+  /**
+   * @param type The name of this type
+   * @param handler Optional type handler for this type
+   */
   constructor (type:string, handler?:XtTypeHandler<any> ) {
       this.type=type;
       this.handler=handler;
   }
 
+  /**
+   * Adds a child type to this type hierarchy
+   * @param key The name of the child property
+   * @param child The child type hierarchy to add
+   */
   addChild (key:string, child:XtBaseTypeHierarchy) : void {
       if (this.children==null) this.children= {};
       this.children[key]=child;
   }
 
+  /**
+   * Adds a reference child to this type hierarchy
+   * @param key The name of the child property
+   * @param child The type reference to add
+   */
   addReference (key:string, child:XtBaseTypeReference) : void {
     if (this.children==null) this.children= {};
     this.children[key]=child;
   }
 
+  /**
+   * Initializes the type handler with this hierarchy context
+   */
   initHandler ():void {
       if (this.handler!=null) {
         this.handler.init(this);
       }
     }
 
+    /**
+     * Checks whether this type matches the given type name
+     * @param toTest The type name to compare
+     * @returns True if the type name matches
+     */
     isTypeOf (toTest: string){
       return this.type==toTest;
     }
 
+    /**
+     * Checks whether this type is compatible with the given type name
+     * @param toTest The type name to check compatibility against
+     * @returns True if this type is compatible with the target type
+     */
     isCompatibleWith (toTest:string): boolean {
       if (this.compatibleTypes==null) return false;
       return this.compatibleTypes.indexOf(toTest) > -1;
     }
 
+  /**
+   * Lists all child references
+   * @returns A map of reference names to their XtTypeReference definitions
+   */
   listReferences (): { [key:string]:XtTypeReference} {
     const ret:{[key:string]:XtTypeReference} = {};
 
@@ -427,15 +573,27 @@ export class XtBaseTypeHierarchy implements XtTypeHierarchy {
   }
 }
 
+/**
+ * Placeholder type used when a referenced type has not been registered yet.
+ * Resolved later via {@link XtTypeHierarchyResolver.resolveAllTypeReferences}.
+ */
 export class UNRESOLVED_TYPE extends XtBaseTypeHierarchy {
   unknownType:string|null=null;
 
+  /**
+   * @param unknownType The name of the type that could not be resolved yet
+   */
   constructor(unknownType:string) {
     super(unknownType);
     this.unknownType=unknownType;
   }
 }
 
+/**
+ * Checks whether a type hierarchy node is an unresolved type placeholder
+ * @param type The type hierarchy to test
+ * @returns True if the type is an UNRESOLVED_TYPE
+ */
 export function isUnresolvedType (type: XtTypeHierarchy): type is UNRESOLVED_TYPE {
   if ((type as any).unknownType!==undefined) return true;
   else
@@ -454,6 +612,13 @@ export class XtBaseTypeReference implements XtTypeReference{
 
   public static readonly UNRESOLVED_TYPE = 'UNRESOLVED';
 
+  /**
+   * Creates a new type reference
+   * @param toType The name of the referenced type
+   * @param field The field on the referenced type that this reference points to
+   * @param type Optional resolved type name; defaults to UNRESOLVED_TYPE if not provided
+   * @param referenceType Optional cardinality of the relationship
+   */
   constructor(toType:string, field:string, type?:string, referenceType?: 'MANY-TO-ONE' | 'ONE-TO-MANY') {
     this.toType = toType;
     this.referenceType = referenceType;
@@ -464,6 +629,11 @@ export class XtBaseTypeReference implements XtTypeReference{
   }
 }
 
+/**
+ * Checks if a value is a primitive type (not a complex object, unless it's a Date)
+ * @param valueElement The value to test
+ * @returns True if the value is primitive or a Date
+ */
 function isPrimitive(valueElement: any): boolean {
   if (typeof valueElement == 'object') {
     if (valueElement==null) return true;
@@ -473,6 +643,11 @@ function isPrimitive(valueElement: any): boolean {
   } else return true;
 }
 
+/**
+ * Determines the primitive type name for a given value
+ * @param value The value to inspect
+ * @returns The type name (e.g. 'string', 'number', 'date') or undefined if it cannot be determined
+ */
 function findPrimitiveType (value:any) : string | undefined {
   if (value==null) return undefined;
   if (Array.isArray(value)) {
@@ -506,6 +681,9 @@ export type XtTypeDetail = {
   children?:{[key:string]: XtTypeReference|XtTypeInfo|string};
 }
 
+/**
+ * Represents a reference from one type to another type (e.g. foreign key relationship)
+ */
 export type XtTypeReference = {
   toType:string,
   referenceType?:'MANY-TO-ONE'|'ONE-TO-MANY',
@@ -513,6 +691,11 @@ export type XtTypeReference = {
   type?:string
 }
 
+/**
+ * Checks whether the given type description is a detailed description (XtTypeDetail) or a simple one (XtTypeInfo)
+ * @param toTest The type description to test
+ * @returns True if the value is an XtTypeDetail
+ */
 export function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeDetail {
   if (toTest.compatibleTypes !=null) {
     return Array.isArray(toTest.compatibleTypes);
@@ -525,6 +708,11 @@ export function isTypeDetail (toTest:XtTypeDetail|XtTypeInfo): toTest is XtTypeD
   return true;
 }
 
+/**
+ * Checks whether the given value is a type reference
+ * @param toTest The value to test
+ * @returns True if the value is an XtTypeReference
+ */
 export function isTypeReference (toTest:XtTypeReference|XtTypeInfo|XtTypeHierarchy|string|null|undefined): toTest is XtTypeReference {
   if (toTest==null) return false;
   if (typeof toTest == 'string') return false;

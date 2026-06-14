@@ -6,14 +6,23 @@ import { XtTypeHierarchy, XtTypeReference } from '../resolver/xt-type-resolver';
  */
 export class XtSpecialFieldsHelper {
 
+  /** Cache of discovered special fields per type name */
   static specialFieldsCache = new Map<string, SpecialFields<any>>();
   /**
    * In case some entity definition has changed, clear the cache
+   */
+  /**
+   * Clears the special fields cache, useful when entity definitions have changed
    */
   public static clearConfigCache (): void {
     this.specialFieldsCache.clear();
   }
 
+  /**
+   * Checks whether a type name represents a date type
+   * @param typeName The type name to check
+   * @returns True if the type is 'date', 'date-time', or 'time'
+   */
   public static isDateType (typeName:string|null|undefined):boolean {
     return (typeName==='date')||(typeName==='date-time')||(typeName==='time');
   }
@@ -23,6 +32,13 @@ export class XtSpecialFieldsHelper {
    * @param name
    * @param entity
    * @protected
+   */
+  /**
+   * Discovers special fields (id, dates, display, numeric) from an entity's type hierarchy
+   * @param name The entity name (used as cache key)
+   * @param entity The type hierarchy to analyze
+   * @param basis Optional existing special fields to extend
+   * @returns The special fields configuration
    */
   public static findSpecialFields<Type> (name:string, entity:XtTypeHierarchy, basis?:SpecialFields<Type>):SpecialFields<Type> {
     let specialFields = XtSpecialFieldsHelper.specialFieldsCache.get(name);
@@ -64,6 +80,11 @@ export class XtSpecialFieldsHelper {
     return specialFields;
   }
 
+  /**
+   * Discovers special fields (id, display, numeric value) by inspecting actual data
+   * @param data The data array to analyze
+   * @param existingFields The existing special fields to enrich
+   */
   static findSpecialFieldsFromData<Type>(data: Array<any>, existingFields: SpecialFields<Type>) {
     if( (existingFields.idField==null) && (data?.length>0)) {
       // We must guess the id field from data
@@ -92,21 +113,49 @@ export class XtSpecialFieldsHelper {
     }
   }
 
+  /**
+   * Scores an entity field to determine if it is likely an id field
+   * @param propName The property name
+   * @param prop The type hierarchy or reference for the property
+   * @param score The current score tracker to update
+   * @returns True if the property is likely an id field
+   */
   protected static scoreIdFieldFromEntityField (propName:string, prop:XtTypeHierarchy|XtTypeReference, score:{score:number, field:any}): boolean {
     return XtSpecialFieldsHelper.scoreIdFieldFromProperty(propName, null, score);
   }
 
+  /**
+   * Scores an entity field to determine if it is likely a numeric value field
+   * @param propName The property name
+   * @param prop The type hierarchy or reference for the property
+   * @param score The current score tracker to update
+   * @returns True if the property is a number field
+   */
   protected static scoreNumericalFieldFromEntityField (propName:string, prop:XtTypeHierarchy|XtTypeReference, score:{score:number, field:any}): boolean {
     if (prop.type=='number') {
       return XtSpecialFieldsHelper.scoreNumericalFieldFromProperty(propName, null, score);
     } else return false;
   }
+  /**
+   * Scores an entity field to determine if it is likely a display field
+   * @param propName The property name
+   * @param prop The type hierarchy or reference for the property
+   * @param score The current score tracker to update
+   * @returns True if the property is a string field
+   */
   protected static scoreDisplayFieldFromEntityField (propName:string, prop:XtTypeHierarchy|XtTypeReference, score:{score:number, field:any}): boolean {
     if (prop.type=='string') {
       return XtSpecialFieldsHelper.scoreDisplayFieldFromProperty(propName, null, score);
     }else return false;
   }
 
+  /**
+   * Scores a property to determine if it is likely a display field
+   * @param name The property name
+   * @param value The property value
+   * @param score The current score tracker to update
+   * @returns True if the property is a display field
+   */
   protected static scoreDisplayFieldFromProperty (name:string, value:any, score:{score:number, field:any}): boolean {
     if ((name==null)&&(value==null)) return false;
     const propName=name.toLowerCase();
@@ -136,6 +185,13 @@ export class XtSpecialFieldsHelper {
     return false;
   }
 
+  /**
+   * Scores a property to determine if it is likely a numeric value field
+   * @param name The property name
+   * @param value The property value
+   * @param score The current score tracker to update
+   * @returns True if the property is a numeric field
+   */
   protected static scoreNumericalFieldFromProperty (name:string, value:any, score:{score:number, field:any}): boolean {
     if ((name==null)&&(value==null)) return false;
     const propName=name.toLowerCase();
@@ -162,6 +218,13 @@ export class XtSpecialFieldsHelper {
   }
 
 
+  /**
+   * Scores a property to determine if it is likely an id field
+   * @param name The property name
+   * @param value The property value
+   * @param score The current score tracker to update
+   * @returns True if the property is definitely an id field
+   */
   protected static scoreIdFieldFromProperty (name:string, value:any, score:{score:number, field:any}): boolean {
     if( name==null)
       return false;

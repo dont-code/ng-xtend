@@ -17,8 +17,8 @@
   "hideGenerator": true,
   "categorizeByGroup": true,
   "navigationLinks": {
-    "Home": "../index.html",
-    "Guides": "../guides/index.html",
+    "Home": "/index.html",
+    "Guides": "/guides/index.html",
     "GitHub": "https://github.com/dont-code/ng-xtend"
   },
   "customCss": "./typedoc_theme.css"

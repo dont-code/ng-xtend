@@ -179,11 +179,9 @@ export class XtStoreProviderHelper {
 
   /**
    * Calculates sum, avg, min or max values per group
-   * @param values
-   * @param groupBy
-   * @param modelMgr
-   * @param position
-   * @param item
+   * @param name - The entity name
+   * @param values - The raw entity values
+   * @param groupBy - The grouping configuration
    */
   static calculateGroupedByValues<T>(name: string, values: T[], groupBy: XtGroupBy<T>):DontCodeStoreGroupedByEntities<T>|undefined {
       // We are counting per different value of the groupedBy Item
@@ -331,19 +329,41 @@ export class XtStoreProviderHelper {
 }
 
 
+/**
+ * Wrapper for entities that have been sorted and/or grouped by the store provider.
+ */
 export class DontCodeStorePreparedEntities<T> {
+  /**
+   * @param sortedData - The sorted entity list
+   * @param sortInfo - Optional sort specification applied
+   * @param groupedByEntities - Optional grouping result
+   */
   constructor(public sortedData:T[], public sortInfo?:XtSortBy<T>[], public groupedByEntities?:DontCodeStoreGroupedByEntities<T>) {
   }
 }
 
+/**
+ * Holds grouping information and the computed aggregate values per group key.
+ */
 export class DontCodeStoreGroupedByEntities<T> {
+  /**
+   * @param groupInfo - The group-by configuration
+   * @param values - Map of group keys to their aggregate values
+   */
   constructor(public groupInfo:XtGroupBy<T>, public values?:Map<any,DontCodeStoreGroupedByValues<T>[]>) {
     if (values==null)
       this.values=new Map<any,DontCodeStoreGroupedByValues<T>[]>();
   }
 }
 
+/**
+ * Represents a single aggregate value for a group.
+ */
 export class DontCodeStoreGroupedByValues<T> {
+  /**
+   * @param forAggregate - The aggregate definition (operation and field)
+   * @param value - The computed aggregate value
+   */
   constructor(public forAggregate:XtGroupByAggregate<T>, public value:any) {
   }
 }

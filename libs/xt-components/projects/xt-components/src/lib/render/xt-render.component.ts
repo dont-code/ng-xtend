@@ -44,31 +44,41 @@ import { XtBaseModel } from '../output/xt-base-model';
   styleUrl: './xt-render.component.css'
 })
 export class XtRenderComponent<T> implements AfterViewInit {
+  /** Injected resolver service for finding the best component */
   resolverService = inject(XtResolverService);
 
+  /** Optional explicit component type to render */
   componentType = input<Type<XtComponent<T>>> ();
+  /** The display mode (e.g. EDIT, VIEW, etc.) */
   displayMode = input.required<XtDisplayMode> ();
+  /** The value type identifier used for component resolution */
   valueType = input<string> ();
 
-  // Either we set the value directly
+  /** The value to display/edit (used when not inside a form) */
   value= model<T> ();
-  // Or we are inside a Form
+  /** The parent form group (used when inside a form) */
   formGroup=input<FormGroup>();
+  /** The sub-name within the form group */
   subName= input<string>();
 
+  /** Object holding the output emitters from the rendered component */
   outputsObject = new XtBaseOutput();
 
+  /** Inputs to pass through to the rendered component */
   inputs = input<XtBaseInput>();
+  /** Emits the outputs from the rendered component */
   outputs = output<XtComponentOutput>();
+  /** Model signals to pass through to the rendered component */
   models = input<XtComponentModel> ();
 
+  /** Reference to the NgComponentOutlet used to dynamically render the component */
   outlet = viewChild.required(NgComponentOutlet);
 
   constructor() {
 
   }
 
-
+  /** Computed context derived from display mode, form group, value, and value type */
   context: Signal<XtContext<any>> = computed(() => {
     let form = this.formGroup();
 
@@ -90,6 +100,7 @@ export class XtRenderComponent<T> implements AfterViewInit {
     return ret as XtContext<T>;
   });
 
+  /** Computed context that resolves references (if any) */
   realContext = computed(() => {
     let ret = this.context();
     /*if ((ret.isReference())&& (ret.referencedContext!=null)) {
@@ -99,6 +110,7 @@ export class XtRenderComponent<T> implements AfterViewInit {
   });
 
 
+  /** Computed component type to render, resolved from the context if not explicitly set */
   type:Signal<Type<XtComponent<T>>|null> = computed( () => {
     //console.debug("Calculating type in XtRenderSubComponent");
 

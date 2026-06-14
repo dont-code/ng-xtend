@@ -1,11 +1,49 @@
 :root {
   --color-background: #13171f;
   --color-background-secondary: #1f2937;
+  --color-background-active: #374151;
   --color-text: #d1d5db;
   --color-text-aside: #9ca3af;
-  --color-accent: #f43f5e;
-  --color-link: #f43f5e;
+  --color-accent: #fb7185;
+  --color-link: #fb7185;
   --color-focus-outline: #fb7185;
+  --color-icon-background: #1f2937;
+  --color-icon-text: #d1d5db;
+  --color-comment-tag-text: #d1d5db;
+  --color-comment-tag: #1f2937;
+  --color-ts-keyword: #fb7185;
+  --color-ts-project: #f9a8d4;
+  --color-ts-module: #f9a8d4;
+  --color-ts-namespace: #f9a8d4;
+  --color-ts-enum: #fbbf24;
+  --color-ts-enum-member: #fbbf24;
+  --color-ts-variable: #93c5fd;
+  --color-ts-function: #c4b5fd;
+  --color-ts-class: #fb7185;
+  --color-ts-interface: #6ee7b7;
+  --color-ts-constructor: #fb7185;
+  --color-ts-property: #fdba74;
+  --color-ts-method: #f9a8d4;
+  --color-ts-call-signature: #f9a8d4;
+  --color-ts-index-signature: #fdba74;
+  --color-ts-constructor-signature: #fb7185;
+  --color-ts-parameter: #93c5fd;
+  --color-ts-type-parameter: #fbbf24;
+  --color-ts-accessor: #f87171;
+  --color-ts-get-signature: #f87171;
+  --color-ts-set-signature: #f87171;
+  --color-ts-type-alias: #f9a8d4;
+  --color-document: #d1d5db;
+  --color-alert-note: #60a5fa;
+  --color-alert-tip: #34d399;
+  --color-alert-important: #a78bfa;
+  --color-alert-warning: #fbbf24;
+  --color-alert-caution: #f87171;
+  --color-scheme: dark;
+}
+
+html {
+  font-size: 16px;
 }
 
 body {
@@ -14,7 +52,7 @@ body {
 }
 
 a {
-  color: #f43f5e;
+  color: #fb7185;
 }
 
 .tsd-page-toolbar,

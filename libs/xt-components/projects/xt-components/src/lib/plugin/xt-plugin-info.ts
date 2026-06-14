@@ -3,6 +3,7 @@ import { XtOutputType } from '../xt-component';
 import { XtActionHandler } from '../action/xt-action-handler';
 import { XtWorkflow } from '../workflow/xt-workflow';
 
+/** Information about a registered component plugin */
 export type XtComponentInfo<T> = {
     componentName: string;
     componentClass: T;
@@ -10,17 +11,20 @@ export type XtComponentInfo<T> = {
     outputs?: XtOutputType[]
 }
 
+/** Information about a registered workflow plugin */
 export type XtWorkflowInfo<T extends XtWorkflow> = {
   name: string;
   class: T;
   workflowsHandled: string[];
 }
 
+/** Information about a registered type handler plugin */
 export type XtTypeHandlerInfo<T> = {
   typesHandled: string[];
   handlerClass: T;
 }
 
+/** Information about a registered action */
 export type XtActionInfo<T> = {
   description: string,
   visible: boolean,
@@ -28,6 +32,7 @@ export type XtActionInfo<T> = {
   iconUrl?: string
 }
 
+/** Information about a registered action handler that groups actions by type */
 export type XtActionHandlerInfo<T> = {
   types: string[];
   actions: {
@@ -35,6 +40,7 @@ export type XtActionHandlerInfo<T> = {
   }
 }
 
+/** Information about a registered plugin containing components, workflows, types, and action handlers */
 export type XtPluginInfo ={
     name: string;
     uriLogo?: string;

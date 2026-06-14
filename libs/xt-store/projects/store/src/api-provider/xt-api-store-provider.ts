@@ -18,10 +18,18 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
 
   protected http: HttpClient = inject (HttpClient, {optional:true}) as any;
 
+  /** Base URL for data API endpoints. */
   apiUrl: string;
+
+  /** Base URL for document upload endpoints. */
   docUrl: string;
+
+  /** Collection of active subscriptions for cleanup. */
   subscriptions = new Subscription();
 
+  /**
+   * @param http - Optional HttpClient instance; if omitted, Angular DI is used
+   */
   constructor(http?:HttpClient/* protected configService: CommonConfigService*/) {
     super();
     if (http!=null) {
@@ -41,6 +49,9 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
 
   }
 
+  /**
+   * Clean up subscriptions on service destruction.
+   */
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -52,6 +63,12 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
       this.docUrl = newConfig.documentApiUrl;
   }*/
 
+  /**
+   * Stores (creates or updates) an entity via REST API calls.
+   * @param name - The entity name
+   * @param data - The entity data to store
+   * @returns A promise resolving to the stored entity
+   */
   storeEntity(name: string, data: T): Promise<T> {
 
     const id=nonTemporaryId(data);
@@ -71,6 +88,12 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
     }
   }
 
+  /**
+   * Loads an entity by its key via a GET request.
+   * @param name - The entity name
+   * @param key - The entity identifier
+   * @returns A promise resolving to the entity or undefined
+   */
   loadEntity(name: string, key: any): Promise<T|undefined> {
     const obs = this.http.get<T>(this.apiUrl+'/'+name+'/'+key, {observe:"body", responseType:"json"});
 
@@ -80,12 +103,24 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
     });
   }
 
+  /**
+   * Deletes an entity by its key via a DELETE request.
+   * @param name - The entity name
+   * @param key - The entity identifier
+   * @returns A promise resolving to true
+   */
   deleteEntity(name: string, key: any): Promise<boolean> {
     return lastValueFrom(this.http.delete(this.apiUrl+'/'+name+'/'+key, {observe:"body", responseType:"json"})).then(value => {
       return true;
     });
     }
 
+  /**
+   * Searches entities via a GET request and applies client-side filters.
+   * @param name - The entity name
+   * @param criteria - Filter criteria to apply
+   * @returns An observable emitting the matching entities
+   */
   override searchEntities(name: string, ...criteria: XtStoreCriteria<T>[]): Observable<T[]> {
 
     return this.http.get(this.apiUrl+'/'+name, {observe:"body", responseType:"json"}).pipe(
@@ -99,10 +134,19 @@ export class XtApiStoreProvider<T extends ManagedData = ManagedData> extends Abs
     );
     }
 
+  /**
+   * Checks whether the API provider supports document storage.
+   * @returns Always true
+   */
   canStoreDocument(): boolean {
     return true;
   }
 
+  /**
+   * Uploads documents to the server via a multipart POST request.
+   * @param toStore - The files to upload
+   * @returns An observable emitting upload result info for each file
+   */
   storeDocuments(toStore: File[]): Observable<UploadedDocumentInfo> {
     const myFormData = new FormData();
     const headers = new HttpHeaders();

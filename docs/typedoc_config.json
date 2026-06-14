@@ -1,0 +1,25 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "ng-xtend API documentation",
+  "entryPointStrategy": "resolve",
+  "entryPoints": [
+    "./api-entrypoints/xt-components.ts",
+    "./api-entrypoints/xt-store.ts",
+    "./api-entrypoints/xt-type.ts"
+  ],
+  "out": "../dist/ng-xtend-website/api",
+  "readme": "none",
+  "cleanOutputDir": true,
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "hideGenerator": true,
+  "categorizeByGroup": true,
+  "navigationLinks": {
+    "Home": "/index.html",
+    "Guides": "/guides/index.html",
+    "GitHub": "https://github.com/dont-code/ng-xtend"
+  },
+  "customCss": "./typedoc_theme.css"
+}

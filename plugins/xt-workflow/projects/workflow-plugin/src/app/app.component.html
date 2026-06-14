@@ -2,9 +2,20 @@
 <p-toolbar>
   <ng-template #start>
     <div class="flex items-center gap-2">
-      <p-button icon="pi pi-bullseye" label="Simple" [disabled]="currentPage()=='/'" (onClick)="router.navigate(['/'])" pTooltip="Allow you to test simple data"></p-button>
-      <p-button icon="pi pi-objects-column" label="Objects" [disabled]="currentPage()=='/object'" (onClick)="router.navigate(['/object'])" pTooltip="Here you can test more complex data objects"></p-button>
-      <p-button icon="pi pi-list-check" label="Lists" [disabled]="currentPage()=='/set'" (onClick)="router.navigate(['/set'])" pTooltip="Lets you check list of objects"></p-button>
+      <p-button icon="pi pi-bullseye" label="List-Details" [disabled]="currentPage()=='/'" (onClick)="router.navigate(['/'])" pTooltip="Test the List-Details workflow"></p-button>
+    </div>
+  </ng-template>
+  <ng-template #end>
+    <div class="app-actions">
+      <p-button
+        [icon]="getThemeButtonIcon()"
+        [label]="getThemeButtonLabel()"
+        [severity]="getThemeButtonSeverity()"
+        variant="outlined"
+        rounded="true"
+        (click)="themeMenu.toggle($event)">
+      </p-button>
+      <p-menu #themeMenu [model]="themeOptions" [popup]="true"></p-menu>
     </div>
   </ng-template>
 </p-toolbar>

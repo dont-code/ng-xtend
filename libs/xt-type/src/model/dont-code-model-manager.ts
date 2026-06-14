@@ -3,12 +3,19 @@
  * It does not store the entity values but the description of entities, screens... as defined in the Editor
  */
 export class DontCodeModelManager {
+  /** The stored JSON content representing the model */
   protected content: any;
 
+  /**
+   * Creates a new model manager with empty content
+   */
   constructor(/*protected schemaMgr: DontCodeSchemaManager*/) {
     this.reset();
   }
 
+  /**
+   * Resets the model content to undefined
+   */
   reset() {
     this.content = undefined;
   }

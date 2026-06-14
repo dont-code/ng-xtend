@@ -2,19 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   linkedSignal,
+  model,
   OnDestroy,
   OnInit,
   signal
 } from '@angular/core';
-import {
-  updateFormGroupWithValue,
-  XtBaseModel,
-  XtComponentModel,
-  XtMessageHandler,
-  XtRenderComponent
-} from 'xt-components';
+import { updateFormGroupWithValue, XtBaseModel, XtMessageHandler, XtRenderComponent } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
 import { ManagedData } from 'xt-type';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
@@ -42,8 +38,6 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
 
   editForm = signal<FormGroup>(this.formBuilder.group ({ editor: this.formBuilder.group({}) }));
 
-  selectedEntity = signal<T|null>(null);
-
   canEdit= computed(()=> {
     if (this.selectedEntity()!=null)
       return true;
@@ -64,12 +58,20 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
   deleting = signal (false);
   updating = signal (false);
 
+  selectedEntity= model<any>();
+
   listModel =new XtBaseModel<any>();
+
+  selectedEntityChanged= effect( ()=> {
+    const selected=this.selectedEntity();
+    this.updateEditForm();
+  });
 
   private subscriptions=new Subscription();
 
   constructor() {
     super();
+    this.listModel.valueSelected=this.selectedEntity;
   }
 
   override ngOnInit () {
@@ -96,16 +98,6 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }
   }
 
-  listModelChanged($event : any) {
-    const newValue=$event as XtComponentModel;
-    if (newValue?.valueSelected!=null) {
-      newValue?.valueSelected.subscribe (selected => {
-        this.selectedEntity.set(selected);
-        this.updateEditForm();
-      });
-    }
-  }
-
   updateEditForm () {
     const entity = this.selectedEntity();
     const form = this.formBuilder.group({}, {updateOn: 'change'});
@@ -126,7 +118,7 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
       this.saving.set(true);
       const savedValue = await this.safeFindStore().storeEntity (toSave);
       this.selectedEntity.set(savedValue);
-      this.updateEditForm();
+      //this.updateEditForm();
       this.canSave.set(false);
       this.viewMode.set("list");
     } catch (error) {
@@ -172,7 +164,7 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     if (deleted) {
       this.selectedEntity.set(null);
       this.viewMode.set("list");
-      this.updateEditForm();
+      //this.updateEditForm();
     }
     }
 
@@ -181,7 +173,7 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
       this.newing.set(true);
       const newOne = await this.safeFindStore().storeEntity({} as T);
       this.selectedEntity.set(newOne);
-      this.updateEditForm();
+      //this.updateEditForm();
       this.viewMode.set("edit");
 
     } catch (error) {

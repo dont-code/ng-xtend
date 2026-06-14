@@ -21,12 +21,25 @@ jobs:
         with:
           name: Ng-xtend
           email: developer@dont-code.net
-      - name: Update Ng-xtend.dev website from Readme
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Install docs dependencies
+        working-directory: ./docs
+        run: |
+          npm install -g pnpm@latest
+          pnpm install
+      - name: Generate API docs and website
+        working-directory: ./docs
+        run: pnpm docs:generate
+      - name: Deploy to ng-xtend.dev website
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
           username: ${{secrets.NG_XTEND_DEV_WEBSITE_USER}}
           password: ${{secrets.NG_XTEND_DEV_WEBSITE_PASSWORD}}
-          local_path: './docs/ng-xtend-website/*'
+          local_path: './dist/ng-xtend-website/*'
           remote_path: '/www'
           server: 'ng-xtend.dev'
           port: ${{secrets.DONTCODE_WEBSITE_SSH_PORT}}

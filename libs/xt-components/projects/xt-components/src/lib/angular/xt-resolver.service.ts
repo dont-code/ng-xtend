@@ -28,12 +28,17 @@ import { firstValueFrom, Observable } from 'rxjs';
 })
 export class XtResolverService {
 
+  /** Injected plugin registry for component and type registration. */
   pluginRegistry = inject (XT_REGISTRY_TOKEN);
 
+  /** Optional base resolver injected via DI token. */
   protected baseResolver = inject (XT_RESOLVER_TOKEN, {optional:true});
+  /** Optional base type resolver injected via DI token. */
   protected baseTypeResolver = inject (XT_TYPE_RESOLVER_TOKEN, {optional:true});
 
+  /** The resolver used to find components for a given context. */
   resolver:XtResolver;
+  /** The type resolver for type hierarchy and reference resolution. */
   typeResolver:XtTypeResolver;
 
   constructor() {
@@ -47,17 +52,37 @@ export class XtResolverService {
 
   }
 
+  /**
+   * Finds the best matching component for the given context and optional sub-name.
+   * @param baseContext - The context to resolve against
+   * @param subName - Optional sub-name for nested resolution
+   * @returns The resolved component descriptor
+   */
   findBestComponent<T> (baseContext: XtContext<T>, subName?:string) : XtResolvedComponent{
     const ret= this.resolver.resolve(baseContext, subName);
     if (ret!=null) return ret;
     else throw new Error ("No components found for this context "+ baseContext.toString());
   }
 
+  /**
+   * Resolves the type name for the given context and optional sub-name.
+   * @param baseContext - The context to query
+   * @param subName - Optional sub-name for nested type resolution
+   * @param value - Optional value for type inference
+   * @returns The type name, or null/undefined
+   */
   findTypeOf<T> (baseContext:XtContext<T>, subName?:string, value?:T): string | null | undefined {
     const ret = this.typeResolver.findTypeName (baseContext.valueType, subName, value);
     return ret;
   }
 
+  /**
+   * Finds the type handler for the given context, resolving references if necessary.
+   * @param baseContext - The context to query
+   * @param subName - Optional sub-name for nested resolution
+   * @param value - Optional value for handler inference
+   * @returns An object with the type name and its handler
+   */
   findTypeHandlerOf<T> (baseContext:XtContext<T>, subName?:string, value?:T): {typeName?:string | null, handler?:XtTypeHandler<any>} {
     let ret:{typeName?:string | null, handler?:XtTypeHandler<any>} = {typeName:undefined, handler:undefined};
     if (baseContext.isReference()){
@@ -68,19 +93,40 @@ export class XtResolverService {
     return ret;
   }
 
+  /**
+   * Lists the sub-names defined by the type of the given context.
+   * @param baseContext - The context to query
+   * @param value - Optional value for type inference
+   * @returns An array of sub-name strings
+   */
   listSubNamesOf<T> (baseContext:XtContext<T>, value?:T): string[] {
     return this.typeResolver.listSubNames(baseContext.valueType, value);
   }
 
+  /**
+   * Lists the sub-names defined by a given value type string.
+   * @param valueType - The type string to query
+   * @param value - Optional value for type inference
+   * @returns An array of sub-name strings
+   */
   listSubNamesOfType<T> (valueType:string, value?:T): string[] {
     return this.typeResolver.listSubNames(valueType, value);
   }
 
+  /**
+   * Registers a full plugin including its types and type handlers.
+   * @param info - The plugin information to register
+   */
   registerPlugin (info:XtPluginInfo) {
     this.pluginRegistry.registerPlugin (info);
     this.registerTypes (info.types, info.typeHandlers);
   }
 
+  /**
+   * Registers type definitions and optional type handlers with the type resolver.
+   * @param types - The type definitions to register
+   * @param handlers - Optional type handler definitions
+   */
   registerTypes (types:XtTypeInfo|undefined, handlers?:XtTypeHandlerInfo<any>[]): void {
     if ((types !=null) && (this.typeResolver.canUpdate())) {
 
@@ -146,6 +192,12 @@ export class XtResolverService {
   }
 
 
+  /**
+   * Checks if a handler is defined for the given type among the provided handler infos.
+   * @param newType - The type to check
+   * @param handlers - The handler definitions to search
+   * @returns A handler instance or null
+   */
   protected handlerDefinedFor(newType: string, handlers: XtTypeHandlerInfo<any>[] | undefined):any {
         for (const handler of handlers ?? []) {
           if (handler.typesHandled.includes(newType)) {
@@ -155,20 +207,32 @@ export class XtResolverService {
         return null;
     }
 
+  /**
+   * Gets the resolved component info for a given component type.
+   * @param type - The component type class
+   * @returns The resolved component descriptor
+   */
   getComponentInfo<T>(type: Type<XtComponent<T>>):XtResolvedComponent {
     return XtResolvedComponent.from(this.pluginRegistry.getComponentInfo (type));
   }
 
+  /**
+   * Finds the resolved component info for a given component type, returning null if not found.
+   * @param type - The component type class
+   * @returns The resolved component descriptor or null
+   */
   findComponentInfo<T>(type: Type<XtComponent<T>>):XtResolvedComponent|null {
     const ret=this.pluginRegistry.findComponentInfo (type);
     if (ret==null) return null;
     else return XtResolvedComponent.from(ret);
   }
 
+  /** Computed signal that lists all registered components. */
   public listComponents = computed<Array<XtComponentInfo<any>>>(() => {
     return this.pluginRegistry.listComponents();
   });
 
+  /** Computed signal that lists all registered plugins. */
   public listPlugins = computed<Array<XtPluginInfo>>(() => {
     return this.pluginRegistry.listPlugins();
   });
@@ -226,6 +290,13 @@ export class XtResolverService {
     return structuredClone(value);
   }
 
+  /**
+   * Resolves a mapping helper from the context's value type to a target type.
+   * @param context - The source context
+   * @param targetType - The target type to map to
+   * @param value - Optional value for handler inference
+   * @returns A MappingHelper if a mapping exists, otherwise undefined
+   */
   resolveMappingOf<U, T> (context: XtContext<T>, targetType:string, value?:T): MappingHelper<U, T> | undefined {
     if (context.valueType!=null) {
       const typeHandler = this.typeResolver.findTypeHandler<T>(targetType, false, undefined, value);
@@ -240,6 +311,12 @@ export class XtResolverService {
     return undefined;
   }
 
+  /**
+   * Resolves the referenced value for a context that holds a type reference, using the provided store manager.
+   * @param context - The context with a reference to resolve
+   * @param storeMgr - The store manager for entity lookup
+   * @returns The resolved referenced value(s), or null/undefined
+   */
   async resolveReferencedValue<T,U> (context: XtContext<T>, storeMgr: IStoreManager): Promise<U | U[] | null | undefined> {
     if (!context.isReference()) return undefined;
     const ref= context.reference!;
@@ -259,6 +336,9 @@ export class XtResolverService {
     return undefined;
   }
 
+  /**
+   * Resolves all pending type references in the type resolver.
+   */
   resolvePendingReferences () {
     (this.typeResolver as XtUpdatableTypeResolver).resolveAllTypeReferences();
   }

@@ -9,15 +9,25 @@ import { SpecialFields } from '../transformation/special-fields';
  */
 export class ManagedDataHandler<Type extends ManagedData = ManagedData> extends AbstractTypeHandler<Type>
 {
+  /**
+   * @param specialFields Optional pre-configured special fields
+   */
   constructor(specialFields?:SpecialFields<Type>) {
     super(specialFields);
   }
 
+  /**
+   * Initializes the handler and discovers date fields from the type hierarchy
+   * @param context The type hierarchy to initialize from
+   */
   init(context:XtTypeHierarchy): void {
     super.init(context);
     this.findDateFields();
   }
 
+  /**
+   * Discovers and registers date fields from the type hierarchy children
+   */
   protected findDateFields () {
     if (this.type?.children!=null) {
       this.fields.clearDateFields();

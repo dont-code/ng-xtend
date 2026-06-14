@@ -1,6 +1,6 @@
 import {XtStoreProviderHelper} from './xt-store-provider-helper';
 import { XtStoreGroupByAggregate, XtStoreGroupBy } from '../xt-reporting';
-import { XtGroupByOperation } from '../xt-store-parameters';
+import { XtGroupByOperation, XtSortBy, XtSortByDirection } from '../xt-store-parameters';
 import { ManagedData, ManagedDataHandler, SpecialFields, xtTypeManager } from 'xt-type';
 import { describe, expect, it } from 'vitest';
 
@@ -236,5 +236,123 @@ describe('Store Provider Helper', () => {
       }
     }
   )
+
+  it ('should support simple sorting correctly', () => {
+    const testArray=[{
+      name: 'cTest',
+      value: 4,
+      date: new Date (1970,10,5)
+    },{
+      name:'aTest',
+      value:1,
+      date: new Date(1960, 5,10)
+    },{
+      name:'bTest',
+      value: 10,
+      date: new Date(2010,8,4)
+    }];
+
+    const byNameSort = XtStoreProviderHelper.multiSortArray([...testArray], [{
+      by:'name',
+      direction:XtSortByDirection.Ascending
+    }]);
+
+    expect(byNameSort.map((val)=> val.name)).toEqual(['aTest','bTest', 'cTest']);
+
+    const byValueSort= XtStoreProviderHelper.multiSortArray([...testArray], [{
+      by:'value',
+      direction:XtSortByDirection.Descending
+    }]);
+
+    expect(byValueSort.map((val)=> val.value)).toEqual([10,4, 1]);
+
+    const byDateSort= XtStoreProviderHelper.multiSortArray([...testArray], [{
+      by:'date',
+      direction:XtSortByDirection.None
+    }]);
+
+    expect(byDateSort.map((val)=> val.date)).toEqual([testArray[1].date, testArray[0].date, testArray[2].date]);
+
+    const byMultipleValueSort= XtStoreProviderHelper.multiSortArray([...testArray], [{
+      by:'value',
+      direction:XtSortByDirection.Descending
+    }, {
+      by:'name',
+      direction:XtSortByDirection.Ascending
+    }]);
+
+    expect(byMultipleValueSort.map((val)=> val.value)).toEqual([10,4, 1]);
+  })
+
+
+    it ('should support multiple sort correctly', () => {
+      const testArray=[{
+        name: 'cTest',
+        value: 4,
+        date: new Date (1970,10,5)
+      },{
+        name:'aTest',
+        value:1,
+        date: new Date(1960, 5,10)
+      },{
+        name:'cTest',
+        value: 10,
+        date: new Date(2010,8,4)
+      }];
+
+      const byNameSort = XtStoreProviderHelper.multiSortArray([...testArray], [{
+        by:'name',
+        direction:XtSortByDirection.Descending
+      }, {
+        by:'value',
+        direction:XtSortByDirection.Ascending
+      }]);
+
+      expect(byNameSort.map((val)=> val.name+val.value)).toEqual(['cTest4','cTest10', 'aTest1']);
+
+    })
+
+    it ('should support sorted insertion correctly', () => {
+      const testArray=[{
+        name: 'cTest',
+        value: 4,
+        date: new Date (1970,10,5)
+      },{
+        name:'cTest',
+        value: 10,
+        date: new Date(2010,8,4)
+      },{
+        name:'aTest',
+        value:1,
+        date: new Date(1960, 5,10)
+      },];
+
+      const sortOptions=[{
+        by:'name',
+        direction:XtSortByDirection.Descending
+      }, {
+        by:'value',
+        direction:XtSortByDirection.Ascending
+      }] as XtSortBy<any>[];
+
+      const byNameInsert = XtStoreProviderHelper.insertInSortedList({
+          name:'bTest',
+          value:7,
+          date:new Date()
+        },
+        [...testArray], sortOptions);
+
+      expect(byNameInsert.map((val)=> val.name+val.value)).toEqual(['cTest4','cTest10','bTest7', 'aTest1']);
+
+      const byValueInsert = XtStoreProviderHelper.insertInSortedList({
+          name:'cTest',
+          value:6,
+          date:new Date()
+        },
+        [...testArray], sortOptions);
+
+      expect(byValueInsert.map((val)=> val.name+val.value)).toEqual(['cTest4','cTest6','cTest10', 'aTest1']);
+
+    })
   }
 );

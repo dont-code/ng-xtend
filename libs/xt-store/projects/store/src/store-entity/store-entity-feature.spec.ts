@@ -8,7 +8,7 @@ import { withXtStoreProvider, XtSignalStore } from './store-entity-feature';
 import { XtMemoryStoreProvider } from '../store-provider/xt-memory-store-provider';
 import { ManagedData, xtTypeManager } from 'xt-type';
 import { StoreTestBed } from '../test/store-test-bed';
-import { XtStoreCriteria } from '../xt-store-parameters';
+import { XtSortByDirection, XtStoreCriteria } from '../xt-store-parameters';
 import { firstValueFrom } from 'rxjs';
 
 describe('StoreEntityFeature', () => {
@@ -153,6 +153,181 @@ describe('StoreEntityFeature', () => {
     expect(loadedProvenanceBook.author._id).toEqual(annLeckieAuthor._id);
   });
 
+  it('should support sorted & filtered store', async () => {
+    StoreTestBed.ensureMemoryProviderOnly();
+    const typeMgr = xtTypeManager();
+    typeMgr.addRootType('AuthorType2', {
+      name: 'string',
+      birthDate: 'date',
+      birthCity: 'string'
+    });
+    typeMgr.addRootType('BookType2', {
+      children: {
+        title: 'string',
+        author: {
+          toType: 'AuthorType2',
+          field: 'name',
+          referenceType: 'MANY-TO-ONE'
+        },
+        genre: 'string',
+        cost: 'number'
+      }
+    });
+
+    const storeMgr = xtStoreManager();
+
+    const philipKDickAuthor = await storeMgr.getProviderSafe<AuthorType>('AuthorType2').storeEntity('AuthorType2', {
+      name: 'Philip K. Dick',
+      birthCity: 'Chicago',
+      birthDate: new Date(1928, 12, 16)
+    });
+
+    const annLeckieAuthor = await storeMgr.getProviderSafe<AuthorType>('AuthorType2').storeEntity('AuthorType2', {
+      name: 'Ann Leckie',
+      birthCity: 'Toledo',
+      birthDate: new Date(1966, 3, 2)
+
+    });
+
+    await storeMgr.getProviderSafe<StoredBookType2>('BookType2').storeEntity('BookType2', {
+      title: 'Ubik',
+      author: 'Philip K. Dick',
+      genre: 'SF',
+      cost:50
+    });
+
+    await storeMgr.getProviderSafe<StoredBookType2>('BookType2').storeEntity('BookType2', {
+      title: 'Ancillaire',
+      author: 'Ann Leckie',
+      genre: 'Space Opera',
+      cost:70
+    });
+
+    await storeMgr.getProviderSafe<StoredBookType2>('BookType2').storeEntity('BookType2', {
+      title: 'Sheep',
+      author: 'Philip K. Dick',
+      genre: 'SF',
+      cost:40
+    });
+
+    // Let's try first the simple sort / filter
+    const storeType = signalStore(withXtStoreProvider<BookType2>("BookType2", undefined, storeMgr, typeMgr, {
+      sort: [{
+        by: 'title',
+        direction:XtSortByDirection.Ascending
+      } ],
+      filter: [new XtStoreCriteria('genre', 'SF', '=')
+      ]
+    }));
+    const store = new storeType() as unknown as XtSignalStore<BookType2>;
+    await store.fetchEntities();
+    let result = store.entities();
+    expect(result.length).toEqual(2);
+    expect(result[0].title).toEqual('Sheep');
+
+    // Now adds an item, and ensure it is put at the right place, and genre is automatically filled
+    let added = await store.storeEntity({
+        title: 'Tad Book',
+        author: annLeckieAuthor,
+        cost: 40
+      } as BookType2);
+    expect(added.genre).toBe('SF');
+    result = store.entities();
+    expect(result.length).toEqual(3);
+    expect(result[1].title).toEqual(added.title);
+
+    let error=false;
+    // Storing an entity that doesn't match the filter should not update the list
+      const notAdded = await store.storeEntity({
+        title: 'Tad Book',
+        author: annLeckieAuthor,
+        cost: 40,
+        genre:'NotGood'
+      });
+    result = store.entities();
+    expect(result).toHaveLength(3);
+
+    // Updating an element should re-trigger sort
+    added.title='Aaaa';
+    const addedId=added._id;
+    added = await store.storeEntity(added);
+    expect(added._id).toBe(addedId);
+    result = store.entities();
+    expect(result.map(val => val.title)).toEqual(['Aaaa', 'Sheep', 'Ubik']);
+
+    // If the updated element is not in the filter anymore, it should be removed from the list
+    added.genre='Other';
+    added = await store.storeEntity(added);
+    result = store.entities();
+    expect(result.length).toBe(2);
+    expect(result.map(val => val.title)).toEqual(['Sheep', 'Ubik']);
+
+  });
+
+  it ('should support updating sort / filter', async () => {
+    StoreTestBed.ensureMemoryProviderOnly();
+    const typeMgr = xtTypeManager();
+    typeMgr.addRootType('BookType3', {
+      title: 'string',
+      author: 'string',
+      releaseDate: 'date',
+      cost: 'number'
+    });
+
+    const storeMgr = xtStoreManager();
+
+    await storeMgr.getProviderSafe<BookType3>('BookType2').storeEntity('BookType3', {
+      title: 'Ubik',
+      author: 'Philip K. Dick',
+      releaseDate: new Date (1990,2,2),
+      cost:50
+    });
+
+    await storeMgr.getProviderSafe<BookType3>('BookType3').storeEntity('BookType3', {
+      title: 'Ancillaire',
+      author: 'Ann Leckie',
+      releaseDate: new Date (1970,2,2),
+      cost:70
+    });
+
+    await storeMgr.getProviderSafe<BookType3>('BookType3').storeEntity('BookType3', {
+      title: 'Sheep',
+      author: 'Philip K. Dick',
+      releaseDate: new Date (1997,2,2),
+      cost:40
+    });
+
+    // Let's try first the simple sort / filter
+    const storeType = signalStore(withXtStoreProvider<BookType2>("BookType3", undefined, storeMgr, typeMgr, {
+      sort: [{
+        by: 'title',
+        direction:XtSortByDirection.Ascending
+      } ],
+      filter: [new XtStoreCriteria('cost', 60, '<=')
+      ]
+    }));
+    const store = new storeType() as unknown as XtSignalStore<BookType3>;
+    await store.fetchEntities();
+    let result = store.entities();
+    expect(result.length).toEqual(2);
+    expect(result[0].title).toEqual('Sheep');
+
+    // Now change the sort & filter criteria
+    await store.updateStoreOptions({
+      sort: [{
+        by:'releaseDate',
+        direction:XtSortByDirection.Ascending
+      }],
+      filter: [new XtStoreCriteria('cost', 100,'<=')]
+      }
+    );
+
+    result = store.entities();
+    expect(result.length).toEqual(3);
+    expect(result[0].title).toEqual('Ancillaire');
+
+
+  });
 });
 
 type AuthorType=ManagedData&{
@@ -167,8 +342,23 @@ type BookType =ManagedData&{
   genre:string
 }
 
+type BookType2 = BookType & {
+  cost:number
+}
+
 type StoredBookType =ManagedData&{
   title:string,
   author:string,
   genre:string
+}
+
+type StoredBookType2 = StoredBookType & {
+  cost:number
+}
+
+type BookType3 =ManagedData&{
+  title:string,
+  author:string,
+  releaseDate:Date,
+  cost:number
 }

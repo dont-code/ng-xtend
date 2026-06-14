@@ -86,7 +86,7 @@ class DummyStoreProvider<T extends ManagedData = ManagedData> extends AbstractXt
   ): Observable<Array<T>> {
     return of([]);
   }
-  override searchAndPrepareEntities(name: string, sort?: XtSortBy<T> | undefined, groupBy?: XtGroupBy<T> | undefined, transformer?:XtDataTransformer,...criteria: XtStoreCriteria<T>[]): Observable<DontCodeStorePreparedEntities<T>> {
+  override searchAndPrepareEntities(name: string, sort?: XtSortBy<T>[] | undefined, groupBy?: XtGroupBy<T> | undefined, transformer?:XtDataTransformer,...criteria: XtStoreCriteria<T>[]): Observable<DontCodeStorePreparedEntities<T>> {
     return of (new DontCodeStorePreparedEntities<T>([]));
   }
 

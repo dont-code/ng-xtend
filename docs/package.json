@@ -1,0 +1,13 @@
+{
+  "name": "ng-xtend-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:api": "typedoc --options typedoc_config.json",
+    "docs:site": "sh ./generate-website.sh",
+    "docs:generate": "pnpm docs:api && pnpm docs:site"
+  },
+  "devDependencies": {
+    "typedoc": "^0.28.0"
+  }
+}

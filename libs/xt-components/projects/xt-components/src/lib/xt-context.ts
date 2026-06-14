@@ -79,15 +79,23 @@ export type XtContext<T> = {
 
 }
 
+/** Display modes controlling how a value is presented: inline, full view, editable, or list. */
 export type XtDisplayMode = 'INLINE_VIEW'|'FULL_VIEW'|'FULL_EDITABLE'|'LIST_VIEW';
 
+/**
+ * Base implementation of the XtContext interface.
+ * Manages display mode, form integration, child context hierarchy, and value tracking
+ * for an ng-extended component.
+ */
 export class XtBaseContext<T> implements XtContext<T>{
+  /** The current display mode for this context. Defaults to FULL_VIEW. */
   displayMode: XtDisplayMode = 'FULL_VIEW';
 
   /**
    * When editable, the value is stored in a parent formGroup
    */
   subName?: string;
+  /** The parent FormGroup when this context is a child within a reactive form. */
   parentFormGroup?: FormGroup<any>;
 
   /**
@@ -110,6 +118,7 @@ export class XtBaseContext<T> implements XtContext<T>{
    */
   nonFormValue?: WritableSignal<T|null>;
 
+  /** The type identifier for the value contained in this context. */
   valueType?:string;
 
   /**
@@ -131,13 +140,12 @@ export class XtBaseContext<T> implements XtContext<T>{
   listActions = signal<XtAction<T>[]|null>(null);
 
     /**
-     *
-     * @param displayMode
-     * @param readOnly
-     * @param parentGroup
-     * @param controlName
+     * Creates a new XtBaseContext instance.
+     * @param displayMode - The display mode for this context
+     * @param subName - Optional sub-name used within a parent form group
+     * @param parentGroup - Optional parent FormGroup for reactive form integration
+     * @param parentContext - Optional parent context for hierarchy management
      */
-
     constructor (displayMode: XtDisplayMode, subName?: string, parentGroup?: FormGroup, parentContext?:XtBaseContext<any>)
     {
         this.displayMode=displayMode;
@@ -153,6 +161,14 @@ export class XtBaseContext<T> implements XtContext<T>{
         }
     }
 
+    /**
+     * Sets the display value for this context when not managed by a reactive form.
+     * Propagates changes to child contexts and optionally notifies the parent context.
+     * @param newValue - The new value to set
+     * @param type - Optional type identifier to assign
+     * @param updateParent - Whether to propagate the change to the parent context (default true)
+     * @returns This context instance for chaining
+     */
     setDisplayValue (newValue:T|null|undefined, type?:string, updateParent:boolean=true): XtBaseContext<T> {
       if (newValue!==undefined){
         const oldValue = this.nonFormValue?this.nonFormValue():null;
@@ -189,6 +205,7 @@ export class XtBaseContext<T> implements XtContext<T>{
       return this;
     }
 
+    /** Computed signal that returns the current display value from non-form storage. */
     displayValue = computed( ()=>  {
       if (this.nonFormValue!==undefined) {
         return this.nonFormValue();
@@ -197,14 +214,26 @@ export class XtBaseContext<T> implements XtContext<T>{
       }
     });
 
+    /**
+     * Checks whether this context is bound to a reactive form group.
+     * @returns True if a form group exists
+     */
     isInForm (): boolean {
         return (this.formGroup()!=null);
     }
 
+    /**
+     * Returns the sub-name used as the form control name, or null if not in a form.
+     * @returns The sub-name or null
+     */
     formControlNameOrNull():string|null {
         return this.subName??null;
     }
 
+    /**
+     * Returns the current value from either the non-form signal or the form control.
+     * @returns The current value, or null/undefined
+     */
     value ():T | null | undefined {
       if (this.nonFormValue!=null)
         return this.nonFormValue()??this.formControlValue();
@@ -212,6 +241,11 @@ export class XtBaseContext<T> implements XtContext<T>{
         return this.formControlValue();
     }
 
+    /**
+     * Returns a sub-value by name from the current value object.
+     * @param subsubName - Optional sub-key to retrieve from the value object
+     * @returns The sub-value or the full value if no key is given
+     */
     subValue (subsubName?:string):any | null | undefined {
       const value = this.nonFormValue?this.nonFormValue():this.formControlValue();
       if ((subsubName != null) && (value != null)) {
@@ -239,6 +273,10 @@ export class XtBaseContext<T> implements XtContext<T>{
     }
   }
 
+  /**
+   * Retrieves the value from the parent form group for this context's sub-name.
+   * @returns The form control value, or undefined if not in a form
+   */
   formControlValue (): T | null | undefined {
     let ret:T|undefined|null=undefined;
     if (this.isInForm()) {
@@ -255,6 +293,12 @@ export class XtBaseContext<T> implements XtContext<T>{
     return ret;
   }
 
+  /**
+   * Sets the value in the parent form group for this context's sub-name.
+   * @param newValue - The new value to set on the form control
+   * @param markAsDirty - Whether to mark the control as dirty (default false)
+   * @returns True if the value was successfully set
+   */
   setFormValue (newValue:T|null|undefined, markAsDirty=false): boolean {
     if (this.isInForm()) {
       if (this.subName!=null) {
@@ -310,6 +354,14 @@ export class XtBaseContext<T> implements XtContext<T>{
     return ret;
   }
 
+  /**
+   * Returns or creates a child context for the given sub-name.
+   * Resolves type information and references when a typeResolver is provided.
+   * @param subName - The sub-name for the child context
+   * @param subType - Optional type hint for the child
+   * @param typeResolver - Optional type resolver for resolving sub-types and references
+   * @returns The child XtContext
+   */
   subContext(subName: string | undefined | null, subType?:string,  typeResolver?:XtTypeResolver | null): XtContext<any> {
       if ((subName==null) || (subName.length==0)) {
           return this;
@@ -362,14 +414,26 @@ export class XtBaseContext<T> implements XtContext<T>{
       }
     }
 
+    /**
+     * Returns the available form group, preferring localFormGroup over parentFormGroup.
+     * @returns The form group or undefined
+     */
     formGroup (): FormGroup|undefined {
         return this.localFormGroup??this.parentFormGroup;
     }
 
+  /**
+   * Checks whether this context holds a reference to another type.
+   * @returns True if a reference is set
+   */
   isReference ():boolean {
     return (this.reference!=null);
   }
 
+  /**
+   * Sets the type reference information for this context.
+   * @param reference - The type reference to set
+   */
   setReferenceInfo (reference:XtTypeReference):void {
     this.reference=reference;
     //this.subReferencesResolved.set(this.reference!=null);
@@ -391,6 +455,10 @@ export class XtBaseContext<T> implements XtContext<T>{
     if( valueType!=null) this.referencedContext.valueType=valueType;
   }*/
 
+  /**
+   * Returns a string representation of this context, including its name, type, value, and reference info.
+   * @returns A human-readable description of the context
+   */
   toString():string {
       let ret='XtContext named ';
       ret += this.subName??'None';

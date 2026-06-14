@@ -42,19 +42,28 @@ import { XtBaseModel } from '../output/xt-base-model';
   styleUrl: './xt-render-sub.component.css'
 })
 export class XtRenderSubComponent<T> implements AfterViewInit {
+  /** The context containing display mode, form group, and value for the sub-component */
   context = input.required<XtContext<T>> ();
+  /** Optional explicit component type to render */
   componentType = input<Type<XtComponent<T>>> ();
 
+  /** Object holding the output emitters from the rendered sub-component */
   outputsObject = new XtBaseOutput();
 
+  /** Inputs to pass through to the rendered sub-component */
   inputs = input<XtBaseInput>();
+  /** Emits the outputs from the rendered sub-component */
   outputs = output<XtComponentOutput>();
+  /** Model signals to pass through to the rendered sub-component */
   models = input<XtComponentModel> ();
 
+  /** Reference to the NgComponentOutlet used to dynamically render the sub-component */
   outlet = viewChild.required(NgComponentOutlet);
 
+  /** Injected resolver service for finding the best component */
   resolverService = inject(XtResolverService);
 
+  /** Computed context that resolves references (if any) */
   realContext = computed(() => {
     let ret = this.context();
     /*if ((ret.isReference()) && (ret.referencedContext!=null)) {
@@ -63,6 +72,7 @@ export class XtRenderSubComponent<T> implements AfterViewInit {
     return ret;
   });
 
+  /** Computed component type to render, resolved from the context if not explicitly set */
   type:Signal<Type<XtComponent<T>>|null> = computed( () => {
     //console.debug("Calculating type in XtRenderSubComponent");
 

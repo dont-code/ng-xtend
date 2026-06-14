@@ -1,0 +1,3 @@
+:host-context(.app-dark) .app-actions {
+  background: color-mix(in srgb, var(--p-surface-900) 94%, var(--p-primary-950) 6%);
+}

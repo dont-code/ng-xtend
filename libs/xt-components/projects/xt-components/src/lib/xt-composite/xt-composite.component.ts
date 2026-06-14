@@ -4,6 +4,12 @@ import { FormGroup } from '@angular/forms';
 import { XtResolverService } from '../angular/xt-resolver.service';
 import { XtContext } from '../xt-context';
 
+/**
+ * A composite XtComponent that manages a form group for its sub-elements.
+ * Extends XtSimpleComponent to provide context-based form group management
+ * and sub-context resolution for nested components.
+ * Selector: not directly used (abstract base via template).
+ */
 @Component({
   standalone: true,
   imports: [],
@@ -12,8 +18,13 @@ import { XtContext } from '../xt-context';
 })
 export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
 
+  /** Injected service for resolving components and type information. */
   resolverService = inject(XtResolverService);
 
+  /**
+   * Computes the local form group for this composite, creating one from the parent form group if it does not exist.
+   * Overrides the base implementation to manage a dedicated form group for sub-elements.
+   */
   override formGroupIfAny = computed<FormGroup | undefined> (() => {
     const context = this.context();
     if (context==null) return undefined;
@@ -40,9 +51,10 @@ export class XtCompositeComponent<T = any> extends XtSimpleComponent<T> {
   });
 
   /**
-   * Helper function to calculate the sub context
-   * @param subName
-   * @param subType
+   * Helper function to calculate the sub context for a named child element.
+   * @param subName - The name of the sub-element
+   * @param subType - Optional type hint for the sub-element
+   * @returns The sub-context for the given child
    */
   subContext (subName:string, subType?:string):XtContext<any> {
     this.formGroupIfAny();  // Ensure the context is properly initialized

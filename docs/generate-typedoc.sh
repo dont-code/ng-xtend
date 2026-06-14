@@ -40,6 +40,15 @@ MATOMO="$SCRIPT_DIR/matomo-script.html"
 MATOMO_OPTS=""
 [ -f "$MATOMO" ] && MATOMO_OPTS="-H $MATOMO"
 
+# Inject Matomo analytics into all API HTML pages
+if [ -f "$MATOMO" ]; then
+  echo "  Injecting Matomo analytics into API pages..."
+  find "$API_OUT" -name '*.html' | while IFS= read -r f; do
+    sed -i "/<\/head>/r $MATOMO" "$f"
+  done
+  echo "  Matomo injected into API pages."
+fi
+
 # Use-case files in order: number|filename(no ext)|title
 guides_list() {
   cat <<LIST

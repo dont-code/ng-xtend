@@ -22,12 +22,10 @@
     </p-table>
   }
 } @else {
-  <div>
+  <div class="grid grid-cols-1 md:grid-cols-[max-content_auto] items-center gap-3">
     @for (subName of allSubNames; track subName) {
-      <div class="flex flex-nowrap gap-3">
-        <div class="flex-none">{{subName}}</div>
-        <div class="flex-auto"><xt-render-sub [context]="subContext(subName)"></xt-render-sub></div>
-      </div>
+        <div>{{subName}}</div>
+        <div class="pl-3 md:pl-0"><xt-render-sub [context]="subContext(subName)"></xt-render-sub></div>
     }
   </div>
 

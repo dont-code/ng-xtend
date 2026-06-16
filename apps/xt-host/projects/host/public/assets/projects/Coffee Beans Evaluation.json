@@ -6,46 +6,33 @@
     "creation": {
       "type": "Application",
       "name": "Coffee Bean Evaluator",
-      "entities": {
-        "a": {
+      "entities": [ {
           "name": "Coffee Evaluation",
-          "fields": {
-            "e": {
+          "fields": [{
               "name": "Name",
-              "type": "Text"
-            },
-            "b": {
+              "type": "string"
+            }, {
               "name": "Picture",
-              "type": "Image"
-            },
-            "c": {
+              "type": "image"
+            }, {
               "name": "Comment",
-              "type": "Text"
-            },
-            "d": {
+              "type": "string"
+            },{
               "name": "Note",
-              "type": "Rating"
-            },
-            "a": {
-              "name": "Maxicoffee",
-              "type": "Price"
-            }
-          }
+              "type": "rating"
+            }]
         },
-        "b": {
-          "fields": {
-            "a": {
+        {
+          "fields": [{
               "name": "Name",
               "type": "Text"
-            },
-            "b": {
+            }, {
               "name": "Type",
               "type": "Shop type"
             }
-          },
+          ],
           "name": "Online Shop"
-        }
-      },
+        }],
       "sharing": {
         "with": "Dont-code users"
       }

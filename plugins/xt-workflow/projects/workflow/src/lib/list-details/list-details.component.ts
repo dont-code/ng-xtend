@@ -8,7 +8,7 @@ import {
   model,
   OnDestroy,
   OnInit,
-  signal
+  signal, viewChild
 } from '@angular/core';
 import { updateFormGroupWithValue, XtBaseModel, XtMessageHandler, XtRenderComponent } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
@@ -50,6 +50,17 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
       return "edit";
     }else return "list";
   });
+
+    // We need to manage when the user itself changed the tab
+  tabs = viewChild (Tabs);
+
+  tabChanged= effect(() => {
+    const tabs = this.tabs();
+    if( tabs!=null) {
+      const tabValue = tabs.value();
+      this.viewMode.set(tabValue as 'list'|'edit');
+    }
+});
 
   canSave=signal (false);
 

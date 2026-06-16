@@ -7,6 +7,7 @@ import {
 } from '../shared/models/dc-application-model';
 import { XtTypeDetail, XtTypeInfo, XtTypeReference } from 'xt-type';
 import { Title } from '@angular/platform-browser';
+import { DcWorkflowModel } from 'dc-workflow';
 
 @Injectable({
   providedIn: 'root'
@@ -154,5 +155,21 @@ export class ApplicationModelManagerService {
       ret.content!.creation!.entities!.push(newEntity);
     }
     return ret;
+  }
+
+  /**
+   * Returns the workflow configuration for the given entityName
+   * @param entityName
+   */
+  getWorkflowFor(entityName: string):DcWorkflowModel | undefined {
+    const workflows = this.model?.content?.creation.workflows;
+    if (workflows!=null) {
+      for (const key in workflows) {
+        if( workflows[key].entity==entityName ){
+          return workflows[key];
+        }
+      }
+    }
+    return undefined;
   }
 }

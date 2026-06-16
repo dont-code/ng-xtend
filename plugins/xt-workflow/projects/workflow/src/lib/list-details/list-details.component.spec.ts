@@ -215,4 +215,71 @@ describe('ListDetailsComponent', () => {
 
   });
 
-});
+  it('should support back and forth list-details',async () => {
+    const resolver = TestBed.inject(XtResolverService);
+
+    resolver.registerTypes({
+      "Test": {
+        "name": "string",
+        "price": "number"
+      }
+    });
+
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'Test',
+      workflow: 'list-detail',
+      data: {
+        sort: {
+          'price': 'descending'
+        }
+      }
+    } as DcWorkflowModel);
+
+    component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+    expect(component.entityName()).toEqual('Test');
+    fixture.detectChanges();
+
+    // Click on new
+    //const newSpy = vi.spyOn(component, 'newEntity');
+    const btnNew = fixture.debugElement.query(By.css("#btn-new"));
+    btnNew.children[0].nativeElement.click();
+    fixture.detectChanges();
+    // For some reasons, we have to wait multiple times for stability
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    //expect(newSpy).toHaveBeenCalledOnce();
+    const form = component.editForm().get('editor') as FormGroup;
+    // Check fields
+    expect(Object.keys(form.controls)).toEqual([
+      '_id', 'name', 'price'
+    ]);
+
+    // Now set some values in the fields
+    let nameInput = fixture.debugElement.query(By.css('[name="name"]'));
+    nameInput.nativeElement.value = 'NewName';
+    nameInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(form.value).toEqual({
+      _id: component.selectedEntity()!._id,
+      name: 'NewName',
+      price: null
+    });
+
+    expect(component.selectedEntity().name).toEqual('NewName');
+
+    //Now click again on the list, without saving
+    const tabList = fixture.debugElement.query(By.css('p-tab[value="list"]'));
+    tabList.nativeElement.click();
+    fixture.detectChanges();
+
+    await XtUnitTestHelper.waitFor(() => (component.viewMode() == "list"));
+
+    expect(component.selectedEntity().name).toEqual('NewName');
+   });
+  });

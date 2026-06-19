@@ -62,6 +62,23 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }
 });
 
+  formValue = signal<any>(null);
+
+  displayedEntities = computed<T[]>(() => {
+    const entities = this.store?.entities() ?? [];
+    const value = this.formValue();
+    const selected = this.selectedEntity();
+    if (value != null && selected != null && (selected as any)._id != null) {
+      const selectedId = (selected as any)._id;
+      return entities.map(e =>
+        (e as any)._id === selectedId
+          ? { ...(e as any), ...(value as any) }
+          : e
+      ) as T[];
+    }
+    return entities;
+  });
+
   canSave=signal (false);
 
   saving = signal (false);
@@ -114,6 +131,9 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     const form = this.formBuilder.group({}, {updateOn: 'change'});
     if (entity!=null) {
       updateFormGroupWithValue(form, entity, this.entityName(), this.resolver.typeResolver);
+      this.formValue.set(form.value);
+    } else {
+      this.formValue.set(null);
     }
     this.listenToFormEvent (form);
     this.editForm.set( this.formBuilder.group ({ editor: form }));
@@ -142,6 +162,9 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
   private listenToFormEvent(form: FormGroup) {
     this.subscriptions.unsubscribe();
     this.subscriptions = new Subscription();
+    this.subscriptions.add(form.valueChanges.subscribe(value => {
+      this.formValue.set(value);
+    }));
     this.subscriptions.add(form.events.subscribe(event => {
       const pristine = (event as PristineChangeEvent).pristine??true;
       if (!pristine) {

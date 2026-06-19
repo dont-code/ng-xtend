@@ -296,11 +296,66 @@ describe('ListDetailsComponent', () => {
     expect(component.selectedEntity()).toBeFalsy();
 
       // Click again to reselect it
-    rows[0].nativeElement.click();
+    const refreshedRows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    refreshedRows[0].nativeElement.click();
     fixture.detectChanges();
     await XtUnitTestHelper.waitFor(() => (component.viewMode() == "edit"));
 
     expect(component.viewMode()).toEqual('edit');
 
+   });
+
+  it('should reflect form edits in the list without saving', async () => {
+    const resolver = TestBed.inject(XtResolverService);
+
+    resolver.registerTypes({
+      "Test": {
+        "name": "string",
+        "price": "number"
+      }
+    });
+
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'Test',
+      workflow: 'list-detail',
+      data: {
+        sort: { 'price': 'descending' }
+      }
+    } as DcWorkflowModel);
+
+    component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+    expect(component.entityName()).toEqual('Test');
+    fixture.detectChanges();
+
+    // Create a new entity
+    const btnNew = fixture.debugElement.query(By.css("#btn-new"));
+    btnNew.children[0].nativeElement.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    // Edit name in the form
+    const nameInput = fixture.debugElement.query(By.css('[name="name"]'));
+    nameInput.nativeElement.value = 'EditedName';
+    nameInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    // Switch to list tab without saving
+    const tabList = fixture.debugElement.query(By.css('p-tab[value="list"]'));
+    tabList.nativeElement.click();
+    fixture.detectChanges();
+    await XtUnitTestHelper.waitFor(() => (component.viewMode() == "list"));
+
+    // The list should reflect the form edit
+    const list = fixture.debugElement.query(By.directive(Table));
+    const row = list.query(By.css('tbody tr'));
+    expect(row.nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('EditedName') != -1,
+      "Edited name should appear in the list without saving"
+    );
    });
   });

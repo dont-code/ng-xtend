@@ -30,11 +30,9 @@ export class TestWorkflowComponent implements OnInit, OnDestroy {
   constructor() {
     this.resolver.registerTypes({
       test: {
-        children: {
-          name: 'string',
-          creationDate:'date',
-          value: 'number'
-        }
+        name: 'string',
+        creationDate:'date',
+        value: 'number'
       }
     });
   }

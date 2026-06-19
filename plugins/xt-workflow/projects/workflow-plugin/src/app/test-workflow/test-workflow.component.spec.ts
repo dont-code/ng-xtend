@@ -9,6 +9,8 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { StoreTestBed } from 'xt-store';
 import { By } from '@angular/platform-browser';
 import { WfwRender } from 'dc-workflow';
+import { XtUnitTestHelper } from 'xt-components';
+import { registerWorkflowPlugin } from '../../../../workflow/src/lib/register';
 
 describe('TestComponent', () => {
   let component: TestWorkflowComponent;
@@ -23,6 +25,7 @@ describe('TestComponent', () => {
 
     const resolverService=TestBed.inject(XtResolverService);
     registerDefaultPlugin(resolverService);
+    registerWorkflowPlugin(resolverService);
 
     StoreTestBed.ensureMemoryProviderOnly();
     fixture = TestBed.createComponent(TestWorkflowComponent);
@@ -35,12 +38,11 @@ describe('TestComponent', () => {
 
   });
 
-  it('should render the workflow', () => {
-    const renderer = fixture.debugElement.query(By.directive(WfwRender));
-    expect(renderer).toBeTruthy();
+  it('should render the workflow', async () => {
+    await XtUnitTestHelper.waitFor(() => fixture.debugElement.query(By.directive(WfwRender)) != null, 40, 100);
 
-    const tableHeaders = renderer.queryAll(By.css('th'))
-    expect(tableHeaders.length).toEqual(3);
-    expect(tableHeaders.map(val => val.name)).toEqual(['name','creationDate','value']);
+    const ths = fixture.nativeElement.querySelectorAll('th');
+    expect(ths.length).toEqual(3);
+    expect(Array.from(ths, (v: any) => v.textContent)).toEqual(['name', 'creationDate', 'value']);
   });
 });

@@ -169,7 +169,6 @@ describe('ListDetailsComponent', () => {
 
     row.children[0].nativeElement.click();
     row.children[0].nativeElement.click();
-    row.children[0].nativeElement.click();
     fixture.detectChanges();
     await XtUnitTestHelper.waitFor (() => (component.viewMode()=="edit"));
 
@@ -271,15 +270,37 @@ describe('ListDetailsComponent', () => {
       price: null
     });
 
-    expect(component.selectedEntity().name).toEqual('NewName');
+    // I didn't save, so the name is still empty
+    expect(component.selectedEntity().name).toBeUndefined();
 
-    //Now click again on the list, without saving
+    //Now click again on the list tab, without saving
     const tabList = fixture.debugElement.query(By.css('p-tab[value="list"]'));
     tabList.nativeElement.click();
     fixture.detectChanges();
 
     await XtUnitTestHelper.waitFor(() => (component.viewMode() == "list"));
 
-    expect(component.selectedEntity().name).toEqual('NewName');
+    expect(component.viewMode()).toEqual('list');
+    expect(component.selectedEntity()).toBeTruthy();
+
+    // Another click on the item in the list should go back to edit mode
+    const rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows.length).toEqual(1);
+
+    // Click on the row to deselect it
+    rows[0].nativeElement.click();
+    fixture.detectChanges();
+
+    await XtUnitTestHelper.waitFor(() => (component.selectedEntity() == null));
+
+    expect(component.selectedEntity()).toBeFalsy();
+
+      // Click again to reselect it
+    rows[0].nativeElement.click();
+    fixture.detectChanges();
+    await XtUnitTestHelper.waitFor(() => (component.viewMode() == "edit"));
+
+    expect(component.viewMode()).toEqual('edit');
+
    });
   });

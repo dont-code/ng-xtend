@@ -28,29 +28,37 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     } else return [];
   });
 
-  selectedElement = linkedSignal<T[]|null, T|null> ({
-    source: this.valueSet,
+  private selectionContext = computed(() => ({
+    values: this.valueSet(),
+    current: this.selected()
+  }));
+
+  selectedElement = linkedSignal<{values: T[]|null, current: T|null}, T|null> ({
+    source: this.selectionContext,
     computation: (source, previous) => {
-   //   console.log("Triggering select with current "+source?.length+" and previous "+previous?.source?.length);
-      if ((source!=null) && (previous?.source!=null)) {
-     //   console.log("Recalculating selection");
-        if( previous?.value!=null) {
-       //   console.log("Trying to reselect existing element");
-            // Otherwise reselect the element if still there
-          return source.find((toCheck) => {
-            if  ((toCheck as any)._id!=null) {
-              const ret= (toCheck as any)._id==(previous.value as any)._id;
-           //   if (ret) console.log("Found existing element to reselect");
-              return ret;
-            } else {
-                // Without identity key, just compare the elements
-              const ret= toCheck===previous.value;
-              return ret;
-            }
-          })??null;
-        }
+      if (source.values == null || source.values.length === 0) return null;
+
+      // First try to find the currently selected model value in the source
+      if (source.current != null) {
+        const found = source.values.find((toCheck) => {
+          if ((toCheck as any)._id != null && (source.current as any)._id != null) {
+            return (toCheck as any)._id === (source.current as any)._id;
+          }
+          return toCheck === source.current;
+        });
+        if (found) return found;
       }
-//      console.log("No selection");
+
+      // Fallback: maintain previous selection across list refresh
+      if (previous?.value != null) {
+        return source.values.find((toCheck) => {
+          if ((toCheck as any)._id != null) {
+            return (toCheck as any)._id === (previous.value as any)._id;
+          }
+          return toCheck === previous.value;
+        }) ?? null;
+      }
+
       return null;
     }
   });

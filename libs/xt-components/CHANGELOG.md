@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.6.4...xt-components-v0.7.0) (2026-06-20)
+
+
+### Features
+
+* create workflow plugin ([2590f90](https://github.com/dont-code/ng-xtend/commit/2590f90e477f6d2d2090fd958f0a21d914b7c2e3))
+* create workflow project ([15c73ba](https://github.com/dont-code/ng-xtend/commit/15c73ba7b1e8c0a09dfe08c5af9e5a3674ffd549))
+* support for out of order type definition ([c7def41](https://github.com/dont-code/ng-xtend/commit/c7def41176d2efa4bff553a691a6986b24807a88))
+* workflow, work in progress ([4562f15](https://github.com/dont-code/ng-xtend/commit/4562f1516dda7c26ae33d3b781b5e33b050d0c03))
+
+
+### Bug Fixes
+
+* APi & docs ([23e64b4](https://github.com/dont-code/ng-xtend/commit/23e64b4b7699e6b5d27febf12a3458f2d99f9cd6))
+* Testing workflow ([fbf2a8f](https://github.com/dont-code/ng-xtend/commit/fbf2a8f133e4add6ee82bcfe34f97ca614a298c1))
+* try to make ci work ([c9536e9](https://github.com/dont-code/ng-xtend/commit/c9536e9a9a6d299412b995cdcbbbf66637f990be))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgrade and selection through model working ([e865380](https://github.com/dont-code/ng-xtend/commit/e8653809682a716359dd88f9530faa0882b286f9))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* versioning of dependencies for the angular packages ([44e82f0](https://github.com/dont-code/ng-xtend/commit/44e82f0a32e66ebf735991adc5dff9bfcd40f104))
+* workflow vitest ([c2854ca](https://github.com/dont-code/ng-xtend/commit/c2854cad133516453dce88caaf4bf187cde51134))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.6.4...xt-components-v0.7.0) (2026-03-31)
 
 

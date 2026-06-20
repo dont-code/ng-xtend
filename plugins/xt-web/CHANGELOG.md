@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.6.4...xt-plugin-web-v0.7.0) (2026-06-20)
+
+
+### Bug Fixes
+
+* build to dont-code.net ([21f5d5d](https://github.com/dont-code/ng-xtend/commit/21f5d5d81f5abbb8de1d6a7cd433e45af7270676))
+* try to make ci work ([c627c94](https://github.com/dont-code/ng-xtend/commit/c627c9499490b2072b46b79b3923e992cf9c7e34))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* upgraded vitest for plugin-sample ([3d48c3b](https://github.com/dont-code/ng-xtend/commit/3d48c3be8a8ab72d36323965ec30c3ee238f2e54))
+* versioning of dependencies for the angular packages ([44e82f0](https://github.com/dont-code/ng-xtend/commit/44e82f0a32e66ebf735991adc5dff9bfcd40f104))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.6.4...xt-plugin-web-v0.7.0) (2026-03-31)
 
 

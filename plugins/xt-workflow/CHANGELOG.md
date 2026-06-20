@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.6.4...xt-plugin-workflow-v0.7.0) (2026-06-20)
+
+
+### Features
+
+* create workflow plugin ([2590f90](https://github.com/dont-code/ng-xtend/commit/2590f90e477f6d2d2090fd958f0a21d914b7c2e3))
+* Host using workflow now ([6755780](https://github.com/dont-code/ng-xtend/commit/6755780bec58091e571c891db46de68595511a90))
+* workflow, work in progress ([4562f15](https://github.com/dont-code/ng-xtend/commit/4562f1516dda7c26ae33d3b781b5e33b050d0c03))
+
+
+### Bug Fixes
+
+* added list details flow ([5964543](https://github.com/dont-code/ng-xtend/commit/5964543005c107adbc596ffb6ca6ba67314d4f84))
+* APi & docs ([23e64b4](https://github.com/dont-code/ng-xtend/commit/23e64b4b7699e6b5d27febf12a3458f2d99f9cd6))
+* list display edited value ([b14c06b](https://github.com/dont-code/ng-xtend/commit/b14c06b441c4b2f1a0003e25c54a837d2cc6a4e8))
+* list display edited value ([c7909a5](https://github.com/dont-code/ng-xtend/commit/c7909a5cb39cb2bac013d1eda8f6df3980341ba9))
+* listdetail now uses model ([8463074](https://github.com/dont-code/ng-xtend/commit/84630745868bc0a919ebed955009ae65b1ac5560))
+* multiple entities support ([b6a481c](https://github.com/dont-code/ng-xtend/commit/b6a481c746264c6679998320151ed611461c088e))
+* proper display of properties ([39991ae](https://github.com/dont-code/ng-xtend/commit/39991aeef86183431ecc55b9e92488592532de2e))
+* select / deselect element in list ([c9a4832](https://github.com/dont-code/ng-xtend/commit/c9a48322bdf45803d5bbec1d06c0762fbec294c2))
+* Testing workflow ([6281524](https://github.com/dont-code/ng-xtend/commit/6281524acbd2a84c1ba7fc3445a10f66705bfa16))
+* Testing workflow ([fbf2a8f](https://github.com/dont-code/ng-xtend/commit/fbf2a8f133e4add6ee82bcfe34f97ca614a298c1))
+* testing workflow filtering ([1a5da38](https://github.com/dont-code/ng-xtend/commit/1a5da389c1078d38c2de3f08d5788c4e3c95ec37))
+* Updated from main ([340a0bd](https://github.com/dont-code/ng-xtend/commit/340a0bd44774ee69adabb70c15073482d1ee59f2))
+* upgrade and selection through model working ([e865380](https://github.com/dont-code/ng-xtend/commit/e8653809682a716359dd88f9530faa0882b286f9))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* upgraded vitest for plugin-sample ([3d48c3b](https://github.com/dont-code/ng-xtend/commit/3d48c3be8a8ab72d36323965ec30c3ee238f2e54))
+* workflow vitest ([c2854ca](https://github.com/dont-code/ng-xtend/commit/c2854cad133516453dce88caaf4bf187cde51134))
+
 ## [0.6.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.6.3...xt-plugin-default-v0.6.4) (2026-01-18)
 
 

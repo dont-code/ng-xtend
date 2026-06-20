@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-idb-store-v0.6.4...xt-idb-store-v0.7.0) (2026-06-20)
+
+
+### Features
+
+* workflow, work in progress ([4562f15](https://github.com/dont-code/ng-xtend/commit/4562f1516dda7c26ae33d3b781b5e33b050d0c03))
+
+
+### Bug Fixes
+
+* try to make ci work ([c9536e9](https://github.com/dont-code/ng-xtend/commit/c9536e9a9a6d299412b995cdcbbbf66637f990be))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* versioning of dependencies for the angular packages ([44e82f0](https://github.com/dont-code/ng-xtend/commit/44e82f0a32e66ebf735991adc5dff9bfcd40f104))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-idb-store-v0.6.4...xt-idb-store-v0.7.0) (2026-03-31)
 
 

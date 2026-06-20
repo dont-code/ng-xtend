@@ -1,0 +1,49 @@
+{
+  "name": "Workflow",
+  "template": false,
+  "description": "Project showing Workflow",
+  "content": {
+    "creation": {
+      "type": "Application",
+      "name": "Simple",
+      "entities": [
+        {
+          "from": "",
+          "name": "SimpleNote",
+          "fields": [
+            {
+              "name": "Text",
+              "type": "string"
+            },
+            {
+              "name": "Created",
+              "type": "date-time"
+            },
+            {
+              "name": "Amount",
+              "type": "number"
+            },
+            {
+              "name": "Check",
+              "type": "boolean"
+            }
+          ]
+        }
+      ],
+      "sharing": {
+        "with": "Dont-code users"
+      },
+      "workflows": {
+        "Notes": {
+          "entity": "SimpleNote",
+          "workflow": "list-detail",
+          "data": {
+            "sort": {
+              "Created": "ascending"
+            }
+          }
+        }
+      }
+    }
+  }
+}

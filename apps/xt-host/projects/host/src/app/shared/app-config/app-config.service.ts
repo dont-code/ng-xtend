@@ -4,6 +4,7 @@ import { XtResolverService } from 'xt-components';
 import { registerDefaultPlugin } from 'xt-plugin-default';
 import { DcPluginModel, DcRepositoryModel } from '../models/dc-repository-model';
 import { loadRemoteModule } from '@angular-architects/native-federation';
+import { registerWorkflowPlugin } from 'xt-plugin-workflow';
 
 @Injectable({
   providedIn: 'root'
@@ -129,6 +130,7 @@ export class AppConfigService {
 
   async loadPlugins (config:DcRepositoryModel): Promise< boolean> {
     registerDefaultPlugin(this.resolverService);
+    registerWorkflowPlugin (this.resolverService);
     if (config.plugins!=null) {
       const errors=new Array();
       for (const plugin of config.plugins) {

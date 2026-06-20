@@ -34,15 +34,17 @@ export class WfwRender<T> {
    * Calculates the workflow component to use, either from the workflowType or workflowConfig input
    */
   type:Signal<Type<DcWorkflow>|null> = computed( () => {
-    let type=this.workflowType();
+//    console.debug("WfwRender type start");
+    let ret=this.workflowType();
     let compFound:XtResolvedComponent|null = null;
     const wfwConfig = this.workflowConfig();
-    if ((type==null)&&(wfwConfig!=null)) {
+    if ((ret==null)&&(wfwConfig!=null)) {
       compFound= this.resolverService.findBestWorkflow(wfwConfig);
-      type= compFound?.componentClass;
+      ret= compFound?.componentClass;
     }
 
-    return type??null;
+//    console.debug("WfwRender type end with "+(ret!=null));
+    return ret??null;
   });
 
 }

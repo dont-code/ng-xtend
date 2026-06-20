@@ -169,7 +169,6 @@ describe('ListDetailsComponent', () => {
 
     row.children[0].nativeElement.click();
     row.children[0].nativeElement.click();
-    row.children[0].nativeElement.click();
     fixture.detectChanges();
     await XtUnitTestHelper.waitFor (() => (component.viewMode()=="edit"));
 
@@ -215,4 +214,225 @@ describe('ListDetailsComponent', () => {
 
   });
 
+  it('should support back and forth list-details',async () => {
+    const resolver = TestBed.inject(XtResolverService);
+
+    resolver.registerTypes({
+      "Test": {
+        "name": "string",
+        "price": "number"
+      }
+    });
+
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'Test',
+      workflow: 'list-detail',
+      data: {
+        sort: {
+          'price': 'descending'
+        }
+      }
+    } as DcWorkflowModel);
+
+    component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+    expect(component.entityName()).toEqual('Test');
+    fixture.detectChanges();
+
+    // Click on new
+    //const newSpy = vi.spyOn(component, 'newEntity');
+    const btnNew = fixture.debugElement.query(By.css("#btn-new"));
+    btnNew.children[0].nativeElement.click();
+    fixture.detectChanges();
+    // For some reasons, we have to wait multiple times for stability
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    //expect(newSpy).toHaveBeenCalledOnce();
+    const form = component.editForm().get('editor') as FormGroup;
+    // Check fields
+    expect(Object.keys(form.controls)).toEqual([
+      '_id', 'name', 'price'
+    ]);
+
+    // Now set some values in the fields
+    let nameInput = fixture.debugElement.query(By.css('[name="name"]'));
+    nameInput.nativeElement.value = 'NewName';
+    nameInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(form.value).toEqual({
+      _id: component.selectedEntity()!._id,
+      name: 'NewName',
+      price: null
+    });
+
+    // I didn't save, so the name is still empty
+    expect(component.selectedEntity().name).toBeUndefined();
+
+    //Now click again on the list tab, without saving
+    const tabList = fixture.debugElement.query(By.css('p-tab[value="list"]'));
+    tabList.nativeElement.click();
+    fixture.detectChanges();
+
+    await XtUnitTestHelper.waitFor(() => (component.viewMode() == "list"));
+
+    expect(component.viewMode()).toEqual('list');
+    expect(component.selectedEntity()).toBeTruthy();
+
+    // Another click on the item in the list should go back to edit mode
+    const rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows.length).toEqual(1);
+
+    // Click on the row to deselect it
+    rows[0].nativeElement.click();
+    fixture.detectChanges();
+
+    await XtUnitTestHelper.waitFor(() => (component.selectedEntity() == null));
+
+    expect(component.selectedEntity()).toBeFalsy();
+
+      // Click again to reselect it
+    const refreshedRows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    refreshedRows[0].nativeElement.click();
+    fixture.detectChanges();
+    await XtUnitTestHelper.waitFor(() => (component.viewMode() == "edit"));
+
+    expect(component.viewMode()).toEqual('edit');
+
+   });
+
+  it('should reflect form edits in the list without saving', async () => {
+    const resolver = TestBed.inject(XtResolverService);
+
+    resolver.registerTypes({
+      "Test": {
+        "name": "string",
+        "price": "number"
+      }
+    });
+
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'Test',
+      workflow: 'list-detail',
+      data: {
+        sort: { 'price': 'descending' }
+      }
+    } as DcWorkflowModel);
+
+    component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+    expect(component.entityName()).toEqual('Test');
+    fixture.detectChanges();
+
+    // Create a new entity
+    const btnNew = fixture.debugElement.query(By.css("#btn-new"));
+    btnNew.children[0].nativeElement.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    // Edit name in the form
+    const nameInput = fixture.debugElement.query(By.css('[name="name"]'));
+    nameInput.nativeElement.value = 'EditedName';
+    nameInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    // Switch to list tab without saving
+    const tabList = fixture.debugElement.query(By.css('p-tab[value="list"]'));
+    tabList.nativeElement.click();
+    fixture.detectChanges();
+    await XtUnitTestHelper.waitFor(() => (component.viewMode() == "list"));
+
+    // The list should reflect the form edit
+    const list = fixture.debugElement.query(By.directive(Table));
+    const row = list.query(By.css('tbody tr'));
+    expect(row.nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('EditedName') != -1,
+      "Edited name should appear in the list without saving"
+    );
+   });
+
+  it('should safely switch between different entity types', async () => {
+    const resolver = TestBed.inject(XtResolverService);
+
+    resolver.registerTypes({
+      "Author": {
+        "name": "string",
+        "birthYear": "number"
+      },
+      "Book": {
+        "title": "string",
+        "pages": "number"
+      }
+    });
+
+    await storeTestBed.defineTestDataFor('Author', [
+      { name: 'Alice', birthYear: 1980 },
+      { name: 'Bob', birthYear: 1990 }
+    ]);
+    await storeTestBed.defineTestDataFor('Book', [
+      { title: 'Book One', pages: 200 },
+      { title: 'Book Two', pages: 300 },
+      { title: 'Book Three', pages: 150 }
+    ]);
+
+    // Start with Author type
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'Author',
+      workflow: 'list-detail',
+      data: { sort: { 'name': 'ascending' } }
+    } as DcWorkflowModel);
+    component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+    expect(component.entityName()).toEqual('Author');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    // Verify Author data is displayed
+    expect(component.entityName()).toEqual('Author');
+    let rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(2);
+    expect(rows[0].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Alice') != -1
+    );
+
+    // Switch to Book type
+    fixture.componentRef.setInput("config", {
+      entity: 'Book',
+      workflow: 'list-detail',
+      data: { sort: { 'title': 'ascending' } }
+    } as DcWorkflowModel);
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    // Verify Book data is now displayed
+    expect(component.entityName()).toEqual('Book');
+    rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(3);
+    expect(rows[0].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Book One') != -1
+    );
+    expect(rows[1].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Book Three') != -1
+    );
+    expect(rows[2].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Book Two') != -1
+    );
+  });
 });

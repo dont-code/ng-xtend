@@ -8,7 +8,7 @@ import {
   model,
   OnDestroy,
   OnInit,
-  signal
+  signal, viewChild
 } from '@angular/core';
 import { updateFormGroupWithValue, XtBaseModel, XtMessageHandler, XtRenderComponent } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
@@ -51,6 +51,39 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }else return "list";
   });
 
+    // We need to manage when the user itself changed the tab
+  tabs = viewChild (Tabs);
+
+  tabChanged= effect(() => {
+    const tabs = this.tabs();
+    if( tabs!=null) {
+      const tabValue = tabs.value();
+      this.viewMode.set(tabValue as 'list'|'edit');
+    }
+});
+
+  formValue = signal<any>(null);
+
+  protected storeChanged=signal<boolean>(false);
+
+  displayedEntities = computed<T[]>(() => {
+//    console.debug("ListDetails init Displayed Entities");
+    const storeChanged=this.storeChanged(); // Enforce recalculation whenever the store is changed
+    const entities = this.store?.entities() ?? [];
+    const value = this.formValue();
+    const selected = this.selectedEntity();
+    if (value != null && selected != null && (selected as any)._id != null) {
+      const selectedId = (selected as any)._id;
+      return entities.map(e =>
+        (e as any)._id === selectedId
+          ? { ...(e as any), ...(value as any) }
+          : e
+      ) as T[];
+    }
+//    console.debug("ListDetails displayed entities", entities);
+    return entities;
+  });
+
   canSave=signal (false);
 
   saving = signal (false);
@@ -67,28 +100,42 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     this.updateEditForm();
   });
 
+  workflowConfigChanged= effect (() => {
+    const newConfig=this.config();
+    this.fetchFromStore();
+  });
+
   private subscriptions=new Subscription();
 
   constructor() {
     super();
+  //  console.debug("ListDetails constructor");
     this.listModel.valueSelected=this.selectedEntity;
   }
 
   override ngOnInit () {
+  //  console.debug("ListDetails ngOnInit");
     super.ngOnInit();
     this.fetchFromStore();
   }
 
   fetchFromStore () {
+    //console.debug("ListDetails fetchFromStore");
     const entityName = this.entityName();
     if (entityName!=null) {
       try {
         this.updating.set(true);
-        const store = this.safeFindStore();
-        store.fetchEntities().catch((error) => {
+          // If the entity is different, then we must change the whole store
+        if (this.store?.entityName()!=entityName) {
+          this.store = this.safeFindStore();
+          this.storeChanged.update((oldVal)=> !oldVal); // Force update whenever the store changed
+        }
+       // console.debug("Store set to "+this.store.entityName());
+        this.store.fetchEntities().catch((error) => {
           this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
         }).finally(() => {
           this.updating.set(false);
+//          console.debug("Store fetched values ",this.store?.entities());
         });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
       } catch (error) {
         this.updating.set(false);
@@ -103,6 +150,9 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     const form = this.formBuilder.group({}, {updateOn: 'change'});
     if (entity!=null) {
       updateFormGroupWithValue(form, entity, this.entityName(), this.resolver.typeResolver);
+      this.formValue.set(form.value);
+    } else {
+      this.formValue.set(null);
     }
     this.listenToFormEvent (form);
     this.editForm.set( this.formBuilder.group ({ editor: form }));
@@ -131,6 +181,9 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
   private listenToFormEvent(form: FormGroup) {
     this.subscriptions.unsubscribe();
     this.subscriptions = new Subscription();
+    this.subscriptions.add(form.valueChanges.subscribe(value => {
+      this.formValue.set(value);
+    }));
     this.subscriptions.add(form.events.subscribe(event => {
       const pristine = (event as PristineChangeEvent).pristine??true;
       if (!pristine) {

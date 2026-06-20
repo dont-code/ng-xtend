@@ -33,6 +33,14 @@
       "draft": false,
       "prerelease": false
     },
+    "libs/dc-workflow": {
+      "release-type": "node",
+      "package-name": "dc-workflow",
+      "extra-files": ["projects/dc-workflow/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
+    },
     "libs/xt-plugin-sample": {
       "release-type": "node",
       "package-name": "xt-plugin-sample",
@@ -81,10 +89,10 @@
       "draft": false,
       "prerelease": false
     },
-    "libs/dc-workflow": {
+    "plugins/xt-workflow": {
       "release-type": "node",
-      "package-name": "dont-code-workflow",
-      "extra-files": [],
+      "package-name": "xt-plugin-workflow",
+      "extra-files": ["projects/workflow/package.json"],
       "prerelease-type": "beta",
       "draft": false,
       "prerelease": false
@@ -95,7 +103,7 @@
     "type": "linked-versions",
     "groupName": "xt-components",
     "components": [
-      "xt-store", "xt-idb-store","xt-components","xt-plugin-sample","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda"
+      "xt-store", "xt-idb-store","xt-components","dc-workflow","xt-plugin-sample","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda", "xt-plugin-workflow"
     ]
   }]
 }

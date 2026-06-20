@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v0.7.0...xt-store-v0.8.0) (2026-06-20)
+
+
+### Features
+
+* support for multisort ([b8eedd0](https://github.com/dont-code/ng-xtend/commit/b8eedd0ccd8ead65fe5ad518c103ece8a7d12096))
+
+
+### Bug Fixes
+
+* insertinsortedlist ([4bcf3e6](https://github.com/dont-code/ng-xtend/commit/4bcf3e6fcd7640fadb9abd550e103f5ea65a72de))
+* support for multisort in storeprovider ([d33de1c](https://github.com/dont-code/ng-xtend/commit/d33de1c1b6cf2d2120000423b295462539c47b09))
+* testing updating filter and sort works ([4880c55](https://github.com/dont-code/ng-xtend/commit/4880c55cf0a7e69d4db739f55a0153ee1b9592f2))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* Workflow sort ([d73b2d6](https://github.com/dont-code/ng-xtend/commit/d73b2d67e8160ab23b64e6600f33514915c3a699))
+* working signalstore sort & filter ([c6d1c1e](https://github.com/dont-code/ng-xtend/commit/c6d1c1e8910dcf803848d5278ea75877aaf83819))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v0.6.4...xt-store-v0.7.0) (2026-06-20)
 
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.7.0...xt-plugin-default-v0.8.0) (2026-06-20)
+
+
+### Features
+
+* Host using workflow now ([6755780](https://github.com/dont-code/ng-xtend/commit/6755780bec58091e571c891db46de68595511a90))
+* working default plugin ([3d8052e](https://github.com/dont-code/ng-xtend/commit/3d8052e9cad312934b08050de5de77d870e3e75b))
+
+
+### Bug Fixes
+
+* nicest so far ([ca817bb](https://github.com/dont-code/ng-xtend/commit/ca817bb22876c4f572421c261c205d33b8b53fa6))
+* no more cd in ref labels ([40b3fde](https://github.com/dont-code/ng-xtend/commit/40b3fde6b93f2b9f1e4c152ad6bcf173dc748aab))
+* proper display of properties ([39991ae](https://github.com/dont-code/ng-xtend/commit/39991aeef86183431ecc55b9e92488592532de2e))
+* select / deselect element in list ([c9a4832](https://github.com/dont-code/ng-xtend/commit/c9a48322bdf45803d5bbec1d06c0762fbec294c2))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgrade and selection through model working ([e865380](https://github.com/dont-code/ng-xtend/commit/e8653809682a716359dd88f9530faa0882b286f9))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.6.4...xt-plugin-default-v0.7.0) (2026-06-20)
 
 

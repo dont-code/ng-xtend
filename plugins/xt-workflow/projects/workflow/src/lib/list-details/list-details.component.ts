@@ -64,7 +64,11 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
 
   formValue = signal<any>(null);
 
+  protected storeChanged=signal<boolean>(false);
+
   displayedEntities = computed<T[]>(() => {
+//    console.debug("ListDetails init Displayed Entities");
+    const storeChanged=this.storeChanged(); // Enforce recalculation whenever the store is changed
     const entities = this.store?.entities() ?? [];
     const value = this.formValue();
     const selected = this.selectedEntity();
@@ -76,6 +80,7 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
           : e
       ) as T[];
     }
+//    console.debug("ListDetails displayed entities", entities);
     return entities;
   });
 
@@ -95,28 +100,42 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     this.updateEditForm();
   });
 
+  workflowConfigChanged= effect (() => {
+    const newConfig=this.config();
+    this.fetchFromStore();
+  });
+
   private subscriptions=new Subscription();
 
   constructor() {
     super();
+  //  console.debug("ListDetails constructor");
     this.listModel.valueSelected=this.selectedEntity;
   }
 
   override ngOnInit () {
+  //  console.debug("ListDetails ngOnInit");
     super.ngOnInit();
     this.fetchFromStore();
   }
 
   fetchFromStore () {
+    //console.debug("ListDetails fetchFromStore");
     const entityName = this.entityName();
     if (entityName!=null) {
       try {
         this.updating.set(true);
-        const store = this.safeFindStore();
-        store.fetchEntities().catch((error) => {
+          // If the entity is different, then we must change the whole store
+        if (this.store?.entityName()!=entityName) {
+          this.store = this.safeFindStore();
+          this.storeChanged.update((oldVal)=> !oldVal); // Force update whenever the store changed
+        }
+       // console.debug("Store set to "+this.store.entityName());
+        this.store.fetchEntities().catch((error) => {
           this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
         }).finally(() => {
           this.updating.set(false);
+//          console.debug("Store fetched values ",this.store?.entities());
         });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
       } catch (error) {
         this.updating.set(false);

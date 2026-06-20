@@ -37,12 +37,14 @@ export class EntityManagerComponent {
     this.route.paramMap.pipe(
       takeUntilDestroyed(),
     ).subscribe(params => {
+//      console.debug("Changed entity name", params);
       this.entityName.set(params.get("entityName")??undefined);
       this.updateWorkflow();
     });
   }
 
   updateWorkflow () {
+//    console.debug("EntityManager Start Updateworkflow");
     const entityName = this.entityName();
     if (entityName != null) {
       let wfw: DcWorkflowModel | undefined = this.applicationModel.getWorkflowFor(entityName);
@@ -51,8 +53,11 @@ export class EntityManagerComponent {
         wfw = {
           entity: entityName,
           workflow: 'list-detail'
-        }
+        };
+//        console.debug("EntityManager New Wfw");
+
       }
+//      console.debug("EntityManager setting Wfw ");
       this.workflowConfig.set(wfw);
     } else {
       this.workflowConfig.set(undefined);

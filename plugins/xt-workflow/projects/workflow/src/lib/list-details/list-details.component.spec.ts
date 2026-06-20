@@ -358,4 +358,81 @@ describe('ListDetailsComponent', () => {
       "Edited name should appear in the list without saving"
     );
    });
+
+  it('should safely switch between different entity types', async () => {
+    const resolver = TestBed.inject(XtResolverService);
+
+    resolver.registerTypes({
+      "Author": {
+        "name": "string",
+        "birthYear": "number"
+      },
+      "Book": {
+        "title": "string",
+        "pages": "number"
+      }
+    });
+
+    await storeTestBed.defineTestDataFor('Author', [
+      { name: 'Alice', birthYear: 1980 },
+      { name: 'Bob', birthYear: 1990 }
+    ]);
+    await storeTestBed.defineTestDataFor('Book', [
+      { title: 'Book One', pages: 200 },
+      { title: 'Book Two', pages: 300 },
+      { title: 'Book Three', pages: 150 }
+    ]);
+
+    // Start with Author type
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'Author',
+      workflow: 'list-detail',
+      data: { sort: { 'name': 'ascending' } }
+    } as DcWorkflowModel);
+    component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+    expect(component.entityName()).toEqual('Author');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    // Verify Author data is displayed
+    expect(component.entityName()).toEqual('Author');
+    let rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(2);
+    expect(rows[0].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Alice') != -1
+    );
+
+    // Switch to Book type
+    fixture.componentRef.setInput("config", {
+      entity: 'Book',
+      workflow: 'list-detail',
+      data: { sort: { 'title': 'ascending' } }
+    } as DcWorkflowModel);
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    // Verify Book data is now displayed
+    expect(component.entityName()).toEqual('Book');
+    rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(3);
+    expect(rows[0].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Book One') != -1
+    );
+    expect(rows[1].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Book Three') != -1
+    );
+    expect(rows[2].nativeElement.textContent).toSatisfy(
+      (text: string) => text.indexOf('Book Two') != -1
+    );
   });
+});

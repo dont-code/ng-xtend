@@ -14,7 +14,7 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
 
   debugValue=false;
   debugSelectedElement:Signal<boolean> = computed<boolean>(() => {
-    console.debug("Selected element", this.selectedElement());
+//    console.debug("Selected element", this.selectedElement());
     this.debugValue=!this.debugValue;
     return this.debugValue;
   });

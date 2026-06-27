@@ -1,7 +1,7 @@
 import { DcWorkflow } from '../definition/dc-workflow';
-import { Component, computed, effect, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
 import { DcWorkflowModel, DcWorkflowSortOption } from '../models/dc-workflow-model';
-import { XtCompositeComponent, XtResolverService } from 'xt-components';
+import { XtCompositeComponent, XtMessageHandler, XtResolverService } from 'xt-components';
 import {
   XtSignalStore,
   XtSortBy,
@@ -10,6 +10,7 @@ import {
   XtStoreManagerService
 } from 'xt-store';
 import { ManagedData } from 'xt-type';
+import { FormGroup } from '@angular/forms';
 
 /**
  * A workflow base class based on the xt-store signalStore
@@ -28,9 +29,37 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
 
   protected readonly resolver = inject (XtResolverService);
   protected readonly storeMgr = inject(XtStoreManagerService);
+  protected readonly errorHandler = inject(XtMessageHandler);
 
+
+  /**
+   * The store that manages the access to the data
+   * @protected
+   */
   protected store : XtSignalStore<T> | null | undefined = undefined;
 
+  /**
+   * True whenever the store is updating something
+   */
+  updating = signal (false);
+
+  /**
+   * A shortcut to the entityname being managed
+   */
+  entityName = linkedSignal( () => {
+    return this.config().entity;
+  });
+
+  /**
+   * A simple signal telling when a new store is being used. For example, when the entity handled has changed
+   * @protected
+   */
+  protected storeChanged=signal<boolean>(false);
+
+  /**
+   * Triggered when the workflow config has been updated. Do we need another store, or just reconfigure the sort / filtering ?
+   * @protected
+   */
   protected configUpdated = effect( async ()=> {
     const config = this.config();
     const curStore = this.store;
@@ -68,6 +97,7 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
    * @protected
    */
   protected displayableElements = computed(() => {
+    const enforceStoreChange = this.storeChanged(); // Recalculate in case the store has changed
     const config = this.config();
     const entities = this.safeFindStore().entities();
     const selectConfig = config.display;
@@ -87,7 +117,37 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
       return true;
     });
   });
-    /**
+
+  /**
+   * Safely loads the data from the store.
+   */
+  protected fetchFromStore () {
+    //console.debug("ListDetails fetchFromStore");
+    const entityName = this.entityName();
+    if (entityName!=null) {
+      try {
+        this.updating.set(true);
+        // If the entity is different, then we must change the whole store
+        if (this.store?.entityName()!=entityName) {
+          this.store = this.safeFindStore();
+          this.storeChanged.update((oldVal)=> !oldVal); // Force update whenever the store changed
+        }
+        // console.debug("Store set to "+this.store.entityName());
+        this.store.fetchEntities().catch((error) => {
+          this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
+        }).finally(() => {
+          this.updating.set(false);
+//          console.debug("Store fetched values ",this.store?.entities());
+        });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
+      } catch (error) {
+        this.updating.set(false);
+      }
+    } else {
+      this.store = null;
+    }
+  }
+
+  /**
    * Returns the element that should be selected given the config and the store content
    * @protected
    */

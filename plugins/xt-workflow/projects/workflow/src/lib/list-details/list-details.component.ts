@@ -30,11 +30,6 @@ import { AbstractDcWorkflow } from 'dc-workflow';
 })
 export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkflow<T> implements OnInit, OnDestroy {
   protected readonly formBuilder = inject(FormBuilder);
-  protected readonly errorHandler = inject(XtMessageHandler);
-
-  entityName = linkedSignal( () => {
-    return this.config().entity;
-  });
 
   editForm = signal<FormGroup>(this.formBuilder.group ({ editor: this.formBuilder.group({}) }));
 
@@ -64,12 +59,12 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
 
   formValue = signal<any>(null);
 
-  protected storeChanged=signal<boolean>(false);
-
+  /**
+   * Display in the list the selected item being edited if any
+   */
   displayedEntities = computed<T[]>(() => {
 //    console.debug("ListDetails init Displayed Entities");
-    const storeChanged=this.storeChanged(); // Enforce recalculation whenever the store is changed
-    const entities = this.store?.entities() ?? [];
+    const entities = this.displayableElements();
     const value = this.formValue();
     const selected = this.selectedEntity();
     if (value != null && selected != null && (selected as any)._id != null) {
@@ -89,7 +84,6 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
   saving = signal (false);
   newing = signal (false);
   deleting = signal (false);
-  updating = signal (false);
 
   selectedEntity= model<any>();
 
@@ -119,31 +113,6 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     this.fetchFromStore();
   }
 
-  fetchFromStore () {
-    //console.debug("ListDetails fetchFromStore");
-    const entityName = this.entityName();
-    if (entityName!=null) {
-      try {
-        this.updating.set(true);
-          // If the entity is different, then we must change the whole store
-        if (this.store?.entityName()!=entityName) {
-          this.store = this.safeFindStore();
-          this.storeChanged.update((oldVal)=> !oldVal); // Force update whenever the store changed
-        }
-       // console.debug("Store set to "+this.store.entityName());
-        this.store.fetchEntities().catch((error) => {
-          this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
-        }).finally(() => {
-          this.updating.set(false);
-//          console.debug("Store fetched values ",this.store?.entities());
-        });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
-      } catch (error) {
-        this.updating.set(false);
-      }
-    } else {
-      this.store = null;
-    }
-  }
 
   updateEditForm () {
     const entity = this.selectedEntity();

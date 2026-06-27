@@ -1,6 +1,5 @@
 import { XtTypeInfo } from 'xt-type';
 import { XtOutputType } from '../xt-component';
-import { XtActionHandler } from '../action/xt-action-handler';
 import { XtWorkflow } from '../workflow/xt-workflow';
 
 /** Information about a registered component plugin */

@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.carousel--empty {
+  padding-top: 0.5rem;
+}
+
+:host-context(.app-dark) .carousel__panel,
+:host-context(.app-dark) .carousel__state {
+  background: color-mix(in srgb, var(--p-surface-900) 94%, var(--p-primary-950) 6%);
+}
+
+@media (max-width: 767px) {
+
+  .carousel__state {
+    min-height: 14rem;
+    padding: 1.5rem;
+  }
+}
+
+.carousel__panel {
+  border-radius: 1.5rem;
+  background: color-mix(in srgb, var(--p-surface-0) 92%, var(--p-primary-50) 8%);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 40px rgb(0 0 0 / 0.06);
+}
+
+.carousel__state {
+  min-height: 18rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  background: color-mix(in srgb, var(--p-surface-0) 94%, var(--p-primary-50) 6%);
+  color: var(--p-text-color);
+}
+
+.carousel__state i {
+  font-size: 2rem;
+  opacity: 0.55;
+}
+
+.carousel__state span {
+  font-weight: 600;
+}
+
+.carousel__state small {
+  opacity: 0.7;
+}
+
+.carousel__state--empty {
+  min-height: 16rem;
+}

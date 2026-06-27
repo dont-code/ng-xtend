@@ -1,0 +1,38 @@
+@let entName = entityName();
+
+@if (entName != null) {
+
+  @if (store?.loading()) {
+    <div class="carousel__state">
+      <p-progress-spinner />
+      <span>Loading {{ entName }}…</span>
+    </div>
+  } @else if ((store?.entities()?.length ?? 0) === 0) {
+    <div class="carousel__state carousel__state--empty">
+      <i class="pi pi-inbox"></i>
+      <span>No entity found.</span>
+      <small>Try creating a new item with the toolbar above.</small>
+    </div>
+  } @else {
+
+    <p-carousel [value]="displayableElements()" [numVisible]="1" [numScroll]="1" orientation="vertical" verticalViewPortHeight="330px" contentClass="flex items-center">
+    <ng-template let-elt #item>
+        <div class="carousel__panel">
+          <xt-render
+            displayMode="FULL_VIEW"
+            [value]="elt"
+            [valueType]="entityName()">
+          </xt-render>
+        </div>
+    </ng-template>
+  </p-carousel>
+  }
+
+} @else {
+  <section class="carousel carousel--empty">
+  <div class="carousel__state carousel__state--empty">
+    <i class="pi pi-database"></i>
+    <span>No entity to manage.</span>
+  </div>
+</section>
+}

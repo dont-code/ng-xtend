@@ -1,7 +1,7 @@
 @if (isInForm() ) {
   @let componentName=componentNameInForm();
   <ng-container [formGroup]="formGroup()">
-    <div class="grid grid-cols-[auto_1fr] gap-4">
+    <div class="image-edit-container">
       <div>
         <p-fileupload *ngIf="supportsImageUpload()" mode="basic" chooseLabel="Browse" [name]="componentName+'-btn'" [auto]="true" [multiple]="false" accept="image/*" [customUpload]="true" (uploadHandler)="uploadImage ($event)"></p-fileupload>
       </div>
@@ -13,5 +13,5 @@
 } @else if (displayIsInline()) {
   <p-image class="inline-image" [src]="displayValue()" [preview]="true" />
 } @else {
-  <p-image [src]="displayValue()" [preview]="true" />
+  <p-image class="full-image" [src]="displayValue()" [preview]="true" />
 }

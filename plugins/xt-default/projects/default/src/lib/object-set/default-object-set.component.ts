@@ -11,6 +11,12 @@ import { TableModule } from 'primeng/table';
 })
 export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   selected= model<any>();
+  /**
+   * Maybe the host expects the valueselection as output
+   * @protected
+   */
+  protected valueSelectedAsOutput = output<any>();
+
 
   debugValue=false;
   debugSelectedElement:Signal<boolean> = computed<boolean>(() => {
@@ -85,12 +91,18 @@ export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   selectionChange(newElement: any) {
     this.selectedElement.set(newElement);
     this.selected.set(newElement );
+    if( this.outputsObject.valueSelected!=null) {
+      this.outputsObject.valueSelected.emit(newElement);
+    }
   }
 
   override setupInputOutput () {
     const parentModel=this.models();
     if (parentModel?.valueSelected != null) {
       this.selected=parentModel.valueSelected;
+    } else {
+      // Host is not using models, maybe it expects an output, let's set it up
+      this.outputsObject.valueSelected = this.valueSelectedAsOutput;
     }
   }
 }

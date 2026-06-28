@@ -1,0 +1,41 @@
+.complete-in-form-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.complete-label {
+  flex:none;
+}
+
+.complete-checkbox {
+  flex:none;
+}
+
+.complete-view-container {
+  display: grid;
+  justify-items: left;
+  grid-template-columns: auto;
+}
+
+.complete-view-label {
+
+}
+
+.complete-view-value {
+  margin-bottom: 0.75rem;
+}
+
+@media screen and (min-width: 768px) {
+  .complete-view-container {
+    gap: 0.75rem;
+    grid-template-columns: max-content auto;
+  }
+
+  .complete-view-value {
+    margin-bottom: 0;
+  }
+
+}

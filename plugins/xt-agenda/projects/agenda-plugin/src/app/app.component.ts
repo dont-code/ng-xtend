@@ -21,6 +21,7 @@ export class AppComponent {
     registerDefaultPlugin(this.resolverService);
     this.resolverService.registerTypes({image:'string'});
     registerAgendaPlugin(this.resolverService);
+    this.resolverService.resolvePendingReferences();
   }
 
 }

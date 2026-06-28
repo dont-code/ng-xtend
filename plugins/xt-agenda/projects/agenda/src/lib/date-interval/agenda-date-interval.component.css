@@ -1,0 +1,19 @@
+.occurs-in-form-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.occurs-label {
+  flex:none;
+}
+
+.occurs-number {
+  flex:none;
+}
+
+.occurs-type {
+  flex:none;
+}

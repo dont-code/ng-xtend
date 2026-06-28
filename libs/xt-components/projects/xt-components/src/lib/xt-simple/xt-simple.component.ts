@@ -1,10 +1,9 @@
-import { Component, computed, input, model, OnInit, output } from '@angular/core';
+import { Component, computed, input, OnInit, output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
 import { XtComponent, XtComponentModel, XtComponentOutput } from '../xt-component';
 import { XtBaseOutput } from '../output/xt-base-output';
 import { XtBaseInput } from '../output/xt-base-input';
-import { XtBaseModel } from '../output/xt-base-model';
 
 /**
  * An XtSimpleComponent just displays the given value or element in a form.

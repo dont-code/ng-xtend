@@ -1,4 +1,9 @@
-<span class="text-2xl">Testing the default List Details workflow</span>
+<span class="text-2xl">Testing the workflows</span>
+
+<div class="flex gap-2 my-2">
+  Select the workflow type:
+  <p-select [options]="listWorkflowTypes()" placeholder="Select a workflow type" [checkmark]="true" [ngModel]="workflowType()" (ngModelChange)="setWorkflowType($event)" ></p-select>
+</div>
 
 <div class="flex gap-2 my-2">
   Select the default sort:
@@ -6,6 +11,7 @@
   <p-button [label]="sortField() === 'creationDate' ? (sortDir() === 'ascending' ? 'Creation Date ↑' : 'Creation Date ↓') : 'Creation Date'" [icon]="sortField() === 'creationDate' ? (sortDir() === 'ascending' ? 'pi pi-sort-up-alt' : 'pi pi-sort-down-alt') : 'pi pi-sort-alt'" [severity]="sortField() === 'creationDate' ? 'primary' : 'secondary'" size="small" (click)="toggleSort('creationDate')"></p-button>
   <p-button [label]="sortField() === 'value' ? (sortDir() === 'ascending' ? 'Value ↑' : 'Value ↓') : 'Value'" [icon]="sortField() === 'value' ? (sortDir() === 'ascending' ? 'pi pi-sort-up-alt' : 'pi pi-sort-down-alt') : 'pi pi-sort-alt'" [severity]="sortField() === 'value' ? 'primary' : 'secondary'" size="small" (click)="toggleSort('value')"></p-button>
 </div>
+
 
 @if (dataLoaded()) {
   <wfw-render [workflowConfig]="workflowConfig()"></wfw-render>

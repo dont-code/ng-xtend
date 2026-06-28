@@ -6,6 +6,7 @@ import { ListDetailsComponent } from '../../../../workflow/src/lib/list-details/
 import { Button } from 'primeng/button';
 import { DcWorkflowModel, WfwRender } from 'dc-workflow';
 import { StoreTestBed } from 'xt-store';
+import { Select, SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-test',
@@ -13,7 +14,8 @@ import { StoreTestBed } from 'xt-store';
     FormsModule,
     ReactiveFormsModule,
     Button,
-    WfwRender
+    WfwRender,
+    Select
   ],
   templateUrl: './test-workflow.component.html',
   styleUrl: './test-workflow.component.css'
@@ -58,13 +60,15 @@ export class TestWorkflowComponent implements OnInit, OnDestroy {
 
   protected workflowConfig = computed<DcWorkflowModel>(() => ({
     entity:'test',
-    workflow:'list-detail',
+    workflow:this.workflowType() as 'list-detail'|'carousel',
     data: {
       sort: {
         [this.sortField()]: this.sortDir()
       }
     }
   }));
+
+  protected workflowType = signal<string>('list-detail');
 
   protected toggleSort(field: string) {
     if (this.sortField() === field) {
@@ -79,4 +83,11 @@ export class TestWorkflowComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+  protected setWorkflowType(value: string) {
+    this.workflowType.set(value);
+  }
+
+  protected listWorkflowTypes():string[] {
+    return ['list-detail','carousel']
+  }
 }

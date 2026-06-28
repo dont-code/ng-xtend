@@ -46,16 +46,14 @@ export class AgendaTestComponent implements OnDestroy {
         children:{
           name: 'string',
           date: 'date',
-          recurrence: {
-            toType: 'task-def',
-            referenceType: 'MANY-TO-ONE'
-          },
+          recurrence: 'recurring-task',
           completed: 'task-complete'
         },
         compatibleTypes: ['task']
-      },
-      'task-def': 'recurring-task'
+      }
     });
+
+    this.resolver.resolvePendingReferences();
 
     StoreTestBed.ensureMemoryProviderOnly();
     this.taskStore = this.storeMgr.getStoreFor('agenda-test-type') as XtSignalStore<AgendaTestType>;
@@ -64,7 +62,7 @@ export class AgendaTestComponent implements OnDestroy {
 
   async fillSampleListOfTask () {
 
-      await this.taskStore?.storeEntity ({
+    await this.taskStore?.storeEntity ({
         name:'Christmas',
         date: new Date(2025,11,25),
         recurrence: {

@@ -2,7 +2,7 @@
   <ng-container [formGroup]="formGroup()">
     <p-autocomplete [fluid]="true" optionValue="alpha3" [forceSelection]="true" [dropdown]="true" [formControlName]="formControlName()" [suggestions]="listOfCountries()" (completeMethod)="matchCountry($event)" (onUnselect)="selectionCanceled($event)" (onSelect)="selectionChange($event)">
       <ng-template let-country #item>
-        <div class="flex items-center gap-4">
+        <div class="country-list-container">
           <img [src]="country.flag" style="width: 18px" />
           <span>{{country.label}}</span>
         </div>
@@ -15,7 +15,7 @@
     @if (context().displayMode=='INLINE_VIEW') {
       <img [src]="country.flag" style="width: 18px" />
     } @else {
-      <div class="flex items-center gap-4">
+      <div class="country-full-view">
         <img [src]="country.flag" style="width: 18px" />
         <span>{{country.label}}</span>
       </div>

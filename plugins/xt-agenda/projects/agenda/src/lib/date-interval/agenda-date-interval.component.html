@@ -1,9 +1,9 @@
 @if (isInForm() ) {
   <ng-container [formGroup]="formGroup()">
-    <div class="flex flex-row flex-nowrap items-center gap-2">
-      <div class="flex-none"><span>Occurs every</span></div>
-      <div class="flex-none"><p-inputnumber [showButtons]="true" formControlName="every" [min]="0" [inputSize]="3"></p-inputnumber></div>
-      <div class="flex-none"><p-select formControlName="item" [options]="allIntervalItems()" placeholder="Select interval"></p-select></div>
+    <div class="occurs-in-form-container">
+      <div class="occurs-label"><span>Occurs every</span></div>
+      <div class="occurs-number"><p-inputnumber [showButtons]="true" formControlName="every" [min]="0" [inputSize]="3"></p-inputnumber></div>
+      <div class="occurs-type"><p-select formControlName="item" [options]="allIntervalItems()" placeholder="Select interval"></p-select></div>
     </div>
   </ng-container>
 } @else {

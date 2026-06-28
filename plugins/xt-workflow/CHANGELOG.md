@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.7.0...xt-plugin-workflow-v0.8.0) (2026-06-28)
+
+
+### Miscellaneous Chores
+
+* **xt-plugin-workflow:** Synchronize xt-components versions
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.6.4...xt-plugin-workflow-v0.7.0) (2026-06-20)
 
 

@@ -1,0 +1,11 @@
+.ref-title {
+  font-weight: 500;
+  padding-inline: 0.75rem;
+  padding-block: 0.5rem;
+}
+
+.ref-items {
+  display: flex;
+  justify-items: center;
+  gap: 0.5rem;
+}

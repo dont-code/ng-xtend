@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.7.0...xt-plugin-web-v0.8.0) (2026-06-28)
+
+
+### Bug Fixes
+
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* upgraded vitest for plugin-sample ([3d48c3b](https://github.com/dont-code/ng-xtend/commit/3d48c3be8a8ab72d36323965ec30c3ee238f2e54))
+* web & country display fixes ([f3bee45](https://github.com/dont-code/ng-xtend/commit/f3bee4577cdce0ede1035bdc35e12c886feb324b))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.6.4...xt-plugin-web-v0.7.0) (2026-06-20)
 
 

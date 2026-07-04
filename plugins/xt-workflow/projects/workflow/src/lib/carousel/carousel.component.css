@@ -15,12 +15,13 @@
   background: color-mix(in srgb, var(--p-surface-900) 94%, var(--p-primary-950) 6%);
 }
 
-:host-context(.app-dark) ::ng-deep .p-carousel-item-start .carousel__panel,
-:host-context(.app-dark) ::ng-deep .p-carousel-item-end .carousel__panel {
+:host-context(.app-dark) ::ng-deep .p-carousel-item-start:not(.p-carousel-item-end) .carousel__panel,
+:host-context(.app-dark) ::ng-deep .p-carousel-item-end:not(.p-carousel-item-start) .carousel__panel {
   background: color-mix(in srgb, var(--p-surface-900) 96%, var(--p-primary-950) 4%);
 }
 
-:host-context(.app-dark) ::ng-deep .p-carousel-item-active:not(.p-carousel-item-start):not(.p-carousel-item-end) .carousel__panel {
+:host-context(.app-dark) ::ng-deep .p-carousel-item-active:not(.p-carousel-item-start):not(.p-carousel-item-end) .carousel__panel,
+:host-context(.app-dark) ::ng-deep .p-carousel-item-active.p-carousel-item-start.p-carousel-item-end .carousel__panel {
   border-color: var(--p-primary-500);
   background: color-mix(in srgb, var(--p-surface-900) 90%, var(--p-primary-950) 10%);
   box-shadow:
@@ -53,16 +54,16 @@
   position: relative;
 }
 
-:host ::ng-deep .p-carousel-item-start .carousel__panel,
-:host ::ng-deep .p-carousel-item-end .carousel__panel {
+:host ::ng-deep .p-carousel-item-start:not(.p-carousel-item-end) .carousel__panel,
+:host ::ng-deep .p-carousel-item-end:not(.p-carousel-item-start) .carousel__panel {
   margin: 0 1rem 0 1rem;
   opacity: 0.65;
   filter: grayscale(0.35);
   transform: scale(0.92);
 }
 
-:host ::ng-deep .p-carousel-item-active:not(.p-carousel-item-start):not(.p-carousel-item-end) .carousel__panel {
-  transform: scale(1.12);
+:host ::ng-deep .p-carousel-item-active:not(.p-carousel-item-start):not(.p-carousel-item-end) .carousel__panel,
+:host ::ng-deep .p-carousel-item-active.p-carousel-item-start.p-carousel-item-end .carousel__panel {
   border-color: var(--p-primary-400);
   border-width: 2px;
   box-shadow:
@@ -71,6 +72,10 @@
     0 0 32px color-mix(in srgb, var(--p-primary-400) 20%, transparent 80%);
   background: color-mix(in srgb, var(--p-surface-0) 80%, var(--p-primary-50) 20%);
   z-index: 2;
+}
+
+:host ::ng-deep .p-carousel-item-active:not(.p-carousel-item-start):not(.p-carousel-item-end) .carousel__panel {
+  transform: scale(1.12);
 }
 
 .carousel__state {

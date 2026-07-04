@@ -15,9 +15,9 @@
     </div>
   } @else {
 
-    <p-carousel [value]="displayableElements()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel">
+    <p-carousel #carouselRef [value]="displayableElements()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel">
     <ng-template let-elt #item>
-        <div class="carousel__panel">
+        <div class="carousel__panel" (click)="selectElement(elt)">
           <xt-render
             displayMode="FULL_VIEW"
             [value]="elt"

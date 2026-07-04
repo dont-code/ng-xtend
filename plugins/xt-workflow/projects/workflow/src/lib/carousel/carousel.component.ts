@@ -1,4 +1,4 @@
-import { Component, computed, inject, linkedSignal, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, OnInit, signal, ViewChild } from '@angular/core';
 import { AbstractDcWorkflow } from 'dc-workflow';
 import { XtMessageHandler, XtRenderComponent } from 'xt-components';
 import { ManagedData } from 'xt-type';
@@ -38,6 +38,10 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
     else return 'horizontal';
   });
 
+  selectedElement = signal<T | null>(null);
+
+  @ViewChild('carouselRef') carousel?: Carousel;
+
   constructor() {
     super();
   }
@@ -45,5 +49,18 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
   override ngOnInit() {
     super.ngOnInit();
     this.fetchFromStore();
+  }
+
+  selectElement(element: T): void {
+    this.selectedElement.set(element);
+    const items = this.displayableElements();
+    const index = items.indexOf(element);
+    if (index === -1) return;
+    const total = items.length;
+    const offset = Math.floor((this.numVisible() - 1) / 2);
+    const targetPage = Math.max(0, Math.min(index - offset, total - this.numVisible()));
+    if (this.carousel) {
+      this.carousel.page = targetPage;
+    }
   }
 }

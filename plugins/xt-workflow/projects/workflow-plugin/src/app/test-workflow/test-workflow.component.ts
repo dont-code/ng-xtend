@@ -50,6 +50,10 @@ export class TestWorkflowComponent implements OnInit, OnDestroy {
       name:'ATest2',
       creationDate:new Date(2014,6,23),
       value: 22
+    },{
+      name:'Other Test',
+      creationDate:new Date(2026,4,19),
+      value: 34
     }]).then(() => {
       this.dataLoaded.set(true);
     });

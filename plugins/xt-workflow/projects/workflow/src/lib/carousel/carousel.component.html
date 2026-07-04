@@ -15,7 +15,7 @@
     </div>
   } @else {
 
-    <p-carousel [value]="displayableElements()" [numVisible]="1" [numScroll]="1" orientation="vertical" contentClass="flex items-center width=600px">
+    <p-carousel [value]="displayableElements()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel">
     <ng-template let-elt #item>
         <div class="carousel__panel">
           <xt-render

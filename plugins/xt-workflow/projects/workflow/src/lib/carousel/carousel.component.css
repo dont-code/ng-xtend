@@ -108,3 +108,36 @@
 .carousel__state--empty {
   min-height: 16rem;
 }
+
+.carousel__edit-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--p-primary-400);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.carousel__edit-btn:hover {
+  opacity: 1;
+}
+
+.carousel__edit-btn i {
+  font-size: 0.85rem;
+}
+
+.carousel__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}

@@ -15,14 +15,34 @@
     </div>
   } @else {
 
-    <p-carousel #carouselRef [value]="displayableElements()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel">
+    <p-carousel #carouselRef [value]="displayableElements()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel" (onPage)="onCarouselPage($event)">
     <ng-template let-elt #item>
+      @let isEditing = editingEntity() === elt;
+      @let isSelected = selectedElement() === elt;
         <div class="carousel__panel" (click)="selectElement(elt)">
-          <xt-render
-            displayMode="FULL_VIEW"
-            [value]="elt"
-            [valueType]="entityName()">
-          </xt-render>
+          @if (isEditing) {
+            <xt-render
+              displayMode="FULL_EDITABLE"
+              [formGroup]="editForm()"
+              subName="editor"
+              [valueType]="entityName()">
+            </xt-render>
+            <div class="carousel__actions">
+              <p-button label="Save" icon="pi pi-save" [disabled]="!canSave()" [loading]="saving()" (onClick)="saveEdit(); $event.stopPropagation()"></p-button>
+              <p-button label="Cancel" icon="pi pi-times" [disabled]="saving()" (onClick)="cancelEdit(); $event.stopPropagation()"></p-button>
+            </div>
+          } @else {
+            <xt-render
+              displayMode="FULL_VIEW"
+              [value]="elt"
+              [valueType]="entityName()">
+            </xt-render>
+            @if (isSelected) {
+              <button class="carousel__edit-btn" (click)="editEntity(elt); $event.stopPropagation()" type="button">
+                <i class="pi pi-pencil"></i>
+              </button>
+            }
+          }
         </div>
     </ng-template>
   </p-carousel>

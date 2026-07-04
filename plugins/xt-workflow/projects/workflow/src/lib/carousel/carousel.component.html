@@ -19,7 +19,8 @@
     <ng-template let-elt #item>
       @let isEditing = editingEntity() === elt;
       @let isSelected = selectedElement() === elt;
-        <div class="carousel__panel" (click)="selectElement(elt)">
+      @let isHorizontal = carouselOrientation() === 'horizontal';
+        <div class="carousel__panel" [class.carousel__panel--selected]="isSelected" [class.carousel__panel--selected-scale]="isSelected && isHorizontal" [class.carousel__panel--editing]="isEditing" (click)="selectElement(elt)">
           @if (isEditing) {
             <xt-render
               displayMode="FULL_EDITABLE"

@@ -1,4 +1,4 @@
-<p-carousel #carouselRef [value]="valueSet()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel-object-set" indicatorStyleClass="carousel-object-set__indicator" (onPage)="onCarouselPage($event)">
+<p-carousel #carouselRef [value]="valueSet()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel-object-set" (onPage)="onCarouselPage($event)">
   <ng-template #item let-elt let-i="rowIndex">
     @let isSelected = selectedElement() === elt;
     @let isHorizontal = carouselOrientation() === 'horizontal';

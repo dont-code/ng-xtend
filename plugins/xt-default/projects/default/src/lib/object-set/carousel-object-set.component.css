@@ -1,6 +1,5 @@
 :host {
   display: block;
-  max-width: 40rem;
   margin: 0 auto;
 }
 
@@ -12,12 +11,16 @@
 :host ::ng-deep .p-carousel-item {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
 }
 
-:host ::ng-deep .p-carousel-indicator-list {
-  max-width: 100%;
-  overflow-x: auto;
-  gap: 0.25rem;
+:host ::ng-deep .p-carousel-item:not(.p-carousel-item-active) {
+  flex: 0 0 0 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
 }
 
 .carousel-object-set__panel {
@@ -25,6 +28,7 @@
   border: 2px solid transparent;
   border-radius: 0.75rem;
   padding: 1rem;
+  min-width: 0;
   transition:
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     border-color 0.2s ease,
@@ -43,11 +47,6 @@
 
 .carousel-object-set__panel--selected-scale {
   transform: scale(1.12);
-}
-
-:host ::ng-deep .carousel-object-set__indicator {
-  width: 0.5rem;
-  height: 0.5rem;
 }
 
 @media (max-width: 600px) {

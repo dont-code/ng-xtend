@@ -17,6 +17,7 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   isPortrait = signal<boolean>(this.portraitQuery.matches);
 
   numVisible = computed<number>(() => this.isPortrait() ? 1 : 3);
+  centerOffset = computed(() => Math.floor((this.numVisible() - 1) / 2));
   carouselOrientation = computed<'horizontal' | 'vertical'>(() => this.isPortrait() ? 'vertical' : 'horizontal');
 
   valueSet = computed(() => {
@@ -75,21 +76,21 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     effect(() => {
       const items = this.valueSet();
       if (items.length > 0 && this.selectedElement() == null) {
-        const numVis = this.numVisible();
-        const center = Math.floor((numVis - 1) / 2);
-        const element = items[Math.min(center, items.length - 1)];
+        const offset = this.centerOffset();
+        const element = items[Math.min(offset, items.length - 1)];
         this.selectedElement.set(element);
         this.selected.set(element);
+        this.currentPage.set(0);
       }
     });
   }
 
   onCarouselPage(event: any): void {
     const page = event.page ?? 0;
+    this.currentPage.set(page);
     const items = this.valueSet();
     if (items.length === 0) return;
-    const numVis = this.numVisible();
-    const centerIndex = page + Math.floor((numVis - 1) / 2);
+    const centerIndex = page + this.centerOffset();
     const index = Math.min(centerIndex, items.length - 1);
     const element = items[index];
     this.selectedElement.set(element);
@@ -98,6 +99,8 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
       this.outputsObject.valueSelected.emit(element);
     }
   }
+
+  currentPage = signal(0);
 
   selectionChange(newElement: any) {
     this.selectedElement.set(newElement);
@@ -109,8 +112,9 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     const index = items.indexOf(newElement);
     if (index === -1) return;
     const total = items.length;
-    const offset = Math.floor((this.numVisible() - 1) / 2);
-    const targetPage = Math.max(0, Math.min(index - offset, total - this.numVisible()));
+    const numVis = this.numVisible();
+    const targetPage = Math.max(0, Math.min(index - this.centerOffset(), total - numVis));
+    this.currentPage.set(targetPage);
     if (this.carousel) {
       this.carousel.page = targetPage;
     }

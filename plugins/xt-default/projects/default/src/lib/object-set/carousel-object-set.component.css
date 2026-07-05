@@ -6,6 +6,7 @@
 
 :host ::ng-deep .p-carousel-viewport {
   max-height: 30vh;
+  padding: 1.5rem 0.5rem;
 }
 
 :host ::ng-deep .p-carousel-item {
@@ -24,7 +25,10 @@
   border: 2px solid transparent;
   border-radius: 0.75rem;
   padding: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
   background: var(--p-content-background);
 }
 
@@ -35,6 +39,10 @@
 .carousel-object-set__panel--selected {
   border-color: var(--p-primary-400);
   box-shadow: 0 0 0 1px var(--p-primary-400), 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.carousel-object-set__panel--selected-scale {
+  transform: scale(1.12);
 }
 
 :host ::ng-deep .carousel-object-set__indicator {

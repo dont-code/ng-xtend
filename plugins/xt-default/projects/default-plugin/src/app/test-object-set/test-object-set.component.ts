@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, model, signal } from '@angular/core';
 import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { JsonPipe } from '@angular/common';
-import { XtComponentOutput, XtRenderComponent } from 'xt-components';
+import { XtRenderComponent } from 'xt-components';
 import { FormsModule } from '@angular/forms';
 import { Panel } from 'primeng/panel';
 import { DefaultObjectSetComponent } from '../../../../default/src/lib/object-set/default-object-set.component';
@@ -134,17 +134,9 @@ export class TestObjectSetComponent {
     this.selectedComponent() === 'Carousel' ? CarouselObjectSetComponent : DefaultObjectSetComponent
   );
 
-  selectedValue = signal<any>(null);
+  selectedModel = model<any>(null);
 
-  componentOutputChange (newOutput:XtComponentOutput|null) {
-    if (newOutput?.valueSelected!=null) {
-      newOutput.valueSelected.subscribe ((value) => {
-        this.selectedValue.set(value);
-      })
-    }
-  }
-
-  valueType= computed(() => {
+  valueType = computed(() => {
     const displayedType=this.selectedObject();
     return displayedType=='references'?'bookType':undefined;
   });

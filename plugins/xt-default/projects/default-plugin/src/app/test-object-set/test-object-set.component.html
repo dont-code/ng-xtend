@@ -12,8 +12,8 @@
     </div>
   </p-panel>
   <p-panel header="List View Mode">
-    <xt-render id="listView" [componentType]="objectComponentType()" displayMode="LIST_VIEW" (outputs)="componentOutputChange($event)" [valueType]="valueType()" [value]="value()" ></xt-render>
-    <span class="m-3 mt-6">Selected element is {{selectedValue() | json}}</span>
+    <xt-render id="listView" [componentType]="objectComponentType()" displayMode="LIST_VIEW" [models]="{valueSelected: selectedModel}" [valueType]="valueType()" [value]="value()" ></xt-render>
+    <span class="m-3 mt-6">Selected element is {{selectedModel() | json}}</span>
   </p-panel>
 </div>
 

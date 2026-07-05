@@ -1,7 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, effect, linkedSignal, model, output, signal, ViewChild } from '@angular/core';
-import { XtCompositeComponent, XtRenderComponent } from 'xt-components';
+import { ChangeDetectionStrategy, Component, computed, effect, model, output, signal, ViewChild } from '@angular/core';
+import { XtRenderComponent } from 'xt-components';
 import { Carousel } from 'primeng/carousel';
+import { ObjectSetBase } from './object-set-base';
 
+/**
+ * Carousel-based object-set component.
+ *
+ * Displays items in a PrimeNG Carousel with responsive layout:
+ * - 3 visible items in landscape, 1 in portrait.
+ * - The centered item is tracked as the selection.
+ * - Selecting an item (by click or carousel navigation) syncs the page to center it.
+ */
 @Component({
   selector: 'lib-carousel-object-set',
   imports: [Carousel, XtRenderComponent],
@@ -9,63 +18,30 @@ import { Carousel } from 'primeng/carousel';
   styleUrl: './carousel-object-set.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
-  selected = model<any>();
-  protected valueSelectedAsOutput = output<any>();
+export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
+  override selected = model<any>();
+  protected override valueSelectedAsOutput = output<any>();
 
+  /** Media query for portrait orientation on small screens. */
   private portraitQuery = window.matchMedia('(max-width: 599.98px) and (orientation: portrait)');
+
+  /** Whether the viewport is currently in portrait mode. */
   isPortrait = signal<boolean>(this.portraitQuery.matches);
 
+  /** Number of items visible at once in the carousel. */
   numVisible = computed<number>(() => this.isPortrait() ? 1 : 3);
+
+  /** Offset from the start of the page to the center item. */
   centerOffset = computed(() => Math.floor((this.numVisible() - 1) / 2));
+
+  /** Carousel scroll direction: vertical in portrait, horizontal otherwise. */
   carouselOrientation = computed<'horizontal' | 'vertical'>(() => this.isPortrait() ? 'vertical' : 'horizontal');
 
-  valueSet = computed(() => {
-    const ret = this.context().value();
-    if (Array.isArray(ret)) {
-      return ret as T[];
-    } else if (ret != null) {
-      return [ret] as T[];
-    } else return [];
-  });
-
+  /** The element type, stripped of the `[]` suffix for rendering individual items. */
   valueType = computed<string | undefined>(() => {
     const vt = this.context().valueType;
     if (vt == null) return undefined;
     return vt.endsWith('[]') ? vt.substring(0, vt.length - 2) : vt;
-  });
-
-  private selectionContext = computed(() => ({
-    values: this.valueSet(),
-    current: this.selected()
-  }));
-
-  selectedElement = linkedSignal<{values: T[]|null, current: T|null}, T|null>({
-    source: this.selectionContext,
-    computation: (source, previous) => {
-      if (source.values == null || source.values.length === 0) return null;
-
-      if (source.current != null) {
-        const found = source.values.find((toCheck) => {
-          if ((toCheck as any)._id != null && (source.current as any)._id != null) {
-            return (toCheck as any)._id === (source.current as any)._id;
-          }
-          return toCheck === source.current;
-        });
-        if (found) return found;
-      }
-
-      if (previous?.value != null) {
-        return source.values.find((toCheck) => {
-          if ((toCheck as any)._id != null) {
-            return (toCheck as any)._id === (previous.value as any)._id;
-          }
-          return toCheck === previous.value;
-        }) ?? null;
-      }
-
-      return null;
-    }
   });
 
   @ViewChild('carouselRef') carousel?: Carousel;
@@ -73,6 +49,7 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   constructor() {
     super();
     this.portraitQuery.addEventListener('change', (e) => this.isPortrait.set(e.matches));
+    /** Auto-select the first item when the list loads and nothing is selected yet. */
     effect(() => {
       const items = this.valueSet();
       if (items.length > 0 && this.selectedElement() == null) {
@@ -85,6 +62,7 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     });
   }
 
+  /** Handles carousel page change events, updating selection to the centered item. */
   onCarouselPage(event: any): void {
     const page = event.page ?? 0;
     this.currentPage.set(page);
@@ -100,14 +78,15 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     }
   }
 
+  /** Current carousel page index (0-based). */
   currentPage = signal(0);
 
-  selectionChange(newElement: any) {
-    this.selectedElement.set(newElement);
-    this.selected.set(newElement);
-    if (this.outputsObject.valueSelected != null) {
-      this.outputsObject.valueSelected.emit(newElement);
-    }
+  /**
+   * Extends base selectionChange to also scroll the carousel so the newly selected
+   * item lands at (or near) the center of the visible window.
+   */
+  override selectionChange(newElement: any) {
+    super.selectionChange(newElement);
     const items = this.valueSet();
     const index = items.indexOf(newElement);
     if (index === -1) return;
@@ -117,15 +96,6 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
     this.currentPage.set(targetPage);
     if (this.carousel) {
       this.carousel.page = targetPage;
-    }
-  }
-
-  override setupInputOutput() {
-    const parentModel = this.models();
-    if (parentModel?.valueSelected != null) {
-      this.selected = parentModel.valueSelected;
-    } else {
-      this.outputsObject.valueSelected = this.valueSelectedAsOutput;
     }
   }
 }

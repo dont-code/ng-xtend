@@ -1,7 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, linkedSignal, model, output, Signal } from '@angular/core';
-import { StoreSupport, XtCompositeComponent, XtContext, XtRenderSubComponent, XtBaseModel } from 'xt-components';
+import { ChangeDetectionStrategy, Component, computed, model, output, Signal } from '@angular/core';
+import { XtContext, XtRenderSubComponent } from 'xt-components';
 import { TableModule } from 'primeng/table';
+import { ObjectSetBase } from './object-set-base';
 
+/**
+ * Table-based (default) object-set component.
+ *
+ * Renders a collection of items as a PrimeNG Table with:
+ * - One column per sub-field of the element type.
+ * - Single-selection via pSelectableRow.
+ * - Dynamic sub-context resolution for inline editing of nested fields.
+ */
 @Component({
   selector: 'lib-default-object-set',
   imports: [XtRenderSubComponent, TableModule],
@@ -9,100 +18,35 @@ import { TableModule } from 'primeng/table';
   styleUrl: './default-object-set.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DefaultObjectSetComponent<T> extends XtCompositeComponent<T[]> {
-  selected= model<any>();
-  /**
-   * Maybe the host expects the valueselection as output
-   * @protected
-   */
-  protected valueSelectedAsOutput = output<any>();
+export class DefaultObjectSetComponent<T> extends ObjectSetBase<T> {
+  override selected = model<any>();
+  protected override valueSelectedAsOutput = output<any>();
 
-
+  /** Debug toggle that flips on each render to force change detection. */
   debugValue=false;
+
+  /** Debug signal (read in templates to trigger expression re-evaluation). */
   debugSelectedElement:Signal<boolean> = computed<boolean>(() => {
-//    console.debug("Selected element", this.selectedElement());
     this.debugValue=!this.debugValue;
     return this.debugValue;
   });
 
-  valueSet = computed(() => {
-    const ret = this.context().value();
-    if (Array.isArray(ret)) {
-      return ret as T[];
-    } else if (ret!=null) {
-      return [ret] as T[];
-    } else return [];
-  });
-
-  private selectionContext = computed(() => ({
-    values: this.valueSet(),
-    current: this.selected()
-  }));
-
-  selectedElement = linkedSignal<{values: T[]|null, current: T|null}, T|null> ({
-    source: this.selectionContext,
-    computation: (source, previous) => {
-      if (source.values == null || source.values.length === 0) return null;
-
-      // First try to find the currently selected model value in the source
-      if (source.current != null) {
-        const found = source.values.find((toCheck) => {
-          if ((toCheck as any)._id != null && (source.current as any)._id != null) {
-            return (toCheck as any)._id === (source.current as any)._id;
-          }
-          return toCheck === source.current;
-        });
-        if (found) return found;
-      }
-
-      // Fallback: maintain previous selection across list refresh
-      if (previous?.value != null) {
-        return source.values.find((toCheck) => {
-          if ((toCheck as any)._id != null) {
-            return (toCheck as any)._id === (previous.value as any)._id;
-          }
-          return toCheck === previous.value;
-        }) ?? null;
-      }
-
-      return null;
-    }
-  });
-
+  /** Names of the sub-fields that form the table columns. */
   subNames = computed(() => {
     const ret = this.resolverService.listSubNamesOf(this.context(), this.valueSet());
     return ret;
   });
 
+  /** Builds an XtContext for a specific row element so its sub-fields can be rendered inline. */
   elementSetContext(elementIndex: number): XtContext<any> {
     this.formGroupIfAny();
 
     const ret= this.context().elementSetContext(elementIndex);
-  /*  this.resolverService.loadAllReferencesForContext(ret, StoreSupport.getStoreManager()).then(() => {
-      console.debug("Resolved all references for element "+elementIndex+ ' of type '+this.context().valueType);
-    } );*/
     return ret;
   }
 
+  /** Resolves a sub-context within a row for the given field name. */
   subElementContextForName(subElementContext: XtContext<any>, subName: string, subType?: string): XtContext<any> {
     return subElementContext.subContext(subName, subType, this.resolverService?.typeResolver);
-  }
-
-  selectionChange(newElement: any) {
-    this.selectedElement.set(newElement);
-    this.selected.set(newElement );
-    if( this.outputsObject.valueSelected!=null) {
-      this.outputsObject.valueSelected.emit(newElement);
-    }
-  }
-
-  override setupInputOutput () {
-    const parentModel=this.models();
-    if (parentModel?.valueSelected != null) {
-      this.selected=parentModel.valueSelected;
-    } else {
-      // Host is not using models, maybe it expects an output, let's set it up
-      this.outputsObject.valueSelected = this.valueSelectedAsOutput;
-    }
   }
 }

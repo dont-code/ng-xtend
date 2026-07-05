@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-agenda-v0.7.0...xt-plugin-agenda-v0.8.0) (2026-07-05)
+
+
+### Bug Fixes
+
+* agenda plugin no tailwind & test fixes ([5dddc1a](https://github.com/dont-code/ng-xtend/commit/5dddc1ab103e2cb03b42dad821cbdf9d9c935e17))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-agenda-v0.6.4...xt-plugin-agenda-v0.7.0) (2026-06-20)
 
 

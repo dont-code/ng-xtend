@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.7.0...xt-plugin-workflow-v0.8.0) (2026-07-05)
+
+
+### Bug Fixes
+
+* carousel as a list component ([882ebac](https://github.com/dont-code/ng-xtend/commit/882ebaced6b5998f7013b8bb8a0c77b1310e7c93))
+* nice carousel now ([88733f3](https://github.com/dont-code/ng-xtend/commit/88733f387441b6ed5be4003876a8162fa1d6d109))
+* nice carousel now ([babf781](https://github.com/dont-code/ng-xtend/commit/babf7816f652a116a3d534fb38ae5ee664f49753))
+* nice carousel now ([5b3e50a](https://github.com/dont-code/ng-xtend/commit/5b3e50a57012146fb47fb9d01399e6552aa3d2aa))
+* ygly carousel but working ([4dff37c](https://github.com/dont-code/ng-xtend/commit/4dff37cca1015161644019b6f6e1d3d9df85c1a2))
+* ygly carousel but working ([8aa7037](https://github.com/dont-code/ng-xtend/commit/8aa7037944bf56da1fca7f3a1563b0d36feb9b97))
+* ygly carousel but working ([224a4cd](https://github.com/dont-code/ng-xtend/commit/224a4cd9cb0ad3905542c91f6b1761221426cf1d))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.6.4...xt-plugin-workflow-v0.7.0) (2026-06-20)
 
 

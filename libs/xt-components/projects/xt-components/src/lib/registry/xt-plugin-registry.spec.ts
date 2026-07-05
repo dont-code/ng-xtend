@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { xtPluginRegistry } from '../../globals';
 import { XtActionHandler, XtActionResult } from '../action/xt-action-handler';
 import { XtContext } from '../xt-context';
-import { IStoreProvider } from '../store/store-support';
 
 describe('XtPluginRegistry', () => {
 

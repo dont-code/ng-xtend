@@ -1,0 +1,59 @@
+@let entName = entityName();
+
+@if (entName != null) {
+
+  @if (store?.loading()) {
+    <div class="carousel__state">
+      <p-progress-spinner />
+      <span>Loading {{ entName }}…</span>
+    </div>
+  } @else if ((store?.entities()?.length ?? 0) === 0) {
+    <div class="carousel__state carousel__state--empty">
+      <i class="pi pi-inbox"></i>
+      <span>No entity found.</span>
+      <small>Try creating a new item with the toolbar above.</small>
+    </div>
+  } @else {
+
+    <p-carousel #carouselRef [value]="displayableElements()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" contentClass="carousel" (onPage)="onCarouselPage($event)">
+    <ng-template let-elt #item>
+      @let isEditing = editingEntity() === elt;
+      @let isSelected = selectedElement() === elt;
+      @let isHorizontal = carouselOrientation() === 'horizontal';
+        <div class="carousel__panel" [class.carousel__panel--selected]="isSelected" [class.carousel__panel--selected-scale]="isSelected && isHorizontal" [class.carousel__panel--editing]="isEditing" (click)="selectElement(elt)">
+          @if (isEditing) {
+            <xt-render
+              displayMode="FULL_EDITABLE"
+              [formGroup]="editForm()"
+              subName="editor"
+              [valueType]="entityName()">
+            </xt-render>
+            <div class="carousel__actions">
+              <p-button label="Save" icon="pi pi-save" [disabled]="!canSave()" [loading]="saving()" (onClick)="saveEdit(); $event.stopPropagation()"></p-button>
+              <p-button label="Cancel" icon="pi pi-times" [disabled]="saving()" (onClick)="cancelEdit(); $event.stopPropagation()"></p-button>
+            </div>
+          } @else {
+            <xt-render
+              displayMode="FULL_VIEW"
+              [value]="elt"
+              [valueType]="entityName()">
+            </xt-render>
+            @if (isSelected) {
+              <button class="carousel__edit-btn" (click)="editEntity(elt); $event.stopPropagation()" type="button">
+                <i class="pi pi-pencil"></i>
+              </button>
+            }
+          }
+        </div>
+    </ng-template>
+  </p-carousel>
+  }
+
+} @else {
+  <section class="carousel carousel--empty">
+  <div class="carousel__state carousel__state--empty">
+    <i class="pi pi-database"></i>
+    <span>No entity to manage.</span>
+  </div>
+</section>
+}

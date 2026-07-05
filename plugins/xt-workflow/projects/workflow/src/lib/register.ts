@@ -1,5 +1,6 @@
 import { XtResolverService } from 'xt-components';
 import { ListDetailsComponent } from './list-details/list-details.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 export function registerWorkflowPlugin (resolverService:XtResolverService):boolean {
   const pluginName = "Plugin Workflow";
@@ -10,7 +11,11 @@ export function registerWorkflowPlugin (resolverService:XtResolverService):boole
         name:'wfwListDetails',
         class:ListDetailsComponent,
         workflowsHandled:['list-detail']
-      }
+      },{
+      name:'wfwCarousel',
+      class:CarouselComponent,
+      workflowsHandled:['carousel']
+    }
     ]
   })
     return true;

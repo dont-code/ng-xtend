@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, linkedSignal, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, linkedSignal, model, output, signal } from '@angular/core';
 import { XtCompositeComponent, XtRenderComponent } from 'xt-components';
 import { Carousel } from 'primeng/carousel';
 
@@ -12,6 +12,12 @@ import { Carousel } from 'primeng/carousel';
 export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
   selected = model<any>();
   protected valueSelectedAsOutput = output<any>();
+
+  private portraitQuery = window.matchMedia('(max-width: 599.98px) and (orientation: portrait)');
+  isPortrait = signal<boolean>(this.portraitQuery.matches);
+
+  numVisible = computed<number>(() => this.isPortrait() ? 1 : 3);
+  carouselOrientation = computed<'horizontal' | 'vertical'>(() => this.isPortrait() ? 'vertical' : 'horizontal');
 
   valueSet = computed(() => {
     const ret = this.context().value();
@@ -60,6 +66,11 @@ export class CarouselObjectSetComponent<T> extends XtCompositeComponent<T[]> {
       return null;
     }
   });
+
+  constructor() {
+    super();
+    this.portraitQuery.addEventListener('change', (e) => this.isPortrait.set(e.matches));
+  }
 
   selectionChange(newElement: any) {
     this.selectedElement.set(newElement);

@@ -1,4 +1,4 @@
-<p-carousel [value]="valueSet()" [numVisible]="3" [numScroll]="1" orientation="horizontal">
+<p-carousel [value]="valueSet()" [numVisible]="numVisible()" [numScroll]="1" [orientation]="carouselOrientation()" indicatorStyleClass="carousel-object-set__indicator">
   <ng-template #item let-elt let-i="rowIndex">
     @let isSelected = selectedElement() === elt;
     <div class="carousel-object-set__panel" [class.carousel-object-set__panel--selected]="isSelected" (click)="selectionChange(elt)">

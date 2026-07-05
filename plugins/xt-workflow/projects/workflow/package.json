@@ -7,7 +7,7 @@
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
-    "xt-components": ">= 0.7.0",
+    "xt-components": ">= 0.8.0",
     "xt-store": ">= 0.7.0"
   },
   "dependencies": {

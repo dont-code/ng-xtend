@@ -1,13 +1,27 @@
 :host {
   display: block;
   margin: 0 auto;
-  max-width: 100vw;
-
 }
 
 :host ::ng-deep .p-carousel-viewport {
   max-height: 30vh;
   padding: 1.5rem 0.5rem;
+}
+
+:host ::ng-deep .p-carousel-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .p-carousel-item:not(.p-carousel-item-active) {
+  flex: 0 0 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
 }
 
 .carousel-object-set__panel {
@@ -34,6 +48,11 @@
 
 .carousel-object-set__panel--selected-scale {
   transform: scale(1.12);
+}
+
+:host ::ng-deep .carousel-object-set__indicator {
+  width: 0.5rem;
+  height: 0.5rem;
 }
 
 @media (max-width: 600px) {

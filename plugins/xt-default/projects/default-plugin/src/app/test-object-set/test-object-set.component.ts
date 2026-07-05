@@ -5,6 +5,7 @@ import { XtComponentOutput, XtRenderComponent } from 'xt-components';
 import { FormsModule } from '@angular/forms';
 import { Panel } from 'primeng/panel';
 import { DefaultObjectSetComponent } from '../../../../default/src/lib/object-set/default-object-set.component';
+import { CarouselObjectSetComponent } from '../../../../default/src/lib/object-set/carousel-object-set.component';
 import { AppComponent } from '../app.component';
 
 @Component({
@@ -21,7 +22,13 @@ import { AppComponent } from '../app.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestObjectSetComponent {
-  selectedObject= signal<string>('simple');
+  selectedObject = signal<string>('simple');
+
+  selectedComponent = signal<string>('Default');
+
+  componentOptions() {
+    return ['Default', 'Carousel'];
+  }
 
   value = signal<any>(this.loadObject('simple') );
 
@@ -32,6 +39,10 @@ export class TestObjectSetComponent {
   objectSwitch($event: AutoCompleteSelectEvent) {
     this.selectedObject.set($event.value);
     this.value.set(this.loadObject ($event.value));
+  }
+
+  componentSwitch($event: AutoCompleteSelectEvent) {
+    this.selectedComponent.set($event.value);
   }
 
   loadObject (objName:string) :any {
@@ -119,9 +130,9 @@ export class TestObjectSetComponent {
     }[objName];
   }
 
-  objectComponentType() {
-    return DefaultObjectSetComponent;
-  }
+  objectComponentType = computed(() =>
+    this.selectedComponent() === 'Carousel' ? CarouselObjectSetComponent : DefaultObjectSetComponent
+  );
 
   selectedValue = signal<any>(null);
 

@@ -1,0 +1,9 @@
+<p-carousel [value]="valueSet()" [numVisible]="3" [numScroll]="1" orientation="horizontal">
+  <ng-template #item let-elt let-i="rowIndex">
+    @let isSelected = selectedElement() === elt;
+    <div class="carousel-object-set__panel" [class.carousel-object-set__panel--selected]="isSelected" (click)="selectionChange(elt)">
+      <xt-render displayMode="FULL_VIEW" [value]="elt" [valueType]="valueType()">
+      </xt-render>
+    </div>
+  </ng-template>
+</p-carousel>

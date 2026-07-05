@@ -6,6 +6,10 @@
     <div class="m-3" id="TypeSelector">
       <p-autocomplete [suggestions]="listOfObjects()" [ngModel]="selectedObject()" (onSelect)="objectSwitch($event)" [dropdown]="true"></p-autocomplete>
     </div>
+    <label class="text-xl m-3" for="ComponentSelector">Select the component to use</label>
+    <div class="m-3" id="ComponentSelector">
+      <p-autocomplete [suggestions]="componentOptions()" [ngModel]="selectedComponent()" (onSelect)="componentSwitch($event)" [dropdown]="true"></p-autocomplete>
+    </div>
   </p-panel>
   <p-panel header="List View Mode">
     <xt-render id="listView" [componentType]="objectComponentType()" displayMode="LIST_VIEW" (outputs)="componentOutputChange($event)" [valueType]="valueType()" [value]="value()" ></xt-render>

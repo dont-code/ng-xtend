@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.7.0...xt-plugin-default-v0.8.0) (2026-07-05)
+
+
+### Features
+
+* Host using workflow now ([6755780](https://github.com/dont-code/ng-xtend/commit/6755780bec58091e571c891db46de68595511a90))
+* list can new be displayed as carousels ([06680e2](https://github.com/dont-code/ng-xtend/commit/06680e25a779e6c2fbc5603cb2f8ccd4e20e153f))
+* working default plugin ([3d8052e](https://github.com/dont-code/ng-xtend/commit/3d8052e9cad312934b08050de5de77d870e3e75b))
+
+
+### Bug Fixes
+
+* carousel as a list component ([882ebac](https://github.com/dont-code/ng-xtend/commit/882ebaced6b5998f7013b8bb8a0c77b1310e7c93))
+* default object set defaults to output ([31be886](https://github.com/dont-code/ng-xtend/commit/31be886ac8e483ab4014225932eba9bb74e48044))
+* display long list ([19ff849](https://github.com/dont-code/ng-xtend/commit/19ff849151f5856c1eeb074be777a7ef1edd081d))
+* display long list ([f2849b0](https://github.com/dont-code/ng-xtend/commit/f2849b00574e4c5f74885042a6d5c157ebe4fa32))
+* display long list ([403159b](https://github.com/dont-code/ng-xtend/commit/403159bc9cd4098e29267568992f60870a28c5fd))
+* item selection ([8c67536](https://github.com/dont-code/ng-xtend/commit/8c67536b1352758e6ac877d47b7db8b334a7876e))
+* nicest so far ([ca817bb](https://github.com/dont-code/ng-xtend/commit/ca817bb22876c4f572421c261c205d33b8b53fa6))
+* no more cd in ref labels ([40b3fde](https://github.com/dont-code/ng-xtend/commit/40b3fde6b93f2b9f1e4c152ad6bcf173dc748aab))
+* no use of tailwind in plugins ([dd90282](https://github.com/dont-code/ng-xtend/commit/dd90282f6d53e66221e779102ac9dd9b1a307995))
+* proper display of properties ([39991ae](https://github.com/dont-code/ng-xtend/commit/39991aeef86183431ecc55b9e92488592532de2e))
+* select / deselect element in list ([c9a4832](https://github.com/dont-code/ng-xtend/commit/c9a48322bdf45803d5bbec1d06c0762fbec294c2))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgrade and selection through model working ([e865380](https://github.com/dont-code/ng-xtend/commit/e8653809682a716359dd88f9530faa0882b286f9))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+
 ## [0.7.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.6.4...xt-plugin-default-v0.7.0) (2026-06-20)
 
 

@@ -13,6 +13,7 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   override context = input.required<XtContext<T[]>>();
   override selected = model<any>();
   protected override valueSelectedAsOutput = output<any>();
+  editButton = input(false);
   editRequested = output<any>();
 
   valueType = computed<string | undefined>(() => {

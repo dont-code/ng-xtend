@@ -21,25 +21,48 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     return vt.endsWith('[]') ? vt.substring(0, vt.length - 2) : vt;
   });
 
+  isVertical = signal(false);
+
+  private viewportCount = computed(() => this.isVertical() ? 1 : 3);
+  private centerOffset = computed(() => Math.floor((this.viewportCount() - 1) / 2));
+
   slideAnim = signal<string>('');
+  exitingItem = signal<T | undefined>(undefined);
+  verticalDir = signal<'next' | 'prev' | ''>('');
 
   currentPage = signal(0);
 
-  visibleItems = computed(() => {
+  visibleItems = computed<(T | undefined)[]>(() => {
     const items = this.valueSet();
     const page = this.currentPage();
-    return items.slice(Math.max(0, page - 1), page + 4);
+    if (this.isVertical()) {
+      const idx = Math.max(0, Math.min(page, items.length - 1));
+      return items.length > 0 ? [items[idx]] : [];
+    }
+    const count = this.viewportCount() + 2;
+    const result: (T | undefined)[] = [];
+    for (let i = 0; i < count; i++) {
+      const idx = page - 1 + i;
+      result.push(idx >= 0 && idx < items.length ? items[idx] : undefined);
+    }
+    return result;
   });
 
   canGoPrev = computed(() => this.currentPage() > 0);
-  canGoNext = computed(() => this.currentPage() + 3 < this.valueSet().length);
+  canGoNext = computed(() => this.currentPage() + this.viewportCount() < this.valueSet().length);
 
   constructor() {
     super();
+    if (typeof window !== 'undefined') {
+      const mq = window.matchMedia('(orientation: portrait)');
+      this.isVertical.set(mq.matches);
+      mq.addEventListener('change', (e) => this.isVertical.set(e.matches));
+    }
     effect(() => {
       const items = this.valueSet();
       if (items.length > 0 && this.selectedElement() == null) {
-        const element = items[Math.min(1, items.length - 1)];
+        const idx = Math.min(this.centerOffset(), items.length - 1);
+        const element = items[idx];
         this.selectedElement.set(element);
         this.selected.set(element);
         this.currentPage.set(0);
@@ -48,24 +71,44 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   }
 
   previous() {
-    if (!this.canGoPrev()) return;
-    this.currentPage.update(p => p - 1);
-    this.selectCenterItem();
-    this.slideAnim.set('slide-in-from-left');
-    setTimeout(() => this.slideAnim.set(''), 300);
+    if (!this.canGoPrev() || this.exitingItem()) return;
+    if (this.isVertical()) {
+      const items = this.valueSet();
+      const idx = Math.max(0, Math.min(this.currentPage(), items.length - 1));
+      this.exitingItem.set(items[idx]);
+      this.currentPage.update(p => p - 1);
+      this.selectCenterItem();
+      this.verticalDir.set('prev');
+      setTimeout(() => { this.exitingItem.set(undefined); this.verticalDir.set(''); }, 350);
+    } else {
+      this.currentPage.update(p => p - 1);
+      this.selectCenterItem();
+      this.slideAnim.set('slide-in-from-left');
+      setTimeout(() => this.slideAnim.set(''), 300);
+    }
   }
 
   next() {
-    if (!this.canGoNext()) return;
-    this.currentPage.update(p => p + 1);
-    this.selectCenterItem();
-    this.slideAnim.set('slide-in-from-right');
-    setTimeout(() => this.slideAnim.set(''), 300);
+    if (!this.canGoNext() || this.exitingItem()) return;
+    if (this.isVertical()) {
+      const items = this.valueSet();
+      const idx = Math.max(0, Math.min(this.currentPage(), items.length - 1));
+      this.exitingItem.set(items[idx]);
+      this.currentPage.update(p => p + 1);
+      this.selectCenterItem();
+      this.verticalDir.set('next');
+      setTimeout(() => { this.exitingItem.set(undefined); this.verticalDir.set(''); }, 350);
+    } else {
+      this.currentPage.update(p => p + 1);
+      this.selectCenterItem();
+      this.slideAnim.set('slide-in-from-right');
+      setTimeout(() => this.slideAnim.set(''), 300);
+    }
   }
 
   private selectCenterItem() {
     const items = this.valueSet();
-    const centerIndex = this.currentPage() + 1;
+    const centerIndex = this.currentPage() + this.centerOffset();
     if (centerIndex >= 0 && centerIndex < items.length) {
       this.selectionChange(items[centerIndex]);
     }
@@ -77,15 +120,24 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     const index = items.indexOf(newElement);
     if (index === -1) return;
 
-    const currentCenter = this.currentPage() + 1;
+    const currentCenter = this.currentPage() + this.centerOffset();
     if (index === currentCenter) return;
 
     const total = items.length;
-    const targetPage = Math.max(0, Math.min(index - 1, total - 3));
-    const direction = index < currentCenter ? 'slide-in-from-left' : 'slide-in-from-right';
+    const targetPage = Math.max(0, Math.min(index - this.centerOffset(), total - this.viewportCount()));
+    const goLeft = index < currentCenter;
 
-    this.currentPage.set(targetPage);
-    this.slideAnim.set(direction);
-    setTimeout(() => this.slideAnim.set(''), 300);
+    if (this.isVertical()) {
+      if (this.exitingItem()) return;
+      const idx = Math.max(0, Math.min(this.currentPage(), items.length - 1));
+      this.exitingItem.set(items[idx]);
+      this.currentPage.set(targetPage);
+      this.verticalDir.set(goLeft ? 'prev' : 'next');
+      setTimeout(() => { this.exitingItem.set(undefined); this.verticalDir.set(''); }, 350);
+    } else {
+      this.currentPage.set(targetPage);
+      this.slideAnim.set(goLeft ? 'slide-in-from-left' : 'slide-in-from-right');
+      setTimeout(() => this.slideAnim.set(''), 300);
+    }
   }
 }

@@ -85,7 +85,7 @@ describe('CarouselObjectSetComponent', () => {
     expect(component.valueSet().length).toEqual(3);
 
     const panels = fixture.debugElement.queryAll(By.css('.carousel-object-set__panel'));
-    expect(panels.length).toEqual(3);
+    expect(panels.length).toEqual(5);
 
     const navButtons = fixture.debugElement.queryAll(By.css('.carousel-object-set__nav'));
     expect(navButtons.length).toEqual(2);

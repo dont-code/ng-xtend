@@ -1,25 +1,38 @@
 <div class="carousel-object-set">
   <button class="carousel-object-set__nav carousel-object-set__nav--prev"
     (click)="previous()" [disabled]="!canGoPrev()" type="button">
-    <i class="pi pi-chevron-left"></i>
+    <i class="pi" [class.pi-chevron-left]="!isVertical()" [class.pi-chevron-up]="isVertical()"></i>
   </button>
 
   <div class="carousel-object-set__viewport">
     <div class="carousel-object-set__track"
       [class.slide-in-from-right]="slideAnim() === 'slide-in-from-right'"
       [class.slide-in-from-left]="slideAnim() === 'slide-in-from-left'">
+      @if (isVertical() && exitingItem()) {
+      <div class="carousel-object-set__panel carousel-object-set__panel--exiting"
+        [class.carousel-object-set__panel--exit-up]="verticalDir() === 'next'"
+        [class.carousel-object-set__panel--exit-down]="verticalDir() === 'prev'">
+        <xt-render displayMode="FULL_VIEW" [value]="exitingItem()!" [valueType]="valueType()">
+        </xt-render>
+      </div>
+      }
       @for (item of visibleItems(); track $index) {
       <div class="carousel-object-set__panel"
-        [class.carousel-object-set__panel--selected]="selectedElement() === item"
-        [class.carousel-object-set__panel--detail]="selectedElement() === item"
-        (click)="selectionChange(item)">
-        <xt-render displayMode="FULL_VIEW" [value]="item" [valueType]="valueType()">
-        </xt-render>
-        @if (selectedElement() === item) {
-          <button class="carousel-object-set__edit-btn"
-            (click)="editRequested.emit(item); $event.stopPropagation()" type="button">
-            <i class="pi pi-pencil"></i>
-          </button>
+        [class.carousel-object-set__panel--placeholder]="!item"
+        [class.carousel-object-set__panel--selected]="!!item && selectedElement() === item"
+        [class.carousel-object-set__panel--detail]="!!item && selectedElement() === item"
+        [class.carousel-object-set__panel--enter-up]="isVertical() && verticalDir() === 'next'"
+        [class.carousel-object-set__panel--enter-down]="isVertical() && verticalDir() === 'prev'"
+        (click)="item && selectionChange(item)">
+        @if (item) {
+          <xt-render displayMode="FULL_VIEW" [value]="item" [valueType]="valueType()">
+          </xt-render>
+          @if (selectedElement() === item) {
+            <button class="carousel-object-set__edit-btn"
+              (click)="editRequested.emit(item); $event.stopPropagation()" type="button">
+              <i class="pi pi-pencil"></i>
+            </button>
+          }
         }
       </div>
     }
@@ -28,6 +41,6 @@
 
   <button class="carousel-object-set__nav carousel-object-set__nav--next"
     (click)="next()" [disabled]="!canGoNext()" type="button">
-    <i class="pi pi-chevron-right"></i>
+    <i class="pi" [class.pi-chevron-right]="!isVertical()" [class.pi-chevron-down]="isVertical()"></i>
   </button>
 </div>

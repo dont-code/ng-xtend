@@ -21,6 +21,7 @@
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .carousel-object-set__panel {
@@ -45,6 +46,10 @@
 .carousel-object-set__panel--selected {
   border-color: var(--p-primary-400);
   box-shadow: 0 0 0 1px var(--p-primary-400), 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.carousel-object-set__panel--placeholder {
+  visibility: hidden;
 }
 
 .carousel-object-set__panel--detail {
@@ -123,4 +128,71 @@
 @keyframes slideInFromLeft {
   from { transform: translateX(calc(-1 * ((100% + 1rem) / 3))); }
   to { transform: none; }
+}
+
+.carousel-object-set__panel--exiting {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+}
+
+.carousel-object-set__panel--exit-up {
+  animation: exitUp 0.3s ease both;
+}
+
+.carousel-object-set__panel--exit-down {
+  animation: exitDown 0.3s ease both;
+}
+
+.carousel-object-set__panel--enter-up {
+  animation: enterUp 0.3s ease both;
+}
+
+.carousel-object-set__panel--enter-down {
+  animation: enterDown 0.3s ease both;
+}
+
+@keyframes exitUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100%); opacity: 0; }
+}
+
+@keyframes exitDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes enterUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes enterDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (orientation: portrait) {
+  .carousel-object-set {
+    flex-direction: column;
+  }
+
+  .carousel-object-set__viewport {
+    height: 50vh;
+    min-height: 250px;
+  }
+
+  .carousel-object-set__track {
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .carousel-object-set__panel {
+    flex: 0 0 calc(100% - 1rem);
+    width: 100%;
+    min-height: 0;
+  }
 }

@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CarouselComponent } from './carousel.component';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { registerDefaultPlugin } from 'xt-plugin-default';
+import { registerDefaultPlugin, CarouselObjectSetComponent } from 'xt-plugin-default';
 import { StoreTestBed } from 'xt-store';
 import { XtResolverService, XtUnitTestHelper } from 'xt-components';
 import { DcWorkflowModel } from 'dc-workflow';
 import { By } from '@angular/platform-browser';
-import { Carousel } from 'primeng/carousel';
 import { FormGroup } from '@angular/forms';
 
 describe('Carousel Component', () => {
@@ -68,11 +67,11 @@ describe('Carousel Component', () => {
     await fixture.whenStable();
 
     await XtUnitTestHelper.waitFor(() => {
-      const carouselComponent = fixture.debugElement.query(By.directive(Carousel));
+      const carouselComponent = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
       return carouselComponent != null;
     });
 
-    let carouselComponent = fixture.debugElement.query(By.directive(Carousel));
+    let carouselComponent = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
     expect(carouselComponent).toBeTruthy();
 
     expect(carouselComponent.nativeElement.textContent?.indexOf('Another Book')).not.toBe(-1);
@@ -100,12 +99,12 @@ describe('Carousel Component', () => {
     await fixture.whenStable();
 
     await XtUnitTestHelper.waitFor(() => {
-      const panels = fixture.debugElement.queryAll(By.css('.carousel__panel'));
-      return panels.length > 0;
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
     });
 
-    const panels = fixture.debugElement.queryAll(By.css('.carousel__panel'));
-    panels[0].nativeElement.click();
+    const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+    child.selectionChange(child.valueSet()[0]);
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -135,30 +134,24 @@ describe('Carousel Component', () => {
     await fixture.whenStable();
 
     await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.queryAll(By.css('.carousel__panel')).length > 0;
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
     });
 
-    const panels = fixture.debugElement.queryAll(By.css('.carousel__panel'));
-    panels[0].nativeElement.click();
+    const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+    child.selectionChange(child.valueSet()[0]);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.query(By.css('.carousel__edit-btn')) != null;
-    });
-
-    const editBtn = fixture.debugElement.query(By.css('.carousel__edit-btn'));
-    expect(editBtn).toBeTruthy();
-
-    editBtn.nativeElement.click();
+    const selected = component.selectedElement();
+    expect(selected).toBeTruthy();
+    component.onEditRequested(selected);
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect((component as any).editingEntity()).toBeTruthy();
     expect((component as any).editingEntity()).toEqual(component.selectedElement());
-
-    const saveBtn = fixture.debugElement.query(By.css('.carousel__actions p-button'));
-    expect(saveBtn).toBeTruthy();
+    expect((component as any).dialogVisible()).toBeTruthy();
   });
 
   it('should cancel edit mode', async () => {
@@ -183,22 +176,19 @@ describe('Carousel Component', () => {
     await fixture.whenStable();
 
     await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.queryAll(By.css('.carousel__panel')).length > 0;
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
     });
 
-    const panels = fixture.debugElement.queryAll(By.css('.carousel__panel'));
-    panels[0].nativeElement.click();
+    const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+    child.selectionChange(child.valueSet()[0]);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.query(By.css('.carousel__edit-btn')) != null;
-    });
-
-    const editBtn = fixture.debugElement.query(By.css('.carousel__edit-btn'));
-    editBtn.nativeElement.click();
+    const selected = component.selectedElement();
+    expect(selected).toBeTruthy();
+    component.onEditRequested(selected);
     fixture.detectChanges();
-    await fixture.whenStable();
 
     expect((component as any).editingEntity()).toBeTruthy();
 
@@ -207,6 +197,7 @@ describe('Carousel Component', () => {
 
     expect((component as any).editingEntity()).toBeNull();
     expect((component as any).canSave()).toBeFalsy();
+    expect((component as any).dialogVisible()).toBeFalsy();
   });
 
   it('should modify form and enable save', async () => {
@@ -226,20 +217,18 @@ describe('Carousel Component', () => {
     await fixture.whenStable();
 
     await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.queryAll(By.css('.carousel__panel')).length > 0;
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
     });
 
-    const panels = fixture.debugElement.queryAll(By.css('.carousel__panel'));
-    panels[0].nativeElement.click();
+    const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+    child.selectionChange(child.valueSet()[0]);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.query(By.css('.carousel__edit-btn')) != null;
-    });
-
-    const editBtn = fixture.debugElement.query(By.css('.carousel__edit-btn'));
-    editBtn.nativeElement.click();
+    const selected = component.selectedElement();
+    expect(selected).toBeTruthy();
+    component.onEditRequested(selected);
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -274,20 +263,18 @@ describe('Carousel Component', () => {
     await fixture.whenStable();
 
     await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.queryAll(By.css('.carousel__panel')).length > 0;
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
     });
 
-    const panels = fixture.debugElement.queryAll(By.css('.carousel__panel'));
-    panels[0].nativeElement.click();
+    const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+    child.selectionChange(child.valueSet()[0]);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    await XtUnitTestHelper.waitFor(() => {
-      return fixture.debugElement.query(By.css('.carousel__edit-btn')) != null;
-    });
-
-    const editBtn = fixture.debugElement.query(By.css('.carousel__edit-btn'));
-    editBtn.nativeElement.click();
+    const selected = component.selectedElement();
+    expect(selected).toBeTruthy();
+    component.onEditRequested(selected);
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -303,6 +290,7 @@ describe('Carousel Component', () => {
     await fixture.whenStable();
 
     expect((component as any).editingEntity()).toBeNull();
+    expect((component as any).dialogVisible()).toBeFalsy();
 
     const updated = (component as any).safeFindStore().entities().find((e: any) => e.name === 'Updated Book');
     expect(updated).toBeTruthy();

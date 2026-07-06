@@ -6,7 +6,6 @@ import { StoreTestHelper, XtBaseContext, XtResolverService } from 'xt-components
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { Carousel } from 'primeng/carousel';
 
 type TestData = {
   simpleText: string;
@@ -85,8 +84,11 @@ describe('CarouselObjectSetComponent', () => {
     expect(component).toBeTruthy();
     expect(component.valueSet().length).toEqual(3);
 
-    const carouselEl = fixture.debugElement.query(By.directive(Carousel));
-    expect(carouselEl).toBeTruthy();
+    const panels = fixture.debugElement.queryAll(By.css('.carousel-object-set__panel'));
+    expect(panels.length).toEqual(3);
+
+    const navButtons = fixture.debugElement.queryAll(By.css('.carousel-object-set__nav'));
+    expect(navButtons.length).toEqual(2);
   });
 
   it('should enable element selection', () => {

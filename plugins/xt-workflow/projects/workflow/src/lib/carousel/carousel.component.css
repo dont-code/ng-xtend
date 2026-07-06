@@ -2,77 +2,15 @@
   display: block;
 }
 
-:host ::ng-deep .p-carousel-viewport {
-  padding: 2rem 0.5rem;
-}
-
 .carousel--empty {
   padding-top: 0.5rem;
 }
 
-:host-context(.app-dark) .carousel__panel,
-:host-context(.app-dark) .carousel__state {
-  background: color-mix(in srgb, var(--p-surface-900) 94%, var(--p-primary-950) 6%);
-}
-
-:host-context(.app-dark) .carousel__panel--selected {
-  border-color: var(--p-primary-500);
-  background: color-mix(in srgb, var(--p-surface-900) 90%, var(--p-primary-950) 10%);
-  box-shadow:
-    0 4px 6px rgb(0 0 0 / 0.25),
-    0 20px 60px rgb(0 0 0 / 0.35),
-    0 0 32px color-mix(in srgb, var(--p-primary-500) 25%, transparent 75%);
-}
-
 @media (max-width: 767px) {
-
   .carousel__state {
     min-height: 14rem;
     padding: 1.5rem;
   }
-}
-
-.carousel__panel {
-  border-radius: 1.5rem;
-  background: color-mix(in srgb, var(--p-surface-0) 92%, var(--p-primary-50) 8%);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 40px rgb(0 0 0 / 0.06);
-  border: 1px solid color-mix(in srgb, var(--p-surface-300) 50%, transparent 50%);
-  transition:
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.35s ease,
-    border-color 0.35s ease,
-    opacity 0.35s ease,
-    filter 0.35s ease;
-  margin: 0 0.5rem;
-  padding: 1.75rem;
-  position: relative;
-}
-
-.carousel__panel--selected {
-  border-color: var(--p-primary-400);
-  border-width: 2px;
-  box-shadow:
-    0 4px 12px rgb(0 0 0 / 0.08),
-    0 24px 64px rgb(0 0 0 / 0.12),
-    0 0 32px color-mix(in srgb, var(--p-primary-400) 20%, transparent 80%);
-  background: color-mix(in srgb, var(--p-surface-0) 80%, var(--p-primary-50) 20%);
-  z-index: 2;
-}
-
-.carousel__panel--selected-scale {
-  transform: scale(1.12);
-}
-
-:host ::ng-deep .p-carousel-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.carousel__panel--editing {
-  flex: 1;
-  min-height: 0;
-  box-sizing: border-box;
-  overflow-y: auto;
 }
 
 .carousel__state {
@@ -104,32 +42,6 @@
 
 .carousel__state--empty {
   min-height: 16rem;
-}
-
-.carousel__edit-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: none;
-  background: var(--p-primary-400);
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
-}
-
-.carousel__edit-btn:hover {
-  opacity: 1;
-}
-
-.carousel__edit-btn i {
-  font-size: 0.85rem;
 }
 
 .carousel__actions {

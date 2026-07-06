@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-finance-v0.8.0...xt-plugin-finance-v0.8.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* ensure 0.8.0 of xt-components is needed ([8424b73](https://github.com/dont-code/ng-xtend/commit/8424b73bb8c31028579583da38098175c32cd3c0))
+
 ## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-finance-v0.7.0...xt-plugin-finance-v0.8.0) (2026-07-05)
 
 

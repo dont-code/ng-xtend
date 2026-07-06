@@ -4,10 +4,11 @@
     <i class="pi pi-chevron-left"></i>
   </button>
 
-  <div class="carousel-object-set__track"
-    [class.slide-in-from-right]="slideAnim() === 'slide-in-from-right'"
-    [class.slide-in-from-left]="slideAnim() === 'slide-in-from-left'">
-    @for (item of visibleItems(); track $index) {
+  <div class="carousel-object-set__viewport">
+    <div class="carousel-object-set__track"
+      [class.slide-in-from-right]="slideAnim() === 'slide-in-from-right'"
+      [class.slide-in-from-left]="slideAnim() === 'slide-in-from-left'">
+      @for (item of visibleItems(); track $index) {
       <div class="carousel-object-set__panel"
         [class.carousel-object-set__panel--selected]="selectedElement() === item"
         [class.carousel-object-set__panel--detail]="selectedElement() === item"
@@ -22,6 +23,7 @@
         }
       </div>
     }
+  </div>
   </div>
 
   <button class="carousel-object-set__nav carousel-object-set__nav--next"

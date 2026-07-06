@@ -9,14 +9,17 @@
   gap: 0.5rem;
 }
 
+.carousel-object-set__viewport {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
 .carousel-object-set__track {
   display: flex;
   gap: 1rem;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  flex: 1;
-  min-width: 0;
 }
 
 .carousel-object-set__panel {

@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.8.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.8.0...xt-plugin-default-v0.8.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* carousel animated ([acad8c3](https://github.com/dont-code/ng-xtend/commit/acad8c30c93011e8583a5f8b653f5300aa6387bb))
+* carousel animated ([3fc9534](https://github.com/dont-code/ng-xtend/commit/3fc953484d17370b7ad8cbc05eee949bdafdfefa))
+* carousel ok ([f3d850f](https://github.com/dont-code/ng-xtend/commit/f3d850f3c6f678c83a26b03d8cd639430d18f7b8))
+* carousel ok ([6766dca](https://github.com/dont-code/ng-xtend/commit/6766dca34553e70b275827ffae056d025a5ed7da))
+* carousel ok ([a2a1a96](https://github.com/dont-code/ng-xtend/commit/a2a1a96ed3e5ae7e6326038c5709e4d51c035082))
+* carousel rewrite ok ([ab0e579](https://github.com/dont-code/ng-xtend/commit/ab0e57960ac2c7d27b2e36ff7e1e80ad6b0a1915))
+* ensure 0.8.0 of xt-components is needed ([8424b73](https://github.com/dont-code/ng-xtend/commit/8424b73bb8c31028579583da38098175c32cd3c0))
+* remove duplicate list code ([5618fab](https://github.com/dont-code/ng-xtend/commit/5618fab00f7c1cb1274e4d73d06605bedb2a4bf9))
+* rewrote the carousel ([300c109](https://github.com/dont-code/ng-xtend/commit/300c1093f3b4d43cace07f7e7b1458db3c1798fa))
+
 ## [0.8.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.7.0...xt-plugin-default-v0.8.0) (2026-07-05)
 
 

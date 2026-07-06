@@ -21,18 +21,18 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     return vt.endsWith('[]') ? vt.substring(0, vt.length - 2) : vt;
   });
 
+  slideAnim = signal<string>('');
+
   currentPage = signal(0);
 
   visibleItems = computed(() => {
     const items = this.valueSet();
-    return items.slice(this.currentPage(), this.currentPage() + 3);
+    const page = this.currentPage();
+    return items.slice(Math.max(0, page - 1), page + 4);
   });
 
   canGoPrev = computed(() => this.currentPage() > 0);
   canGoNext = computed(() => this.currentPage() + 3 < this.valueSet().length);
-
-  animKey = signal(0);
-  animDir = signal<'left' | 'right'>('right');
 
   constructor() {
     super();
@@ -49,26 +49,25 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
 
   previous() {
     if (!this.canGoPrev()) return;
-    this.animDir.set('left');
-    this.animKey.update(v => v + 1);
     this.currentPage.update(p => p - 1);
     this.selectCenterItem();
+    this.slideAnim.set('slide-in-from-left');
+    setTimeout(() => this.slideAnim.set(''), 300);
   }
 
   next() {
     if (!this.canGoNext()) return;
-    this.animDir.set('right');
-    this.animKey.update(v => v + 1);
     this.currentPage.update(p => p + 1);
     this.selectCenterItem();
+    this.slideAnim.set('slide-in-from-right');
+    setTimeout(() => this.slideAnim.set(''), 300);
   }
 
   private selectCenterItem() {
-    const items = this.visibleItems();
-    const centerIndex = Math.min(1, items.length - 1);
-    const element = items[centerIndex];
-    if (element != null) {
-      this.selectionChange(element);
+    const items = this.valueSet();
+    const centerIndex = this.currentPage() + 1;
+    if (centerIndex >= 0 && centerIndex < items.length) {
+      this.selectionChange(items[centerIndex]);
     }
   }
 
@@ -77,8 +76,16 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     const items = this.valueSet();
     const index = items.indexOf(newElement);
     if (index === -1) return;
+
+    const currentCenter = this.currentPage() + 1;
+    if (index === currentCenter) return;
+
     const total = items.length;
     const targetPage = Math.max(0, Math.min(index - 1, total - 3));
+    const direction = index < currentCenter ? 'slide-in-from-left' : 'slide-in-from-right';
+
     this.currentPage.set(targetPage);
+    this.slideAnim.set(direction);
+    setTimeout(() => this.slideAnim.set(''), 300);
   }
 }

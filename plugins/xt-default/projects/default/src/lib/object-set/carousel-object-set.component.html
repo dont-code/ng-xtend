@@ -4,22 +4,22 @@
     <i class="pi pi-chevron-left"></i>
   </button>
 
-  <div class="carousel-object-set__track" [attr.data-anim]="animDir()">
-    @for (item of visibleItems(); track $index + '-' + animKey(); let idx = $index) {
+  <div class="carousel-object-set__track"
+    [class.slide-in-from-right]="slideAnim() === 'slide-in-from-right'"
+    [class.slide-in-from-left]="slideAnim() === 'slide-in-from-left'">
+    @for (item of visibleItems(); track $index) {
       <div class="carousel-object-set__panel"
         [class.carousel-object-set__panel--selected]="selectedElement() === item"
-        [class.carousel-object-set__panel--detail]="selectedElement() === item && idx === 1"
+        [class.carousel-object-set__panel--detail]="selectedElement() === item"
         (click)="selectionChange(item)">
-        <div class="carousel-object-set__panel-anim" [style.animation-delay]="(idx * 0.06) + 's'">
-          <xt-render displayMode="FULL_VIEW" [value]="item" [valueType]="valueType()">
-          </xt-render>
-          @if (selectedElement() === item) {
-            <button class="carousel-object-set__edit-btn"
-              (click)="editRequested.emit(item); $event.stopPropagation()" type="button">
-              <i class="pi pi-pencil"></i>
-            </button>
-          }
-        </div>
+        <xt-render displayMode="FULL_VIEW" [value]="item" [valueType]="valueType()">
+        </xt-render>
+        @if (selectedElement() === item) {
+          <button class="carousel-object-set__edit-btn"
+            (click)="editRequested.emit(item); $event.stopPropagation()" type="button">
+            <i class="pi pi-pencil"></i>
+          </button>
+        }
       </div>
     }
   </div>

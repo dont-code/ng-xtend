@@ -48,7 +48,8 @@
 }
 
 .carousel-object-set__panel--detail {
-  transform: scale(1.12);
+  transform: scale(1.05);
+  border-width: 3px;
 }
 
 .carousel-object-set__edit-btn {

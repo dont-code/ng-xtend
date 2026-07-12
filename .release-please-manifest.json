@@ -1,14 +1,14 @@
 {
-  "libs/xt-type": "0.11.0",
-  "libs/xt-store": "0.8.1",
-  "libs/xt-components": "0.8.1",
-  "libs/xt-plugin-sample": "0.8.1",
-  "libs/dc-workflow": "0.8.1",
-  "plugins/xt-idb-store": "0.8.1",
-  "plugins/xt-default": "0.8.1",
-  "plugins/xt-intl": "0.8.1",
-  "plugins/xt-finance": "0.8.1",
-  "plugins/xt-web": "0.8.1",
-  "plugins/xt-agenda": "0.8.1",
-  "plugins/xt-workflow": "0.8.1"
+  "libs/xt-type": "0.11.1",
+  "libs/xt-store": "0.8.2",
+  "libs/xt-components": "0.8.2",
+  "libs/xt-plugin-sample": "0.8.2",
+  "libs/dc-workflow": "0.8.2",
+  "plugins/xt-idb-store": "0.8.2",
+  "plugins/xt-default": "0.8.2",
+  "plugins/xt-intl": "0.8.2",
+  "plugins/xt-finance": "0.8.2",
+  "plugins/xt-web": "0.8.2",
+  "plugins/xt-agenda": "0.8.2",
+  "plugins/xt-workflow": "0.8.2"
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.11.0...xt-type-v0.11.1) (2026-07-12)
+
+
+### Bug Fixes
+
+* Don't over-escape &lt; and &gt; ([60619b3](https://github.com/dont-code/ng-xtend/commit/60619b31e63d742deb2ace2659ddba69db1c18b6))
+* navigate with left / right ([baaa2ec](https://github.com/dont-code/ng-xtend/commit/baaa2ec8945ac00709cd2cee86ed7133462384cd))
+
 ## [0.11.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.10.4...xt-type-v0.11.0) (2026-06-20)
 
 

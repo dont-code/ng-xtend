@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.2](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.8.1...xt-plugin-workflow-v0.8.2) (2026-07-12)
+
+
+### Bug Fixes
+
+* properly display carousel & list ([deb023a](https://github.com/dont-code/ng-xtend/commit/deb023a6eab52ba4e091864fa913f4e7787b8d2d))
+* test page ui updates ([b0bf23b](https://github.com/dont-code/ng-xtend/commit/b0bf23ba0025e71bb81190cf4d78ffb7a0d88ddd))
+
 ## [0.8.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.8.0...xt-plugin-workflow-v0.8.1) (2026-07-06)
 
 

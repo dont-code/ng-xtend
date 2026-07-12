@@ -7,7 +7,10 @@ import { ObjectSetBase } from './object-set-base';
   imports: [XtRenderComponent],
   templateUrl: './carousel-object-set.component.html',
   styleUrl: './carousel-object-set.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    'tabindex': '0'
+  }
 })
 export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   override context = input.required<XtContext<T[]>>();
@@ -52,12 +55,15 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   canGoPrev = computed(() => this.currentPage() > 0);
   canGoNext = computed(() => this.currentPage() + this.viewportCount() < this.valueSet().length);
 
+  private boundKeyDown = (e: KeyboardEvent) => this.onKeyDown(e);
+
   constructor() {
     super();
     if (typeof window !== 'undefined') {
       const mq = window.matchMedia('(orientation: portrait)');
       this.isVertical.set(mq.matches);
       mq.addEventListener('change', (e) => this.isVertical.set(e.matches));
+      window.addEventListener('keydown', this.boundKeyDown);
     }
     effect(() => {
       const items = this.valueSet();
@@ -69,6 +75,12 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
         this.currentPage.set(0);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', this.boundKeyDown);
+    }
   }
 
   previous() {
@@ -139,6 +151,16 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
       this.currentPage.set(targetPage);
       this.slideAnim.set(goLeft ? 'slide-in-from-left' : 'slide-in-from-right');
       setTimeout(() => this.slideAnim.set(''), 300);
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (this.isVertical()) {
+      if (event.key === 'ArrowUp') { event.preventDefault(); this.previous(); }
+      else if (event.key === 'ArrowDown') { event.preventDefault(); this.next(); }
+    } else {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); this.previous(); }
+      else if (event.key === 'ArrowRight') { event.preventDefault(); this.next(); }
     }
   }
 }

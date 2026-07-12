@@ -50,3 +50,25 @@
   margin-top: 1rem;
   justify-content: flex-end;
 }
+
+:host ::ng-deep .carousel-edit-dialog {
+  min-width: 50vw;
+  max-width: 90vw;
+}
+
+:host ::ng-deep .carousel-edit-dialog .p-dialog-content {
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  :host ::ng-deep .carousel-edit-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    min-width: unset !important;
+    margin: 1rem auto;
+  }
+
+  :host ::ng-deep .carousel-edit-dialog .p-dialog-content {
+    max-height: 70vh;
+  }
+}

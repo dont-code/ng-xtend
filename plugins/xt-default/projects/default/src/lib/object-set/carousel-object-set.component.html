@@ -4,7 +4,10 @@
     <i class="pi" [class.pi-chevron-left]="!isVertical()" [class.pi-chevron-up]="isVertical()"></i>
   </button>
 
-  <div class="carousel-object-set__viewport">
+  <div class="carousel-object-set__viewport" #viewport
+    (touchstart)="onTouchStart($event)"
+    (touchmove)="onTouchMove($event)"
+    (touchend)="onTouchEnd($event)">
     <div class="carousel-object-set__track"
       [class.slide-in-from-right]="slideAnim() === 'slide-in-from-right'"
       [class.slide-in-from-left]="slideAnim() === 'slide-in-from-left'">

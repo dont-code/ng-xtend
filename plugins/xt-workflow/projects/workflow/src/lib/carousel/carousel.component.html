@@ -31,7 +31,7 @@
 </section>
 }
 
-<p-dialog header="Edit {{ entName }}" [(visible)]="dialogVisible" [modal]="true" [style]="{width: '50vw'}" (onHide)="cancelEdit()">
+<p-dialog header="Edit {{ entName }}" [(visible)]="dialogVisible" [modal]="true" styleClass="carousel-edit-dialog" (onHide)="cancelEdit()">
   @if (editingEntity()) {
     <xt-render
       displayMode="FULL_EDITABLE"

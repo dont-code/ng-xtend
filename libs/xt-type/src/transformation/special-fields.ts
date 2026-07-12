@@ -40,7 +40,7 @@ export class SpecialFields<Type>
 
   /** Shared Eta template engine instance for compiling display templates */
   protected static readonly templateEngine = new Eta({
-    autoEscape:false
+    autoEscape:false, autoTrim: 'nl'
   });
 
 

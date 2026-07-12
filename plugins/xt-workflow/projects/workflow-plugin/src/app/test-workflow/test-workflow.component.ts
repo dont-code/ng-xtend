@@ -1,21 +1,20 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { XtRenderComponent, XtResolverService } from 'xt-components';
 import { ListDetailsComponent } from '../../../../workflow/src/lib/list-details/list-details.component';
 import { Button } from 'primeng/button';
 import { DcWorkflowModel, WfwRender } from 'dc-workflow';
 import { StoreTestBed } from 'xt-store';
-import { Select, SelectChangeEvent } from 'primeng/select';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-test',
   imports: [
-    FormsModule,
     ReactiveFormsModule,
     Button,
     WfwRender,
-    Select
+    NgClass
   ],
   templateUrl: './test-workflow.component.html',
   styleUrl: './test-workflow.component.css'
@@ -103,7 +102,10 @@ export class TestWorkflowComponent implements OnInit, OnDestroy {
     this.workflowType.set(value);
   }
 
-  protected listWorkflowTypes():string[] {
-    return ['list-detail','carousel']
-  }
+  protected flexForCarouselOnly = computed( () =>{
+    if (this.workflowType()=='carousel') {
+      return 'flex';
+    }
+    return undefined;
+  });
 }

@@ -7,7 +7,10 @@ import { ObjectSetBase } from './object-set-base';
   imports: [XtRenderComponent],
   templateUrl: './carousel-object-set.component.html',
   styleUrl: './carousel-object-set.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    'tabindex': '0'
+  }
 })
 export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   override context = input.required<XtContext<T[]>>();
@@ -52,12 +55,20 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   canGoPrev = computed(() => this.currentPage() > 0);
   canGoNext = computed(() => this.currentPage() + this.viewportCount() < this.valueSet().length);
 
+  private touchStartX = 0;
+  private touchStartY = 0;
+  private swipeHandled = false;
+  private static readonly SWIPE_THRESHOLD = 50;
+
+  private boundKeyDown = (e: KeyboardEvent) => this.onKeyDown(e);
+
   constructor() {
     super();
     if (typeof window !== 'undefined') {
       const mq = window.matchMedia('(orientation: portrait)');
       this.isVertical.set(mq.matches);
       mq.addEventListener('change', (e) => this.isVertical.set(e.matches));
+      window.addEventListener('keydown', this.boundKeyDown);
     }
     effect(() => {
       const items = this.valueSet();
@@ -69,6 +80,12 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
         this.currentPage.set(0);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', this.boundKeyDown);
+    }
   }
 
   previous() {
@@ -139,6 +156,56 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
       this.currentPage.set(targetPage);
       this.slideAnim.set(goLeft ? 'slide-in-from-left' : 'slide-in-from-right');
       setTimeout(() => this.slideAnim.set(''), 300);
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (this.isVertical()) {
+      if (event.key === 'ArrowUp') { event.preventDefault(); this.previous(); }
+      else if (event.key === 'ArrowDown') { event.preventDefault(); this.next(); }
+    } else {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); this.previous(); }
+      else if (event.key === 'ArrowRight') { event.preventDefault(); this.next(); }
+    }
+  }
+
+  onTouchStart(event: TouchEvent) {
+    if (event.touches.length !== 1) return;
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+    this.swipeHandled = false;
+  }
+
+  onTouchMove(event: TouchEvent) {
+    if (event.touches.length !== 1 || this.swipeHandled) return;
+    const dx = event.touches[0].clientX - this.touchStartX;
+    const dy = event.touches[0].clientY - this.touchStartY;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+    if (!this.isVertical() && absDx > absDy && absDx > 10) {
+      event.preventDefault();
+    } else if (this.isVertical() && absDy > absDx && absDy > 10) {
+      event.preventDefault();
+    }
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    if (this.swipeHandled) return;
+    const changed = event.changedTouches[0];
+    if (!changed) return;
+    const dx = changed.clientX - this.touchStartX;
+    const dy = changed.clientY - this.touchStartY;
+    const threshold = CarouselObjectSetComponent.SWIPE_THRESHOLD;
+    if (this.isVertical()) {
+      if (Math.abs(dy) >= threshold && Math.abs(dy) > Math.abs(dx)) {
+        this.swipeHandled = true;
+        if (dy < 0) { this.next(); } else { this.previous(); }
+      }
+    } else {
+      if (Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy)) {
+        this.swipeHandled = true;
+        if (dx < 0) { this.next(); } else { this.previous(); }
+      }
     }
   }
 }

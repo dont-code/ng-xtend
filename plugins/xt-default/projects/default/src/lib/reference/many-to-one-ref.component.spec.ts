@@ -102,7 +102,7 @@ describe('ManyToOneRefComponent', () => {
     expect(suggestionItems.length).toBe(2);
 
     // Select the first author
-    expect(suggestionItems[0].nativeElement.textContent).toEqual('Philip K. Dick(Chicago)');
+    expect(suggestionItems[0].nativeElement.textContent.trim()).toEqual('Philip K. Dick(Chicago)');
     suggestionItems[0].nativeElement.click();
     hostFixture.detectChanges();
 
@@ -222,6 +222,7 @@ describe('ManyToOneRefComponent', () => {
     hostFixture.detectChanges();
 
     await XtUnitTestHelper.waitFor(() =>  {
+      hostFixture.detectChanges();
       const suggestionItems = autocomplete.queryAll(By.directive(DefaultObjectComponent));
       return suggestionItems.length == 1;
     });
@@ -235,6 +236,7 @@ describe('ManyToOneRefComponent', () => {
     hostFixture.detectChanges();
 
     await XtUnitTestHelper.waitFor(() =>  {
+      hostFixture.detectChanges();
       const selected=host.createdFormGroup()!.value.value['authorRef'];
 
       return selected === philipKDick;

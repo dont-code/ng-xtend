@@ -222,6 +222,7 @@ describe('ManyToOneRefComponent', () => {
     hostFixture.detectChanges();
 
     await XtUnitTestHelper.waitFor(() =>  {
+      hostFixture.detectChanges();
       const suggestionItems = autocomplete.queryAll(By.directive(DefaultObjectComponent));
       return suggestionItems.length == 1;
     });
@@ -235,6 +236,7 @@ describe('ManyToOneRefComponent', () => {
     hostFixture.detectChanges();
 
     await XtUnitTestHelper.waitFor(() =>  {
+      hostFixture.detectChanges();
       const selected=host.createdFormGroup()!.value.value['authorRef'];
 
       return selected === philipKDick;

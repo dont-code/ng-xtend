@@ -39,7 +39,9 @@ export class SpecialFields<Type>
   mappingFromType = new Map<string, MappingHelper<any, Type>> ();
 
   /** Shared Eta template engine instance for compiling display templates */
-  protected static readonly templateEngine = new Eta();
+  protected static readonly templateEngine = new Eta({
+    autoEscape:false
+  });
 
 
   /**

@@ -11,11 +11,13 @@ import {
   StoreSupport,
   StoreTestHelper,
   XtResolverService,
-  XtSimpleComponent
+  XtSimpleComponent,
+  XtUnitTestHelper
 } from 'xt-components';
 import { CommonModule } from '@angular/common';
 import { XtTypeInfo } from 'xt-type';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { DefaultObjectComponent } from '../object/default-object.component';
 
 describe('ManyToOneRefComponent', () => {
   let component: ManyToOneRefComponent;
@@ -152,6 +154,100 @@ describe('ManyToOneRefComponent', () => {
     expect(autocomplete.query(By.css('input')).nativeElement.value).toEqual('Ann Leckie(Toledo)');
 
   });
+
+  it('should support < and > in reference text',async () => {
+
+    // Register types with references
+    resolverService.registerTypes(TEST_REF_TYPES)
+
+    resolverService.resolvePendingReferences();
+
+    const storeMgr = StoreSupport.getStoreManager();
+    const authorStore = storeMgr.getProviderSafe<AuthorTestType>('authorTest');
+    const bookStore = storeMgr.getProviderSafe<BookTestType>('bookTest');
+
+      // We create an author with special characters < and >
+    const philipKDick=await authorStore.storeEntity('authorTest', {
+      fullName:'Special <K> Dick',
+      city:'Chicago',
+      born:new Date (1928, 12, 16)
+    });
+
+    const hostFixture = TestBed.createComponent(HostTestTypedFormComponent);
+    hostFixture.componentRef.setInput('formDescription', {
+      value: {
+        name:'new Book',
+        authorRef: null,
+        genreRef: null
+      }
+    });
+    hostFixture.componentRef.setInput('controlName', 'value');
+    hostFixture.componentRef.setInput('valueType', 'bookTest');
+
+    const host = hostFixture.componentInstance;
+    expect(host).toBeTruthy();
+    hostFixture.detectChanges();
+
+    component = hostFixture.debugElement.query(By.directive(ManyToOneRefComponent)).componentInstance as ManyToOneRefComponent;
+    expect(component).toBeTruthy();
+
+    const autocomplete = hostFixture.debugElement.query(By.directive(AutoComplete));
+    expect(autocomplete).toBeTruthy();
+
+    await hostFixture.whenStable(); // Ensure the list of option is loaded
+
+    // Simulate click on dropdown button to load all suggestions
+    autocomplete.query(By.css('.p-autocomplete-dropdown')).nativeElement.click();
+    hostFixture.detectChanges();
+
+    // Find the suggestion for
+    let suggestionItems = autocomplete.queryAll(By.directive(DefaultObjectComponent));
+    expect(suggestionItems.length).toBe(1);
+
+    // Select the first author
+    expect(suggestionItems[0].nativeElement.textContent.indexOf('<')).not.toBe(-1);
+    expect(suggestionItems[0].nativeElement.textContent.indexOf('>')).not.toBe(-1);
+    expect(suggestionItems[0].nativeElement.textContent.indexOf('&lt;')).toBe(-1);
+    suggestionItems[0].nativeElement.click();
+    hostFixture.detectChanges();
+
+    // Check the value is correct
+    expect(host.createdFormGroup()?.value.value['authorRef']).toEqual(philipKDick);
+    let input=autocomplete.query(By.css('input'));
+
+    expect(input.nativeElement.value).toEqual('Special <K> Dick');
+
+    // Now select another reference
+    autocomplete.query(By.css('.p-autocomplete-dropdown')).nativeElement.click();
+    hostFixture.detectChanges();
+
+    await XtUnitTestHelper.waitFor(() =>  {
+      const suggestionItems = autocomplete.queryAll(By.directive(DefaultObjectComponent));
+      return suggestionItems.length == 1;
+    });
+
+    // Check the number of suggestion items
+    suggestionItems = autocomplete.queryAll(By.directive(DefaultObjectComponent));
+    expect(suggestionItems.length).toBe(1);
+
+    // Select the first author
+    suggestionItems[0].nativeElement.click();
+    hostFixture.detectChanges();
+
+    await XtUnitTestHelper.waitFor(() =>  {
+      const selected=host.createdFormGroup()!.value.value['authorRef'];
+
+      return selected === philipKDick;
+    });
+
+    // Check the value is correct
+    expect(host.createdFormGroup()!.value.value['authorRef']).toEqual(philipKDick);
+
+    input=autocomplete.query(By.css('input'));
+    expect(input.nativeElement.value.indexOf('<')).not.toBe(-1);
+
+  });
+
 });
 
 type BookTestType = {
@@ -164,6 +260,34 @@ type AuthorTestType = {
   fullName:string,
   born:Date,
   city:string
+}
+
+const TEST_REF_TYPES:XtTypeInfo = {
+  authorTest: {
+    children:{
+      fullName:'string',
+      city:'string',
+      born:'date'
+    }
+  },
+  bookGenreTest: {
+    name:'string'
+  },
+  bookTest: {
+    children:{
+      name:'string',
+      authorRef:{
+        toType:'authorTest',
+        referenceType:'MANY-TO-ONE',
+        field:'fullName'
+      },
+      genreRef: {
+        toType:'bookGenreTest',
+        referenceType:'MANY-TO-ONE',
+        field:'name'
+      }
+    }
+  }
 }
 
 const BOOK_AUTHOR_TYPES:XtTypeInfo = {
@@ -208,7 +332,9 @@ const BOOK_AUTHOR_TYPES:XtTypeInfo = {
   } @else {\
   @let value=displayValue();\
   @if (value!=null) {\
-    @if (context().displayMode=="INLINE_VIEW") {{{value.fullName}}({{value.city}})}\
+    @if (context().displayMode=="INLINE_VIEW") {\
+      {{value.fullName}}({{value.city}})\
+    }\
   }\
   \
   }',

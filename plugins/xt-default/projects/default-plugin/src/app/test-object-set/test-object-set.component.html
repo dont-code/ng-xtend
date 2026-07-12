@@ -7,12 +7,13 @@
       <p-autocomplete [suggestions]="listOfObjects()" [ngModel]="selectedObject()" (onSelect)="objectSwitch($event)" [dropdown]="true"></p-autocomplete>
     </div>
     <label class="text-xl m-3" for="ComponentSelector">Select the component to use</label>
-    <div class="m-3" id="ComponentSelector">
-      <p-autocomplete [suggestions]="componentOptions()" [ngModel]="selectedComponent()" (onSelect)="componentSwitch($event)" [dropdown]="true"></p-autocomplete>
+    <div class="m-3 flex gap-2" id="ComponentSelector">
+      <p-button icon="pi pi-list" label="Default" [severity]="selectedComponent() === 'Default' ? 'primary' : 'secondary'" size="small" (click)="selectedComponent.set('Default')"></p-button>
+      <p-button icon="pi pi-th-large" label="Carousel" [severity]="selectedComponent() === 'Carousel' ? 'primary' : 'secondary'" size="small" (click)="selectedComponent.set('Carousel')"></p-button>
     </div>
   </p-panel>
   <div class="list_view_container">
-    <span class="text-2xl">List View</span>
+    <span class="text-2xl">{{selectedComponent()}} List View</span>
       <xt-render id="listView" [componentType]="objectComponentType()" displayMode="LIST_VIEW" [models]="{valueSelected: selectedModel}" [valueType]="valueType()" [value]="value()" ></xt-render>
       <span class="m-3 mt-6">Selected element is {{selectedModel() | json}}</span>
   </div>

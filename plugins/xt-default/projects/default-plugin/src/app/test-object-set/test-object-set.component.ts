@@ -4,6 +4,7 @@ import { JsonPipe } from '@angular/common';
 import { XtRenderComponent } from 'xt-components';
 import { FormsModule } from '@angular/forms';
 import { Panel } from 'primeng/panel';
+import { Button } from 'primeng/button';
 import { DefaultObjectSetComponent } from '../../../../default/src/lib/object-set/default-object-set.component';
 import { CarouselObjectSetComponent } from '../../../../default/src/lib/object-set/carousel-object-set.component';
 import { AppComponent } from '../app.component';
@@ -15,7 +16,8 @@ import { AppComponent } from '../app.component';
     AutoComplete,
     JsonPipe,
     XtRenderComponent,
-    Panel
+    Panel,
+    Button,
   ],
   templateUrl: './test-object-set.component.html',
   styleUrl: './test-object-set.component.css',
@@ -26,10 +28,6 @@ export class TestObjectSetComponent {
 
   selectedComponent = signal<string>('Default');
 
-  componentOptions() {
-    return ['Default', 'Carousel'];
-  }
-
   value = signal<any>(this.loadObject('simple') );
 
   listOfObjects() {
@@ -39,10 +37,6 @@ export class TestObjectSetComponent {
   objectSwitch($event: AutoCompleteSelectEvent) {
     this.selectedObject.set($event.value);
     this.value.set(this.loadObject ($event.value));
-  }
-
-  componentSwitch($event: AutoCompleteSelectEvent) {
-    this.selectedComponent.set($event.value);
   }
 
   loadObject (objName:string) :any {
@@ -66,7 +60,7 @@ export class TestObjectSetComponent {
         prop2:567,
         prop3:new Date(1,1,1970)
       },{
-        prop1:'Value1',
+        prop1:'Value3',
         prop2:89,
         prop3:new Date(12,6,2034)
       }],

@@ -1,8 +1,8 @@
 <span class="text-2xl">Testing the workflows</span>
 
 <div class="flex gap-2 my-2">
-  Select the workflow type:
-  <p-select [options]="listWorkflowTypes()" placeholder="Select a workflow type" [checkmark]="true" [ngModel]="workflowType()" (ngModelChange)="setWorkflowType($event)" ></p-select>
+  <p-button icon="pi pi-list" label="List" [severity]="workflowType() === 'list-detail' ? 'primary' : 'secondary'" size="small" (click)="setWorkflowType('list-detail')"></p-button>
+  <p-button icon="pi pi-th-large" label="Carousel" [severity]="workflowType() === 'carousel' ? 'primary' : 'secondary'" size="small" (click)="setWorkflowType('carousel')"></p-button>
 </div>
 
 <div class="flex gap-2 my-2">
@@ -13,6 +13,7 @@
 </div>
 
 
+
 @if (dataLoaded()) {
-  <wfw-render [workflowConfig]="workflowConfig()"></wfw-render>
+    <wfw-render [workflowConfig]="workflowConfig()"></wfw-render>
 }

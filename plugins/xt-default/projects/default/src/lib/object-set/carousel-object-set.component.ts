@@ -55,6 +55,11 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   canGoPrev = computed(() => this.currentPage() > 0);
   canGoNext = computed(() => this.currentPage() + this.viewportCount() < this.valueSet().length);
 
+  private touchStartX = 0;
+  private touchStartY = 0;
+  private swipeHandled = false;
+  private static readonly SWIPE_THRESHOLD = 50;
+
   private boundKeyDown = (e: KeyboardEvent) => this.onKeyDown(e);
 
   constructor() {
@@ -161,6 +166,46 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     } else {
       if (event.key === 'ArrowLeft') { event.preventDefault(); this.previous(); }
       else if (event.key === 'ArrowRight') { event.preventDefault(); this.next(); }
+    }
+  }
+
+  onTouchStart(event: TouchEvent) {
+    if (event.touches.length !== 1) return;
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+    this.swipeHandled = false;
+  }
+
+  onTouchMove(event: TouchEvent) {
+    if (event.touches.length !== 1 || this.swipeHandled) return;
+    const dx = event.touches[0].clientX - this.touchStartX;
+    const dy = event.touches[0].clientY - this.touchStartY;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+    if (!this.isVertical() && absDx > absDy && absDx > 10) {
+      event.preventDefault();
+    } else if (this.isVertical() && absDy > absDx && absDy > 10) {
+      event.preventDefault();
+    }
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    if (this.swipeHandled) return;
+    const changed = event.changedTouches[0];
+    if (!changed) return;
+    const dx = changed.clientX - this.touchStartX;
+    const dy = changed.clientY - this.touchStartY;
+    const threshold = CarouselObjectSetComponent.SWIPE_THRESHOLD;
+    if (this.isVertical()) {
+      if (Math.abs(dy) >= threshold && Math.abs(dy) > Math.abs(dx)) {
+        this.swipeHandled = true;
+        if (dy < 0) { this.next(); } else { this.previous(); }
+      }
+    } else {
+      if (Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy)) {
+        this.swipeHandled = true;
+        if (dx < 0) { this.next(); } else { this.previous(); }
+      }
     }
   }
 }

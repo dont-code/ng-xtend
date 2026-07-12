@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v0.8.1...dc-workflow-v0.8.2) (2026-07-12)
+
+
+### Miscellaneous Chores
+
+* **dc-workflow:** Synchronize xt-components versions
+
 ## [0.8.1](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v0.8.0...dc-workflow-v0.8.1) (2026-07-06)
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.2](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.8.1...xt-plugin-default-v0.8.2) (2026-07-12)
+
+
+### Bug Fixes
+
+* Don't over-escape &lt; and &gt; ([60619b3](https://github.com/dont-code/ng-xtend/commit/60619b31e63d742deb2ace2659ddba69db1c18b6))
+* navigate with left / right ([baaa2ec](https://github.com/dont-code/ng-xtend/commit/baaa2ec8945ac00709cd2cee86ed7133462384cd))
+* swipe added ! ([3cfdfd5](https://github.com/dont-code/ng-xtend/commit/3cfdfd55fbf68ea4196a216f8d521a717728d701))
+* test many to one ([3f81665](https://github.com/dont-code/ng-xtend/commit/3f81665f57cdccc8de2cbec065528d54ebcd2afd))
+* test of many to ref ([74a7ab0](https://github.com/dont-code/ng-xtend/commit/74a7ab053798059ab7c4b8d7ad8c5ba200925a9f))
+* test page ui updates ([b0bf23b](https://github.com/dont-code/ng-xtend/commit/b0bf23ba0025e71bb81190cf4d78ffb7a0d88ddd))
+
 ## [0.8.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.8.0...xt-plugin-default-v0.8.1) (2026-07-06)
 
 

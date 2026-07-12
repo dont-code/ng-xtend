@@ -6,6 +6,7 @@ import { ListDetailsComponent } from '../../../../workflow/src/lib/list-details/
 import { Button } from 'primeng/button';
 import { DcWorkflowModel, WfwRender } from 'dc-workflow';
 import { StoreTestBed } from 'xt-store';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-test',
@@ -13,6 +14,7 @@ import { StoreTestBed } from 'xt-store';
     ReactiveFormsModule,
     Button,
     WfwRender,
+    NgClass
   ],
   templateUrl: './test-workflow.component.html',
   styleUrl: './test-workflow.component.css'
@@ -99,4 +101,11 @@ export class TestWorkflowComponent implements OnInit, OnDestroy {
   protected setWorkflowType(value: string) {
     this.workflowType.set(value);
   }
+
+  protected flexForCarouselOnly = computed( () =>{
+    if (this.workflowType()=='carousel') {
+      return 'flex';
+    }
+    return undefined;
+  });
 }

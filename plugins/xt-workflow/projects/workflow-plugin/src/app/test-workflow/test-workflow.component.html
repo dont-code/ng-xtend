@@ -15,5 +15,7 @@
 
 
 @if (dataLoaded()) {
+  <div [ngClass]="flexForCarouselOnly()" class="gap-2 my-2">
     <wfw-render [workflowConfig]="workflowConfig()"></wfw-render>
+  </div>
 }

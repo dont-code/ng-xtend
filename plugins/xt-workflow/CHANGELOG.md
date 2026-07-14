@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.3](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.8.2...xt-plugin-workflow-v0.8.3) (2026-07-14)
+
+
+### Bug Fixes
+
+* delete button in carousel edit mode ([49b6d9d](https://github.com/dont-code/ng-xtend/commit/49b6d9d5e57ac00c6dd0787b7b918c6e0853f7ab))
+* delete button in carousel edit mode ([7d92f45](https://github.com/dont-code/ng-xtend/commit/7d92f45774e71623c8346ef3cf0a60a29c177c50))
+
 ## [0.8.2](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v0.8.1...xt-plugin-workflow-v0.8.2) (2026-07-12)
 
 

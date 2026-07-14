@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.8.2...xt-plugin-web-v0.8.3) (2026-07-14)
+
+
+### Bug Fixes
+
+* keep img aspect ratio ([c403449](https://github.com/dont-code/ng-xtend/commit/c40344984c6d30dd845a53ec4a4f8d70244994a1))
+
 ## [0.8.2](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v0.8.1...xt-plugin-web-v0.8.2) (2026-07-12)
 
 

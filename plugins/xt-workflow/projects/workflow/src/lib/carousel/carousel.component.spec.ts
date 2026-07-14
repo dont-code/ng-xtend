@@ -335,7 +335,8 @@ describe('Carousel Component', () => {
 
     const btnEl = fixture.debugElement.query(By.css('#btn-delete'));
     expect(btnEl).toBeTruthy();
-    btnEl.nativeElement.click();
+    // btnEl.nativeElement.click();
+    btnEl.componentInstance.onClick.emit({button:1, buttons:1, clientX:5,clientY:5} as MouseEvent);
     fixture.detectChanges();
     await XtUnitTestHelper.waitFor( () => {
       return (component as any).dialogVisible()==false;

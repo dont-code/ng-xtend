@@ -40,8 +40,11 @@
       [valueType]="entityName()">
     </xt-render>
     <div class="carousel__actions">
-      <p-button label="Save" icon="pi pi-save" [disabled]="!canSave()" [loading]="saving()" (onClick)="saveEdit()"></p-button>
-      <p-button label="Cancel" icon="pi pi-times" [disabled]="saving()" (onClick)="cancelEdit()"></p-button>
+      <p-button id="btn-delete" label="Delete" icon="pi pi-trash" severity="danger" [disabled]="saving() || deleting()" [loading]="deleting()" (onClick)="deleteEntity()"></p-button>
+      <div class="carousel__actions-right">
+        <p-button label="Save" icon="pi pi-save" [disabled]="!canSave()" [loading]="saving()" (onClick)="saveEdit()"></p-button>
+        <p-button label="Cancel" icon="pi pi-times" [disabled]="saving()" (onClick)="cancelEdit()"></p-button>
+      </div>
     </div>
   }
 </p-dialog>

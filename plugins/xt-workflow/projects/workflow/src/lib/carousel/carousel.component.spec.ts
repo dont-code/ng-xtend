@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CarouselComponent } from './carousel.component';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { registerDefaultPlugin, CarouselObjectSetComponent } from 'xt-plugin-default';
+import { CarouselObjectSetComponent, registerDefaultPlugin } from 'xt-plugin-default';
 import { StoreTestBed } from 'xt-store';
 import { XtResolverService, XtUnitTestHelper } from 'xt-components';
 import { DcWorkflowModel } from 'dc-workflow';
@@ -294,5 +294,58 @@ describe('Carousel Component', () => {
 
     const updated = (component as any).safeFindStore().entities().find((e: any) => e.name === 'Updated Book');
     expect(updated).toBeTruthy();
+  });
+
+  it('should delete entity from edit dialog', async () => {
+    await storeTestBed.defineTestDataFor('CarouselTest', [{
+      name: 'Test Book',
+      published: new Date(1970,10, 5)
+    }, {
+      name: 'Another Book',
+      published: new Date(2010,7, 15)
+    }]);
+
+    fixture = TestBed.createComponent(CarouselComponent);
+    fixture.componentRef.setInput('config', {
+      entity: 'CarouselTest',
+      workflow: 'carousel'
+    } as DcWorkflowModel);
+
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await XtUnitTestHelper.waitFor(() => {
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
+    });
+
+    const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+    child.selectionChange(child.valueSet()[0]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const selected = component.selectedElement();
+    expect(selected).toBeTruthy();
+    component.onEditRequested(selected);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect((component as any).editingEntity()).toBeTruthy();
+
+    const btnEl = fixture.debugElement.query(By.css('#btn-delete'));
+    expect(btnEl).toBeTruthy();
+    btnEl.nativeElement.click();
+    fixture.detectChanges();
+    await XtUnitTestHelper.waitFor( () => {
+      return (component as any).dialogVisible()==false;
+    });
+
+    expect((component as any).editingEntity()).toBeNull();
+    expect((component as any).dialogVisible()).toBeFalsy();
+
+    const remaining = (component as any).safeFindStore().entities();
+    expect(remaining.length).toEqual(1);
+    expect(remaining[0].name).toEqual('Another Book');
   });
 });

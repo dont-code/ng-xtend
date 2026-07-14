@@ -32,6 +32,7 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
   protected editForm = signal<FormGroup>(this.formBuilder.group({}));
   protected canSave = signal(false);
   protected saving = signal(false);
+  protected deleting = signal(false);
   protected dialogVisible = signal(false);
   private subscriptions = new Subscription();
 
@@ -85,6 +86,29 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
     } catch (error) {
       this.errorHandler.errorOccurred(error, "Error saving entity with id " + (toSave as any)._id);
       this.saving.set(false);
+    }
+  }
+
+  async deleteEntity(): Promise<void> {
+    const toTrash = this.editingEntity();
+    if (toTrash == null) return;
+    if (toTrash._id != null) {
+      try {
+        this.deleting.set(true);
+        const deleted = await this.safeFindStore().deleteEntity(toTrash._id);
+        if (deleted) {
+          this.cancelEdit();
+          this.selectedElement.set(null);
+        }
+      } catch (error) {
+        this.errorHandler.errorOccurred(error, "Deleting entity with id " + toTrash._id);
+        this.deleting.set(false);
+      } finally {
+        this.deleting.set(false);
+      }
+    } else {
+      this.cancelEdit();
+      this.selectedElement.set(null);
     }
   }
 

@@ -1,14 +1,18 @@
 .inline-image {
-  max-height: 5em;
-  max-width: 10em;
-  height: auto;
+  display: inline-block;
 }
 
-.full-image {
+::ng-deep .inline-image__img {
+  max-width: 100%;
+  max-height: 5em;
+  object-fit: contain;
+}
+
+::ng-deep .full-image__img {
   max-width: 100%;
   height: auto;
+  object-fit: contain;
 }
-
 
 .image-edit-container {
   display: grid;

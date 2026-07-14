@@ -11,7 +11,9 @@
     </div>
   </ng-container>
 } @else if (displayIsInline()) {
-  <p-image class="inline-image" [src]="displayValue()" [preview]="true" />
+  <p-image class="inline-image" [src]="displayValue()" [preview]="true"
+    imageClass="inline-image__img" />
 } @else {
-  <p-image class="full-image" [src]="displayValue()" [preview]="true" />
+  <p-image class="full-image" [src]="displayValue()" [preview]="true"
+    imageClass="full-image__img" />
 }

@@ -143,7 +143,8 @@ export class ApplicationModelManagerService {
       content: { creation: {
         type:value.content.creation.type,
           entities:new Array<DcEntityModel>(),
-        sharing: value.content.creation.sharing
+        sharing: value.content.creation.sharing,
+        workflows: value.content.creation.workflows
       }}
     } as DcApplicationModel;
 
@@ -165,7 +166,7 @@ export class ApplicationModelManagerService {
     const workflows = this.model?.content?.creation.workflows;
     if (workflows!=null) {
       for (const key in workflows) {
-        if( workflows[key].entity==entityName ){
+        if( workflows[key].entity===entityName ){
           return workflows[key];
         }
       }

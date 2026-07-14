@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, model, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { XtContext, XtRenderComponent } from 'xt-components';
 import { ObjectSetBase } from './object-set-base';
 
@@ -13,6 +14,8 @@ import { ObjectSetBase } from './object-set-base';
   }
 })
 export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
+  private breakpointObserver = inject(BreakpointObserver);
+
   override context = input.required<XtContext<T[]>>();
   override selected = model<any>();
   protected override valueSelectedAsOutput = output<any>();
@@ -26,8 +29,9 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   });
 
   isVertical = signal(false);
+  isPhone = signal(false);
 
-  private viewportCount = computed(() => this.isVertical() ? 1 : 3);
+  protected viewportCount = computed(() => this.isPhone() ? 1 : 3);
   private centerOffset = computed(() => Math.floor((this.viewportCount() - 1) / 2));
 
   slideAnim = signal<string>('');
@@ -64,10 +68,11 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
 
   constructor() {
     super();
+    this.breakpointObserver.observe(Breakpoints.HandsetPortrait)
+      .subscribe(state => this.isVertical.set(state.matches));
+    this.breakpointObserver.observe(Breakpoints.Handset)
+      .subscribe(state => this.isPhone.set(state.matches));
     if (typeof window !== 'undefined') {
-      const mq = window.matchMedia('(orientation: portrait)');
-      this.isVertical.set(mq.matches);
-      mq.addEventListener('change', (e) => this.isVertical.set(e.matches));
       window.addEventListener('keydown', this.boundKeyDown);
     }
     effect(() => {

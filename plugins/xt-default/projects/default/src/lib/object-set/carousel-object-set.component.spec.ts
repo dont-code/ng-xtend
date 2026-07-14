@@ -263,4 +263,146 @@ describe('CarouselObjectSetComponent', () => {
     context.setDisplayValue(values.slice(0, 1));
     expect(component.selectedElement()).toBeNull();
   });
+
+  it('should show 1 item vertical layout in phone portrait mode', () => {
+    let component: CarouselObjectSetComponent<TestData>;
+    let fixture: ComponentFixture<CarouselObjectSetComponent<TestData>>;
+
+    fixture = TestBed.createComponent(CarouselObjectSetComponent<TestData>);
+    let context = new XtBaseContext<TestData[]>('LIST_VIEW');
+    context.setDisplayValue([{
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }, {
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }]);
+
+    fixture.componentRef.setInput('context', context);
+    component = fixture.componentInstance;
+    component.isVertical.set(true);
+    component.isPhone.set(true);
+    fixture.detectChanges();
+
+    expect(component).toBeTruthy();
+
+    const root = fixture.debugElement.query(By.css('.carousel-object-set'));
+    expect(root.nativeElement.classList.contains('carousel-object-set--vertical')).toBeTruthy();
+
+    const track = fixture.debugElement.query(By.css('.carousel-object-set__track'));
+    expect(track.nativeElement.classList.contains('carousel-object-set--single')).toBeTruthy();
+
+    const panels = fixture.debugElement.queryAll(By.css('.carousel-object-set__panel'));
+    const visiblePanels = panels.filter(p => !p.nativeElement.classList.contains('carousel-object-set__panel--placeholder'));
+    expect(visiblePanels.length).toEqual(1);
+
+    const prevBtn = fixture.debugElement.query(By.css('.carousel-object-set__nav--prev i'));
+    expect(prevBtn.nativeElement.classList.contains('pi-chevron-up')).toBeTruthy();
+
+    const nextBtn = fixture.debugElement.query(By.css('.carousel-object-set__nav--next i'));
+    expect(nextBtn.nativeElement.classList.contains('pi-chevron-down')).toBeTruthy();
+  });
+
+  it('should show 1 item horizontal layout in phone landscape mode', () => {
+    let component: CarouselObjectSetComponent<TestData>;
+    let fixture: ComponentFixture<CarouselObjectSetComponent<TestData>>;
+
+    fixture = TestBed.createComponent(CarouselObjectSetComponent<TestData>);
+    let context = new XtBaseContext<TestData[]>('LIST_VIEW');
+    context.setDisplayValue([{
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }, {
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }]);
+
+    fixture.componentRef.setInput('context', context);
+    component = fixture.componentInstance;
+    component.isVertical.set(false);
+    component.isPhone.set(true);
+    fixture.detectChanges();
+
+    expect(component).toBeTruthy();
+
+    const root = fixture.debugElement.query(By.css('.carousel-object-set'));
+    expect(root.nativeElement.classList.contains('carousel-object-set--vertical')).toBeFalsy();
+
+    const track = fixture.debugElement.query(By.css('.carousel-object-set__track'));
+    expect(track.nativeElement.classList.contains('carousel-object-set--single')).toBeTruthy();
+
+    const selectedPanels = fixture.debugElement.queryAll(By.css('.carousel-object-set__panel--selected'));
+    expect(selectedPanels.length).toEqual(1);
+
+    const prevBtn = fixture.debugElement.query(By.css('.carousel-object-set__nav--prev i'));
+    expect(prevBtn.nativeElement.classList.contains('pi-chevron-left')).toBeTruthy();
+
+    const nextBtn = fixture.debugElement.query(By.css('.carousel-object-set__nav--next i'));
+    expect(nextBtn.nativeElement.classList.contains('pi-chevron-right')).toBeTruthy();
+  });
+
+  it('should show 3 items horizontal layout in tablet/desktop mode', () => {
+    let component: CarouselObjectSetComponent<TestData>;
+    let fixture: ComponentFixture<CarouselObjectSetComponent<TestData>>;
+
+    fixture = TestBed.createComponent(CarouselObjectSetComponent<TestData>);
+    let context = new XtBaseContext<TestData[]>('LIST_VIEW');
+    context.setDisplayValue([{
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }, {
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }]);
+
+    fixture.componentRef.setInput('context', context);
+    component = fixture.componentInstance;
+    component.isVertical.set(false);
+    component.isPhone.set(false);
+    fixture.detectChanges();
+
+    expect(component).toBeTruthy();
+
+    const root = fixture.debugElement.query(By.css('.carousel-object-set'));
+    expect(root.nativeElement.classList.contains('carousel-object-set--vertical')).toBeFalsy();
+
+    const track = fixture.debugElement.query(By.css('.carousel-object-set__track'));
+    expect(track.nativeElement.classList.contains('carousel-object-set--single')).toBeFalsy();
+
+    const selectedPanels = fixture.debugElement.queryAll(By.css('.carousel-object-set__panel--selected'));
+    expect(selectedPanels.length).toEqual(1);
+
+    const prevBtn = fixture.debugElement.query(By.css('.carousel-object-set__nav--prev i'));
+    expect(prevBtn.nativeElement.classList.contains('pi-chevron-left')).toBeTruthy();
+
+    const nextBtn = fixture.debugElement.query(By.css('.carousel-object-set__nav--next i'));
+    expect(nextBtn.nativeElement.classList.contains('pi-chevron-right')).toBeTruthy();
+  });
 });

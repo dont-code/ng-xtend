@@ -174,25 +174,26 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-@media (orientation: portrait) {
-  .carousel-object-set {
-    flex-direction: column;
-  }
+.carousel-object-set--single .carousel-object-set__panel {
+  flex: 0 0 calc(100% - 1rem);
+  width: calc(100% - 1rem);
+}
 
-  .carousel-object-set__viewport {
-    height: 50vh;
-    min-height: 250px;
-  }
+.carousel-object-set--vertical {
+  flex-direction: column;
+}
 
-  .carousel-object-set__track {
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-  }
+.carousel-object-set--vertical .carousel-object-set__viewport {
+  height: 50vh;
+  min-height: 250px;
+}
 
-  .carousel-object-set__panel {
-    flex: 0 0 calc(100% - 1rem);
-    width: 100%;
-    min-height: 0;
-  }
+.carousel-object-set--vertical .carousel-object-set__track {
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.carousel-object-set--vertical .carousel-object-set__panel {
+  min-height: 0;
 }

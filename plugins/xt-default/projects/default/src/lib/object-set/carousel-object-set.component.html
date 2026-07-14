@@ -1,4 +1,4 @@
-<div class="carousel-object-set">
+<div class="carousel-object-set" [class.carousel-object-set--vertical]="isVertical()">
   <button class="carousel-object-set__nav carousel-object-set__nav--prev"
     (click)="previous()" [disabled]="!canGoPrev()" type="button">
     <i class="pi" [class.pi-chevron-left]="!isVertical()" [class.pi-chevron-up]="isVertical()"></i>
@@ -9,6 +9,7 @@
     (touchmove)="onTouchMove($event)"
     (touchend)="onTouchEnd($event)">
     <div class="carousel-object-set__track"
+      [class.carousel-object-set--single]="viewportCount() === 1"
       [class.slide-in-from-right]="slideAnim() === 'slide-in-from-right'"
       [class.slide-in-from-left]="slideAnim() === 'slide-in-from-left'">
       @if (isVertical() && exitingItem()) {

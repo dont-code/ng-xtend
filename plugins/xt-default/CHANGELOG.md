@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.8.2...xt-plugin-default-v0.8.3) (2026-07-14)
+
+
+### Bug Fixes
+
+* only one item in phone landscape ([b31a847](https://github.com/dont-code/ng-xtend/commit/b31a847ef30ee5890f654342e8c888375d30ecf5))
+
 ## [0.8.2](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.8.1...xt-plugin-default-v0.8.2) (2026-07-12)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v0.8.3...xt-plugin-intl-v0.8.4) (2026-07-19)
+
+
+### Miscellaneous Chores
+
+* **xt-plugin-intl:** Synchronize xt-components versions
+
 ## [0.8.3](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v0.8.2...xt-plugin-intl-v0.8.3) (2026-07-14)
 
 

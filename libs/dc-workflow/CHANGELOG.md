@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.4](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v0.8.3...dc-workflow-v0.8.4) (2026-07-19)
+
+
+### Bug Fixes
+
+* updated api and readme docs ([87fa863](https://github.com/dont-code/ng-xtend/commit/87fa863fc5e45b7806d0e49ca52da30abec42409))
+
 ## [0.8.3](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v0.8.2...dc-workflow-v0.8.3) (2026-07-14)
 
 

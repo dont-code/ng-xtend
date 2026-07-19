@@ -5,7 +5,8 @@
   "entryPoints": [
     "./api-entrypoints/xt-components.ts",
     "./api-entrypoints/xt-store.ts",
-    "./api-entrypoints/xt-type.ts"
+    "./api-entrypoints/xt-type.ts",
+    "./api-entrypoints/dc-workflow.ts"
   ],
   "out": "../dist/ng-xtend-website/api",
   "readme": "none",

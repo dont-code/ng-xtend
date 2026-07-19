@@ -10,7 +10,9 @@
     "useDefineForClassFields": false,
     "paths": {
       "xt-type": ["../libs/xt-type/src/index.ts"],
-      "xt-type/browser": ["../libs/xt-type/src/browser.ts"]
+      "xt-type/browser": ["../libs/xt-type/src/browser.ts"],
+      "xt-components": ["../libs/xt-components/projects/xt-components/src/public-api.ts"],
+      "xt-store": ["../libs/xt-store/projects/store/src/public-api.ts"]
     }
   },
   "include": ["./api-entrypoints/*.ts"]

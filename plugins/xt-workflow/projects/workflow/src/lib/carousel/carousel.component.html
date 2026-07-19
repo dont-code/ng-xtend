@@ -1,19 +1,23 @@
+<!-- Carousel workflow template -->
 @let entName = entityName();
 
 @if (entName != null) {
 
   @if (store?.loading()) {
+    <!-- Loading state: spinner while fetching entities -->
     <div class="carousel__state">
       <p-progress-spinner />
       <span>Loading {{ entName }}…</span>
     </div>
   } @else if ((store?.entities()?.length ?? 0) === 0) {
+    <!-- Empty state: no entities found -->
     <div class="carousel__state carousel__state--empty">
       <i class="pi pi-inbox"></i>
       <span>No entity found.</span>
       <small>Try creating a new item with the toolbar above.</small>
     </div>
   } @else {
+    <!-- Carousel view: displays entities as navigable cards -->
     <lib-carousel-object-set
       [context]="carouselContext()"
       [(selected)]="selectedElement"
@@ -23,6 +27,7 @@
   }
 
 } @else {
+  <!-- No entity configured state -->
   <section class="carousel carousel--empty">
   <div class="carousel__state carousel__state--empty">
     <i class="pi pi-database"></i>
@@ -31,6 +36,7 @@
 </section>
 }
 
+<!-- Edit dialog: modal form for editing the selected entity -->
 <p-dialog header="Edit {{ entName }}" [(visible)]="dialogVisible" [modal]="true" styleClass="carousel-edit-dialog" (onHide)="cancelEdit()">
   @if (editingEntity()) {
     <xt-render
@@ -40,9 +46,12 @@
       [valueType]="entityName()">
     </xt-render>
     <div class="carousel__actions">
+      <!-- Delete button: removes entity from store -->
       <p-button id="btn-delete" label="Delete" icon="pi pi-trash" severity="danger" [disabled]="saving() || deleting()" [loading]="deleting()" (onClick)="deleteEntity()"></p-button>
       <div class="carousel__actions-right">
+        <!-- Save button: persists changes, disabled until form is dirty -->
         <p-button label="Save" icon="pi pi-save" [disabled]="!canSave()" [loading]="saving()" (onClick)="saveEdit()"></p-button>
+        <!-- Cancel button: discards changes and closes dialog -->
         <p-button label="Cancel" icon="pi pi-times" [disabled]="saving()" (onClick)="cancelEdit()"></p-button>
       </div>
     </div>

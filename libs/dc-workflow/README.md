@@ -1,59 +1,85 @@
-# DcWorkflow
+![ng-xtend logo](https://dont-code.net/assets/images/logos/logo-xtend-angular-red-small.png)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+# dc-workflow
 
-## Development server
+Core workflow library for the [ng-xtend framework](https://github.com/dont-code/ng-xtend/blob/main/README.md).
 
-To start a local development server, run:
+Provides the base infrastructure for building workflow components that manage entity data through a signal-based store.
 
-```bash
-ng serve
+## Overview
+
+The library implements a plugin-based workflow system where:
+- **Models** define workflow configuration (entity, sorting, display filtering, selection)
+- **Abstract classes** provide store management and entity operations
+- **Renderers** dynamically resolve and render the appropriate workflow component
+- **Resolvers** find the best workflow implementation from the plugin registry
+
+## Architecture
+
+```
+wfw-render (this library)
+  └─ resolves workflow component via WfwResolverService.findBestWorkflow(config)
+       └─ CarouselComponent or ListDetailsComponent (from xt-workflow plugin)
+            └─ AbstractDcWorkflow (this library)
+                 └─ XtSignalStore for entity data access
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Key Components
 
-## Code scaffolding
+### Models (`dc-workflow-model.ts`)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```typescript
+type DcWorkflowModel = {
+  entity: string,           // Entity name to manage
+  workflow: 'list-detail' | 'carousel',  // Workflow type
+  data?: { sort?: DcWorkflowSortModel },
+  display?: DcWorkflowDisplayModel,
+  selection?: DcWorkflowSelectionModel
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### AbstractDcWorkflow
 
-```bash
-ng generate --help
+Base class for all workflow implementations. Provides:
+- Store initialization and management
+- Entity fetching with error handling
+- Display filtering (`current-and-after`)
+- Automatic selection (`closest-after`, `closest-before`)
+- Sort option generation
+
+### WfwRender
+
+Dynamic component renderer that:
+- Accepts `workflowType` (explicit component) or `workflowConfig` (auto-resolved)
+- Uses `WfwResolverService` to find registered workflow components
+- Renders via `ngComponentOutlet` with config injection
+
+### WfwResolverService
+
+Service that queries the plugin registry to find workflow implementations for a given type (`list-detail`, `carousel`).
+
+## Usage
+
+```typescript
+// Explicit component
+<wfw-render [workflowType]="CarouselComponent" [workflowConfig]="config" />
+
+// Auto-resolved from config
+<wfw-render [workflowConfig]="{ entity: 'Todo', workflow: 'carousel' }" />
 ```
 
-## Building
+## Dependencies
 
-To build the project run:
+- `xt-components` - Core component infrastructure and plugin registry
+- `xt-store` - Signal-based entity store
+- `xt-type` - Type definitions
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Development
 
 ```bash
-ng test
+# Build the library
+ng build dc-workflow
+
+# Run tests
+ng test dc-workflow
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

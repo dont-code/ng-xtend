@@ -20,6 +20,19 @@ import { Subscription } from 'rxjs';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { AbstractDcWorkflow } from 'dc-workflow';
 
+/**
+ * List-details workflow component.
+ * Displays entities in a tabbed interface with List and Edit views.
+ * Extends AbstractDcWorkflow for store management and entity operations.
+ *
+ * Features:
+ * - Tabbed list/edit view with automatic view switching
+ * - Inline editing in the Edit tab
+ * - Create, save, delete, and reload operations via toolbar
+ * - Live preview of edits in the list view
+ *
+ * @typeParam T - The managed data type extending ManagedData
+ */
 @Component({
   selector: 'wfw-list-details',
   imports: [XtRenderComponent, ReactiveFormsModule, TabPanel, TabPanels, Tab, TabList, Tabs, Toolbar, Button, ProgressSpinner],
@@ -29,16 +42,23 @@ import { AbstractDcWorkflow } from 'dc-workflow';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkflow<T> implements OnInit, OnDestroy {
+  /** Form builder for creating edit forms */
   protected readonly formBuilder = inject(FormBuilder);
 
+  /** Reactive form for editing the selected entity */
   editForm = signal<FormGroup>(this.formBuilder.group ({ editor: this.formBuilder.group({}) }));
 
+  /** Whether an entity is selected and can be edited */
   canEdit= computed(()=> {
     if (this.selectedEntity()!=null)
       return true;
     return false;
   });
 
+  /**
+   * Linked signal tracking the current view mode ('list' or 'edit').
+   * Automatically switches to 'edit' when an entity is selected.
+   */
   viewMode = linkedSignal( () => {
     const selection = this.selectedEntity();
     if (selection!=null) {
@@ -46,9 +66,13 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }else return "list";
   });
 
-    // We need to manage when the user itself changed the tab
+    /** Reference to the Tabs component for detecting user-initiated tab changes */
   tabs = viewChild (Tabs);
 
+  /**
+   * Effect that syncs the viewMode with user-initiated tab changes.
+   * Prevents the linkedSignal from overriding manual tab selection.
+   */
   tabChanged= effect(() => {
     const tabs = this.tabs();
     if( tabs!=null) {
@@ -57,13 +81,14 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }
 });
 
+  /** Current form value for live preview in list view */
   formValue = signal<any>(null);
 
   /**
-   * Display in the list the selected item being edited if any
+   * Computed signal returning entities with the currently edited values overlaid.
+   * Provides live preview of edits in the list view without requiring save.
    */
   displayedEntities = computed<T[]>(() => {
-//    console.debug("ListDetails init Displayed Entities");
     const entities = this.displayableElements();
     const value = this.formValue();
     const selected = this.selectedEntity();
@@ -75,45 +100,60 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
           : e
       ) as T[];
     }
-//    console.debug("ListDetails displayed entities", entities);
     return entities;
   });
 
+  /** Whether the form has unsaved changes */
   canSave=signal (false);
 
+  /** Whether a save operation is in progress */
   saving = signal (false);
+  /** Whether a create operation is in progress */
   newing = signal (false);
+  /** Whether a delete operation is in progress */
   deleting = signal (false);
 
+  /** The currently selected entity for editing */
   selectedEntity= model<any>();
 
+  /** Base model for the list view */
   listModel =new XtBaseModel<any>();
 
+  /**
+   * Effect that updates the edit form whenever the selected entity changes.
+   */
   selectedEntityChanged= effect( ()=> {
     const selected=this.selectedEntity();
     this.updateEditForm();
   });
 
+  /**
+   * Effect that re-fetches entities when the workflow config changes.
+   */
   workflowConfigChanged= effect (() => {
     const newConfig=this.config();
     this.fetchFromStore();
   });
 
+  /** Subscriptions for form event listeners */
   private subscriptions=new Subscription();
 
   constructor() {
     super();
-  //  console.debug("ListDetails constructor");
     this.listModel.valueSelected=this.selectedEntity;
   }
 
+  /** Initializes the component and fetches initial data from the store */
   override ngOnInit () {
-  //  console.debug("ListDetails ngOnInit");
     super.ngOnInit();
     this.fetchFromStore();
   }
 
 
+  /**
+   * Updates the edit form based on the selected entity.
+   * Creates a new form group populated with entity values and sets up event listeners.
+   */
   updateEditForm () {
     const entity = this.selectedEntity();
     const form = this.formBuilder.group({}, {updateOn: 'change'});
@@ -127,6 +167,10 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     this.editForm.set( this.formBuilder.group ({ editor: form }));
   }
 
+  /**
+   * Saves the current edit form to the store.
+   * Updates the selected entity and switches back to list view.
+   */
   async save() {
     const toSave = this.editForm().value.editor as T;
     if (toSave==null) {
@@ -137,7 +181,6 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
       this.saving.set(true);
       const savedValue = await this.safeFindStore().storeEntity (toSave);
       this.selectedEntity.set(savedValue);
-      //this.updateEditForm();
       this.canSave.set(false);
       this.viewMode.set("list");
     } catch (error) {
@@ -147,6 +190,10 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }
   }
 
+  /**
+   * Subscribes to form events to track value changes and pristine state.
+   * Updates formValue for live list preview and enables save when form is dirty.
+   */
   private listenToFormEvent(form: FormGroup) {
     this.subscriptions.unsubscribe();
     this.subscriptions = new Subscription();
@@ -161,10 +208,15 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }));
   }
 
+  /** Cleans up subscriptions on component destroy */
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
+  /**
+   * Deletes the currently selected entity from the store.
+   * Clears selection and returns to list view on success.
+   */
   async deleteSelected() {
     const toTrash = this.selectedEntity();
     if (toTrash==null) {
@@ -186,16 +238,18 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     if (deleted) {
       this.selectedEntity.set(null);
       this.viewMode.set("list");
-      //this.updateEditForm();
     }
     }
 
+  /**
+   * Creates a new empty entity in the store.
+   * Selects the new entity and switches to edit view.
+   */
   async newEntity() {
     try {
       this.newing.set(true);
       const newOne = await this.safeFindStore().storeEntity({} as T);
       this.selectedEntity.set(newOne);
-      //this.updateEditForm();
       this.viewMode.set("edit");
 
     } catch (error) {
@@ -205,6 +259,10 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
     }
   }
 
+  /**
+   * Whether the reload button should be enabled.
+   * True when the store exists and is not currently loading.
+   */
   canReload = computed(() => {
     if (this.store!=null) {
       return ! this.store.loading();
@@ -214,6 +272,9 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
 
   })
 
+  /**
+   * Reloads the entity list from the store.
+   */
   reloadList() {
     this.fetchFromStore();
   }

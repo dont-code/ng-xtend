@@ -13,7 +13,13 @@ import { ManagedData } from 'xt-type';
 import { FormGroup } from '@angular/forms';
 
 /**
- * A workflow base class based on the xt-store signalStore
+ * Abstract base class for all dc-workflow implementations.
+ * Provides store management, entity fetching, display filtering, and selection logic.
+ *
+ * Concrete implementations (CarouselComponent, ListDetailsComponent) extend this class
+ * and add their own UI and interaction patterns.
+ *
+ * @typeParam T - The managed data type extending ManagedData
  */
 @Component({
   standalone: true,
@@ -22,42 +28,45 @@ import { FormGroup } from '@angular/forms';
 })
 export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCompositeComponent<T> implements DcWorkflow {
   /**
-   * The workflow config must be provided
-   * @protected
+   * Required workflow configuration input signal.
+   * Controls entity type, workflow behavior, sorting, display, and selection.
    */
   config=input.required<DcWorkflowModel>();
 
+  /** Resolver service for type information and component resolution */
   protected readonly resolver = inject (XtResolverService);
+  /** Store manager for creating and retrieving entity stores */
   protected readonly storeMgr = inject(XtStoreManagerService);
+  /** Error handler for displaying user-facing error messages */
   protected readonly errorHandler = inject(XtMessageHandler);
 
 
   /**
-   * The store that manages the access to the data
+   * The signal store managing entity data access.
+   * States: undefined (not initialized), null (no entity), XtSignalStore (active)
    * @protected
    */
   protected store : XtSignalStore<T> | null | undefined = undefined;
 
-  /**
-   * True whenever the store is updating something
-   */
+  /** True while the store is performing an async operation (fetching, saving, etc.) */
   updating = signal (false);
 
-  /**
-   * A shortcut to the entityname being managed
-   */
+  /** Shortcut signal providing the current entity name from config */
   entityName = linkedSignal( () => {
     return this.config().entity;
   });
 
   /**
-   * A simple signal telling when a new store is being used. For example, when the entity handled has changed
+   * Toggle signal that changes whenever a new store is created.
+   * Used to force recomputation of derived signals (e.g., displayableElements).
    * @protected
    */
   protected storeChanged=signal<boolean>(false);
 
   /**
-   * Triggered when the workflow config has been updated. Do we need another store, or just reconfigure the sort / filtering ?
+   * Effect that reacts to config changes.
+   * If the entity hasn't changed, updates store options (sort/filter).
+   * If the entity changed, resets the store to trigger recreation on next access.
    * @protected
    */
   protected configUpdated = effect( async ()=> {
@@ -77,6 +86,11 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
     }
   });
 
+  /**
+   * Finds or creates the store for the current entity configuration.
+   * @returns The store instance, or null if no entity is configured
+   * @protected
+   */
   protected findStore (): XtSignalStore<T> | null {
     if (this.store===undefined) {
       const config = this.config();
@@ -86,6 +100,11 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
     return (this.store==null)?null:this.store;
   }
 
+  /**
+   * Finds the store and throws if not found.
+   * @throws Error if no store exists for the configured entity
+   * @protected
+   */
   protected safeFindStore (): XtSignalStore<T> {
     const ret= this.findStore();
     if( ret == null) throw new Error ("No store found for entity named "+this.config().entity);
@@ -93,7 +112,9 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
   }
 
   /**
-   * Returns the element that should be selected given the config and the store content
+   * Computed signal returning entities filtered by display configuration.
+   * Applies 'current-and-after' filters to hide entities with past dates.
+   * Recalculates when the store changes (via storeChanged signal).
    * @protected
    */
   protected displayableElements = computed(() => {
@@ -119,10 +140,11 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
   });
 
   /**
-   * Safely loads the data from the store.
+   * Fetches entities from the store.
+   * Handles entity changes by recreating the store when needed.
+   * Sets updating signal during the async operation.
    */
   protected fetchFromStore () {
-    //console.debug("ListDetails fetchFromStore");
     const entityName = this.entityName();
     if (entityName!=null) {
       try {
@@ -132,13 +154,11 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
           this.store = this.safeFindStore();
           this.storeChanged.update((oldVal)=> !oldVal); // Force update whenever the store changed
         }
-        // console.debug("Store set to "+this.store.entityName());
         this.store.fetchEntities().catch((error) => {
           this.errorHandler.errorOccurred(error, "Error loading entities "+entityName);
         }).finally(() => {
           this.updating.set(false);
-//          console.debug("Store fetched values ",this.store?.entities());
-        });//.then(() => {console.debug('Yes')}).finally(() => {console.debug('Finish')});
+        });
       } catch (error) {
         this.updating.set(false);
       }
@@ -148,7 +168,9 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
   }
 
   /**
-   * Returns the element that should be selected given the config and the store content
+   * Computed signal that determines which entity should be pre-selected based on config.
+   * Supports 'closest-after' and 'closest-before' selection relative to current date.
+   * Optimizes by checking if the data is already sorted.
    * @protected
    */
   protected selectedElementThroughConfig = computed(() =>{
@@ -198,6 +220,11 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
     return null;
   });
 
+  /**
+   * Generates store entity options from workflow config.
+   * Converts DcWorkflowSortModel to XtStoreEntityFeatureOptions.
+   * @protected
+   */
   protected generateStoreOptions (config: DcWorkflowModel): XtStoreEntityFeatureOptions<T> | undefined {
     const options = {sort:[]} as XtStoreEntityFeatureOptions<T>;
     if( config.data?.sort!=null) {
@@ -209,6 +236,11 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
     return (options.sort!.length>0)?options:undefined;
   }
 
+  /**
+   * Converts a DcWorkflowSortOption to an XtSortBy configuration.
+   * @throws Error for metadata sort type (not yet supported)
+   * @protected
+   */
   protected toSortOption (name:string, sort:DcWorkflowSortOption): XtSortBy<T> {
     const ret = { by:name } as XtSortBy<T>;
 

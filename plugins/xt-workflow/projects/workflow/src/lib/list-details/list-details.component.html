@@ -1,7 +1,9 @@
+<!-- List-details workflow template -->
 @let entName = entityName();
 
 @if (entName != null) {
   <section class="list-details">
+    <!-- Header with title and toolbar actions -->
     <header class="list-details__header">
       <div class="list-details__heading">
         <h1 class="list-details__title">{{ entName }}</h1>
@@ -10,9 +12,11 @@
         </p>
       </div>
 
+      <!-- Toolbar with CRUD operations -->
       <p-toolbar class="list-details__toolbar">
         <ng-template #center>
           <div class="list-details__actions">
+            <!-- Create new entity -->
             <p-button
               id="btn-new"
               icon="pi pi-plus"
@@ -22,6 +26,7 @@
               (onClick)="newEntity()">
             </p-button>
 
+            <!-- Reload entity list from store -->
             <p-button
               id="btn-reload"
               icon="pi pi-refresh"
@@ -32,6 +37,7 @@
               (onClick)="reloadList()">
             </p-button>
 
+            <!-- Delete selected entity -->
             <p-button
               id="btn-delete"
               icon="pi pi-trash"
@@ -42,6 +48,7 @@
               (onClick)="deleteSelected()">
             </p-button>
 
+            <!-- Save changes to selected entity -->
             <p-button
               id="btn-save"
               icon="pi pi-save"
@@ -55,26 +62,32 @@
       </p-toolbar>
     </header>
 
+    <!-- Tabbed interface for List and Edit views -->
     <p-tabs [value]="viewMode()" class="list-details__tabs">
       <p-tablist>
         <p-tab value="list">List</p-tab>
+        <!-- Edit tab disabled when no entity is selected -->
         <p-tab value="edit" [disabled]="!canEdit()">Edit</p-tab>
       </p-tablist>
 
       <p-tabpanels class="list-details__panels">
+        <!-- List view: displays entities with live preview of edits -->
         <p-tabpanel value="list">
           @if (store?.loading()) {
+            <!-- Loading state: spinner while fetching entities -->
             <div class="list-details__state">
               <p-progress-spinner />
               <span>Loading {{ entName }}…</span>
             </div>
           } @else if ((store?.entities()?.length ?? 0) === 0) {
+            <!-- Empty state: no entities found -->
             <div class="list-details__state list-details__state--empty">
               <i class="pi pi-inbox"></i>
               <span>No entity found.</span>
               <small>Try creating a new item with the toolbar above.</small>
             </div>
           } @else {
+            <!-- Entity list with live preview of unsaved changes -->
             <div class="list-details__panel">
               <xt-render
                 displayMode="LIST_VIEW"
@@ -86,6 +99,7 @@
           }
         </p-tabpanel>
 
+        <!-- Edit view: form for editing the selected entity -->
         <p-tabpanel value="edit">
           @if (canEdit()) {
             @let mainForm = editForm();
@@ -105,6 +119,7 @@
     </p-tabs>
   </section>
 } @else {
+  <!-- No entity configured state -->
   <section class="list-details list-details--empty">
     <div class="list-details__state list-details__state--empty">
       <i class="pi pi-database"></i>

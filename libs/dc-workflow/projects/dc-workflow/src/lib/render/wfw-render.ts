@@ -6,7 +6,13 @@ import { WfwResolverService } from '../angular/wfw-resolver-service';
 import { DcWorkflow } from '../definition/dc-workflow';
 
 /**
- * Renders a Workflow based on the given class or by the configuration
+ * Dynamic workflow renderer component.
+ * Resolves and renders the appropriate workflow component (carousel or list-detail)
+ * based on either an explicit type input or a configuration model.
+ *
+ * Usage:
+ * - Provide `workflowType` to force a specific component
+ * - Or provide `workflowConfig` to let the resolver pick the best workflow
  */
 @Component({
   selector: 'wfw-render',
@@ -18,23 +24,26 @@ import { DcWorkflow } from '../definition/dc-workflow';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WfwRender<T> {
+  /** Service for resolving workflow components from the plugin registry */
   resolverService = inject(WfwResolverService);
 
   /**
-   * Use this input to enforce the workflow class to use
+   * Explicit workflow component class to render.
+   * When set, takes precedence over workflowConfig-based resolution.
    */
   workflowType = input<Type<DcWorkflow>> ();
 
   /**
-   * Use this to configure the behavior of the workflow
+   * Workflow configuration model used to resolve the appropriate component
+   * via WfwResolverService when workflowType is not provided.
    */
   workflowConfig = input<DcWorkflowModel>();
 
   /**
-   * Calculates the workflow component to use, either from the workflowType or workflowConfig input
+   * Computed signal that resolves the workflow component class.
+   * Priority: workflowType input > workflowConfig-based resolution > null
    */
   type:Signal<Type<DcWorkflow>|null> = computed( () => {
-//    console.debug("WfwRender type start");
     let ret=this.workflowType();
     let compFound:XtResolvedComponent|null = null;
     const wfwConfig = this.workflowConfig();
@@ -43,7 +52,6 @@ export class WfwRender<T> {
       ret= compFound?.componentClass;
     }
 
-//    console.debug("WfwRender type end with "+(ret!=null));
     return ret??null;
   });
 

@@ -225,7 +225,7 @@ describe('ManyToOneRefComponent', () => {
       hostFixture.detectChanges();
       const suggestionItems = autocomplete.queryAll(By.directive(DefaultObjectComponent));
       return suggestionItems.length == 1;
-    });
+    }, 20, 200);
 
     // Check the number of suggestion items
     suggestionItems = autocomplete.queryAll(By.directive(DefaultObjectComponent));

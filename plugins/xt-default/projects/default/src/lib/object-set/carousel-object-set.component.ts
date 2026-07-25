@@ -63,6 +63,10 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   private touchStartY = 0;
   private swipeHandled = false;
   private static readonly SWIPE_THRESHOLD = 50;
+  private static readonly VELOCITY_THRESHOLD = 0.3;
+  private lastTouchX = 0;
+  private lastTouchY = 0;
+  private lastTouchTime = 0;
 
   private boundKeyDown = (e: KeyboardEvent) => this.onKeyDown(e);
 
@@ -178,19 +182,33 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     if (event.touches.length !== 1) return;
     this.touchStartX = event.touches[0].clientX;
     this.touchStartY = event.touches[0].clientY;
+    this.lastTouchX = this.touchStartX;
+    this.lastTouchY = this.touchStartY;
+    this.lastTouchTime = Date.now();
     this.swipeHandled = false;
   }
 
   onTouchMove(event: TouchEvent) {
     if (event.touches.length !== 1 || this.swipeHandled) return;
-    const dx = event.touches[0].clientX - this.touchStartX;
-    const dy = event.touches[0].clientY - this.touchStartY;
-    const absDx = Math.abs(dx);
-    const absDy = Math.abs(dy);
-    if (!this.isVertical() && absDx > absDy && absDx > 10) {
-      event.preventDefault();
-    } else if (this.isVertical() && absDy > absDx && absDy > 10) {
-      event.preventDefault();
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
+    const now = Date.now();
+    const dt = now - this.lastTouchTime;
+    const vx = dt > 0 ? Math.abs(x - this.lastTouchX) / dt : 0;
+    const vy = dt > 0 ? Math.abs(y - this.lastTouchY) / dt : 0;
+    this.lastTouchX = x;
+    this.lastTouchY = y;
+    this.lastTouchTime = now;
+    const velocity = this.isVertical() ? vy : vx;
+    if (velocity > CarouselObjectSetComponent.VELOCITY_THRESHOLD) {
+      const dx = x - this.touchStartX;
+      const dy = y - this.touchStartY;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+      const dominant = this.isVertical() ? absDy > absDx : absDx > absDy;
+      if (dominant && (this.isVertical() ? absDy : absDx) > 10) {
+        event.preventDefault();
+      }
     }
   }
 
@@ -200,14 +218,18 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     if (!changed) return;
     const dx = changed.clientX - this.touchStartX;
     const dy = changed.clientY - this.touchStartY;
-    const threshold = CarouselObjectSetComponent.SWIPE_THRESHOLD;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+    const dt = Date.now() - this.lastTouchTime;
     if (this.isVertical()) {
-      if (Math.abs(dy) >= threshold && Math.abs(dy) > Math.abs(dx)) {
+      const velocity = dt > 0 ? absDy / dt : 0;
+      if (absDy >= absDx && absDy >= CarouselObjectSetComponent.SWIPE_THRESHOLD && velocity > CarouselObjectSetComponent.VELOCITY_THRESHOLD) {
         this.swipeHandled = true;
         if (dy < 0) { this.next(); } else { this.previous(); }
       }
     } else {
-      if (Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy)) {
+      const velocity = dt > 0 ? absDx / dt : 0;
+      if (absDx >= absDy && absDx >= CarouselObjectSetComponent.SWIPE_THRESHOLD && velocity > CarouselObjectSetComponent.VELOCITY_THRESHOLD) {
         this.swipeHandled = true;
         if (dx < 0) { this.next(); } else { this.previous(); }
       }

@@ -10,10 +10,14 @@
 }
 
 .carousel-object-set__viewport {
-  overflow: hidden;
   flex: 1;
   min-width: 0;
   padding: 0.75rem;
+  touch-action: pan-y;
+}
+
+.carousel-object-set__clipper {
+  overflow: hidden;
 }
 
 .carousel-object-set__track {
@@ -196,4 +200,10 @@
 
 .carousel-object-set--vertical .carousel-object-set__panel {
   min-height: 0;
+}
+
+@media (max-width: 767px) {
+  .carousel-object-set--vertical .carousel-object-set__clipper {
+    overflow: hidden;
+  }
 }

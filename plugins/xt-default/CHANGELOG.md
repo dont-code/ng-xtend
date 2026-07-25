@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.8.3...xt-plugin-default-v0.8.4) (2026-07-25)
+
+
+### Bug Fixes
+
+* new element in carousel ([85cc02c](https://github.com/dont-code/ng-xtend/commit/85cc02c266a26dcdce2c896d3a6b3f5a2f6d0191))
+* scroll in element ([13ad42a](https://github.com/dont-code/ng-xtend/commit/13ad42ab3007231498d11d6d47b404bb222ba868))
+* wait more for refs to appear ([143a0e5](https://github.com/dont-code/ng-xtend/commit/143a0e52dace2728233666f065e3683a73971ec0))
+
 ## [0.8.3](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v0.8.2...xt-plugin-default-v0.8.3) (2026-07-14)
 
 

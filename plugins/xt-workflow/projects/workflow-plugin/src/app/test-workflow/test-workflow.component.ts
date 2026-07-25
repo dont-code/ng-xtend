@@ -1,8 +1,7 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { XtRenderComponent, XtResolverService } from 'xt-components';
-import { ListDetailsComponent } from '../../../../workflow/src/lib/list-details/list-details.component';
+import { XtResolverService } from 'xt-components';
 import { Button } from 'primeng/button';
 import { DcWorkflowModel, WfwRender } from 'dc-workflow';
 import { StoreTestBed } from 'xt-store';

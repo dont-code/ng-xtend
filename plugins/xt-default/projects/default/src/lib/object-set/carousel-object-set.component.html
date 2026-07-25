@@ -8,6 +8,7 @@
     (touchstart)="onTouchStart($event)"
     (touchmove)="onTouchMove($event)"
     (touchend)="onTouchEnd($event)">
+    <div class="carousel-object-set__clipper">
     <div class="carousel-object-set__track"
       [class.carousel-object-set--single]="viewportCount() === 1"
       [class.slide-in-from-right]="slideAnim() === 'slide-in-from-right'"
@@ -40,6 +41,7 @@
         }
       </div>
     }
+  </div>
   </div>
   </div>
 

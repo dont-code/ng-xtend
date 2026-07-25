@@ -5,7 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { StoreTestHelper, XtBaseContext, XtResolverService } from 'xt-components';
 import { registerDefaultPlugin } from '../register';
 import { By } from '@angular/platform-browser';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 type TestData = {
   simpleText: string;
@@ -404,5 +404,250 @@ describe('CarouselObjectSetComponent', () => {
 
     const nextBtn = fixture.debugElement.query(By.css('.carousel-object-set__nav--next i'));
     expect(nextBtn.nativeElement.classList.contains('pi-chevron-right')).toBeTruthy();
+  });
+
+  function createTouchEvent(type: string, x: number, y: number, changed = false): TouchEvent {
+    const touch = { clientX: x, clientY: y, identifier: 0 } as Touch;
+    const event = {
+      type,
+      touches: type === 'touchend' ? [] : [touch],
+      changedTouches: [touch],
+      preventDefault: vi.fn(),
+    } as unknown as TouchEvent;
+    return event;
+  }
+
+  function createSwipeSequence(
+    component: CarouselObjectSetComponent<TestData>,
+    startX: number, startY: number,
+    endX: number, endY: number,
+    durationMs: number
+  ) {
+    const now = Date.now();
+    vi.spyOn(Date, 'now')
+      .mockReturnValueOnce(now)
+      .mockReturnValueOnce(now + durationMs / 2)
+      .mockReturnValueOnce(now + durationMs);
+
+    component.onTouchStart(createTouchEvent('touchstart', startX, startY));
+    component.onTouchMove(createTouchEvent('touchmove', startX + (endX - startX) / 2, startY + (endY - startY) / 2));
+    component.onTouchEnd(createTouchEvent('touchend', endX, endY, true));
+  }
+
+  describe('touch swipe vs scroll behavior', () => {
+    let component: CarouselObjectSetComponent<TestData>;
+    let fixture: ComponentFixture<CarouselObjectSetComponent<TestData>>;
+
+    beforeEach(async () => {
+      fixture = TestBed.createComponent(CarouselObjectSetComponent<TestData>);
+      const context = new XtBaseContext<TestData[]>('LIST_VIEW');
+      context.setDisplayValue([
+        { simpleText: 'a', simpleDate: new Date(), simpleNumber: 1, simpleBoolean: false },
+        { simpleText: 'b', simpleDate: new Date(), simpleNumber: 2, simpleBoolean: true },
+        { simpleText: 'c', simpleDate: new Date(), simpleNumber: 3, simpleBoolean: false },
+        { simpleText: 'd', simpleDate: new Date(), simpleNumber: 4, simpleBoolean: true },
+        { simpleText: 'e', simpleDate: new Date(), simpleNumber: 5, simpleBoolean: false },
+        { simpleText: 'f', simpleDate: new Date(), simpleNumber: 6, simpleBoolean: true },
+      ]);
+      fixture.componentRef.setInput('context', context);
+      component = fixture.componentInstance;
+      component.isVertical.set(false);
+      component.isPhone.set(false);
+      fixture.detectChanges();
+      vi.restoreAllMocks();
+    });
+
+    it('should navigate to next on fast horizontal swipe left', () => {
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 300, 200, 100, 200, 50);
+      expect(component.currentPage()).toBe(initialPage + 1);
+    });
+
+    it('should navigate to previous on fast horizontal swipe right', () => {
+      component.currentPage.set(1);
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 100, 200, 300, 200, 50);
+      expect(component.currentPage()).toBe(initialPage - 1);
+    });
+
+    it('should NOT navigate on slow horizontal movement', () => {
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 300, 200, 100, 200, 2000);
+      expect(component.currentPage()).toBe(initialPage);
+    });
+
+    it('should NOT navigate on slow movement even with large distance', () => {
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 400, 200, 50, 200, 3000);
+      expect(component.currentPage()).toBe(initialPage);
+    });
+
+    it('should NOT navigate on short swipe even if fast', () => {
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 200, 200, 180, 200, 10);
+      expect(component.currentPage()).toBe(initialPage);
+    });
+
+    it('should NOT navigate on diagonal swipe', () => {
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 300, 300, 100, 50, 50);
+      expect(component.currentPage()).toBe(initialPage);
+    });
+
+    it('should call preventDefault on fast horizontal swipe in touchmove', () => {
+      const now = Date.now();
+      vi.spyOn(Date, 'now')
+        .mockReturnValueOnce(now)
+        .mockReturnValueOnce(now + 10)
+        .mockReturnValueOnce(now + 20);
+
+      const startEvent = createTouchEvent('touchstart', 300, 200);
+      const moveEvent = createTouchEvent('touchmove', 200, 200);
+      const endEvent = createTouchEvent('touchend', 100, 200, true);
+
+      component.onTouchStart(startEvent);
+      component.onTouchMove(moveEvent);
+      expect(moveEvent.preventDefault).toHaveBeenCalled();
+      component.onTouchEnd(endEvent);
+    });
+
+    it('should NOT call preventDefault on slow horizontal movement in touchmove', () => {
+      const now = Date.now();
+      vi.spyOn(Date, 'now')
+        .mockReturnValueOnce(now)
+        .mockReturnValueOnce(now + 500)
+        .mockReturnValueOnce(now + 1000);
+
+      const startEvent = createTouchEvent('touchstart', 300, 200);
+      const moveEvent = createTouchEvent('touchmove', 280, 200);
+      const endEvent = createTouchEvent('touchend', 260, 200, true);
+
+      component.onTouchStart(startEvent);
+      component.onTouchMove(moveEvent);
+      expect(moveEvent.preventDefault).not.toHaveBeenCalled();
+      component.onTouchEnd(endEvent);
+    });
+
+    it('should NOT call preventDefault on vertical movement in horizontal mode', () => {
+      const now = Date.now();
+      vi.spyOn(Date, 'now')
+        .mockReturnValueOnce(now)
+        .mockReturnValueOnce(now + 10)
+        .mockReturnValueOnce(now + 20);
+
+      const startEvent = createTouchEvent('touchstart', 200, 300);
+      const moveEvent = createTouchEvent('touchmove', 200, 200);
+      const endEvent = createTouchEvent('touchend', 200, 100, true);
+
+      component.onTouchStart(startEvent);
+      component.onTouchMove(moveEvent);
+      expect(moveEvent.preventDefault).not.toHaveBeenCalled();
+      component.onTouchEnd(endEvent);
+    });
+
+    it('should reset swipeHandled on new touch start', () => {
+      createSwipeSequence(component, 300, 200, 100, 200, 50);
+      const pageAfterFirst = component.currentPage();
+      expect(pageAfterFirst).toBe(1);
+
+      vi.restoreAllMocks();
+      createSwipeSequence(component, 300, 200, 100, 200, 50);
+      expect(component.currentPage()).toBe(pageAfterFirst + 1);
+    });
+
+    it('should ignore multi-touch gestures', () => {
+      const initialPage = component.currentPage();
+      const startEvent = {
+        type: 'touchstart',
+        touches: [
+          { clientX: 100, clientY: 200, identifier: 0 },
+          { clientX: 200, clientY: 200, identifier: 1 },
+        ],
+        changedTouches: [],
+        preventDefault: vi.fn(),
+      } as unknown as TouchEvent;
+
+      component.onTouchStart(startEvent);
+      const moveEvent = createTouchEvent('touchmove', 50, 200);
+      component.onTouchMove(moveEvent);
+      const endEvent = createTouchEvent('touchend', 50, 200, true);
+      component.onTouchEnd(endEvent);
+
+      expect(component.currentPage()).toBe(initialPage);
+    });
+  });
+
+  describe('touch swipe in vertical mode', () => {
+    let component: CarouselObjectSetComponent<TestData>;
+    let fixture: ComponentFixture<CarouselObjectSetComponent<TestData>>;
+
+    beforeEach(async () => {
+      fixture = TestBed.createComponent(CarouselObjectSetComponent<TestData>);
+      const context = new XtBaseContext<TestData[]>('LIST_VIEW');
+      context.setDisplayValue([
+        { simpleText: 'a', simpleDate: new Date(), simpleNumber: 1, simpleBoolean: false },
+        { simpleText: 'b', simpleDate: new Date(), simpleNumber: 2, simpleBoolean: true },
+        { simpleText: 'c', simpleDate: new Date(), simpleNumber: 3, simpleBoolean: false },
+      ]);
+      fixture.componentRef.setInput('context', context);
+      component = fixture.componentInstance;
+      component.isVertical.set(true);
+      component.isPhone.set(true);
+      fixture.detectChanges();
+      vi.restoreAllMocks();
+    });
+
+    it('should navigate to next on fast vertical swipe up', () => {
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 200, 300, 200, 100, 50);
+      expect(component.currentPage()).toBe(initialPage + 1);
+    });
+
+    it('should navigate to previous on fast vertical swipe down', () => {
+      component.currentPage.set(1);
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 200, 100, 200, 300, 50);
+      expect(component.currentPage()).toBe(initialPage - 1);
+    });
+
+    it('should NOT navigate on slow vertical movement', () => {
+      const initialPage = component.currentPage();
+      createSwipeSequence(component, 200, 300, 200, 100, 2000);
+      expect(component.currentPage()).toBe(initialPage);
+    });
+
+    it('should call preventDefault on fast vertical swipe in vertical mode', () => {
+      const now = Date.now();
+      vi.spyOn(Date, 'now')
+        .mockReturnValueOnce(now)
+        .mockReturnValueOnce(now + 10)
+        .mockReturnValueOnce(now + 20);
+
+      const startEvent = createTouchEvent('touchstart', 200, 300);
+      const moveEvent = createTouchEvent('touchmove', 200, 200);
+      const endEvent = createTouchEvent('touchend', 200, 100, true);
+
+      component.onTouchStart(startEvent);
+      component.onTouchMove(moveEvent);
+      expect(moveEvent.preventDefault).toHaveBeenCalled();
+      component.onTouchEnd(endEvent);
+    });
+
+    it('should NOT call preventDefault on slow vertical movement in vertical mode', () => {
+      const now = Date.now();
+      vi.spyOn(Date, 'now')
+        .mockReturnValueOnce(now)
+        .mockReturnValueOnce(now + 500)
+        .mockReturnValueOnce(now + 1000);
+
+      const startEvent = createTouchEvent('touchstart', 200, 300);
+      const moveEvent = createTouchEvent('touchmove', 200, 280);
+      const endEvent = createTouchEvent('touchend', 200, 260, true);
+
+      component.onTouchStart(startEvent);
+      component.onTouchMove(moveEvent);
+      expect(moveEvent.preventDefault).not.toHaveBeenCalled();
+      component.onTouchEnd(endEvent);
+    });
   });
 });

@@ -26,6 +26,10 @@
     </lib-carousel-object-set>
   }
 
+  <button class="carousel__fab" [disabled]="creating() || saving()" (click)="newEntity()">
+    <i class="pi" [ngClass]="creating() ? 'pi-spin' : 'pi-plus'"></i>
+  </button>
+
 } @else {
   <!-- No entity configured state -->
   <section class="carousel carousel--empty">

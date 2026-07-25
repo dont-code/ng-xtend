@@ -1,4 +1,5 @@
 import { Component, computed, inject, model, OnDestroy, OnInit, signal } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { AbstractDcWorkflow } from 'dc-workflow';
 import { XtBaseContext, XtMessageHandler, XtRenderComponent, updateFormGroupWithValue } from 'xt-components';
 import { ManagedData } from 'xt-type';
@@ -25,7 +26,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'wfw-carousel',
   imports: [
-    CarouselObjectSetComponent,
+    CarouselObjectSetComponent, NgClass,
     ProgressSpinner, XtRenderComponent,
     ReactiveFormsModule, Button, Dialog
   ],
@@ -51,6 +52,8 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
   protected deleting = signal(false);
   /** Whether the edit dialog is visible */
   protected dialogVisible = signal(false);
+  /** Whether a create operation is in progress */
+  protected creating = signal(false);
   /** Subscriptions for form event listeners */
   private subscriptions = new Subscription();
 
@@ -150,6 +153,25 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
     } else {
       this.cancelEdit();
       this.selectedElement.set(null);
+    }
+  }
+
+  /**
+   * Creates a new empty entity in the store.
+   * Opens the edit dialog on the new entity.
+   */
+  async newEntity(): Promise<void> {
+    try {
+      this.creating.set(true);
+      const newOne = await this.safeFindStore().storeEntity({} as T);
+      this.editingEntity.set(newOne);
+      this.updateEditForm();
+      this.canSave.set(true);
+      this.dialogVisible.set(true);
+    } catch (error) {
+      this.errorHandler.errorOccurred(error, "Error creating new entity");
+    } finally {
+      this.creating.set(false);
     }
   }
 

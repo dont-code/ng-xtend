@@ -56,13 +56,47 @@
   gap: 0.5rem;
 }
 
+.carousel__fab {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--p-primary-color, #3B82F6);
+  color: #fff;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: background 0.2s, box-shadow 0.2s;
+  z-index: 1;
+}
+
+.carousel__fab:hover:not(:disabled) {
+  background: var(--p-primary-600, #2563EB);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.carousel__fab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:host {
+  position: relative;
+}
+
 :host ::ng-deep .carousel-edit-dialog {
   min-width: 50vw;
   max-width: 90vw;
 }
 
 :host ::ng-deep .carousel-edit-dialog .p-dialog-content {
-  overflow-y: auto;
+  overflow: visible;
 }
 
 @media (max-width: 767px) {

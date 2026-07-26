@@ -169,6 +169,10 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   }
 
   onKeyDown(event: KeyboardEvent) {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return;
+    }
     if (this.isVertical()) {
       if (event.key === 'ArrowUp') { event.preventDefault(); this.previous(); }
       else if (event.key === 'ArrowDown') { event.preventDefault(); this.next(); }

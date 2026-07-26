@@ -1,6 +1,6 @@
 {
   "libs/xt-type": "0.11.1",
-  "libs/xt-store": "1.0.0",
+  "libs/xt-store": "1.0.1",
   "libs/xt-components": "1.0.0",
   "libs/xt-plugin-sample": "1.0.0",
   "libs/dc-workflow": "1.0.0",

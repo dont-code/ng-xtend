@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.1.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v1.0.1...xt-store-v1.1.0) (2026-07-26)
+
+
+### Features
+
+* all stores now managed refs ([43ba0d3](https://github.com/dont-code/ng-xtend/commit/43ba0d3a377847372b8cea15d0086f83c2d8596d))
+* remove next tasks ([b7e05fe](https://github.com/dont-code/ng-xtend/commit/b7e05fe0854c21a2b936dab1f020d0c7e176d2fe))
+* support for multisort ([b8eedd0](https://github.com/dont-code/ng-xtend/commit/b8eedd0ccd8ead65fe5ad518c103ece8a7d12096))
+* workflow, work in progress ([4562f15](https://github.com/dont-code/ng-xtend/commit/4562f1516dda7c26ae33d3b781b5e33b050d0c03))
+
+
+### Bug Fixes
+
+* added repository urls ([03a91ac](https://github.com/dont-code/ng-xtend/commit/03a91acbd1d34e58c2d75dac8a66ef0af60d9fc3))
+* all versions to 0.5.5 ([c2989e8](https://github.com/dont-code/ng-xtend/commit/c2989e840f2e05ac4d02096c828cc2fc9883b324))
+* enable identified publish ([b854711](https://github.com/dont-code/ng-xtend/commit/b85471159f90b23e63c5919918a522be5f8a095b))
+* insertinsortedlist ([4bcf3e6](https://github.com/dont-code/ng-xtend/commit/4bcf3e6fcd7640fadb9abd550e103f5ea65a72de))
+* resolved package for publish ([3e15539](https://github.com/dont-code/ng-xtend/commit/3e15539644ff6e835c2eeba167a24657d2bc0b4a))
+* store bad 1.0.0 unpublished ([361cc53](https://github.com/dont-code/ng-xtend/commit/361cc5359c90770598a0bc3b94c9b9205134117b))
+* store bad 1.0.0 unpublished ([f4c2aa6](https://github.com/dont-code/ng-xtend/commit/f4c2aa6d77c50705437f6b04eb17d2ca4d399d66))
+* store bad 1.0.0 unpublished ([5ed45ae](https://github.com/dont-code/ng-xtend/commit/5ed45ae1f7add66ff1791db5ace00d63a242bff6))
+* support for multisort in storeprovider ([d33de1c](https://github.com/dont-code/ng-xtend/commit/d33de1c1b6cf2d2120000423b295462539c47b09))
+* Supports for signal store with references ([5ebd83a](https://github.com/dont-code/ng-xtend/commit/5ebd83ae85e79fe11db35ddc343fd1e85ffdffca))
+* testing updating filter and sort works ([4880c55](https://github.com/dont-code/ng-xtend/commit/4880c55cf0a7e69d4db739f55a0153ee1b9592f2))
+* try to make ci work ([c627c94](https://github.com/dont-code/ng-xtend/commit/c627c9499490b2072b46b79b3923e992cf9c7e34))
+* update peerdependencies to angular 20 ([685b35d](https://github.com/dont-code/ng-xtend/commit/685b35da8132aadcfdd45f64a87327fee674a12c))
+* updated peerdependencies ([c158f69](https://github.com/dont-code/ng-xtend/commit/c158f69e0f0eacc4985d884c6fe8a20cbf633640))
+* upgraded test ([21da8e6](https://github.com/dont-code/ng-xtend/commit/21da8e6174760b38d34e267e7a9480eeb69efa4e))
+* versioning of dependencies for the angular packages ([44e82f0](https://github.com/dont-code/ng-xtend/commit/44e82f0a32e66ebf735991adc5dff9bfcd40f104))
+* Workflow sort ([d73b2d6](https://github.com/dont-code/ng-xtend/commit/d73b2d67e8160ab23b64e6600f33514915c3a699))
+* working signalstore sort & filter ([c6d1c1e](https://github.com/dont-code/ng-xtend/commit/c6d1c1e8910dcf803848d5278ea75877aaf83819))
+* xt-store requires angular 21 ([b63e434](https://github.com/dont-code/ng-xtend/commit/b63e434ad9c25cc6bd5224ccbac44fa578d09dba))
+
 ## [1.0.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v0.8.4...xt-store-v1.0.0) (2026-07-26)
 
 

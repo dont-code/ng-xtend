@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v0.8.4...dc-workflow-v1.0.0) (2026-07-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* release 1.0
+
+### Features
+
+* release 1.0 ([5476a43](https://github.com/dont-code/ng-xtend/commit/5476a43f78669108fa32dda37273c403d2db4965))
+
+
+### Bug Fixes
+
+* multiple carousel entities ([7461370](https://github.com/dont-code/ng-xtend/commit/7461370339da7f8ced4ae04515906558c52c65ae))
+
 ## [0.8.4](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v0.8.3...dc-workflow-v0.8.4) (2026-07-25)
 
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-sample-v0.8.4...xt-plugin-sample-v1.0.0) (2026-07-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* release 1.0
+
+### Features
+
+* release 1.0 ([5476a43](https://github.com/dont-code/ng-xtend/commit/5476a43f78669108fa32dda37273c403d2db4965))
+
 ## [0.8.4](https://github.com/dont-code/ng-xtend/compare/xt-plugin-sample-v0.8.3...xt-plugin-sample-v0.8.4) (2026-07-25)
 
 

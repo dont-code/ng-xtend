@@ -32,9 +32,9 @@
         @if (item) {
           <xt-render displayMode="FULL_VIEW" [value]="item" [valueType]="valueType()">
           </xt-render>
-          @if (editButton() && selectedElement() === item) {
+          @if (inputsObject.enableEdit?.() && selectedElement() === item) {
             <button class="carousel-object-set__edit-btn"
-              (click)="editRequested.emit(item); $event.stopPropagation()" type="button">
+              (click)="outputsObject.editRequested?.emit(item); $event.stopPropagation()" type="button">
               <i class="pi pi-pencil"></i>
             </button>
           }

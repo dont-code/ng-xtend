@@ -5,5 +5,7 @@ import { XtComponentOutput } from '../xt-component';
 export class XtBaseOutput implements XtComponentOutput {
   /** Output emitter for when a value is selected */
   valueSelected: OutputEmitterRef<any> | undefined;
+  /** Output emitter for when an edit action is requested */
+  editRequested: OutputEmitterRef<any> | undefined;
 
 }

@@ -80,6 +80,7 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
         await curStore.updateStoreOptions(this.generateStoreOptions(config));
       } else {
         this.store = undefined; // Then next call to findStore will recreate a new store for the new entity
+        this.fetchFromStore();
       }
     } else {
       this.store=undefined; // Force a recalculation of the store

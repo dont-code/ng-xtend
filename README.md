@@ -39,6 +39,7 @@ Demo applications can be seen here:
 ---
 
 ## News
+- ***2026-07-26:*** Release 1.0 is finally here ! Many bug fixing
 - ***2026-07-19:*** Release 0.8 adds support for auto-display in swipe-able carousel mode, and a new type of powerful plugins: [Workflows !](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-workflow)
 - ***2026-06-14:*** We now have an [API Doc](https://ng-xtend.dev/api/index.html) and step by step [Guidelines](https://ng-xtend.dev/guides/index.html). Thanks to [Opencode Big Pickle AI engine](https://opencode.ai)!
 - ***2026-03-31:*** Try our [AI based application generator!](https://dont-code.net/dashboard/repo/default?action=generate). You can now just describe the application you want, and it will generate it based on the ng-xtend framework & plugins !
@@ -95,10 +96,10 @@ Curious about how plugins are dynamically injected? Try the dedicated tester:
 - [x] Strong type support
 - [x] Remote dynamic loading
 - [x] Action components support
-- [ ] Workflows
+- [X] Workflows
 - [-] Enhanced modelization support
 - [x] AI application generation
-- [ ] **v1.0 Release!** 🏁
+- [X] **v1.0 Release!** 🏁
 - [ ] Enhanced plugin isolation
 - [ ] v2.0 & beyond
 

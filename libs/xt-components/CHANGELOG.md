@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.8.4...xt-components-v1.0.0) (2026-07-26)
+
+
+### Bug Fixes
+
+* edit request as standard output ([bd0f281](https://github.com/dont-code/ng-xtend/commit/bd0f281d003257cc208360dbd8cc5931d0ac627a))
+* moved to standardized inputs ([b2dee86](https://github.com/dont-code/ng-xtend/commit/b2dee860cc571fa4270acaf6e1a4eb87acc97576))
+
 ## [0.8.4](https://github.com/dont-code/ng-xtend/compare/xt-components-v0.8.3...xt-components-v0.8.4) (2026-07-25)
 
 

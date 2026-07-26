@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/dont-code/ng-xtend/compare/xt-idb-store-v1.0.0...xt-idb-store-v1.1.0) (2026-07-26)
+
+
+### Miscellaneous Chores
+
+* **xt-idb-store:** Synchronize xt-components versions
+
 ## [1.0.0](https://github.com/dont-code/ng-xtend/compare/xt-idb-store-v0.8.4...xt-idb-store-v1.0.0) (2026-07-26)
 
 

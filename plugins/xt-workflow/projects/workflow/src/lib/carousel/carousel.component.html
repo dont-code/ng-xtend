@@ -22,7 +22,7 @@
       [context]="carouselContext()"
       [(selected)]="selectedElement"
       [editButton]="true"
-      (editRequested)="onEditRequested($event)">
+  (outputs)="onOutputs($event)">
     </lib-carousel-object-set>
   }
 

@@ -27,7 +27,7 @@ export type XtComponent<T=any> = {
 }
 
 /** Possible output types emitted by an XtComponent. */
-export type XtOutputType = 'valueSelected';
+export type XtOutputType = 'valueSelected' | 'editRequested';
 /** Possible input types accepted by an XtComponent. */
 export type XtInputType = 'valueSelected';
 /** Possible model types for two-way binding on an XtComponent. */

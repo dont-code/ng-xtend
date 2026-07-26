@@ -1,7 +1,7 @@
 import { Component, computed, inject, model, OnDestroy, OnInit, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { AbstractDcWorkflow } from 'dc-workflow';
-import { XtBaseContext, XtMessageHandler, XtRenderComponent, updateFormGroupWithValue } from 'xt-components';
+import { XtBaseContext, XtComponentOutput, XtRenderComponent, updateFormGroupWithValue } from 'xt-components';
 import { ManagedData } from 'xt-type';
 import { CarouselObjectSetComponent } from 'xt-plugin-default';
 import { ProgressSpinner } from 'primeng/progressspinner';
@@ -80,6 +80,15 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
   /** Cleans up subscriptions on component destroy */
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  /**
+   * Handles output events from the carousel object set.
+   * Routes editRequested events to the appropriate handler.
+   */
+  onOutputs(event: any): void {
+    const output=event as XtComponentOutput;
+    output.editRequested?.subscribe(item => this.onEditRequested(item));
   }
 
   /**

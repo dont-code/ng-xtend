@@ -20,7 +20,7 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   override selected = model<any>();
   protected override valueSelectedAsOutput = output<any>();
   editButton = input(false);
-  editRequested = output<any>();
+  protected editRequestedAsOutput = output<any>();
 
   valueType = computed<string | undefined>(() => {
     const vt = this.context().valueType;
@@ -89,6 +89,11 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
         this.currentPage.set(0);
       }
     });
+  }
+
+  override setupInputOutput() {
+    super.setupInputOutput();
+    this.outputsObject.editRequested = this.editRequestedAsOutput;
   }
 
   ngOnDestroy(): void {

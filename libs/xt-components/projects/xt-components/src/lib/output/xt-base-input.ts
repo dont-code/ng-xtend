@@ -5,5 +5,7 @@ import { ISortBy, IStoreCriteria } from '../store/store-support';
 /** Default implementation of XtComponentInput */
 export class XtBaseInput implements XtComponentInput {
   /** Input signal for the value selected by the user */
-  valueSelected: InputSignal<any>|undefined;
+  valueSelected?: InputSignal<any>|undefined;
+  /** Input signal to enable the edit button */
+  enableEdit?: InputSignal<boolean>|undefined;
 }

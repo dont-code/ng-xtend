@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { XtContext, XtRenderComponent } from 'xt-components';
+import { XtBaseInput, XtContext, XtRenderComponent } from 'xt-components';
 import { ObjectSetBase } from './object-set-base';
 
 @Component({
@@ -18,8 +18,8 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
 
   override context = input.required<XtContext<T[]>>();
   override selected = model<any>();
+  override inputs = input<XtBaseInput>();
   protected override valueSelectedAsOutput = output<any>();
-  editButton = input(false);
   protected editRequestedAsOutput = output<any>();
 
   valueType = computed<string | undefined>(() => {

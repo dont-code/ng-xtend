@@ -14,7 +14,7 @@ export type XtComponent<T=any> = {
     modelsObject?: XtComponentModel;
 
     models?: InputSignal<XtComponentModel|undefined>;
-    inputs?: InputSignal<XtComponentInput>;
+    inputs?: InputSignal<XtComponentInput|undefined>;
     outputs?: OutputEmitterRef<XtComponentOutput>;
 
     isInForm (): boolean;
@@ -29,7 +29,7 @@ export type XtComponent<T=any> = {
 /** Possible output types emitted by an XtComponent. */
 export type XtOutputType = 'valueSelected' | 'editRequested';
 /** Possible input types accepted by an XtComponent. */
-export type XtInputType = 'valueSelected';
+export type XtInputType = 'valueSelected' | 'enableEdit';
 /** Possible model types for two-way binding on an XtComponent. */
 export type XtModelType = 'valueSelected' | 'sortBy' | 'filterBy';
 
@@ -45,5 +45,5 @@ export type XtComponentOutput = {
 
 /** Defines the input signal map for a component. */
 export type XtComponentInput = {
-  [key in XtInputType]: InputSignal<any>|undefined;
+  [key in XtInputType]?: InputSignal<any>|undefined;
 }

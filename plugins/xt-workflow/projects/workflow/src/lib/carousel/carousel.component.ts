@@ -1,7 +1,7 @@
 import { Component, computed, inject, model, OnDestroy, OnInit, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { AbstractDcWorkflow } from 'dc-workflow';
-import { XtBaseContext, XtComponentOutput, XtRenderComponent, updateFormGroupWithValue } from 'xt-components';
+import { XtBaseContext, XtBaseInput, XtComponentOutput, XtRenderComponent, updateFormGroupWithValue } from 'xt-components';
 import { ManagedData } from 'xt-type';
 import { CarouselObjectSetComponent } from 'xt-plugin-default';
 import { ProgressSpinner } from 'primeng/progressspinner';
@@ -40,6 +40,8 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
 
   /** Currently selected entity in the carousel (two-way bindable) */
   selectedElement = model<T | null>(null);
+  /** Standard inputs forwarded to the carousel object set */
+  carouselInputs = signal<XtBaseInput>({ enableEdit: signal(true) as any });
   /** Entity being edited in the dialog */
   protected editingEntity = signal<T | null>(null);
   /** Reactive form for editing entity data */

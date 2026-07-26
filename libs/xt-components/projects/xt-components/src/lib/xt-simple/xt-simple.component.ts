@@ -1,7 +1,7 @@
 import { Component, computed, input, OnInit, output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { XtContext } from '../xt-context';
-import { XtComponent, XtComponentModel, XtComponentOutput } from '../xt-component';
+import { XtComponent, XtComponentInput, XtComponentModel, XtComponentOutput, XtInputType } from '../xt-component';
 import { XtBaseOutput } from '../output/xt-base-output';
 import { XtBaseInput } from '../output/xt-base-input';
 
@@ -26,6 +26,8 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
   outputs=output<XtComponentOutput>();
   /** Input signal accepting model bindings for two-way data flow. */
   models=input<XtComponentModel>();
+  /** Input signal accepting forwarded inputs from parent or xt-render. */
+  inputs=input<XtBaseInput>();
 
   /** Computed signal indicating whether this component is inside a reactive form. */
   isInForm = computed<boolean> ( () => {
@@ -64,6 +66,12 @@ export class XtSimpleComponent<T = any> implements XtComponent<T>, OnInit{
    * if any output objects have been defined.
    */
   ngOnInit(): void {
+    const inputs = this.inputs();
+    if (inputs != null) {
+      for (const key of Object.keys(inputs) as XtInputType[]) {
+        this.inputsObject[key] = inputs[key];
+      }
+    }
     this.setupInputOutput();
     if (Object.keys(this.outputsObject).length > 0) {
       // At least one output has been defined

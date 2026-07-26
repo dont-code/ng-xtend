@@ -21,8 +21,8 @@
     <lib-carousel-object-set
       [context]="carouselContext()"
       [(selected)]="selectedElement"
-      [editButton]="true"
-  (outputs)="onOutputs($event)">
+      [inputs]="carouselInputs()"
+      (outputs)="onOutputs($event)">
     </lib-carousel-object-set>
   }
 

@@ -340,6 +340,14 @@ export class XtBaseContext<T> implements XtContext<T>{
     const indexKey = elementIndex.toString();
     let ret = this.childContexts?.get(indexKey);
 
+    if ((ret != null) && (ret.value() !== (value as any[])[elementIndex])) {
+      // The element at this index has changed (e.g. the array was reordered by sorting or
+      // a new element was inserted). Drop the stale cached context so that a fresh one is
+      // created below for the element currently at this index.
+      this.childContexts?.delete(indexKey);
+      ret = undefined;
+    }
+
     if( ret==null) {
       ret = new XtBaseContext<T>(this.displayMode, undefined, undefined, this);
       ret.setDisplayValue((value as any[])[elementIndex]);

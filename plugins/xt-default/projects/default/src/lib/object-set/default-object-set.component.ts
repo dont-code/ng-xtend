@@ -45,6 +45,20 @@ export class DefaultObjectSetComponent<T> extends ObjectSetBase<T> {
     return ret;
   }
 
+  /**
+   * Builds an XtContext for the given rendered row element.
+   *
+   * The element is resolved by identity inside the current value set rather than by the
+   * row's display index, because sorting may reorder the rows PrimeNG renders (it sorts a
+   * copy of the value array) while the underlying context value keeps its own order.
+   * @param element - The row element currently rendered by the table.
+   * @param fallbackIndex - Display index used if the element is not found in the value set.
+   */
+  elementSetContextFor(element: T, fallbackIndex: number): XtContext<any> {
+    const index = this.valueSet().indexOf(element);
+    return this.elementSetContext(index >= 0 ? index : fallbackIndex);
+  }
+
   /** Resolves a sub-context within a row for the given field name. */
   subElementContextForName(subElementContext: XtContext<any>, subName: string, subType?: string): XtContext<any> {
     return subElementContext.subContext(subName, subType, this.resolverService?.typeResolver);

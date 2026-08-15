@@ -1,6 +1,7 @@
 import { XtResolverService } from 'xt-components';
 import { WebImageComponent } from './web-image/web-image.component';
 import { WebLinkComponent } from './web-link/web-link.component';
+import { RatingTypeHandler } from './web-rating/rating-type-handler';
 import { WebRatingComponent } from './web-rating/web-rating.component';
 
 export function registerWebPlugin (resolverService:XtResolverService):string {
@@ -28,7 +29,13 @@ export function registerWebPlugin (resolverService:XtResolverService):string {
         'image':'string',
         'link':'string',
         'rating': 'number'
-      }
+      },
+      typeHandlers: [
+        {
+          typesHandled: ['rating'],
+          handlerClass: RatingTypeHandler
+        }
+      ]
     });
     return pluginName;
 }

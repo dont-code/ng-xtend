@@ -374,9 +374,11 @@ export class XtTypeHierarchyResolver implements XtUpdatableTypeResolver {
           ret = new UNRESOLVED_TYPE (typeHierarchy);
         }
       } else {
-          // Just create the hierarchy to the primitive type
+          // Just create the hierarchy to the primitive type.
+          // The handler is initialized by the root type registration (addRootType).
+          // For children, the handler may be shared with the root type: re-initializing
+          // it here would overwrite its type context (e.g. 'rating' alias of 'number').
         ret= new XtBaseTypeHierarchy(typeHierarchy, handler);
-        ret.initHandler();
       }
     } else {
 

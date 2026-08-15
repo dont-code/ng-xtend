@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v1.1.1...xt-plugin-web-v1.2.0) (2026-08-15)
+
+
+### Bug Fixes
+
+* rating sort ([d6713b7](https://github.com/dont-code/ng-xtend/commit/d6713b76d01e34eebc8e209036721831b8a8668c))
+
 ## [1.1.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-web-v1.1.0...xt-plugin-web-v1.1.1) (2026-08-15)
 
 

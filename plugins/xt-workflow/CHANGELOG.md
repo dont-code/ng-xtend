@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v1.1.1...xt-plugin-workflow-v1.2.0) (2026-08-15)
+
+
+### Bug Fixes
+
+* search bar ([8679f34](https://github.com/dont-code/ng-xtend/commit/8679f344db06db05144040e1fb78f7b9729ef1ed))
+
 ## [1.1.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v1.1.0...xt-plugin-workflow-v1.1.1) (2026-08-15)
 
 

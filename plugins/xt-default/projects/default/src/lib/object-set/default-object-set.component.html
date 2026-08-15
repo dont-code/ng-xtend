@@ -3,12 +3,20 @@
   <ng-template #header>
     <tr>
       @for (subName of allSubNames; track subName) {
-        <th [pSortableColumn]="subName">
-          <div class="flex align-items-center gap-2">
-            <span>{{subName}}</span>
-            <p-sortIcon [field]="subName"></p-sortIcon>
-          </div>
-        </th>
+        @if (sortableSubNames().has(subName)) {
+          <th [pSortableColumn]="subName">
+            <div class="flex align-items-center gap-2">
+              <span>{{subName}}</span>
+              <p-sortIcon [field]="subName"></p-sortIcon>
+            </div>
+          </th>
+        } @else {
+          <th>
+            <div class="flex align-items-center gap-2">
+              <span>{{subName}}</span>
+            </div>
+          </th>
+        }
       }
     </tr>
   </ng-template>

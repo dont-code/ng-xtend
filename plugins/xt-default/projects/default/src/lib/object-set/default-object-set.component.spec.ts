@@ -101,7 +101,7 @@ describe('DefaultObjectSetComponent', () => {
     expect(booleanCheckbox.properties['value']).toEqual('on');
   });
 
-  function columnTexts(fixture: ComponentFixture<DefaultObjectSetComponent<TestData>>, columnIndex: number): string[] {
+  function columnTexts<T>(fixture: ComponentFixture<DefaultObjectSetComponent<T>>, columnIndex: number): string[] {
     return fixture.debugElement.queryAll(By.css('tbody > tr')).map((row) => {
       return row.queryAll(By.css('td'))[columnIndex].nativeElement.textContent.trim();
     });
@@ -174,6 +174,71 @@ describe('DefaultObjectSetComponent', () => {
     headers[1].nativeElement.click();
     fixture.detectChanges();
     expect(columnTexts(fixture, 1)).toEqual(['Apr 3, 1973', 'Mar 2, 1972', 'Feb 1, 1971']);
+  });
+
+  it('should only enable sorting on primitive columns', () => {
+    resolverService.registerPlugin({
+      name: 'SortableRefPlugin',
+      types: {
+        bookType: {
+          children: {
+            name: 'string',
+            authorRef: {
+              toType: 'authorType',
+              referenceType: 'MANY-TO-ONE',
+              field: 'fullName'
+            },
+            genreRef: {
+              toType: 'bookGenreType',
+              referenceType: 'MANY-TO-ONE',
+              field: 'name'
+            }
+          }
+        },
+        bookGenreType: {
+          name: 'string'
+        },
+        authorType: {
+          fullName: 'string',
+          city: 'string',
+          born: 'date'
+        }
+      },
+      components: [
+        {
+          componentName: 'testAuthorComponent',
+          componentClass: TestAuthorComponent,
+          typesHandled: ['authorType']
+        }
+      ]
+    });
+    resolverService.resolvePendingReferences();
+
+    const fixture = TestBed.createComponent(DefaultObjectSetComponent<BookTestType>);
+    const context = new XtBaseContext<BookTestType[]>('LIST_VIEW');
+    context.setDisplayValue([{
+      name: 'Ubik',
+      authorRef: { fullName: 'Philip K. Dick', city: 'Chicago', born: new Date(1928, 12, 16) },
+      genreRef: 'SF'
+    }, {
+      name: 'Ancillaire',
+      authorRef: { fullName: 'Ann Leckie', city: 'Toledo', born: new Date(1966, 3, 2) },
+      genreRef: 'Space Opera'
+    }], 'bookType');
+    fixture.componentRef.setInput('context', context);
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance;
+    expect(component.sortableSubNames()).toEqual(new Set(['name']));
+
+    const sortableHeaders = fixture.debugElement.queryAll(By.css('th.p-datatable-sortable-column'));
+    expect(sortableHeaders.map((th) => th.nativeElement.textContent.trim())).toEqual(['name']);
+
+    // Sorting a non-sortable (reference) column must not reorder the rows
+    const headers = fixture.debugElement.queryAll(By.css('th'));
+    headers[1].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 0)).toEqual(['Ubik', 'Ancillaire']);
   });
 
   it('should enable element selection', () => {

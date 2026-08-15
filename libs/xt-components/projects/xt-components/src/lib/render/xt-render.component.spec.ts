@@ -108,6 +108,11 @@ describe('XtRenderComponent', () => {
   template: '@if (isInForm()) {<ng-container [formGroup]="formGroup()"><input id="text_input" [name]="formControlName()" type="text" [formControlName]="formControlName()" /></ng-container>} @else {<h2>Value is {{context().displayValue()}}</h2>}'
 })
 export class TestCurrencyComponent extends XtSimpleComponent<string> {
+  override ngOnInit() {
+    super.ngOnInit();
+      // Test the context is correctly set before ngOnInit
+    const context = this.context();
+  }
 }
 
 @Component({

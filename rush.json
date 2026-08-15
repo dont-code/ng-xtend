@@ -346,11 +346,6 @@
       "shouldPublish": true,
       "publishFolder": "dist/xt-plugin-agenda"
     }, {
-      "packageName": "xt-plugin-editor",
-      "projectFolder": "plugins/xt-editor",
-      "shouldPublish": true,
-      "publishFolder": "dist/xt-plugin-editor"
-    }, {
       "packageName": "xt-store",
       "projectFolder": "libs/xt-store",
       "shouldPublish": true,

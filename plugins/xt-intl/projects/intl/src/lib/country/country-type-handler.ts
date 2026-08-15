@@ -1,6 +1,5 @@
 import { AbstractTypeHandler } from 'xt-type';
-import countriests from 'countries-ts';
-const { getByAlpha3 } = countriests;
+import { getByAlpha3 } from './country-data';
 
 /**
  * Handles the country type, an ISO 3166-1 alpha-3 country code (e.g. 'FRA').

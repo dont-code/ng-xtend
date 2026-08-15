@@ -14,6 +14,7 @@
     "sourceMap": true,
     "declaration": false,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,

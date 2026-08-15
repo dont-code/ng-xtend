@@ -7,10 +7,7 @@ import {
   AutoCompleteSelectEvent,
   AutoCompleteUnselectEvent
 } from 'primeng/autocomplete';
-import countriests from 'countries-ts';
-const { listCountries, searchCountries, alpha3Codes, getByAlpha3 } = countriests;
-
-import { Country } from 'countries-ts';
+import { Country, getByAlpha3, listCountries, searchCountries } from './country-data';
 
 @Component({
   selector: 'xt-intl-country',
@@ -27,12 +24,6 @@ export class IntlCountryComponent extends XtSimpleComponent<string> {
 
   listOfCountries=signal<Country[]> (listCountries());
 
-  constructor() {
-    super();
-    // Converts the code to alpha3 codes
-    this.toAlpha3(listCountries());
-  }
-
   matchCountry($event: AutoCompleteCompleteEvent) {
     this.listOfCountries.set (searchCountries($event.query)
     );
@@ -48,13 +39,6 @@ export class IntlCountryComponent extends XtSimpleComponent<string> {
 
   override setupInputOutput () {
     this.outputsObject.valueSelected=this.selected;
-  }
-
-  toAlpha3 (list:Country[]): Country[] {
-    for (const country of list) {
-      country.alpha3=alpha3Codes[country.code]??country.code;
-    }
-    return list;
   }
 
   currentCountry = computed( () => {

@@ -213,6 +213,123 @@ describe('Type Handler', () => {
 
 });
 
+describe('Type sorting', () => {
+
+  function handlerFor (typeName:string, handler:AbstractTypeHandler<any>):AbstractTypeHandler<any> {
+    const typeHierarchy = new XtBaseTypeHierarchy(typeName, handler);
+    typeHierarchy.initHandler();
+    return handler;
+  }
+
+  it ('should mark all primitive types as sortable', () => {
+    for (const typeName of ['string', 'number', 'boolean', 'date', 'date-time', 'time']) {
+      const handler = handlerFor(typeName, new DefaultTypeHandler());
+      expect(handler.isSortable(), typeName).toBe(true);
+    }
+  });
+
+  it ('should not mark an unknown complex type as sortable', () => {
+    const handler = handlerFor('person', new DefaultTypeHandler());
+    expect(handler.isSortable()).toBe(false);
+  });
+
+  it ('should mark a type with a numeric field as sortable', () => {
+    const handler = handlerFor('money', new ManagedDataHandler(
+      new SpecialFields<ManagedData>().setNumericValueField('amount')
+    ));
+    expect(handler.isSortable()).toBe(true);
+  });
+
+  it ('should compare strings', () => {
+    const handler = handlerFor('string', new DefaultTypeHandler());
+    expect(handler.compareTo('abc', 'abc')).toBe(0);
+    expect(handler.compareTo('abc', 'abd')).toBeLessThan(0);
+    expect(handler.compareTo('abd', 'abc')).toBeGreaterThan(0);
+  });
+
+  it ('should compare numbers', () => {
+    const handler = handlerFor('number', new DefaultTypeHandler());
+    expect(handler.compareTo(3, 3)).toBe(0);
+    expect(handler.compareTo(2, 3)).toBeLessThan(0);
+    expect(handler.compareTo(3, 2)).toBeGreaterThan(0);
+  });
+
+  it ('should compare booleans', () => {
+    const handler = handlerFor('boolean', new DefaultTypeHandler());
+    expect(handler.compareTo(false, false)).toBe(0);
+    expect(handler.compareTo(true, true)).toBe(0);
+    expect(handler.compareTo(false, true)).toBeLessThan(0);
+    expect(handler.compareTo(true, false)).toBeGreaterThan(0);
+  });
+
+  it ('should compare dates', () => {
+    const handler = handlerFor('date', new DefaultTypeHandler());
+    const first = new Date('2018-05-01');
+    const second = new Date('2019-05-01');
+    expect(handler.compareTo(first, first)).toBe(0);
+    expect(handler.compareTo(first, second)).toBeLessThan(0);
+    expect(handler.compareTo(second, first)).toBeGreaterThan(0);
+  });
+
+  it ('should compare date-time values', () => {
+    const handler = handlerFor('date-time', new DefaultTypeHandler());
+    const first = new Date('2018-05-01T10:00:00.000Z');
+    const second = new Date('2018-05-01T12:00:00.000Z');
+    expect(handler.compareTo(first, second)).toBeLessThan(0);
+    expect(handler.compareTo(second, first)).toBeGreaterThan(0);
+    expect(handler.compareTo(second, second)).toBe(0);
+  });
+
+  it ('should compare time values', () => {
+    const handler = handlerFor('time', new DefaultTypeHandler());
+    const first = new Date('1970-01-01T08:00:00.000Z');
+    const second = new Date('1970-01-01T09:30:00.000Z');
+    expect(handler.compareTo(first, second)).toBeLessThan(0);
+    expect(handler.compareTo(second, first)).toBeGreaterThan(0);
+    expect(handler.compareTo(second, second)).toBe(0);
+  });
+
+  it ('should compare date values given as strings', () => {
+    const handler = handlerFor('date', new DefaultTypeHandler());
+    expect(handler.compareTo('2018-05-01', '2019-05-01')).toBeLessThan(0);
+    expect(handler.compareTo('2019-05-01', '2018-05-01')).toBeGreaterThan(0);
+    expect(handler.compareTo('2019-05-01', '2019-05-01')).toBe(0);
+  });
+
+  it ('should sort null values first', () => {
+    const handler = handlerFor('string', new DefaultTypeHandler());
+    expect(handler.compareTo(null as any, 'abc')).toBeLessThan(0);
+    expect(handler.compareTo('abc', null as any)).toBeGreaterThan(0);
+    expect(handler.compareTo(null as any, null as any)).toBe(0);
+  });
+
+  it ('should compare complex types by their numeric field', () => {
+    const handler = handlerFor('money', new ManagedDataHandler(
+      new SpecialFields<ManagedData>().setNumericValueField('amount')
+    ));
+    expect(handler.compareTo({amount: 10}, {amount: 20})).toBeLessThan(0);
+    expect(handler.compareTo({amount: 20}, {amount: 10})).toBeGreaterThan(0);
+    expect(handler.compareTo({amount: 10}, {amount: 10})).toBe(0);
+  });
+
+  it ('should sort all primitive types by natural order', () => {
+    const types: {name:string, values:any[], expected:any[]}[] = [
+      {name: 'string', values: ['b', 'a', 'c'], expected: ['a', 'b', 'c']},
+      {name: 'number', values: [3, 1, 2], expected: [1, 2, 3]},
+      {name: 'boolean', values: [true, false, true], expected: [false, true, true]},
+      {name: 'date', values: [new Date('2019-05-01'), new Date('2018-05-01'), new Date('2020-05-01')], expected: [new Date('2018-05-01'), new Date('2019-05-01'), new Date('2020-05-01')]},
+      {name: 'date-time', values: [new Date('2019-05-01T12:00:00Z'), new Date('2019-05-01T10:00:00Z'), new Date('2019-05-01T11:00:00Z')], expected: [new Date('2019-05-01T10:00:00Z'), new Date('2019-05-01T11:00:00Z'), new Date('2019-05-01T12:00:00Z')]},
+      {name: 'time', values: [new Date('1970-01-01T09:00:00Z'), new Date('1970-01-01T07:00:00Z'), new Date('1970-01-01T08:00:00Z')], expected: [new Date('1970-01-01T07:00:00Z'), new Date('1970-01-01T08:00:00Z'), new Date('1970-01-01T09:00:00Z')]},
+    ];
+    for (const entry of types) {
+      const handler = handlerFor(entry.name, new DefaultTypeHandler());
+      const sorted = [...entry.values].sort((a, b) => handler.compareTo(a, b));
+      expect(sorted).toEqual(entry.expected);
+    }
+  });
+
+});
+
 
 type ToHandleType = {
   id: string,

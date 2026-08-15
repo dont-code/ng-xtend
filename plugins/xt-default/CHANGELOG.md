@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v1.1.0...xt-plugin-default-v1.1.1) (2026-08-15)
+
+
+### Bug Fixes
+
+* sort table ([2c1a5e8](https://github.com/dont-code/ng-xtend/commit/2c1a5e8a1529c8f8ee9cb70b251c29f03f3d93d5))
+* sort table ([d75a197](https://github.com/dont-code/ng-xtend/commit/d75a197e710bb9d09d8c851e2b130b7ac1850c96))
+
 ## [1.1.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v1.0.0...xt-plugin-default-v1.1.0) (2026-07-26)
 
 

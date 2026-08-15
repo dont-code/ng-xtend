@@ -3,12 +3,25 @@
   <ng-template #header>
     <tr>
       @for (subName of allSubNames; track subName) {
-        <th>{{subName}}</th>
+        @if (sortableSubNames().has(subName)) {
+          <th [pSortableColumn]="subName">
+            <div class="flex align-items-center gap-2">
+              <span>{{subName}}</span>
+              <p-sortIcon [field]="subName"></p-sortIcon>
+            </div>
+          </th>
+        } @else {
+          <th>
+            <div class="flex align-items-center gap-2">
+              <span>{{subName}}</span>
+            </div>
+          </th>
+        }
       }
     </tr>
   </ng-template>
   <ng-template #body let-element let-eltIndex='rowIndex'>
-    @let eltContext=elementSetContext(eltIndex);
+    @let eltContext=elementSetContextFor(element, eltIndex);
       <tr [pSelectableRow]="element">
       @for (subName of allSubNames; track subName) {
         @let subEltContext=subElementContextForName(eltContext, subName);

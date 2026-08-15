@@ -101,6 +101,146 @@ describe('DefaultObjectSetComponent', () => {
     expect(booleanCheckbox.properties['value']).toEqual('on');
   });
 
+  function columnTexts<T>(fixture: ComponentFixture<DefaultObjectSetComponent<T>>, columnIndex: number): string[] {
+    return fixture.debugElement.queryAll(By.css('tbody > tr')).map((row) => {
+      return row.queryAll(By.css('td'))[columnIndex].nativeElement.textContent.trim();
+    });
+  }
+
+  function buildUnsortedData(): TestData[] {
+    return [{
+      simpleText: 'bonjour',
+      simpleDate: new Date(1971, 1, 1),
+      simpleNumber: 11,
+      simpleBoolean: false
+    }, {
+      simpleText: 'hola',
+      simpleDate: new Date(1972, 2, 2),
+      simpleNumber: 12,
+      simpleBoolean: true
+    }, {
+      simpleText: 'guten tag',
+      simpleDate: new Date(1973, 3, 3),
+      simpleNumber: 13,
+      simpleBoolean: false
+    }];
+  }
+
+  function buildSortedFixture(): { component: DefaultObjectSetComponent<TestData>, fixture: ComponentFixture<DefaultObjectSetComponent<TestData>> } {
+    const fixture = TestBed.createComponent(DefaultObjectSetComponent<TestData>);
+    const context = new XtBaseContext<TestData[]>('LIST_VIEW');
+    context.setDisplayValue(buildUnsortedData());
+    fixture.componentRef.setInput('context', context);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    return { component, fixture };
+  }
+
+  it('should sort string column ascending then descending', () => {
+    const { fixture } = buildSortedFixture();
+    const headers = fixture.debugElement.queryAll(By.css('th'));
+    expect(headers).toHaveLength(4);
+
+    headers[0].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 0)).toEqual(['bonjour', 'guten tag', 'hola']);
+
+    headers[0].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 0)).toEqual(['hola', 'guten tag', 'bonjour']);
+  });
+
+  it('should sort number column ascending then descending', () => {
+    const { fixture } = buildSortedFixture();
+    const headers = fixture.debugElement.queryAll(By.css('th'));
+
+    headers[2].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 2)).toEqual(['11', '12', '13']);
+
+    headers[2].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 2)).toEqual(['13', '12', '11']);
+  });
+
+  it('should sort date column ascending then descending', () => {
+    const { fixture } = buildSortedFixture();
+    const headers = fixture.debugElement.queryAll(By.css('th'));
+
+    headers[1].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 1)).toEqual(['Feb 1, 1971', 'Mar 2, 1972', 'Apr 3, 1973']);
+
+    headers[1].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 1)).toEqual(['Apr 3, 1973', 'Mar 2, 1972', 'Feb 1, 1971']);
+  });
+
+  it('should only enable sorting on primitive columns', () => {
+    resolverService.registerPlugin({
+      name: 'SortableRefPlugin',
+      types: {
+        bookType: {
+          children: {
+            name: 'string',
+            authorRef: {
+              toType: 'authorType',
+              referenceType: 'MANY-TO-ONE',
+              field: 'fullName'
+            },
+            genreRef: {
+              toType: 'bookGenreType',
+              referenceType: 'MANY-TO-ONE',
+              field: 'name'
+            }
+          }
+        },
+        bookGenreType: {
+          name: 'string'
+        },
+        authorType: {
+          fullName: 'string',
+          city: 'string',
+          born: 'date'
+        }
+      },
+      components: [
+        {
+          componentName: 'testAuthorComponent',
+          componentClass: TestAuthorComponent,
+          typesHandled: ['authorType']
+        }
+      ]
+    });
+    resolverService.resolvePendingReferences();
+
+    const fixture = TestBed.createComponent(DefaultObjectSetComponent<BookTestType>);
+    const context = new XtBaseContext<BookTestType[]>('LIST_VIEW');
+    context.setDisplayValue([{
+      name: 'Ubik',
+      authorRef: { fullName: 'Philip K. Dick', city: 'Chicago', born: new Date(1928, 12, 16) },
+      genreRef: 'SF'
+    }, {
+      name: 'Ancillaire',
+      authorRef: { fullName: 'Ann Leckie', city: 'Toledo', born: new Date(1966, 3, 2) },
+      genreRef: 'Space Opera'
+    }], 'bookType');
+    fixture.componentRef.setInput('context', context);
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance;
+    expect(component.sortableSubNames()).toEqual(new Set(['name']));
+
+    const sortableHeaders = fixture.debugElement.queryAll(By.css('th.p-datatable-sortable-column'));
+    expect(sortableHeaders.map((th) => th.nativeElement.textContent.trim())).toEqual(['name']);
+
+    // Sorting a non-sortable (reference) column must not reorder the rows
+    const headers = fixture.debugElement.queryAll(By.css('th'));
+    headers[1].nativeElement.click();
+    fixture.detectChanges();
+    expect(columnTexts(fixture, 0)).toEqual(['Ubik', 'Ancillaire']);
+  });
+
   it('should enable element selection', () => {
     let component: DefaultObjectSetComponent<TestData>;
     let fixture: ComponentFixture<DefaultObjectSetComponent<TestData>>;

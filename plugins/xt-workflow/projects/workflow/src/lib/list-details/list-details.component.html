@@ -14,7 +14,7 @@
 
       <!-- Toolbar with CRUD operations -->
       <p-toolbar class="list-details__toolbar">
-        <ng-template #center>
+        <ng-template #start>
           <div class="list-details__actions">
             <!-- Create new entity -->
             <p-button
@@ -58,6 +58,12 @@
               (onClick)="save()">
             </p-button>
           </div>
+        </ng-template>
+        <ng-template #center>
+          <p-iconfield>
+            <p-inputicon styleclass="pi pi-search" />
+            <input pInputText type="text" [value]="search()" (input)="onSearchInput($event)" placeholder="Search {{ entName }}..." pTooltip="Filters the list: only items containing the search text are shown" />
+          </p-iconfield>
         </ng-template>
       </p-toolbar>
     </header>

@@ -3,6 +3,15 @@
 
 @if (entName != null) {
 
+  <p-toolbar class="carousel__toolbar">
+    <ng-template #start>
+      <p-iconfield>
+        <p-inputicon styleclass="pi pi-search" />
+        <input pInputText type="text" [value]="search()" (input)="onSearchInput($event)" placeholder="Search {{ entName }}..." />
+      </p-iconfield>
+    </ng-template>
+  </p-toolbar>
+
   @if (store?.loading()) {
     <!-- Loading state: spinner while fetching entities -->
     <div class="carousel__state">

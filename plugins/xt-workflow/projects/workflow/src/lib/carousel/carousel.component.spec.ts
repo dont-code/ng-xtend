@@ -77,6 +77,92 @@ describe('Carousel Component', () => {
     expect(carouselComponent.nativeElement.textContent?.indexOf('Another Book')).not.toBe(-1);
   });
 
+  it('should filter carousel items by search string, case insensitive', async () => {
+    await storeTestBed.defineTestDataFor('CarouselTest', [{
+      name: 'Test Book',
+      published: new Date(1970,10, 5)
+    }, {
+      name: 'Another Book',
+      published: new Date(2010,7, 15)
+    }]);
+
+    fixture = TestBed.createComponent(CarouselComponent);
+    fixture.componentRef.setInput('config', {
+      entity: 'CarouselTest',
+      workflow: 'carousel',
+      data: { sort: { 'published': 'descending' } },
+      selection: { field: { key: 'published', type: 'closest-before' } }
+    } as DcWorkflowModel);
+
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await XtUnitTestHelper.waitFor(() => {
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
+    });
+
+    const getChild = () => fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+
+    // Initial state: both items displayed
+    expect(getChild().valueSet().length).toEqual(2);
+
+    // Filter with an uppercase search string -> should still match case-insensitively
+    const searchInput = fixture.debugElement.query(By.css('.carousel__toolbar input'));
+    expect(searchInput).toBeTruthy();
+    searchInput.nativeElement.value = 'ANOTHER';
+    searchInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const filtered = getChild().valueSet();
+    expect(filtered.length).toEqual(1);
+    expect(filtered[0].name).toEqual('Another Book');
+  });
+
+  it('should show all items again when the search is cleared', async () => {
+    await storeTestBed.defineTestDataFor('CarouselTest', [{
+      name: 'Test Book',
+      published: new Date(1970,10, 5)
+    }, {
+      name: 'Another Book',
+      published: new Date(2010,7, 15)
+    }]);
+
+    fixture = TestBed.createComponent(CarouselComponent);
+    fixture.componentRef.setInput('config', {
+      entity: 'CarouselTest',
+      workflow: 'carousel',
+      data: { sort: { 'published': 'descending' } }
+    } as DcWorkflowModel);
+
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await XtUnitTestHelper.waitFor(() => {
+      const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent));
+      return child?.componentInstance.valueSet()?.length > 0;
+    });
+
+    const searchInput = fixture.debugElement.query(By.css('.carousel__toolbar input'));
+    searchInput.nativeElement.value = 'zzz';
+    searchInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const child = fixture.debugElement.query(By.directive(CarouselObjectSetComponent)).componentInstance as CarouselObjectSetComponent<any>;
+    expect(child.valueSet().length).toEqual(0);
+
+    searchInput.nativeElement.value = '';
+    searchInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(child.valueSet().length).toEqual(2);
+  });
+
   it('should select element on click', async () => {
     await storeTestBed.defineTestDataFor('CarouselTest', [{
       name: 'Test Book',

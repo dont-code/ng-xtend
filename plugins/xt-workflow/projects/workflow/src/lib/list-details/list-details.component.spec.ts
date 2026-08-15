@@ -68,6 +68,96 @@ describe('ListDetailsComponent', () => {
     expect(rows[1].nativeElement.textContent.indexOf('Test Book')).not.toEqual(-1);
   });
 
+  it('should filter the list by search string, case insensitive', async () => {
+    await storeTestBed.defineTestDataFor('TestBook', [{
+      name: 'Test Book',
+      published: new Date(1970,10, 5)
+    }, {
+      name: 'Another Book',
+      published: new Date(2010,7, 15)
+    }]);
+
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'TestBook',
+      workflow: 'list-detail',
+      data: {
+        sort: {
+          'name':'ascending'
+        }
+      }
+    } as DcWorkflowModel);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    let rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(2);
+
+    // Type an uppercase search string in the toolbar search box
+    const searchInput = fixture.debugElement.query(By.css('.list-details__toolbar input'));
+    expect(searchInput).toBeTruthy();
+    searchInput.nativeElement.value = 'ANOTHER';
+    searchInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(1);
+    expect(rows[0].nativeElement.textContent.indexOf('Another Book')).not.toEqual(-1);
+  });
+
+  it('should show the whole list again when the search is cleared', async () => {
+    await storeTestBed.defineTestDataFor('TestBook', [{
+      name: 'Test Book',
+      published: new Date(1970,10, 5)
+    }, {
+      name: 'Another Book',
+      published: new Date(2010,7, 15)
+    }]);
+
+    fixture = TestBed.createComponent(ListDetailsComponent);
+    fixture.componentRef.setInput("config", {
+      entity: 'TestBook',
+      workflow: 'list-detail',
+      data: {
+        sort: {
+          'name':'ascending'
+        }
+      }
+    } as DcWorkflowModel);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+    await fixture.whenStable();
+
+    const searchInput = fixture.debugElement.query(By.css('.list-details__toolbar input'));
+    searchInput.nativeElement.value = 'zzz';
+    searchInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    let rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(0);
+
+    searchInput.nativeElement.value = '';
+    searchInput.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    rows = fixture.debugElement.queryAll(By.css('tbody > tr'));
+    expect(rows).toHaveLength(2);
+  });
+
 
   it('should support full lifecycle for simple values',async () => {
     const resolver = TestBed.inject(XtResolverService);

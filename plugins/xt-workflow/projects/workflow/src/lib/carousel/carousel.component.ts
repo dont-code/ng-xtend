@@ -7,6 +7,10 @@ import { CarouselObjectSetComponent } from 'xt-plugin-default';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
+import { Toolbar } from 'primeng/toolbar';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
+import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule, PristineChangeEvent } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -28,7 +32,8 @@ import { Subscription } from 'rxjs';
   imports: [
     CarouselObjectSetComponent, NgClass,
     ProgressSpinner, XtRenderComponent,
-    ReactiveFormsModule, Button, Dialog
+    ReactiveFormsModule, Button, Dialog, Toolbar,
+    IconField, InputIcon, InputText
   ],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css',
@@ -65,7 +70,7 @@ export class CarouselComponent <T extends ManagedData> extends AbstractDcWorkflo
    */
   carouselContext = computed(() => {
     const ctx = new XtBaseContext<any>('LIST_VIEW');
-    ctx.setDisplayValue(this.displayableElements(), this.entityName() + '[]');
+    ctx.setDisplayValue(this.searchedElements(), this.entityName() + '[]');
     return ctx;
   });
 

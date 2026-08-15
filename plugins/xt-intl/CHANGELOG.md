@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.1.1...xt-plugin-intl-v1.2.0) (2026-08-15)
+
+
+### Bug Fixes
+
+* money, country & currency sort ([30648c6](https://github.com/dont-code/ng-xtend/commit/30648c6cda6ec0084425e815c464af2073bb5b4e))
+
 ## [1.1.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.1.0...xt-plugin-intl-v1.1.1) (2026-08-15)
 
 

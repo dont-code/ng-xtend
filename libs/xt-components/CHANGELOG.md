@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v1.1.1...xt-components-v1.2.0) (2026-08-15)
+
+
+### Features
+
+* editor plugin ([519981c](https://github.com/dont-code/ng-xtend/commit/519981cb2e7c6765f0b2413c195f7d945412555c))
+
 ## [1.1.1](https://github.com/dont-code/ng-xtend/compare/xt-components-v1.1.0...xt-components-v1.1.1) (2026-08-15)
 
 

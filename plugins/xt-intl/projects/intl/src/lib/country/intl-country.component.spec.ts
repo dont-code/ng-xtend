@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { registerInternationalPlugin } from '../register';
 import { XtBaseContext, XtResolverService } from 'xt-components';
 import { IntlCountryComponent } from './intl-country.component';
+import { CountryTypeHandler } from './country-type-handler';
 import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('IntlCountryComponent', () => {
@@ -29,5 +30,23 @@ describe('IntlCountryComponent', () => {
 
     expect(component).toBeTruthy();
 
+  });
+
+  it('should be sortable by country name through its type handler', () => {
+    const resolverService = TestBed.inject(XtResolverService);
+    const found = resolverService.typeResolver.findTypeHandler('country');
+    expect(found.typeName).toEqual('string');
+    const handler = found.handler!;
+    expect(handler).toBeInstanceOf(CountryTypeHandler);
+    expect(handler.isSortable()).toBe(true);
+
+    // FRA=France, DEU=Germany, BRA=Brazil, USA=United States of America
+    expect(handler.compareTo('FRA', 'DEU')).toBeLessThan(0);
+    expect(handler.compareTo('BRA', 'FRA')).toBeLessThan(0);
+    expect(handler.compareTo('FRA', 'FRA')).toBe(0);
+
+    const countries = ['FRA', 'DEU', 'BRA', 'USA'];
+    const sorted = [...countries].sort((a, b) => handler.compareTo(a, b));
+    expect(sorted).toEqual(['BRA', 'FRA', 'DEU', 'USA']);
   });
 });

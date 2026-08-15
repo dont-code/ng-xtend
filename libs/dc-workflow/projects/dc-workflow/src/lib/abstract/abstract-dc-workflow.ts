@@ -1,5 +1,5 @@
 import { DcWorkflow } from '../definition/dc-workflow';
-import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal, model, signal } from '@angular/core';
 import { DcWorkflowModel, DcWorkflowSortOption } from '../models/dc-workflow-model';
 import { XtCompositeComponent, XtMessageHandler, XtResolverService } from 'xt-components';
 import {
@@ -55,6 +55,46 @@ export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCom
   entityName = linkedSignal( () => {
     return this.config().entity;
   });
+
+  /** Search string used to filter the displayed items (case-insensitive substring match). */
+  search = model<string>('');
+
+  /**
+   * Updates the search string from a search box input event.
+   * @protected
+   */
+  protected onSearchInput(event: Event): void {
+    this.search.set((event.target as HTMLInputElement).value);
+  }
+
+  /**
+   * Computed signal returning displayable elements filtered by the search string.
+   * Matching is case-insensitive and only items containing the string are returned.
+   * @protected
+   */
+  protected searchedElements = computed(() => {
+    const elements = this.displayableElements();
+    const query = this.search().trim().toLowerCase();
+    if (query === '') {
+      return elements;
+    }
+    return elements.filter((element) => this.matchesSearch(element, query));
+  });
+
+  /**
+   * Checks whether any value of the item contains the search query (case-insensitive).
+   * Recursively inspects nested objects and dates.
+   * @protected
+   */
+  private matchesSearch(value: unknown, query: string): boolean {
+    if (value == null) return false;
+    if (value instanceof Date) return value.toLocaleDateString().toLowerCase().includes(query);
+    if (Array.isArray(value)) return value.some((v) => this.matchesSearch(v, query));
+    if (typeof value === 'object') {
+      return Object.values(value).some((v) => this.matchesSearch(v, query));
+    }
+    return String(value).toLowerCase().includes(query);
+  }
 
   /**
    * Toggle signal that changes whenever a new store is created.

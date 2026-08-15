@@ -1,0 +1,7 @@
+@if (isInForm() ) {
+  <ng-container [formGroup]="formGroup()" #proseMirror>
+    <ng-content></ng-content>
+  </ng-container>
+} @else if (displayValue()!=null) {
+  ${{ displayValue() }}
+}

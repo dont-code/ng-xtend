@@ -16,6 +16,10 @@ import { ManagedData } from 'xt-type';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Toolbar } from 'primeng/toolbar';
 import { Button } from 'primeng/button';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
+import { InputText } from 'primeng/inputtext';
+import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { AbstractDcWorkflow } from 'dc-workflow';
@@ -35,7 +39,7 @@ import { AbstractDcWorkflow } from 'dc-workflow';
  */
 @Component({
   selector: 'wfw-list-details',
-  imports: [XtRenderComponent, ReactiveFormsModule, TabPanel, TabPanels, Tab, TabList, Tabs, Toolbar, Button, ProgressSpinner],
+  imports: [XtRenderComponent, ReactiveFormsModule, TabPanel, TabPanels, Tab, TabList, Tabs, Toolbar, Button, ProgressSpinner, IconField, InputIcon, InputText, Tooltip],
   providers: [],
   templateUrl: './list-details.component.html',
   styleUrl: './list-details.component.css',
@@ -89,7 +93,7 @@ export class ListDetailsComponent<T extends ManagedData> extends AbstractDcWorkf
    * Provides live preview of edits in the list view without requiring save.
    */
   displayedEntities = computed<T[]>(() => {
-    const entities = this.displayableElements();
+    const entities = this.searchedElements();
     const value = this.formValue();
     const selected = this.selectedEntity();
     if (value != null && selected != null && (selected as any)._id != null) {

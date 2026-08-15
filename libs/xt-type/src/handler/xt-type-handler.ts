@@ -32,6 +32,15 @@ export type XtTypeHandler<Type> = {
   isDisplayTemplateSet():boolean;
   numberToCalculate(value:Type):number | undefined;
 
+  /**
+   * Checks whether values of this type can be sorted.
+   */
+  isSortable ():boolean;
+  /**
+   * Compares two values of this type.
+   */
+  compareTo (value1: Type, value2: Type): number;
+
   getOrCreateMappingFrom<OtherType> (fromTypeName: string, registry:XtTypeResolver): MappingHelper<OtherType, Type> | undefined;
 }
 
@@ -49,6 +58,11 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
    * Marker for 'I checked and you cannot map to this type', don't try again
    */
   protected static readonly NONE_MAPPING=new MappingHelper<any,any>({});
+
+  /**
+   * Primitive type names that can be sorted by their natural value
+   */
+  protected static readonly SORTABLE_PRIMITIVES=['string','number','boolean','date','date-time','time'];
 
   /**
    * @param specialFields Optional pre-configured special fields
@@ -200,6 +214,68 @@ export abstract class AbstractTypeHandler<Type> implements XtTypeHandler<Type> {
   numberToCalculate(value: Type): number | undefined {
     if (this.fields.numericValueField!=null) return value[this.fields.numericValueField] as number;
     return undefined;
+  }
+
+  /**
+   * Checks whether values of this type can be sorted.
+   * Primitive types (string, number, boolean, date, date-time, time) are always sortable,
+   * as well as any type configured with a numeric field.
+   * @returns True if the values of this type can be sorted
+   */
+  isSortable(): boolean {
+    const typeName = this.type?.type;
+    if (typeName==null) return false;
+    if (AbstractTypeHandler.SORTABLE_PRIMITIVES.includes(typeName)) return true;
+    return this.fields.numericValueField!=null;
+  }
+
+  /**
+   * Compares two values of this type. Null values are always sorted first.
+   * Comparison uses the natural value of the type: lexicographic for strings,
+   * numeric for numbers and booleans, chronological for dates and times,
+   * and the configured numeric field for complex types.
+   * @param value1 The first value to compare
+   * @param value2 The second value to compare
+   * @returns A negative number if value1 is smaller, zero if equal, a positive number if value1 is greater
+   */
+  compareTo(value1: Type, value2: Type): number {
+    if (value1==null) return value2==null ? 0 : -1;
+    if (value2==null) return 1;
+
+    const typeName = this.type?.type;
+    switch (typeName) {
+      case 'string':
+        return (value1 as string).localeCompare(value2 as string);
+      case 'number':
+        return (value1 as number) - (value2 as number);
+      case 'boolean':
+        return ((value1 as boolean) ? 1 : 0) - ((value2 as boolean) ? 1 : 0);
+      case 'date':
+      case 'date-time':
+      case 'time':
+        return this.timeOf(value1) - this.timeOf(value2);
+      default: {
+        if (this.fields.numericValueField!=null) {
+          const n1 = this.numberToCalculate(value1);
+          const n2 = this.numberToCalculate(value2);
+          if (n1==null) return n2==null ? 0 : -1;
+          if (n2==null) return 1;
+          return n1 - n2;
+        }
+        return 0;
+      }
+    }
+  }
+
+  /**
+   * Extracts a timestamp from a date value, which may be a Date, a date string or an epoch number
+   * @param value The value to convert to a timestamp
+   * @returns The timestamp in milliseconds, or 0 if it cannot be parsed
+   */
+  private timeOf(value: Type): number {
+    if (value instanceof Date) return value.getTime();
+    const timeEpoch = Date.parse(String(value));
+    return isNaN(timeEpoch) ? 0 : timeEpoch;
   }
 
   /**

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, model, output, Signal } from '@angular/core';
 import { XtContext, XtRenderSubComponent } from 'xt-components';
 import { TableModule } from 'primeng/table';
-import { isTypeReference, XtTypeHierarchy, XtTypeReference } from 'xt-type';
+import { isTypeReference, XtTypeHandler, XtTypeHierarchy, XtTypeReference } from 'xt-type';
 import { ObjectSetBase } from './object-set-base';
 
 /**
@@ -38,7 +38,7 @@ export class DefaultObjectSetComponent<T> extends ObjectSetBase<T> {
     return ret;
   });
 
-  /** Sub-fields that can be sorted. Only primitives (string, number, date, boolean) are sortable for now. */
+  /** Sub-fields that can be sorted, based on their type handler (or the primitive type when no handler is registered). */
   sortableSubNames = computed<Set<string>>(() => {
     const sortable = new Set<string>();
     for (const subName of this.subNames()) {
@@ -79,10 +79,36 @@ export class DefaultObjectSetComponent<T> extends ObjectSetBase<T> {
     return typeResolver.findPrimitiveType((firstElement as any)[subName])?.type;
   }
 
-  /** Checks whether the sub-field type is a sortable primitive (string, number, date or boolean). */
+  /**
+   * Resolves the type handler of a sub-field, if the sub-field type is registered in the resolver.
+   * @param subName - The sub-field name to resolve
+   * @returns The type handler, or undefined when the sub-field type has no registered handler
+   */
+  private subFieldTypeHandler(subName: string): XtTypeHandler<any> | undefined {
+    const typeResolver = this.resolverService.typeResolver;
+    const values = this.valueSet();
+    const firstElement = (Array.isArray(values) && values.length > 0) ? values[0] : null;
+    try {
+      const found = typeResolver.findTypeHandler(this.context().valueType, false, subName, firstElement);
+      return found.handler;
+    } catch {
+      return undefined;
+    }
+  }
+
+  /**
+   * Checks whether the sub-field type can be sorted, using the type handler when one is registered.
+   * @param subName - The sub-field name to check
+   * @returns True if the sub-field can be sorted
+   */
   private isSubFieldTypeSortable(subName: string): boolean {
+    const typeResolver = this.resolverService.typeResolver;
     const typeName = this.subFieldTypeName(subName);
-    return (typeName == 'string') || (typeName == 'number') || (typeName == 'date') || (typeName == 'boolean');
+    if (typeName == null) return false;
+    const handler = this.subFieldTypeHandler(subName);
+    if (handler != null) return handler.isSortable();
+    // No handler registered for this type, fall back to the primitive types
+    return typeResolver.isPrimitiveType(typeName);
   }
 
   /** Builds an XtContext for a specific row element so its sub-fields can be rendered inline. */

@@ -39,6 +39,16 @@
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 10px 28px rgb(0 0 0 / 0.05);
 }
 
+.list-details__toolbar .p-iconfield {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .list-details__toolbar .p-iconfield {
+    width: 20rem;
+  }
+}
+
 .list-details__actions {
   display: flex;
   flex-wrap: wrap;

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntlCurrencyComponent } from './intl-currency.component';
+import { CurrencyTypeHandler } from './currency-type-handler';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { HostTestTypedComponent, HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { registerInternationalPlugin } from '../register';
@@ -69,6 +70,23 @@ describe('XtCurrencyComponent', () => {
     hostFixture.detectChanges();
     expect(input.nativeElement.value).toEqual ("USD");
 
+  });
+
+  it('should be sortable by currency code through its type handler', () => {
+    const resolverService = TestBed.inject(XtResolverService);
+    const found = resolverService.typeResolver.findTypeHandler('currency');
+    expect(found.typeName).toEqual('string');
+    const handler = found.handler!;
+    expect(handler).toBeInstanceOf(CurrencyTypeHandler);
+    expect(handler.isSortable()).toBe(true);
+
+    expect(handler.compareTo('EUR', 'USD')).toBeLessThan(0);
+    expect(handler.compareTo('USD', 'EUR')).toBeGreaterThan(0);
+    expect(handler.compareTo('EUR', 'EUR')).toBe(0);
+
+    const currencies = ['USD', 'EUR', 'AUD', 'GBP'];
+    const sorted = [...currencies].sort((a, b) => handler.compareTo(a, b));
+    expect(sorted).toEqual(['AUD', 'EUR', 'GBP', 'USD']);
   });
 
 });

@@ -1,6 +1,8 @@
 import { XtResolverService } from 'xt-components';
 import { IntlCurrencyComponent } from './currency/intl-currency.component';
+import { CurrencyTypeHandler } from './currency/currency-type-handler';
 import { IntlCountryComponent } from './country/intl-country.component';
+import { CountryTypeHandler } from './country/country-type-handler';
 
 export function registerInternationalPlugin (resolverService:XtResolverService):string {
   const pluginName = "Plugin International";
@@ -26,7 +28,17 @@ export function registerInternationalPlugin (resolverService:XtResolverService):
           {
             currency:'string',
             country:'string'
+          },
+        typeHandlers: [
+          {
+            typesHandled: ['currency'],
+            handlerClass: CurrencyTypeHandler
+          },
+          {
+            typesHandled: ['country'],
+            handlerClass: CountryTypeHandler
           }
+        ]
     });
     return pluginName;
 }

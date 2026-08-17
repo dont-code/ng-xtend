@@ -1,15 +1,24 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Injector, Renderer2, ViewChild } from '@angular/core';
-import { XtSimpleComponent } from 'xt-components';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  input,
+  viewChild,
+  ViewChild
+} from '@angular/core';
+import { XtContext, XtSimpleComponent } from 'xt-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { DOMParser, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
-import { basicSetup } from '../prose-mirror/basic-setup';
+import { exampleSetup } from 'prosemirror-example-setup';
 
 @Component({
-  selector: 'xt-editor',
+  selector: 'xt-editor-editor',
   imports: [
     ReactiveFormsModule,
     FormsModule
@@ -18,35 +27,35 @@ import { basicSetup } from '../prose-mirror/basic-setup';
   styleUrl: './editor.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditorComponent extends XtSimpleComponent{
+export class EditorComponent extends XtSimpleComponent<any> implements AfterViewInit{
+  override context = input.required<XtContext<any>>();
 
-  @ViewChild('proseMirror', { static: false }) private proseMirror: ElementRef | undefined;
-  //private proseMirror: ElementRef | undefined;
+  protected proseMirror = viewChild.required<ElementRef<HTMLDivElement>>('proseMirror');
+  protected proseMirrorContent = viewChild.required<ElementRef<HTMLDivElement>>('proMirrorContent');
 
-  constructor(    private renderer: Renderer2, private injector: Injector, private elementRef: ElementRef<HTMLElement>,
-  ) {
+  constructor(private injector: Injector, private elementRef: ElementRef<HTMLElement>) {
     super();
   }
 // Mix the nodes from prosemirror-schema-list into the basic schema to
 // create a schema with list support.
-  mySchema = new Schema({
+  mySchema: Schema = new Schema({
     nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
     marks: schema.spec.marks
   });
 
   protected view: EditorView|null=null;
 
-  override ngOnInit(): void {
-    super.ngOnInit();
-    if( this.proseMirror!=null) {
-      this.view = new EditorView(null, {
+  ngAfterViewInit() {
+    const proMirror=this.proseMirror();
+    const proMirrorContent=this.proseMirrorContent();
+    if( (proMirror!=null) && (proMirrorContent!=null)) {
+      const doc= DOMParser.fromSchema(this.mySchema).parse(proMirrorContent.nativeElement);
+      this.view = new EditorView(proMirror.nativeElement, {
         state: EditorState.create({
-          doc: DOMParser.fromSchema(this.mySchema).parse(this.context().value()),
-          plugins: basicSetup({schema: this.mySchema})
+          doc: doc,
+          plugins: exampleSetup({schema: this.mySchema})
         })
       })
-
-      this.renderer.appendChild(this.proseMirror.nativeElement, this.view.dom);
     }
   /*  this.editor.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((jsonDoc) => {
       this.handleChange(jsonDoc);

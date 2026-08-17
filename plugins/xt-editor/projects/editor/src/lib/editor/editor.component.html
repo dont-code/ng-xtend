@@ -1,7 +1,10 @@
 @if (isInForm() ) {
-  <ng-container [formGroup]="formGroup()" #proseMirror>
-    <ng-content></ng-content>
-  </ng-container>
+  In Form !
+    <div #proseMirror [formGroup]="formGroup()">
+    </div>
+    <div style="display: none" #proMirrorContent>
+      <h1>Example Text</h1> Is it working ?
+    </div>
 } @else if (displayValue()!=null) {
   ${{ displayValue() }}
 }

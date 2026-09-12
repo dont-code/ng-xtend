@@ -6,7 +6,7 @@
 
   <div class="carousel-object-set__viewport" #viewport
     (touchstart)="onTouchStart($event)"
-    (touchmove)="onTouchMove($event)"
+    (touchcancel)="onTouchCancel($event)"
     (touchend)="onTouchEnd($event)">
     <div class="carousel-object-set__clipper">
     <div class="carousel-object-set__track"

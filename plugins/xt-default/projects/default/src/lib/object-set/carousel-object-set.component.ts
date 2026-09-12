@@ -61,14 +61,14 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
 
   private touchStartX = 0;
   private touchStartY = 0;
+  private touchStartTime = 0;
   private swipeHandled = false;
+  private scrolledDuringTouch = false;
   private static readonly SWIPE_THRESHOLD = 50;
   private static readonly VELOCITY_THRESHOLD = 0.3;
-  private lastTouchX = 0;
-  private lastTouchY = 0;
-  private lastTouchTime = 0;
 
   private boundKeyDown = (e: KeyboardEvent) => this.onKeyDown(e);
+  private boundDocScroll = () => { this.scrolledDuringTouch = true; };
 
   constructor() {
     super();
@@ -78,6 +78,7 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
       .subscribe(state => this.isPhone.set(state.matches));
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', this.boundKeyDown);
+      document.addEventListener('scroll', this.boundDocScroll, true);
     }
     effect(() => {
       const items = this.valueSet();
@@ -99,6 +100,7 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
   ngOnDestroy(): void {
     if (typeof window !== 'undefined') {
       window.removeEventListener('keydown', this.boundKeyDown);
+      document.removeEventListener('scroll', this.boundDocScroll, true);
     }
   }
 
@@ -191,45 +193,24 @@ export class CarouselObjectSetComponent<T> extends ObjectSetBase<T> {
     if (event.touches.length !== 1) return;
     this.touchStartX = event.touches[0].clientX;
     this.touchStartY = event.touches[0].clientY;
-    this.lastTouchX = this.touchStartX;
-    this.lastTouchY = this.touchStartY;
-    this.lastTouchTime = Date.now();
+    this.touchStartTime = Date.now();
     this.swipeHandled = false;
+    this.scrolledDuringTouch = false;
   }
 
-  onTouchMove(event: TouchEvent) {
-    if (event.touches.length !== 1 || this.swipeHandled) return;
-    const x = event.touches[0].clientX;
-    const y = event.touches[0].clientY;
-    const now = Date.now();
-    const dt = now - this.lastTouchTime;
-    const vx = dt > 0 ? Math.abs(x - this.lastTouchX) / dt : 0;
-    const vy = dt > 0 ? Math.abs(y - this.lastTouchY) / dt : 0;
-    this.lastTouchX = x;
-    this.lastTouchY = y;
-    this.lastTouchTime = now;
-    const velocity = this.isVertical() ? vy : vx;
-    if (velocity > CarouselObjectSetComponent.VELOCITY_THRESHOLD) {
-      const dx = x - this.touchStartX;
-      const dy = y - this.touchStartY;
-      const absDx = Math.abs(dx);
-      const absDy = Math.abs(dy);
-      const dominant = this.isVertical() ? absDy > absDx : absDx > absDy;
-      if (dominant && (this.isVertical() ? absDy : absDx) > 10) {
-        event.preventDefault();
-      }
-    }
+  onTouchCancel(_event: TouchEvent) {
+    this.swipeHandled = true;
   }
 
   onTouchEnd(event: TouchEvent) {
-    if (this.swipeHandled) return;
+    if (this.swipeHandled || this.scrolledDuringTouch) return;
     const changed = event.changedTouches[0];
     if (!changed) return;
     const dx = changed.clientX - this.touchStartX;
     const dy = changed.clientY - this.touchStartY;
     const absDx = Math.abs(dx);
     const absDy = Math.abs(dy);
-    const dt = Date.now() - this.lastTouchTime;
+    const dt = Date.now() - this.touchStartTime;
     if (this.isVertical()) {
       const velocity = dt > 0 ? absDy / dt : 0;
       if (absDy >= absDx && absDy >= CarouselObjectSetComponent.SWIPE_THRESHOLD && velocity > CarouselObjectSetComponent.VELOCITY_THRESHOLD) {

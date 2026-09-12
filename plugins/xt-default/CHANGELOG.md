@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v1.2.0...xt-plugin-default-v1.2.1) (2026-09-12)
+
+
+### Bug Fixes
+
+* scroll & prev / next ([8f9703f](https://github.com/dont-code/ng-xtend/commit/8f9703faab53aaefb10b4c3fef396bf43a10209b))
+
 ## [1.2.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v1.1.1...xt-plugin-default-v1.2.0) (2026-08-15)
 
 

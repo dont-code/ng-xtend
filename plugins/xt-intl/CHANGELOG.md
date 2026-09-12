@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.2.0...xt-plugin-intl-v1.2.1) (2026-09-12)
+
+
+### Bug Fixes
+
+* country import ([0666d66](https://github.com/dont-code/ng-xtend/commit/0666d66e263fa8ee13c3e120f03fc0be16a6f755))
+* country import ([3ffbb03](https://github.com/dont-code/ng-xtend/commit/3ffbb03f64cd8a7bddb28a2252417aadbed0032b))
+
 ## [1.2.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.1.1...xt-plugin-intl-v1.2.0) (2026-08-15)
 
 

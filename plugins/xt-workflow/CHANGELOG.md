@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v1.2.0...xt-plugin-workflow-v1.2.1) (2026-09-12)
+
+
+### Bug Fixes
+
+* edit large entities in carousel ([c4fad59](https://github.com/dont-code/ng-xtend/commit/c4fad59bb4ddc685a4b5a7b094affd103efe4fb0))
+
 ## [1.2.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v1.1.1...xt-plugin-workflow-v1.2.0) (2026-08-15)
 
 

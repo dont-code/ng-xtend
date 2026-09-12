@@ -1,6 +1,12 @@
 <span class="text-2xl">Testing the workflows</span>
 
 <div class="flex gap-2 my-2">
+  Select the entity:
+  <p-button icon="pi pi-box" label="Simple" [severity]="entityType() === 'test' ? 'primary' : 'secondary'" size="small" (click)="setEntityType('test')"></p-button>
+  <p-button icon="pi pi-objects-column" label="Complex" [severity]="entityType() === 'complex' ? 'primary' : 'secondary'" size="small" (click)="setEntityType('complex')"></p-button>
+</div>
+
+<div class="flex gap-2 my-2">
   <p-button icon="pi pi-list" label="List" [severity]="workflowType() === 'list-detail' ? 'primary' : 'secondary'" size="small" (click)="setWorkflowType('list-detail')"></p-button>
   <p-button icon="pi pi-th-large" label="Carousel" [severity]="workflowType() === 'carousel' ? 'primary' : 'secondary'" size="small" (click)="setWorkflowType('carousel')"></p-button>
 </div>

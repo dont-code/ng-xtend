@@ -5,8 +5,7 @@ import {
   ElementRef,
   Injector,
   input,
-  viewChild,
-  ViewChild
+  viewChild
 } from '@angular/core';
 import { XtContext, XtSimpleComponent } from 'xt-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,7 +14,7 @@ import { EditorView } from 'prosemirror-view';
 import { DOMParser, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
-import { exampleSetup } from 'prosemirror-example-setup';
+import { basicSetup } from '../prose-mirror/basic-setup';
 
 @Component({
   selector: 'xt-editor-editor',
@@ -30,8 +29,8 @@ import { exampleSetup } from 'prosemirror-example-setup';
 export class EditorComponent extends XtSimpleComponent<any> implements AfterViewInit{
   override context = input.required<XtContext<any>>();
 
-  protected proseMirror = viewChild.required<ElementRef<HTMLDivElement>>('proseMirror');
-  protected proseMirrorContent = viewChild.required<ElementRef<HTMLDivElement>>('proMirrorContent');
+  protected editor = viewChild.required<ElementRef<HTMLDivElement>>('editor');
+  protected editorContent = viewChild.required<ElementRef<HTMLDivElement>>('editorContent');
 
   constructor(private injector: Injector, private elementRef: ElementRef<HTMLElement>) {
     super();
@@ -46,14 +45,14 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
   protected view: EditorView|null=null;
 
   ngAfterViewInit() {
-    const proMirror=this.proseMirror();
-    const proMirrorContent=this.proseMirrorContent();
-    if( (proMirror!=null) && (proMirrorContent!=null)) {
-      const doc= DOMParser.fromSchema(this.mySchema).parse(proMirrorContent.nativeElement);
-      this.view = new EditorView(proMirror.nativeElement, {
+    const editor=this.editor();
+    const editorContent=this.editorContent();
+    if( (editor!=null) && (editorContent!=null)) {
+      const doc= DOMParser.fromSchema(this.mySchema).parse(editorContent.nativeElement);
+      this.view = new EditorView(editor.nativeElement, {
         state: EditorState.create({
           doc: doc,
-          plugins: exampleSetup({schema: this.mySchema})
+          plugins: basicSetup({schema: this.mySchema})
         })
       })
     }

@@ -1,8 +1,7 @@
 @if (isInForm() ) {
-  In Form !
-    <div #proseMirror [formGroup]="formGroup()">
+    <div #editor [formGroup]="formGroup()">
     </div>
-    <div style="display: none" #proMirrorContent>
+    <div style="display: none" #editorContent>
       <h1>Example Text</h1> Is it working ?
     </div>
 } @else if (displayValue()!=null) {

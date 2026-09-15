@@ -61,11 +61,22 @@
   min-height: 16rem;
 }
 
+.carousel__edit-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 1.5rem;
+}
+
 .carousel__actions {
   display: flex;
+  flex: 0 0 auto;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0;
+  padding: 1rem 1.5rem;
   justify-content: space-between;
+  border-top: 1px solid var(--p-content-border-color, #e5e7eb);
+  background: var(--p-content-background);
 }
 
 .carousel__actions-right {
@@ -113,7 +124,12 @@
 }
 
 :host ::ng-deep .carousel-edit-dialog .p-dialog-content {
-  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  max-height: 70vh;
 }
 
 @media (max-width: 767px) {
@@ -125,6 +141,6 @@
   }
 
   :host ::ng-deep .carousel-edit-dialog .p-dialog-content {
-    max-height: 70vh;
+    max-height: calc(100vh - 5rem);
   }
 }

@@ -188,22 +188,29 @@
 }
 
 .carousel-object-set--vertical .carousel-object-set__viewport {
-  height: 50vh;
+  height: auto;
   min-height: 250px;
+}
+
+.carousel-object-set--vertical .carousel-object-set__clipper {
+  overflow: visible;
 }
 
 .carousel-object-set--vertical .carousel-object-set__track {
   flex-direction: column;
-  height: 100%;
+  height: auto;
   min-height: 0;
 }
 
 .carousel-object-set--vertical .carousel-object-set__panel {
+  flex: none;
+  width: 100%;
+  height: auto;
   min-height: 0;
 }
 
 @media (max-width: 767px) {
   .carousel-object-set--vertical .carousel-object-set__clipper {
-    overflow: hidden;
+    overflow: visible;
   }
 }

@@ -52,20 +52,22 @@
 <!-- Edit dialog: modal form for editing the selected entity -->
 <p-dialog header="Edit {{ entName }}" [(visible)]="dialogVisible" [modal]="true" styleClass="carousel-edit-dialog" (onHide)="cancelEdit()">
   @if (editingEntity()) {
-    <xt-render
-      displayMode="FULL_EDITABLE"
-      [formGroup]="editForm()"
-      subName="editor"
-      [valueType]="entityName()">
-    </xt-render>
+    <div class="carousel__edit-body">
+      <xt-render
+        displayMode="FULL_EDITABLE"
+        [formGroup]="editForm()"
+        subName="editor"
+        [valueType]="entityName()">
+      </xt-render>
+    </div>
     <div class="carousel__actions">
       <!-- Delete button: removes entity from store -->
       <p-button id="btn-delete" label="Delete" icon="pi pi-trash" severity="danger" [disabled]="saving() || deleting()" [loading]="deleting()" (onClick)="deleteEntity()"></p-button>
       <div class="carousel__actions-right">
         <!-- Save button: persists changes, disabled until form is dirty -->
-        <p-button label="Save" icon="pi pi-save" [disabled]="!canSave()" [loading]="saving()" (onClick)="saveEdit()"></p-button>
+        <p-button label="Save" icon="pi pi-save" severity="success" [disabled]="!canSave()" [loading]="saving()" (onClick)="saveEdit()"></p-button>
         <!-- Cancel button: discards changes and closes dialog -->
-        <p-button label="Cancel" icon="pi pi-times" [disabled]="saving()" (onClick)="cancelEdit()"></p-button>
+        <p-button label="Cancel" icon="pi pi-times" severity="secondary" [disabled]="saving()" (onClick)="cancelEdit()"></p-button>
       </div>
     </div>
   }

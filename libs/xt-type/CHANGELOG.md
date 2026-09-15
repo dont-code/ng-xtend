@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.11.1...xt-type-v0.12.0) (2026-08-15)
+
+
+### Features
+
+* Sorting capabilities ([9b6a5ed](https://github.com/dont-code/ng-xtend/commit/9b6a5eda07feabf637e5609d7e5262395936dd63))
+
+
+### Bug Fixes
+
+* rating sort ([d6713b7](https://github.com/dont-code/ng-xtend/commit/d6713b76d01e34eebc8e209036721831b8a8668c))
+
 ## [0.11.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.11.0...xt-type-v0.11.1) (2026-07-12)
 
 

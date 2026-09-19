@@ -1,5 +1,7 @@
 <h1 class="text-2xl">Testing Editor</h1>
+@let mainForm=simpleForm();
 
-<form [formGroup]="simpleForm()">
+<form [formGroup]="mainForm">
   <xt-editor-editor [context]="simpleContext()" ></xt-editor-editor>
 </form>
+Form Value is {{formValue() | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}

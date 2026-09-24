@@ -1,0 +1,15 @@
+.editorContainer {
+  width: 60em;
+  border: white solid thin;
+  padding: 5px;
+}
+
+/*
+ * PrimeNG's tooltip preset (.p-tooltip-text) sets white-space: pre-line,
+ * which renders the newline characters emitted by the markdown pipe between
+ * block elements as visible blank lines ("large line heights").
+ * Normalize white-space here so tooltip and in-page rendering match.
+ */
+.toolTip {
+  white-space: normal;
+}

@@ -3,16 +3,19 @@ import { XtContext, XtSimpleComponent } from 'xt-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { DOMParser,Node, Schema } from 'prosemirror-model';
-import { schema } from 'prosemirror-schema-basic';
-import { addListNodes } from 'prosemirror-schema-list';
+import { Node } from 'prosemirror-model';
+import { defaultMarkdownParser, defaultMarkdownSerializer, schema } from 'prosemirror-markdown';
 import { basicSetup } from '../prose-mirror/basic-setup';
+import { MarkdownPipe } from '../markdown/markdown-pipe';
+import { InlineMarkdownPipe } from '../markdown/inline-markdown-pipe';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'xt-editor-editor',
   imports: [
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MarkdownPipe, InlineMarkdownPipe, Tooltip
   ],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
@@ -22,27 +25,25 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
   override context = input.required<XtContext<any>>();
 
   protected editor = viewChild.required<ElementRef<HTMLDivElement>>('editor');
-  protected editorContent = viewChild.required<ElementRef<HTMLDivElement>>('editorContent');
 
   protected sampleJson={ "type": "doc", "content": [ { "type": "heading", "attrs": { "level": 1 }, "content": [ { "type": "text", "text": "Example Text" } ] }, { "type": "paragraph", "content": [ { "type": "text", "text": "s it working ?" } ] } ] };
   protected emptyJson={ "type": "doc", "content": [ { "type": "paragraph"} ] };
-// Mix the nodes from prosemirror-schema-list into the basic schema to
-// create a schema with list support.
-  mySchema: Schema = new Schema({
+// Mix the nodes from prosemirror-schema-list into the basic schema to create a schema with list support.
+  /** mySchema: Schema = new Schema({
     nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
     marks: schema.spec.marks
-  });
+  });*/
+  // Creates the markdown schema
+  mySchema = schema;
 
   protected view: EditorView|null=null;
 
   ngAfterViewInit() {
     const editor=this.editor();
-    const editorContent=this.editorContent();
-    if( (editor!=null) && (editorContent!=null)) {
+    if( editor!=null) {
       const value=this.context().formControlValue();
 
       const doc = this.toProseMirrorDoc (value);
-      //const doc= DOMParser.fromSchema(this.mySchema).parse(editorContent.nativeElement);
       this.view = new EditorView(editor.nativeElement, {
         state: EditorState.create({
           doc: doc,
@@ -62,8 +63,8 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
       this.view.updateState(state);
 
       if (tr.docChanged) {
-        const json = state.doc.toJSON();
-        this.context().setFormValue(json, true);
+        const markdown = defaultMarkdownSerializer.serialize(state.doc);
+        this.context().setFormValue(markdown, true);
       }
     } else {
       console.error("Editor: View transaction received while no view defined.",tr.doc.toJSON());
@@ -76,8 +77,8 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
       return this.mySchema.nodeFromJSON ( this.emptyJson);
     }
     if (typeof value === 'string') {
-      // This is just text
-      return this.mySchema.nodeFromJSON(this.textJson(value));
+      // This is a markdown text,
+      return defaultMarkdownParser.parse(value);
     }
     return this.mySchema.nodeFromJSON (value);
   }

@@ -2,6 +2,18 @@
 @let mainForm=simpleForm();
 
 <form [formGroup]="mainForm">
-  <xt-editor-editor [context]="simpleContext()" ></xt-editor-editor>
+    <xt-editor-editor [context]="simpleContext()" ></xt-editor-editor>
 </form>
-Form Value is {{formValue() | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
+<div style="margin-top:2em">
+  Form Value is
+  <div class="displayForm" [innerHTML]="formValue() | markdown">
+  </div>
+  , Form is {{mainForm.pristine?"pristine":"Dirty"}}
+</div>
+<div style="margin-top:2em">
+  Inline display: <xt-editor-editor [context]="inlineContext()"></xt-editor-editor>
+</div>
+<div style="margin-top:2em">
+  Full view display:<br/>
+  <xt-editor-editor [context]="fullviewContext()"></xt-editor-editor>
+</div>

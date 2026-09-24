@@ -1,9 +1,20 @@
 @if (isInForm() ) {
+  <div class="editorContainer">
     <div #editor [formGroup]="formGroup()">
     </div>
-    <div style="display: none" #editorContent>
-      <h1>Example Text</h1> Is it working ?
-    </div>
-} @else if (displayValue()!=null) {
-  ${{ displayValue() }}
+  </div>
+} @else {
+  @let toDisplay=displayValue();
+  @if (toDisplay!=null) {
+    @if (context().displayMode=='FULL_VIEW') {
+      <div class="displayForm" [innerHTML]="displayValue() | markdown">
+      </div>
+    } @else {
+      <span [pTooltip]="fullText">{{ toDisplay | inlineMarkdown}}</span>
+      <ng-template #fullText>
+        <div class="toolTip" [innerHTML]="displayValue() | markdown">
+        </div>
+      </ng-template>
+    }
+  }
 }

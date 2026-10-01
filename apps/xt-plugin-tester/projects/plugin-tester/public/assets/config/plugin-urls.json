@@ -1,22 +1,46 @@
-{
-  "Plugin Web": [
-    "http://localhost:4202",
-    "https://test.dont-code.net/apps/latest/web-plugin"
-  ],
-  "Plugin International": [
-    "http://localhost:4203",
-    "https://test.dont-code.net/apps/latest/intl-plugin"
-  ],
-  "Plugin Finance": [
-    "http://localhost:4204",
-    "https://test.dont-code.net/apps/latest/finance-plugin"
-  ],
-  "Plugin Agenda": [
-    "http://localhost:4205",
-    "https://test.dont-code.net/apps/latest/agenda-plugin"
-  ],
-  "Plugin Sample": [
-    "http://localhost:4201",
-    "https://test.dont-code.net/apps/latest/sample-plugin"
+  [{
+    "plugin":"Plugin Web",
+    "urls":[
+      "http://localhost:4202",
+      "https://test.dont-code.net/apps/latest/web-plugin",
+      "https://test.dont-code.net/apps/next/web-plugin"
+    ]},
+  {
+    "plugin":"Plugin International",
+    "urls": [
+      "http://localhost:4203",
+      "https://test.dont-code.net/apps/latest/intl-plugin",
+      "https://test.dont-code.net/apps/next/intl-plugin"
+    ]},
+    {
+      "plugin":"Plugin Editor",
+      "urls": [
+        "http://localhost:4206",
+        "https://test.dont-code.net/apps/latest/editor-plugin",
+        "https://test.dont-code.net/apps/next/editor-plugin"
+      ]},
+    {
+      "plugin":"Plugin Finance",
+      "urls": [
+        "http://localhost:4204",
+        "https://test.dont-code.net/apps/latest/finance-plugin",
+        "https://test.dont-code.net/apps/next/finance-plugin"
+      ]
+    },
+    {
+      "plugin":"Plugin Agenda",
+      "urls":[
+        "http://localhost:4205",
+        "https://test.dont-code.net/apps/latest/agenda-plugin",
+        "https://test.dont-code.net/apps/next/agenda-plugin"
+      ]
+    },
+    {
+      "plugin":"Plugin Sample",
+      "urls": [
+        "http://localhost:4201",
+        "https://test.dont-code.net/apps/latest/sample-plugin",
+        "https://test.dont-code.net/apps/next/sample-plugin"
+      ]
+    }
   ]
-}

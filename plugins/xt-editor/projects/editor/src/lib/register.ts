@@ -11,11 +11,13 @@ export function registerEditorPlugin (resolverService:XtResolverService):string 
             {
               componentName:'Editor',
               componentClass:EditorComponent,
-              typesHandled: ['markdown'],
+              typesHandled: ['markdown','rich-text','description'],
             }
         ],
       types: {
-        'markdown':'string'
+        'markdown':'string',
+        'rich-text':'string',
+        'description':'string'
       }
     });
     return pluginName;

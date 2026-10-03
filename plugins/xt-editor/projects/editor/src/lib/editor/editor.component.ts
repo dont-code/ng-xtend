@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, input, viewChild } from '@angular/core';
 import { XtContext, XtSimpleComponent } from 'xt-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorState, Transaction } from 'prosemirror-state';
@@ -24,7 +24,7 @@ import { Tooltip } from 'primeng/tooltip';
 export class EditorComponent extends XtSimpleComponent<any> implements AfterViewInit{
   override context = input.required<XtContext<any>>();
 
-  protected editor = viewChild.required<ElementRef<HTMLDivElement>>('editor');
+  protected editor = viewChild<ElementRef<HTMLDivElement>>('editor');
 
   protected sampleJson={ "type": "doc", "content": [ { "type": "heading", "attrs": { "level": 1 }, "content": [ { "type": "text", "text": "Example Text" } ] }, { "type": "paragraph", "content": [ { "type": "text", "text": "s it working ?" } ] } ] };
   protected emptyJson={ "type": "doc", "content": [ { "type": "paragraph"} ] };
@@ -38,20 +38,28 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
 
   protected view: EditorView|null=null;
 
-  ngAfterViewInit() {
-    const editor=this.editor();
-    if( editor!=null) {
-      const value=this.context().formControlValue();
+  constructor() {
+    super();
+      // Setup the editor once the divs are available
+    effect(() => {
+      const editor=this.editor();
+      if( (editor!=null) && (this.view==null)) {
+        const value=this.context().formControlValue();
 
-      const doc = this.toProseMirrorDoc (value);
-      this.view = new EditorView(editor.nativeElement, {
-        state: EditorState.create({
-          doc: doc,
-          plugins: basicSetup({schema: this.mySchema})
-        }),
-        dispatchTransaction: this.handleTransactions.bind(this)
-      })
-    }
+        const doc = this.toProseMirrorDoc (value);
+        this.view = new EditorView(editor.nativeElement, {
+          state: EditorState.create({
+            doc: doc,
+            plugins: basicSetup({schema: this.mySchema})
+          }),
+          dispatchTransaction: this.handleTransactions.bind(this)
+        })
+      }
+
+    })
+  }
+
+  ngAfterViewInit() {
   /*  this.editor.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((jsonDoc) => {
       this.handleChange(jsonDoc);
     });*/

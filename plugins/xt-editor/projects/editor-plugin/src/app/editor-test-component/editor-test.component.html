@@ -2,7 +2,7 @@
 @let mainForm=simpleForm();
 
 <form [formGroup]="mainForm">
-    <xt-editor-editor [context]="simpleContext()" ></xt-editor-editor>
+    <xt-render-sub [context]="simpleContext()" ></xt-render-sub>
 </form>
 <div style="margin-top:2em">
   Form Value is
@@ -11,9 +11,9 @@
   , Form is {{mainForm.pristine?"pristine":"Dirty"}}
 </div>
 <div style="margin-top:2em">
-  Inline display: <xt-editor-editor [context]="inlineContext()"></xt-editor-editor>
+  Inline display: <xt-render-sub [context]="inlineContext()"></xt-render-sub>
 </div>
 <div style="margin-top:2em">
   Full view display:<br/>
-  <xt-editor-editor [context]="fullviewContext()"></xt-editor-editor>
+  <xt-render-sub [context]="fullviewContext()"></xt-render-sub>
 </div>

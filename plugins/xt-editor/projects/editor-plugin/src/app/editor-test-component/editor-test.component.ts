@@ -1,9 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { XtBaseContext, XtContext, XtResolverService } from 'xt-components';
-import { EditorComponent } from '../../../../editor/src/lib/editor/editor.component';
-import { JsonPipe } from '@angular/common';
+import { XtBaseContext, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
 import { MarkdownPipe } from '../../../../editor/src/lib/markdown/markdown-pipe';
 
 @Component({
@@ -11,7 +9,7 @@ import { MarkdownPipe } from '../../../../editor/src/lib/markdown/markdown-pipe'
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    EditorComponent,
+    XtRenderSubComponent,
     MarkdownPipe
   ],
   templateUrl: './editor-test.component.html',
@@ -48,18 +46,21 @@ export class EditorTestComponent implements OnInit,OnDestroy {
 
   protected simpleContext():XtContext<any> {
     const ret= new XtBaseContext('FULL_EDITABLE', "simpleText",this.simpleForm());
+    ret.valueType='markdown';
     return ret;
   }
 
   protected inlineContext():XtContext<any> {
     const ret= new XtBaseContext('INLINE_VIEW');
     ret.setDisplayValue(this.formValue());
+    ret.valueType='markdown';
     return ret;
   }
 
   protected fullviewContext():XtContext<any> {
     const ret= new XtBaseContext('FULL_VIEW');
     ret.setDisplayValue(this.formValue());
+    ret.valueType='markdown';
     return ret;
   }
 

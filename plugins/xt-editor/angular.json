@@ -84,6 +84,21 @@
               {
                 "glob": "**/*",
                 "input": "projects/editor-plugin/public"
+              },
+              {
+                "glob": "prosemirror-view/style/*.css",
+                "input": "node_modules",
+                "output": "/"
+              },
+              {
+                "glob": "prosemirror-menu/style/*.css",
+                "input": "node_modules",
+                "output": "/"
+              },
+              {
+                "glob": "prosemirror-gapcursor/style/*.css",
+                "input": "node_modules",
+                "output": "/"
               }
             ],
             "styles": ["projects/editor-plugin/src/styles.css"]

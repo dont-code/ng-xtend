@@ -43,6 +43,9 @@ export type XtActionHandlerInfo<T> = {
 export type XtPluginInfo ={
     name: string;
     uriLogo?: string;
+    /** Optional list of CSS file URLs to load when this plugin is registered.
+     * URLs may be absolute or relative to the plugin's base URL (the directory containing remoteEntry.json). */
+    cssUrls?: string[];
     components?: XtComponentInfo<any>[];
     workflows?: XtWorkflowInfo<any>[];
     types?: XtTypeInfo;

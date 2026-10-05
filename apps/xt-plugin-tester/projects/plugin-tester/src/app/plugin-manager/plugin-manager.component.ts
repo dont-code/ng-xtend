@@ -13,7 +13,7 @@ import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
 import { XtTypeDetail, XtTypeInfo, isTypeDetail } from 'xt-type';
 import { Card } from 'primeng/card';
-import { JsonPipe } from '@angular/common';
+import { DOCUMENT, JsonPipe } from '@angular/common';
 import { Panel } from 'primeng/panel';
 import { Fieldset } from 'primeng/fieldset';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -53,6 +53,7 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
   fb = inject(FormBuilder);
   errorHandler = inject (ErrorHandlerService);
   formValid = signal(false);
+  private document = inject(DOCUMENT);
 
   listPlugins=computed<PluginDisplayInfo[]>( () => {
     return this.transform(this.resolverService.listPlugins());
@@ -119,6 +120,39 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
     this.suggestedUrls.set(selected);
   }
 
+  private getBaseUrl(remoteEntryUrl: string): string {
+    const lastSlash = remoteEntryUrl.lastIndexOf('/');
+    return lastSlash >= 0 ? remoteEntryUrl.substring(0, lastSlash + 1) : remoteEntryUrl + '/';
+  }
+
+  private hash(s: string): number {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+
+  private applyPluginCss(pluginName: string, baseUrl: string, cssUrls?: string[]) {
+    if (!cssUrls || cssUrls.length === 0) return;
+    for (const css of cssUrls) {
+      try {
+        const href = css.startsWith('http://') || css.startsWith('https://') || css.startsWith('//')
+          ? css
+          : new URL(css, baseUrl).toString();
+        const safeName = pluginName.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const id = `plugin-css-${safeName}-${this.hash(href)}`;
+        if (this.document.getElementById(id)) continue; // already loaded
+        const link = this.document.createElement('link');
+        link.id = id;
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.setAttribute('data-plugin', pluginName);
+        this.document.head.appendChild(link);
+      } catch (e) {
+        console.warn(`Failed to load plugin CSS for ${pluginName}: ${css}`, e);
+      }
+    }
+  }
+
   async loadPlugin() {
     if( !this.formValid()) {
       this.errorHandler.errorOccurred(new Error("Form is not valid"), "Form is not valid");
@@ -126,14 +160,6 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
         // Adds the typed url to the list
       try {
         let url = this.form.value['pluginUrl']!;
-    /*    this.fullListUrls.update((oldList) => {
-          const otherPlugin=Array.from(oldList).find((plugin) => {
-            return plugin.plugin=='Other';
-          }) || { plugin:'Other', urls:[]};
-          otherPlugin.urls.push(url);
-          oldList.add(otherPlugin);
-          return new Set(oldList.values());
-        });*/
         if (!url.endsWith("remoteEntry.json")) {
           url = url+(url.endsWith('/')?'':'/')+'remoteEntry.json';
         }
@@ -142,7 +168,13 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
           exposedModule: './Register'
         });
 
-        this.resolverService.registerPluginModule(module, url);
+        const pluginName = this.resolverService.registerPluginModule(module, url) as string | null;
+        if (pluginName) {
+          // apply CSS if declared
+          const baseUrl = this.getBaseUrl(url);
+          const pluginInfo = this.resolverService.listPlugins().find(p => p.name === pluginName);
+          this.applyPluginCss(pluginName, baseUrl, pluginInfo?.cssUrls);
+        }
 
         this.resolverService.resolvePendingReferences();
       } catch (error) {

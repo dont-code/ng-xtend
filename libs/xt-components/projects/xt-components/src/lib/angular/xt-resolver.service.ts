@@ -240,12 +240,13 @@ export class XtResolverService {
   /**
    * Dynamically load a register a plugin from the given url
    * The plugin must export at least a Register entrypoint that will be called right after loading..
-   * @returns a Promise with the module loaded and already registered.
+   * @returns the registered plugin name, or null if registration failed.
    * @param module
    */
-  registerPluginModule (module: {registerPlugin : (resolver:XtResolverService) => string}, url:URL|string):boolean {
+  registerPluginModule (module: {registerPlugin : (resolver:XtResolverService) => string}, url:URL|string):string|null {
 
       const pluginName = module.registerPlugin(this);
+      if (!pluginName) return null;
       // Transform the configured Uris to real urls
       const pluginConfig=this.pluginRegistry.pluginRegistry.get(pluginName);
       if (pluginConfig?.uriLogo!=null) {
@@ -254,7 +255,7 @@ export class XtResolverService {
         urlString = urlString.substring(0, lastSlash+1)+pluginConfig?.uriLogo;
         pluginConfig.uriLogo=urlString;
       }
-      return true;
+      return pluginName;
   }
 
   /**

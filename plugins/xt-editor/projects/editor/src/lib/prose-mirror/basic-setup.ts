@@ -309,7 +309,7 @@ export class SelectField extends Field {
 
 // Helpers to create specific types of items
 
-function canInsert(state: EditorState, nodeType: NodeType) {
+export function canInsert(state: EditorState, nodeType: NodeType) {
   let $from = state.selection.$from
   for (let d = $from.depth; d >= 0; d--) {
     let index = $from.index(d)
@@ -406,48 +406,48 @@ function wrapListItem(nodeType: NodeType, options: Partial<MenuItemSpec>) {
 
 type MenuItemResult = {
   /// A menu item to toggle the [strong mark](#schema-basic.StrongMark).
-  toggleStrong?: MenuItem
+  toggleStrong?: MenuElement
 
   /// A menu item to toggle the [emphasis mark](#schema-basic.EmMark).
-  toggleEm?: MenuItem
+  toggleEm?: MenuElement
 
   /// A menu item to toggle the [code font mark](#schema-basic.CodeMark).
-  toggleCode?: MenuItem
+  toggleCode?: MenuElement
 
   /// A menu item to toggle the [link mark](#schema-basic.LinkMark).
-  toggleLink?: MenuItem
+  toggleLink?: MenuElement
 
   /// A menu item to insert an [image](#schema-basic.Image).
-  insertImage?: MenuItem
+  insertImage?: MenuElement
 
   /// A menu item to wrap the selection in a [bullet list](#schema-list.BulletList).
-  wrapBulletList?: MenuItem
+  wrapBulletList?: MenuElement
 
   /// A menu item to wrap the selection in an [ordered list](#schema-list.OrderedList).
-  wrapOrderedList?: MenuItem
+  wrapOrderedList?: MenuElement
 
   /// A menu item to wrap the selection in a [block quote](#schema-basic.BlockQuote).
-  wrapBlockQuote?: MenuItem
+  wrapBlockQuote?: MenuElement
 
   /// A menu item to set the current textblock to be a normal
   /// [paragraph](#schema-basic.Paragraph).
-  makeParagraph?: MenuItem
+  makeParagraph?: MenuElement
 
   /// A menu item to set the current textblock to be a
   /// [code block](#schema-basic.CodeBlock).
-  makeCodeBlock?: MenuItem
+  makeCodeBlock?: MenuElement
 
   /// Menu items to set the current textblock to be a
   /// [heading](#schema-basic.Heading) of level _N_.
-  makeHead1?: MenuItem
-  makeHead2?: MenuItem
-  makeHead3?: MenuItem
-  makeHead4?: MenuItem
-  makeHead5?: MenuItem
-  makeHead6?: MenuItem
+  makeHead1?: MenuElement
+  makeHead2?: MenuElement
+  makeHead3?: MenuElement
+  makeHead4?: MenuElement
+  makeHead5?: MenuElement
+  makeHead6?: MenuElement
 
   /// A menu item to insert a horizontal rule.
-  insertHorizontalRule?: MenuItem
+  insertHorizontalRule?: MenuElement
 
   /// A dropdown containing the `insertImage` and
   /// `insertHorizontalRule` items.
@@ -471,56 +471,57 @@ type MenuItemResult = {
 
 /// Given a schema, look for default mark and node types in it and
 /// return an object with relevant menu items relating to those marks.
-export function buildMenuItems(schema: Schema): MenuItemResult {
+export function buildMenuItems(schema: Schema, override?:{[itemName:string]:MenuElement}): MenuItemResult {
   let r: MenuItemResult = {} as any
-  let mark: MarkType | undefined
-  if (mark = schema.marks["strong"])
-    r.toggleStrong = markItem(mark, {title: "Toggle strong style", icon: icons["strong"]})
+  let mark: MarkType | undefined;
+  override=override||{};
+ if (mark = schema.marks["strong"])
+    r.toggleStrong = override["strong"]||markItem(mark, {title: "Toggle strong style", icon: icons["strong"]})
   if (mark = schema.marks["em"])
-    r.toggleEm = markItem(mark, {title: "Toggle emphasis", icon: icons["em"]})
+    r.toggleEm = override["em"]|| markItem(mark, {title: "Toggle emphasis", icon: icons["em"]})
   if (mark = schema.marks["code"])
-    r.toggleCode = markItem(mark, {title: "Toggle code font", icon: icons["code"]})
+    r.toggleCode = override["code"]||markItem(mark, {title: "Toggle code font", icon: icons["code"]})
   if (mark = schema.marks["link"])
-    r.toggleLink = linkItem(mark)
+    r.toggleLink = override["link"]||linkItem(mark)
 
   let node: NodeType | undefined
   if (node = schema.nodes["image"])
-    r.insertImage = insertImageItem(node)
+    r.insertImage = override["image"]||insertImageItem(node)
   if (node = schema.nodes["bullet_list"])
-    r.wrapBulletList = wrapListItem(node, {
+    r.wrapBulletList = override["bullet_list"]||wrapListItem(node, {
       title: "Wrap in bullet list",
       icon: icons["bulletList"]
     })
   if (node = schema.nodes["ordered_list"])
-    r.wrapOrderedList = wrapListItem(node, {
+    r.wrapOrderedList = override["ordered_list"]||wrapListItem(node, {
       title: "Wrap in ordered list",
       icon: icons["orderedList"]
     })
   if (node = schema.nodes["blockquote"])
-    r.wrapBlockQuote = wrapItem(node, {
+    r.wrapBlockQuote = override["blockquote"]||wrapItem(node, {
       title: "Wrap in block quote",
       icon: icons["blockquote"]
     })
   if (node = schema.nodes["paragraph"])
-    r.makeParagraph = blockTypeItem(node, {
+    r.makeParagraph = override["paragraph"]||blockTypeItem(node, {
       title: "Change to paragraph",
       label: "Plain"
     })
   if (node = schema.nodes["code_block"])
-    r.makeCodeBlock = blockTypeItem(node, {
+    r.makeCodeBlock = override["code_block"]||blockTypeItem(node, {
       title: "Change to code block",
       label: "Code"
     })
   if (node = schema.nodes["heading"])
     for (let i = 1; i <= 10; i++)
-      (r as any)["makeHead" + i] = blockTypeItem(node, {
+      (r as any)["makeHead" + i] = override["makeHead"+i]||blockTypeItem(node, {
         title: "Change to heading " + i,
         label: "Level " + i,
         attrs: {level: i}
       })
   if (node = schema.nodes["horizontal_rule"]) {
     let hr = node
-    r.insertHorizontalRule = new MenuItem({
+    r.insertHorizontalRule = override["horizontal_rule"]||new MenuItem({
       title: "Insert horizontal rule",
       label: "Horizontal rule",
       enable(state) { return canInsert(state, hr) },
@@ -629,8 +630,8 @@ export function basicSetup(options: {
   /// Set to false to make the menu bar non-floating.
   floatingMenu?: boolean
 
-  /// Can be used to override the menu content.
-  menuContent?: MenuElement[][]
+  /// Can be used to override any menu content.
+  menuContent?: { [itemName:string]:MenuElement }
 }) {
   let plugins = [
     buildInputRules(options.schema),
@@ -641,7 +642,7 @@ export function basicSetup(options: {
   ]
   if (options.menuBar !== false)
     plugins.push(menuBar({floating: options.floatingMenu !== false,
-      content: options.menuContent || buildMenuItems(options.schema).fullMenu}))
+      content: buildMenuItems(options.schema, options.menuContent).fullMenu}))
   if (options.history !== false)
     plugins.push(history())
 

@@ -156,7 +156,8 @@ export class AppConfigService {
       remoteEntry: url,
       exposedModule: './Register'
     });
-    return this.resolverService.registerPluginModule (module, url);
+    // Registration also loads the stylesheets declared by the plugin, if any
+    return this.resolverService.registerPluginModule (module, url)!=null;
   }
 
   updateConfigName (newUrl:string ) {

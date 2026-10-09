@@ -3,6 +3,15 @@
     <div #editor [formGroup]="formGroup()">
     </div>
   </div>
+  <p-dialog [visible]="displayEditImage()" [modal]="true" header="Edit Image">
+    <form [formGroup]="editImageForm">
+      <xt-render valueType="editorImageType" [formGroup]="editImageForm" displayMode="FULL_EDITABLE" ></xt-render>
+    </form>
+    <ng-template #footer>
+      <button type="button" pButton severity="secondary" variant="outlined" (click)="displayEditImage.set(false)">Cancel</button>
+      <button type="button" pButton (click)="updateImageFromForm()">Save</button>
+    </ng-template>
+  </p-dialog>
 } @else {
   @let toDisplay=displayValue();
   @if (toDisplay!=null) {

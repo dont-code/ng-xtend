@@ -67,6 +67,8 @@ jobs:
           mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/finance-plugin 
           mv ./dist/${{env.stage}}/agenda-plugin/browser ./to-deploy/${{env.stage}}
           mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/agenda-plugin
+          mv ./dist/${{env.stage}}/editor-plugin/browser ./to-deploy/${{env.stage}}
+          mv ./to-deploy/${{env.stage}}/browser ./to-deploy/${{env.stage}}/editor-plugin
       - name: Deploy to dont-code.net apps with ${{env.stage}}
         if: inputs.deploy == true
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6

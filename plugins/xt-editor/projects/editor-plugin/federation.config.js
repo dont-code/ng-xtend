@@ -10,8 +10,8 @@ module.exports = withNativeFederation({
   },
 
   shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-},
+    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
+  },
 
   features: {
     ignoreUnusedDeps:true
@@ -21,7 +21,6 @@ module.exports = withNativeFederation({
     'rxjs/fetch',
     'rxjs/testing',
     'rxjs/webSocket',
-    // Add further packages you don't need at runtime
     /^@primeuix\//,
     'chart.js/auto',
     'primeng/chart',

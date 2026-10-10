@@ -1,7 +1,29 @@
 @if (isInForm() ) {
-  <ng-container [formGroup]="formGroup()" #proseMirror>
-    <ng-content></ng-content>
-  </ng-container>
-} @else if (displayValue()!=null) {
-  ${{ displayValue() }}
+  <div class="editorContainer">
+    <div #editor [formGroup]="formGroup()">
+    </div>
+  </div>
+  <p-dialog [visible]="displayAttrDialog()" [modal]="true" header="Edit">
+    <form [formGroup]="editAttrForm">
+      <xt-render [valueType]="editAttrValueType" [formGroup]="editAttrForm" displayMode="FULL_EDITABLE" ></xt-render>
+    </form>
+    <ng-template #footer>
+      <button type="button" pButton severity="secondary" variant="outlined" (click)="displayAttrDialog.set(false)">Cancel</button>
+      <button type="button" pButton (click)="updateAttrsFromForm()">Save</button>
+    </ng-template>
+  </p-dialog>
+} @else {
+  @let toDisplay=displayValue();
+  @if (toDisplay!=null) {
+    @if (context().displayMode=='FULL_VIEW') {
+      <div class="displayForm" [innerHTML]="displayValue() | markdown">
+      </div>
+    } @else {
+      <span [pTooltip]="fullText">{{ toDisplay | inlineMarkdown}}</span>
+      <ng-template #fullText>
+        <div class="toolTip" [innerHTML]="displayValue() | markdown">
+        </div>
+      </ng-template>
+    }
+  }
 }

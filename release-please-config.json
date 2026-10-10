@@ -89,6 +89,14 @@
       "draft": false,
       "prerelease": false
     },
+    "plugins/xt-editor": {
+      "release-type": "node",
+      "package-name": "xt-plugin-editor",
+      "extra-files": ["projects/editor/package.json"],
+      "prerelease-type": "beta",
+      "draft": false,
+      "prerelease": false
+    },
     "plugins/xt-workflow": {
       "release-type": "node",
       "package-name": "xt-plugin-workflow",

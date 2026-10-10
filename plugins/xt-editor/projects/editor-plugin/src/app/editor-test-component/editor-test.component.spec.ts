@@ -1,27 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WebTestComponent } from './web-test.component';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { registerWebPlugin } from '../../../../web/src/lib/register';
-import { StoreTestHelper, XtResolverService } from 'xt-components';
+import { registerEditorPlugin } from '../../../../editor/src/lib/register';
+import { XtResolverService } from 'xt-components';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
+import { registerDefaultPlugin } from 'xt-plugin-default';
+import { EditorTestComponent } from './editor-test.component';
 
-describe('TestComponent', () => {
-  let component: WebTestComponent;
-  let fixture: ComponentFixture<WebTestComponent>;
+describe('EditorTestComponent', () => {
+  let component: EditorTestComponent;
+  let fixture: ComponentFixture<EditorTestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WebTestComponent],
-      providers: [provideNoopAnimations(), provideZonelessChangeDetection(), provideHttpClient()]
+      imports: [EditorTestComponent],
+      providers: [provideNoopAnimations(), provideZonelessChangeDetection()]
     })
     .compileComponents();
 
-    StoreTestHelper.ensureTestProviderOnly();
-    registerWebPlugin(TestBed.inject(XtResolverService));
-    fixture = TestBed.createComponent(WebTestComponent);
+    const resolver = TestBed.inject(XtResolverService);
+    registerDefaultPlugin(resolver);
+    registerEditorPlugin(resolver);
+    fixture = TestBed.createComponent(EditorTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

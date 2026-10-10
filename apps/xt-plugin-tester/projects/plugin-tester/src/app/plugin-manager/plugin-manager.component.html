@@ -1,9 +1,20 @@
 <p-fieldset legend="Plugin Manager" [formGroup]="form">
-  <p class="text-lg font-medium">To load a new plugin, enter its url below:</p>
+  <p class="text-lg font-medium">To load a plugin, select it here or enter its url:</p>
   <div class="flex flex-row gap-2 items-center">
     <label for="pluginUrl" class="flex-none ">Plugin Url</label>
     <div class="w-xl flex-initial">
-      <p-autocomplete id="pluginUrl" [fluid]="true" [dropdown]="true" (keydown.enter)="loadPlugin()" formControlName="pluginUrl" [showEmptyMessage]="false" [suggestions]="suggestedUrls()" (completeMethod)="listSuggestions($event)">
+      <p-autocomplete id="pluginUrl" [fluid]="true" [dropdown]="true" (keydown.enter)="loadPlugin()"
+                      [group]="true" optionGroupLabel="plugin" optionGroupChildren="urls"
+                      formControlName="pluginUrl" [showEmptyMessage]="false" [suggestions]="suggestedUrls()" (completeMethod)="listSuggestions($event)">
+        <ng-template let-plugin #group>
+          <div class="font-medium text-lg text-shadow-lg">{{ plugin.plugin }}</div>
+        </ng-template>
+        <ng-template let-url #item>
+          <div class="font-normal text-base px-4">{{ url }}</div>
+        </ng-template>
+        <ng-template #header>
+          <div class="font-light text-xs px-3 py-2">Possible plugins</div>
+        </ng-template>
       </p-autocomplete>
     </div>
     <p-button class="flex-none" icon="pi pi-download" (onClick)="loadPlugin ()" [disabled]="!formValid()" label="Load" />

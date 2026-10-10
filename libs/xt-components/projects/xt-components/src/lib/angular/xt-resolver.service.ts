@@ -1,4 +1,5 @@
 import { computed, inject, Injectable, Type } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { XtContext } from '../xt-context';
 import { XtRegistryResolver } from '../resolver/xt-registry-resolver';
 import { XT_REGISTRY_TOKEN, XT_RESOLVER_TOKEN, XT_TYPE_RESOLVER_TOKEN } from './xt-tokens';
@@ -30,6 +31,9 @@ export class XtResolverService {
 
   /** Injected plugin registry for component and type registration. */
   pluginRegistry = inject (XT_REGISTRY_TOKEN);
+
+  /** Injected document, used to inject plugin stylesheets in the current page. Optional for non-DOM platforms. */
+  protected document = inject (DOCUMENT, {optional:true});
 
   /** Optional base resolver injected via DI token. */
   protected baseResolver = inject (XT_RESOLVER_TOKEN, {optional:true});
@@ -238,14 +242,82 @@ export class XtResolverService {
   });
 
   /**
+   * Computes the base url (everything up to the last slash) of a remoteEntry url.
+   * Relative css urls declared by a plugin are resolved against that base.
+   * @param remoteEntryUrl - the url of the plugin's remoteEntry.json
+   */
+  protected getPluginBaseUrl (remoteEntryUrl:string):string {
+    const lastSlash = remoteEntryUrl.lastIndexOf('/');
+    return lastSlash >= 0 ? remoteEntryUrl.substring(0, lastSlash + 1) : remoteEntryUrl + '/';
+  }
+
+  /**
+   * Computes a stable numeric hash of a string, used to build unique style element ids.
+   */
+  protected cssHash (s:string):number {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+
+  /**
+   * Injects the given stylesheets in the current page, so that a plugin's styles get applied.
+   * Absolute urls (http/https/protocol-relative) are used as-is, relative ones are resolved
+   * against the plugin's base url. Already injected stylesheets are skipped.
+   * @param pluginName - the name of the plugin owning those styles
+   * @param baseUrl - the plugin base url, used to resolve relative css urls
+   * @param cssUrls - the stylesheet urls declared by the plugin
+   * @returns the list of stylesheets actually injected by this call
+   */
+  loadPluginCss (pluginName:string, baseUrl:string, cssUrls?:string[]):string[] {
+    const injected = new Array<string>();
+    if (this.document?.head==null) return injected;
+    if (!cssUrls || cssUrls.length === 0) return injected;
+    const safeName = pluginName.replace(/[^a-zA-Z0-9_-]/g, '_');
+    for (const css of cssUrls) {
+      try {
+        const href = css.startsWith('http://') || css.startsWith('https://') || css.startsWith('//')
+          ? css
+          : new URL(css, baseUrl).toString();
+        const id = `plugin-css-${safeName}-${this.cssHash(href)}`;
+        if (this.document.getElementById(id)) continue; // already loaded
+        const link = this.document.createElement('link');
+        link.id = id;
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.setAttribute('data-plugin', pluginName);
+        this.document.head.appendChild(link);
+        injected.push(href);
+      } catch (e) {
+        console.warn(`Failed to load plugin CSS for ${pluginName}: ${css}`, e);
+      }
+    }
+    return injected;
+  }
+
+  /**
+   * Injects in the current page the stylesheets declared by a registered plugin, if any.
+   * Relative urls declared by the plugin are resolved against the given remoteEntry url.
+   * @param pluginName - the registered plugin name
+   * @param remoteEntryUrl - the url the plugin has been loaded from
+   */
+  loadPluginCssOf (pluginName:string, remoteEntryUrl:URL|string):string[] {
+    const pluginInfo = this.pluginRegistry.pluginRegistry.get(pluginName);
+    if (pluginInfo?.cssUrls==null) return [];
+    return this.loadPluginCss(pluginName, this.getPluginBaseUrl(remoteEntryUrl.toString()), pluginInfo.cssUrls);
+  }
+
+  /**
    * Dynamically load a register a plugin from the given url
    * The plugin must export at least a Register entrypoint that will be called right after loading..
-   * @returns a Promise with the module loaded and already registered.
+   * Any stylesheet declared by the plugin (XtPluginInfo.cssUrls) is loaded in the current page.
+   * @returns the registered plugin name, or null if registration failed.
    * @param module
    */
-  registerPluginModule (module: {registerPlugin : (resolver:XtResolverService) => string}, url:URL|string):boolean {
+  registerPluginModule (module: {registerPlugin : (resolver:XtResolverService) => string}, url:URL|string):string|null {
 
       const pluginName = module.registerPlugin(this);
+      if (!pluginName) return null;
       // Transform the configured Uris to real urls
       const pluginConfig=this.pluginRegistry.pluginRegistry.get(pluginName);
       if (pluginConfig?.uriLogo!=null) {
@@ -254,7 +326,11 @@ export class XtResolverService {
         urlString = urlString.substring(0, lastSlash+1)+pluginConfig?.uriLogo;
         pluginConfig.uriLogo=urlString;
       }
-      return true;
+      // Apply the stylesheets declared by the plugin, if any
+      if (pluginConfig?.cssUrls!=null) {
+        this.loadPluginCss(pluginName, this.getPluginBaseUrl(url.toString()), pluginConfig.cssUrls);
+      }
+      return pluginName;
   }
 
   /**

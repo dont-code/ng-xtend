@@ -7,15 +7,22 @@ export function registerEditorPlugin (resolverService:XtResolverService):string 
     resolverService.registerPlugin ({
         name:pluginName,
         uriLogo:'pluginicon.png',
+        cssUrls: [
+          'prosemirror-view/style/prosemirror.css',
+          'prosemirror-menu/style/menu.css',
+          'prosemirror-gapcursor/style/gapcursor.css'
+        ],
         components: [
             {
               componentName:'Editor',
               componentClass:EditorComponent,
-              typesHandled: ['markdown'],
+              typesHandled: ['markdown','rich-text','description'],
             }
         ],
       types: {
-        'markdown':'string'
+        'markdown':'string',
+        'rich-text':'string',
+        'description':'string'
       }
     });
     return pluginName;

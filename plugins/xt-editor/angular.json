@@ -4,7 +4,8 @@
   "cli": {
     "cache": {
       "enabled": true
-    }
+    },
+    "analytics": "853114a2-918e-4fdd-a034-01da3328a1fa"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -83,6 +84,21 @@
               {
                 "glob": "**/*",
                 "input": "projects/editor-plugin/public"
+              },
+              {
+                "glob": "prosemirror-view/style/*.css",
+                "input": "node_modules",
+                "output": "/"
+              },
+              {
+                "glob": "prosemirror-menu/style/*.css",
+                "input": "node_modules",
+                "output": "/"
+              },
+              {
+                "glob": "prosemirror-gapcursor/style/*.css",
+                "input": "node_modules",
+                "output": "/"
               }
             ],
             "styles": ["projects/editor-plugin/src/styles.css"]
@@ -123,7 +139,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4202
+            "port": 4206
           }
         }
       }

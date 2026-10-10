@@ -24,6 +24,11 @@ import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-
 import { httpResource } from '@angular/common/http';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 
+type PluginInfo ={
+  plugin: string;
+  urls: Array<string>;
+}
+
 @Component({
   selector: 'app-plugin-manager',
   imports: [
@@ -57,22 +62,9 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
     pluginUrl: ['', [Validators.required, Validators.pattern("(ftp|ftps|http|https):\\/\\/[^ \"]+")]],
   });
 
-  loadlistUrl = httpResource (() => 'assets/config/plugin-urls.json');
-
-  listUrls=linkedSignal<Set<string>>(() => {
-    const ret = new Set<string>();
-    if (this.loadlistUrl.hasValue()) {
-      const loaded = this.loadlistUrl.value() as any;
-      for (const plugin in loaded) {
-        const urls = loaded[plugin] as Array<string>;
-        for (const url of urls) {
-          ret.add(url);
-        }
-      }
-    }
-    return ret;
-  });
-  suggestedUrls = signal<string[]>([]);
+  loadedListUrls = httpResource<PluginInfo[]> (() => 'assets/config/plugin-urls.json');
+  // fullListUrls = signal<Set<PluginInfo>>(new Set());
+  suggestedUrls = signal<PluginInfo[]>([]);
 
   constructor () {
     this.subscriptions.add(this.form.statusChanges.subscribe({
@@ -110,21 +102,30 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
   protected readonly ComponentDisplayInfo = ComponentDisplayInfo;
 
   listSuggestions(event: AutoCompleteCompleteEvent) {
-    this.suggestedUrls.set(Array.from(this.listUrls().values()).filter((item)=> {
-      return item.startsWith(event.query);
-    }));
+    const listPlugins = this.loadedListUrls.value();
+    if (listPlugins==null) {
+      this.suggestedUrls.set([]);
+      return;
+    }
+    const selected: PluginInfo[]=[];
+    for (const plugin of listPlugins) {
+      const filtered=plugin.urls.filter((url) => {
+        return url.indexOf(event.query)!=-1;
+      });
+      if (filtered.length>0){
+        selected.push({plugin:plugin.plugin, urls:filtered});
+      }
+    }
+    this.suggestedUrls.set(selected);
   }
 
   async loadPlugin() {
     if( !this.formValid()) {
       this.errorHandler.errorOccurred(new Error("Form is not valid"), "Form is not valid");
     } else {
+        // Adds the typed url to the list
       try {
         let url = this.form.value['pluginUrl']!;
-        this.listUrls.update((oldList) => {
-          oldList.add(url);
-          return new Set(oldList.values());
-        });
         if (!url.endsWith("remoteEntry.json")) {
           url = url+(url.endsWith('/')?'':'/')+'remoteEntry.json';
         }
@@ -133,6 +134,7 @@ export class PluginManagerComponent implements OnDestroy, OnInit {
           exposedModule: './Register'
         });
 
+        // Registration also loads the stylesheets declared by the plugin
         this.resolverService.registerPluginModule(module, url);
 
         this.resolverService.resolvePendingReferences();

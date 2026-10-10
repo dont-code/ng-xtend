@@ -3,9 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { HostTestFormComponent, XtBaseContext } from 'xt-components';
+import { HostTestFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { EditorComponent } from './editor.component';
 import { By } from '@angular/platform-browser';
+import { registerDefaultPlugin } from 'xt-plugin-default';
 
 describe('EditorComponent', () => {
   let component: EditorComponent;
@@ -18,6 +19,9 @@ describe('EditorComponent', () => {
 
     })
     .compileComponents();
+    // The editor dialog renders an xt-render for editorImageType/editorLinkType.
+    // Those composite types resolve to the generic object component from the default plugin.
+    registerDefaultPlugin(TestBed.inject(XtResolverService));
   });
 
   it('should create', () => {

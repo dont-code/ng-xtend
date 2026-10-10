@@ -19,16 +19,16 @@ describe('Editor Tester', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'WebTester' title`, () => {
+  it(`should have the 'EditorTester' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('WebTester');
+    expect(app.title).toEqual('EditorTester');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Web Plugin Testing app');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Editor Plugin Testing app');
   });
 });

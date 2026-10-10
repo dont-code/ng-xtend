@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v1.2.1...xt-components-v1.3.0) (2026-10-10)
+
+
+### Features
+
+* editor working in host ([8044297](https://github.com/dont-code/ng-xtend/commit/80442972b7a15e3f5ed21c8104ed9797fee4273a))
+
+
+### Bug Fixes
+
+* image edit ([2302ae7](https://github.com/dont-code/ng-xtend/commit/2302ae754ec328237b775d00ea7b65351483d96c))
+
 ## [1.2.1](https://github.com/dont-code/ng-xtend/compare/xt-components-v1.2.0...xt-components-v1.2.1) (2026-09-12)
 
 

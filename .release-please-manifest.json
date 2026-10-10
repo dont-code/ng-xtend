@@ -10,5 +10,6 @@
   "plugins/xt-finance": "1.2.1",
   "plugins/xt-web": "1.2.1",
   "plugins/xt-agenda": "1.2.1",
+  "plugins/xt-editor": "1.2.1",
   "plugins/xt-workflow": "1.2.1"
 }

@@ -3,13 +3,13 @@
     <div #editor [formGroup]="formGroup()">
     </div>
   </div>
-  <p-dialog [visible]="displayEditImage()" [modal]="true" header="Edit Image">
-    <form [formGroup]="editImageForm">
-      <xt-render valueType="editorImageType" [formGroup]="editImageForm" displayMode="FULL_EDITABLE" ></xt-render>
+  <p-dialog [visible]="displayAttrDialog()" [modal]="true" header="Edit">
+    <form [formGroup]="editAttrForm">
+      <xt-render [valueType]="editAttrValueType" [formGroup]="editAttrForm" displayMode="FULL_EDITABLE" ></xt-render>
     </form>
     <ng-template #footer>
-      <button type="button" pButton severity="secondary" variant="outlined" (click)="displayEditImage.set(false)">Cancel</button>
-      <button type="button" pButton (click)="updateImageFromForm()">Save</button>
+      <button type="button" pButton severity="secondary" variant="outlined" (click)="displayAttrDialog.set(false)">Cancel</button>
+      <button type="button" pButton (click)="updateAttrsFromForm()">Save</button>
     </ng-template>
   </p-dialog>
 } @else {

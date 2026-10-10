@@ -12,16 +12,17 @@ import { updateFormGroupWithValue, XtContext, XtRenderComponent, XtResolverServi
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorState, NodeSelection, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { Node, NodeType, Schema } from 'prosemirror-model';
+import { MarkType, Node, NodeType, Schema } from 'prosemirror-model';
 import { defaultMarkdownParser, defaultMarkdownSerializer, schema } from 'prosemirror-markdown';
-import { basicSetup, canInsert, openPrompt, TextField } from '../prose-mirror/basic-setup';
+import { basicSetup, canInsert, markActive, openPrompt, TextField } from '../prose-mirror/basic-setup';
 import { MarkdownPipe } from '../markdown/markdown-pipe';
 import { InlineMarkdownPipe } from '../markdown/inline-markdown-pipe';
 import { Tooltip } from 'primeng/tooltip';
 import { Dialog } from 'primeng/dialog';
-import { MenuElement, MenuItem } from 'prosemirror-menu';
+import { icons, MenuElement, MenuItem } from 'prosemirror-menu';
 import { type } from '@ngrx/signals';
 import { ButtonDirective } from 'primeng/button';
+import { toggleMark } from 'prosemirror-commands';
 
 @Component({
   selector: 'xt-editor-editor',
@@ -53,12 +54,20 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
   mySchema = schema;
 
   protected view: EditorView|null=null;
-  protected displayEditImage = signal<boolean>(false);
-  protected editImageForm = new FormGroup({});
+
+  /**
+   * Enable dialog box for image or link editing
+   * @protected
+   */
+  protected displayAttrDialog = signal<boolean>(false);
+  protected editAttrForm = new FormGroup({});
+  protected editAttrNodeType:NodeType|MarkType=(this.mySchema as any)['image'];
+  protected editAttrValueType: string = "editorImageType";
 
   constructor() {
     super();
     const imageType=this.resolver.typeResolver.findType('image');
+    const linkType=this.resolver.typeResolver.findType('link');
         // Register the type with the image type if supported
     this.resolver.registerTypes({
       editorImageType: {
@@ -67,10 +76,16 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
           title: "string",
           alt: "string"
         }
+      },
+      editorLinkType: {
+        children: {
+          href: (linkType==null)?"string":"link",
+          title: "string"
+        }
       }
     });
 
-    updateFormGroupWithValue (this.editImageForm, {}, 'editorImageType', this.resolver.typeResolver);
+    updateFormGroupWithValue (this.editAttrForm, {}, 'editorImageType', this.resolver.typeResolver);
 
     // Setup the editor once the divs are available
     effect(() => {
@@ -83,8 +98,8 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
           state: EditorState.create({
             doc: doc,
             plugins: basicSetup({schema: this.mySchema, menuContent: {
-              image: this.imageMenu(this.mySchema.nodes['image'], this)/*,
-                link: this.linkMenu ()*/
+                image: this.imageMenu(this.mySchema.nodes['image'], this),
+                link: this.linkMenu (this.mySchema.marks['link'], this)
               }})
           }),
           dispatchTransaction: this.handleTransactions.bind(this)
@@ -108,26 +123,51 @@ export class EditorComponent extends XtSimpleComponent<any> implements AfterView
         return canInsert(state, imageNodeType)
       },
       run(state, _, view) {
-        let { from, to } = state.selection, attrs = { };
+        let { from, to } = state.selection, attrs: {src?:string, title?:string, alt?:string} = { };
         if (state.selection instanceof NodeSelection && state.selection.node.type == imageNodeType)
           attrs = state.selection.node.attrs||{};
-        updateFormGroupWithValue(that.editImageForm, attrs, "editorImageType", that.resolver.typeResolver);
-        that.displayEditImage.set(true);
+        if (attrs.alt==null)
+          attrs.alt= state.doc.textBetween(from, to, " ");
+        that.editAttrValueType="editorImageType";
+        updateFormGroupWithValue(that.editAttrForm, attrs, that.editAttrValueType, that.resolver.typeResolver);
+        that.editAttrNodeType=imageNodeType;
+        that.displayAttrDialog.set(true);
       }
     });
   }
 
-  protected updateImageFromForm() {
+  protected updateAttrsFromForm() {
     if (this.view != null) {
-      this.view.dispatch(this.view.state.tr.replaceSelectionWith((this.mySchema.nodes['image']).createAndFill(this.editImageForm.value)!))
+      if (this.editAttrValueType == "editorImageType"){
+        this.view.dispatch(this.view.state.tr.replaceSelectionWith((this.mySchema.nodes['image']).createAndFill(this.editAttrForm.value)!))
+      } else if (this.editAttrValueType == "editorLinkType"){
+        toggleMark(this.editAttrNodeType as MarkType, this.editAttrForm.value)(this.view.state, this.view.dispatch)
+      }
       this.view.focus()
       }
-    this.displayEditImage.set(false);
+    this.displayAttrDialog.set(false);
   }
 
-  /*protected linkMenu():MenuElement {
-    return undefined;
-  }*/
+  protected linkMenu(linkMarkType:MarkType, that: EditorComponent):MenuElement {
+    return new MenuItem({
+      title: "Add or Remove link",
+      icon: icons["link"],
+      active(state) { return markActive(state, linkMarkType) },
+      enable(state) { return !state.selection.empty },
+      run(state, _, view) {
+        let { from, to } = state.selection, attrs: {href?:string, title?:string} = { };
+        if (markActive(state, linkMarkType)) {
+          toggleMark(linkMarkType)(state, view.dispatch)
+          return true
+        }
+        that.editAttrValueType="editorLinkType";
+        updateFormGroupWithValue(that.editAttrForm, attrs, that.editAttrValueType, that.resolver.typeResolver);
+        that.editAttrNodeType=linkMarkType;
+        that.displayAttrDialog.set(true);
+        return true;
+      }
+    });
+  }
 
   protected handleTransactions(tr: Transaction): void {
     if (this.view!=null) {

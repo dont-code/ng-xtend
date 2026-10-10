@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-finance-v1.2.1...xt-plugin-finance-v1.3.0) (2026-10-10)
+
+
+### Miscellaneous Chores
+
+* **xt-plugin-finance:** Synchronize xt-components versions
+
 ## [1.2.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-finance-v1.2.0...xt-plugin-finance-v1.2.1) (2026-09-12)
 
 

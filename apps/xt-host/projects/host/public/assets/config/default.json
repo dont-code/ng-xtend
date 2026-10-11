@@ -39,6 +39,14 @@
          "remote-entry":"https://dont-code.net/apps/latest/agenda-plugin/remoteEntry.json"
        },
        "config": {}
+     },    {
+       "id": "Editor",
+       "display-name": "Editor plugin",
+       "version": "1.0.0",
+       "info": {
+         "remote-entry":"https://dont-code.net/apps/latest/editor-plugin/remoteEntry.json"
+       },
+       "config": {}
      }
    ]
 }

@@ -38,6 +38,14 @@
          "remote-entry":"http://localhost:4205/remoteEntry.json"
        },
        "config": {}
+     },    {
+       "id": "Editor",
+       "display-name": "Editor plugin",
+       "version": "1.0.0",
+       "info": {
+         "remote-entry":"http://localhost:4206/remoteEntry.json"
+       },
+       "config": {}
      }
    ]
  }

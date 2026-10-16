@@ -1,0 +1,9 @@
+<h1>Configure your test environment</h1>
+<p-panel header="Document storage configuration">
+  <div class="flex flex-wrap m-12 gap-4 items-center" id="DocUrl">
+    <label for="inMemoryStore">Store documents in memory</label>
+    <p-checkbox id="inMemoryStore" [ngModel]="storeInMemory()" [binary]="true" (ngModelChange)="inMemoryChanged ($event)">In memory only</p-checkbox>
+    <label for="docUrl">Store documents from these services</label>
+    <p-autocomplete id="docUrl" [ngModel]="docUrl()" (ngModelChange)="docUrlChanged($event)" [suggestions]="listofDocUrls()"  [dropdown]="true" [forceSelection]="false" ></p-autocomplete>
+  </div>
+</p-panel>

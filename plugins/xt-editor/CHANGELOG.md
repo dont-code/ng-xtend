@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-editor-v1.3.0...xt-plugin-editor-v1.3.1) (2026-10-17)
+
+
+### Bug Fixes
+
+* plugin tester config ([1a491d0](https://github.com/dont-code/ng-xtend/commit/1a491d02f938174626fc16b91cdcd06bdbacf533))
+
 ## [1.3.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-editor-v1.2.1...xt-plugin-editor-v1.3.0) (2026-10-11)
 
 

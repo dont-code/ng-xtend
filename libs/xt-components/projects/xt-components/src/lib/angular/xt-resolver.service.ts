@@ -242,6 +242,16 @@ export class XtResolverService {
   });
 
   /**
+   * Unregisters a plugin and its components/workflows from the resolver.
+   * Types declared by the plugin are intentionally kept (they cannot be removed).
+   * @param name - The name of the plugin to remove
+   * @returns true if a plugin with that name was registered and removed
+   */
+  unregisterPlugin (name:string):boolean {
+    return this.pluginRegistry.unregisterPlugin(name);
+  }
+
+  /**
    * Computes the base url (everything up to the last slash) of a remoteEntry url.
    * Relative css urls declared by a plugin are resolved against that base.
    * @param remoteEntryUrl - the url of the plugin's remoteEntry.json

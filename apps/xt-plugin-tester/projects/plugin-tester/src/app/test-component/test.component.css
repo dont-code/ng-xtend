@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.component-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.625rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.component-item:hover {
+  background: rgba(100, 116, 139, 0.12);
+}
+
+.component-item--active {
+  border-color: var(--p-primary-color);
+  background: rgba(16, 185, 129, 0.12);
+}

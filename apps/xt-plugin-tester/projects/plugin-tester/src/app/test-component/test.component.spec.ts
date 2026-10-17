@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestComponent } from './test.component';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { XtResolverService } from 'xt-components';
+import { XtResolverService, XtSimpleComponent } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { AutoComplete } from 'primeng/autocomplete';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { MessageService } from 'primeng/api';
+import { provideRouter } from '@angular/router';
 
 describe('TestComponent', () => {
   let component: TestComponent;
@@ -16,7 +18,7 @@ describe('TestComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestComponent],
-      providers: [provideZonelessChangeDetection(), provideNoopAnimations()]
+      providers: [provideZonelessChangeDetection(), provideNoopAnimations(), MessageService, provideRouter([])]
     })
     .compileComponents();
 
@@ -29,6 +31,47 @@ describe('TestComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should expose a fresh, filtered suggestion array on each search', () => {
+    resolverService.registerPlugin({
+      name: 'TestPlugin9',
+      components: [
+        {
+          componentName: 'TestComponent91',
+          componentClass: XtSimpleComponent,
+          typesHandled: ['TestType91'],
+        },
+        {
+          componentName: 'TestComponent92',
+          componentClass: XtSimpleComponent,
+          typesHandled: ['TestType92'],
+        },
+      ],
+      types: {
+        TestType91: 'string',
+        TestType92: 'string',
+      },
+    });
+    fixture.detectChanges();
+
+    // PrimeNG's AutoComplete only clears its internal loading state when the
+    // `suggestions` reference changes, so each search MUST produce a new array.
+    component.completeName({ query: '' });
+    const first = component.suggestions();
+    expect(first.length).toBeGreaterThan(0);
+
+    component.completeName({ query: '' });
+    const second = component.suggestions();
+    expect(second).not.toBe(first);
+    expect(second).toEqual(first);
+
+    // Filtering is applied.
+    component.completeName({ query: 'TestComponent91' });
+    expect(component.suggestions()[0]?.items).toHaveLength(1);
+
+    component.completeName({ query: 'no-such-component' });
+    expect(component.suggestions()).toHaveLength(0);
   });
 
   /**it('should display hello component', async () => {

@@ -1,39 +1,213 @@
-<h1>Test your component</h1>
-<p-fieldset legend="Component Selecter" >
-  <p class="text-lg font-medium">Select component to test</p>
-  <div class="flex flex-row gap-2 items-center">
-    <label for="switcher" class="flex-none">Component</label>
-    <div class="w-lg flex-initial">
-      <p-autocomplete id="switcher" [ngModel]="component()" [group]="true" [fluid]="true" (onSelect)="componentSwitch($event)" [dropdown]="true" [suggestions]="suggestedComponents()" (completeMethod)="completeName($event)" optionLabel="componentName" >
-        <ng-template let-plugin #group>
-          <div class="font-medium text-lg text-shadow-lg">{{ plugin.pluginName }}</div>
-        </ng-template>
-        <ng-template let-component #item>
-          <div class="font-normal text-base px-4">{{ component.componentName }}</div>
-        </ng-template>
-        <ng-template #header>
-          <div class="font-light text-xs px-3 py-2">Loaded Components</div>
-        </ng-template>
-      </p-autocomplete>
-    </div>
-  </div>
-</p-fieldset>
-<p-panel header="Interact with the selected component">
-  @if (!componentValid()) {
-    <h2>Component selected above will be displayed here.</h2>
-  } @else {
-  <h2>Edit Mode</h2>
-  <form id="editView" [formGroup]="mainForm">
-    <div class="flex gap-2 items-center">
-      <xt-render [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_EDITABLE" subName="TestComponent" [formGroup]="mainForm"></xt-render>
-    </div>
-  </form>
-    Form Value is {{mainForm.get('TestComponent')?.value | json}}, Form is {{mainForm.pristine?"pristine":"Dirty"}}
-
-  <h2>View Inline Mode</h2>
-  <xt-render id="inlineView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="INLINE_VIEW" subName="TestComponent" [value]="value()" ></xt-render>
-
-  <h2>Full View Mode</h2>
-  <xt-render id="fullView" [componentType]="componentClass()" [valueType]="valueType()" displayMode="FULL_VIEW" subName="TestComponent" [value]="value()"></xt-render>
+<app-page-header
+  icon="pi pi-play"
+  title="Test"
+  subtitle="Pick a component and try it in edit and view modes."
+>
+  @if (componentValid()) {
+    <p-button
+      label="Reset"
+      icon="pi pi-refresh"
+      severity="secondary"
+      [outlined]="true"
+      pTooltip="Reset the edited form to empty"
+      (onClick)="resetForm()"
+    />
+    <p-button
+      label="Copy value"
+      icon="pi pi-copy"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="copyValue()"
+    />
   }
-</p-panel>
+</app-page-header>
+
+@if (totalComponents() === 0) {
+  <div
+    class="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-white/50 px-6 py-16 text-center dark:border-slate-700 dark:bg-slate-900/40"
+  >
+    <i class="pi pi-th-large text-4xl text-slate-300 dark:text-slate-600"></i>
+    <p class="text-base font-medium">No components to test</p>
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      Load a plugin first, then come back here to test its components.
+    </p>
+    <a routerLink="/" class="mt-2">
+      <p-button label="Go to plugins" icon="pi pi-box" />
+    </a>
+  </div>
+} @else {
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-[20rem_minmax(0,1fr)]">
+    <aside
+      class="flex max-h-[75vh] flex-col overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+    >
+      <div class="border-b border-slate-200 p-3 dark:border-slate-800">
+        <p-autocomplete
+          inputId="switcher"
+          [fluid]="true"
+          [group]="true"
+          [dropdown]="true"
+          optionLabel="componentName"
+          optionGroupLabel="pluginName"
+          optionGroupChildren="items"
+          [suggestions]="suggestions()"
+          (completeMethod)="completeName($event)"
+          (onSelect)="componentSwitch($event)"
+          placeholder="Search components..."
+        >
+          <ng-template let-plugin #group>
+            <div class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ plugin.pluginName }}</div>
+          </ng-template>
+          <ng-template let-component #item>
+            <div class="px-3 py-1 font-normal">{{ component.componentName }}</div>
+          </ng-template>
+        </p-autocomplete>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-2">
+        @for (group of componentsByPlugin(); track group.pluginName) {
+          <div class="mb-2">
+            <div class="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              {{ group.pluginName }}
+            </div>
+            @for (comp of group.items; track comp.componentName) {
+              <button
+                type="button"
+                class="component-item"
+                [class.component-item--active]="isSelected(comp)"
+                (click)="selectComponent(comp)"
+              >
+                <span class="flex min-w-0 flex-col items-start">
+                  <span class="truncate text-sm font-medium">{{ comp.componentName }}</span>
+                  <span class="truncate text-xs text-slate-500 dark:text-slate-400">
+                    {{ comp.typesHandled.join(', ') }}
+                  </span>
+                </span>
+                @if (isSelected(comp)) {
+                  <i class="pi pi-check ml-auto text-emerald-500"></i>
+                }
+              </button>
+            }
+          </div>
+        } @empty {
+          <p class="p-4 text-center text-sm text-slate-500 dark:text-slate-400">
+            No component matches your search.
+          </p>
+        }
+      </div>
+    </aside>
+
+    <section class="min-w-0">
+      @if (!componentValid()) {
+        <div
+          class="flex h-full min-h-[20rem] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-white/50 px-6 py-16 text-center dark:border-slate-700 dark:bg-slate-900/40"
+        >
+          <i class="pi pi-arrow-left text-4xl text-slate-300 dark:text-slate-600"></i>
+          <p class="text-base font-medium">Select a component</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">
+            Choose a component on the left to edit and preview it.
+          </p>
+        </div>
+      } @else {
+        <div class="mb-3 flex flex-wrap items-center gap-2">
+          <span class="text-lg font-semibold">{{ component()?.componentName }}</span>
+          @if (valueType(); as type) {
+            <p-tag severity="secondary" [value]="type" icon="pi pi-database" />
+          }
+          <p-tag
+            class="ml-auto"
+            [severity]="dirty() ? 'warn' : 'success'"
+            [value]="dirty() ? 'Modified' : 'Pristine'"
+            [icon]="dirty() ? 'pi pi-pencil' : 'pi pi-check'"
+          />
+        </div>
+
+        <p-tabs [value]="activeTab()" (valueChange)="activeTab.set($event)">
+          <p-tablist>
+            <p-tab [value]="0"><i class="pi pi-pencil mr-2"></i>Edit</p-tab>
+            <p-tab [value]="1"><i class="pi pi-eye mr-2"></i>Inline view</p-tab>
+            <p-tab [value]="2"><i class="pi pi-expand mr-2"></i>Full view</p-tab>
+            <p-tab [value]="3"><i class="pi pi-list mr-2"></i>List view</p-tab>
+          </p-tablist>
+
+          <p-tabpanels>
+            <p-tabpanel [value]="0">
+              <p class="mb-3 text-xs text-slate-500 dark:text-slate-400">
+                Editable form (FULL_EDITABLE). Changes are reflected in the value below.
+              </p>
+              <form [formGroup]="mainForm">
+                <xt-render
+                  [componentType]="componentClass()"
+                  [valueType]="valueType()"
+                  displayMode="FULL_EDITABLE"
+                  subName="TestComponent"
+                  [formGroup]="mainForm"
+                ></xt-render>
+              </form>
+            </p-tabpanel>
+
+            <p-tabpanel [value]="1">
+              <p class="mb-3 text-xs text-slate-500 dark:text-slate-400">
+                Compact read-only rendering (INLINE_VIEW).
+              </p>
+              <xt-render
+                [componentType]="componentClass()"
+                [valueType]="valueType()"
+                displayMode="INLINE_VIEW"
+                subName="TestComponent"
+                [value]="value()"
+              ></xt-render>
+            </p-tabpanel>
+
+            <p-tabpanel [value]="2">
+              <p class="mb-3 text-xs text-slate-500 dark:text-slate-400">
+                Full read-only rendering (FULL_VIEW).
+              </p>
+              <xt-render
+                [componentType]="componentClass()"
+                [valueType]="valueType()"
+                displayMode="FULL_VIEW"
+                subName="TestComponent"
+                [value]="value()"
+              ></xt-render>
+            </p-tabpanel>
+
+            <p-tabpanel [value]="3">
+              <p class="mb-3 text-xs text-slate-500 dark:text-slate-400">
+                List rendering (LIST_VIEW), used inside collections.
+              </p>
+              <xt-render
+                [componentType]="componentClass()"
+                [valueType]="valueType()"
+                displayMode="LIST_VIEW"
+                subName="TestComponent"
+                [value]="value()"
+              ></xt-render>
+            </p-tabpanel>
+          </p-tabpanels>
+        </p-tabs>
+
+        <p-panel styleClass="mt-4">
+          <ng-template #header>
+            <div class="flex w-full items-center gap-2">
+              <span class="font-semibold">Value</span>
+              <p-button
+                class="ml-auto"
+                icon="pi pi-copy"
+                severity="secondary"
+                [text]="true"
+                [rounded]="true"
+                size="small"
+                pTooltip="Copy JSON"
+                (onClick)="copyValue()"
+              />
+            </div>
+          </ng-template>
+          <pre
+            class="max-h-64 overflow-auto rounded-lg bg-slate-100 p-3 text-xs leading-relaxed text-slate-800 dark:bg-slate-950 dark:text-slate-200"
+            >{{ valueJson() }}</pre
+          >
+        </p-panel>
+      }
+    </section>
+  </div>
+}

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PluginManagerComponent } from './plugin-manager.component';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { XtCompositeComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -17,7 +17,7 @@ describe('PluginManagerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PluginManagerComponent],
-      providers: [MessageService, provideNoopAnimations(), provideHttpClient(), provideHttpClientTesting()]
+      providers: [MessageService, ConfirmationService, provideNoopAnimations(), provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();
 

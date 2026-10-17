@@ -1,59 +1,51 @@
-import { Component, inject, signal } from '@angular/core';
-import { AutoComplete } from 'primeng/autocomplete';
-import { Checkbox } from 'primeng/checkbox';
-import { Panel } from 'primeng/panel';
-import { XtApiStoreProvider, XtMemoryStoreProvider, XtStoreManagerService } from 'xt-store';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Fieldset } from 'primeng/fieldset';
+import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { SelectButton } from 'primeng/selectbutton';
+import { Panel } from 'primeng/panel';
+import { Button } from 'primeng/button';
+import { Divider } from 'primeng/divider';
+import { Tag } from 'primeng/tag';
+import { TesterSessionService } from '../core/tester-session.service';
+import { PageHeaderComponent } from '../shared/page-header/page-header.component';
+
+type StorageMode = { label: string; value: boolean };
 
 @Component({
   selector: 'app-test-configure',
-  imports: [
-    AutoComplete,
-    Checkbox,
-    Panel,
-    FormsModule,
-    Fieldset
-  ],
+  imports: [FormsModule, AutoComplete, SelectButton, Panel, Button, Divider, Tag, PageHeaderComponent],
   templateUrl: './test-configure.component.html',
   styleUrl: './test-configure.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestConfigureComponent {
+  protected readonly session = inject(TesterSessionService);
 
-  protected storeMgr= inject(XtStoreManagerService);
-  protected apiProvider = inject (XtApiStoreProvider);
+  readonly modes: StorageMode[] = [
+    { label: 'In memory', value: true },
+    { label: 'Remote service', value: false },
+  ];
 
-  storeInMemory = signal(true);
-  docUrl = signal<string|null>(null);
+  /** true = memory, false = remote service. Initialised from the session. */
+  readonly mode = signal<boolean>(this.session.inMemory());
+  readonly docUrl = signal<string | null>(this.session.docUrl());
 
+  readonly filteredDocUrls = signal<string[]>([]);
 
-  updateStore() {
-    if (this.storeInMemory()) {
-      this.storeMgr.setDefaultStoreProvider(new XtMemoryStoreProvider());
-    }else {
-      this.apiProvider.docUrl=this.docUrl()??'';
-      this.storeMgr.setDefaultStoreProvider(this.apiProvider);
-    }
+  readonly modeHelp = computed(() =>
+    this.mode()
+      ? 'Documents are kept only for the duration of this session. Nothing is persisted.'
+      : 'Documents are read from and written to a remote service (the Dont-Code document API).'
+  );
+
+  filterDocUrls(event: AutoCompleteCompleteEvent): void {
+    const query = event.query ?? '';
+    this.filteredDocUrls.set(
+      this.session.knownDocUrls.filter((url) => url.toLowerCase().includes(query.toLowerCase()))
+    );
   }
 
-  listofDocUrls():string[] {
-    return [
-      'https://test.dont-code.net/demo/documents',
-      'https://collinfr.net/dont-code/documents',
-      'http://localhost:8084/documents'];
+  apply(): void {
+    this.session.applyConfig(this.mode(), this.mode() ? null : this.docUrl());
   }
-
-  docUrlChanged($event: string) {
-    if (($event==null)||($event.length==0)){
-      this.storeInMemory.set(true);
-    } else  this.storeInMemory.set(false);
-    this.docUrl.set($event);
-    this.updateStore();
-  }
-
-  inMemoryChanged($event: boolean) {
-    this.storeInMemory.set($event);
-    this.updateStore();
-  }
-
 }

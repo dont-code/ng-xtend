@@ -3,6 +3,25 @@
 @import "primeicons/primeicons.css";
 @import "tailwindcss";
 
+/*
+ * The plugin tester supports a manual light/dark switch.
+ * PrimeNG toggles its dark tokens through the `.app-dark` class on <html>.
+ * We align Tailwind's `dark:` variant with that same class so both design
+ * systems switch together.
+ */
+@custom-variant dark (&:where(.app-dark, .app-dark *));
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--p-content-background);
+  color: var(--p-text-color);
+}
+
 /* Style needed for editor plugin which uses the standard HTML elements */
 @layer base {
   h1 {

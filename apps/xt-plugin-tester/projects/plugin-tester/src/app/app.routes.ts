@@ -5,15 +5,34 @@ import { HierarchyTestComponent } from './hierarchy-test/hierarchy-test.componen
 import { PluginManagerComponent } from './plugin-manager/plugin-manager.component';
 import { TestConfigureComponent } from './test-configure/test-configure.component';
 
-export const routes: Routes = [{
-    path:'', component:PluginManagerComponent
-}, {
-  path:'config',component:TestConfigureComponent
-},{
-  path:'test', component:TestComponent
-}, {
-    path:'form', component:XtFormTestComponent
-}, {
-    path:'hierarchy', component:HierarchyTestComponent
-}
+export const routes: Routes = [
+  {
+    path: '',
+    component: PluginManagerComponent,
+    title: 'Plugins · Plugin Tester',
+  },
+  {
+    path: 'config',
+    component: TestConfigureComponent,
+    title: 'Configuration · Plugin Tester',
+  },
+  {
+    path: 'test',
+    component: TestComponent,
+    title: 'Test · Plugin Tester',
+  },
+  {
+    path: 'form',
+    component: XtFormTestComponent,
+    title: 'Form editor · Plugin Tester',
+  },
+  {
+    path: 'hierarchy',
+    component: HierarchyTestComponent,
+    title: 'Hierarchy · Plugin Tester',
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

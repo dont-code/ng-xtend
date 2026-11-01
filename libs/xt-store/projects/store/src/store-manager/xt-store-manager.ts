@@ -266,7 +266,7 @@ export class XtStoreManager {
    * Sets a test provider, overriding all normal provider resolution.
    * @param testProvider - The provider to use during tests
    */
-  public static setTestMode (testProvider:XtStoreProvider<any>) {
+  public static setTestMode (testProvider:XtStoreProvider<any> | null) {
     this.testProvider=testProvider;
   }
 

@@ -17,6 +17,7 @@ describe('Store Manager', () => {
     const storeManager = new XtStoreManager();
     const defaultProvider = new DummyStoreProvider<any>();
 
+    XtStoreManager.setTestMode(null);
     storeManager.setProvider(defaultProvider);
     expect(storeManager.getProvider() == defaultProvider).toBeTruthy();
     expect(storeManager.getDefaultProvider() == defaultProvider).toBeTruthy();
@@ -44,6 +45,7 @@ describe('Store Manager', () => {
     const defaultProvider = new DummyStoreProvider<any>();
     const testProvider = new DummyStoreProvider<any>();
 
+    XtStoreManager.setTestMode(null);
     storeManager.setProvider(defaultProvider);
     storeManager.setProvider(testProvider, 'test/position');
     expect(storeManager.getDefaultProvider() == defaultProvider).toBeTruthy();

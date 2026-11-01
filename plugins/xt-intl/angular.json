@@ -68,7 +68,10 @@
 					}
 				},
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "intl-plugin:esbuild:development"
+          }
         },
 				"esbuild": {
           "builder": "@angular/build:application",

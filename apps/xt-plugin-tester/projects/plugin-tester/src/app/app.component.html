@@ -1,16 +1,89 @@
-<p-toast></p-toast>
-<h1>Test your plugins here</h1>
-<p-toolbar>
-  <ng-template #start>
-    <div class="flex items-center gap-2">
-      <a routerLink="/"><p-button icon="pi pi-download" ></p-button> </a>
-      <i class="pi pi-arrow-right"></i>
-      <a routerLink="/config"><p-button icon="pi pi-cog"></p-button></a>
-      <i class="pi pi-arrow-right"></i>
-      <a routerLink="/test"><p-button icon="pi pi-equals"></p-button></a>
-      <a routerLink="/form" ><p-button icon="pi pi-file-edit" [disabled]="true"></p-button></a>
-      <a routerLink="/hierarchy"><p-button icon="pi pi-sitemap" [disabled]="true"></p-button></a>
+<p-toast position="top-right" />
+<p-confirmDialog />
+
+<div class="flex min-h-screen flex-col bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+  <header
+    class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90"
+  >
+    <div class="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
+      <span
+        class="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-emerald-500 text-white shadow-sm"
+      >
+        <i class="pi pi-bolt text-xl"></i>
+      </span>
+      <div class="min-w-0">
+        <h1 class="truncate text-lg font-bold leading-tight">Test your plugins here</h1>
+        <p class="hidden text-xs text-slate-500 sm:block dark:text-slate-400">
+          Load, configure and test your ng-xtend plugins
+        </p>
+      </div>
+
+      <div class="ml-auto flex items-center gap-2">
+        <p-tag
+          [severity]="session.hasPlugins() ? 'success' : 'secondary'"
+          [value]="pluginCountLabel()"
+          [icon]="session.hasPlugins() ? 'pi pi-check-circle' : 'pi pi-inbox'"
+        />
+        <p-tag
+          class="hidden sm:inline-flex"
+          severity="secondary"
+          [value]="componentCountLabel()"
+          icon="pi pi-th-large"
+        />
+        <p-button
+          [icon]="theme.dark() ? 'pi pi-sun' : 'pi pi-moon'"
+          [rounded]="true"
+          [text]="true"
+          (onClick)="theme.toggle()"
+          [ariaLabel]="theme.dark() ? 'Switch to light theme' : 'Switch to dark theme'"
+          pTooltip="Toggle light / dark theme"
+          tooltipPosition="left"
+        />
+      </div>
     </div>
-  </ng-template>
-</p-toolbar>
-<router-outlet />
+
+    <nav class="mx-auto w-full max-w-7xl px-4 pb-3 sm:px-6">
+      <ol class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        @for (step of steps(); track step.path; let i = $index) {
+          <li>
+            <a
+              class="step"
+              [routerLink]="step.path"
+              routerLinkActive="step--active"
+              [routerLinkActiveOptions]="{ exact: step.exact }"
+            >
+              <span class="step__num">
+                @if (step.done) {
+                  <i class="pi pi-check text-xs"></i>
+                } @else {
+                  {{ i + 1 }}
+                }
+              </span>
+              <span class="min-w-0">
+                <span class="block truncate text-sm font-semibold">{{ step.label }}</span>
+                <span class="step__desc">{{ step.desc }}</span>
+              </span>
+              <i [class]="step.icon + ' ml-auto text-lg text-slate-400 dark:text-slate-500'"></i>
+            </a>
+          </li>
+        }
+      </ol>
+    </nav>
+  </header>
+
+  <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
+    <router-outlet />
+  </main>
+
+  <footer
+    class="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-x-4 gap-y-1 px-4 pb-8 pt-2 text-xs text-slate-400 sm:px-6 dark:text-slate-500"
+  >
+    <span class="inline-flex items-center gap-1">
+      <i class="pi pi-wrench"></i>
+      Advanced tests:
+    </span>
+    @for (adv of advanced; track adv.path) {
+      <a class="adv-link" [routerLink]="adv.path">{{ adv.label }}</a>
+    }
+  </footer>
+</div>

@@ -20,5 +20,22 @@ describe('Special fields helper', () => {
     expect(fields.displayTemplate).toBeDefined();
     expect(fields.dateFields![0]).toBe('on');
 
+  });
+
+  it ('should support series', () => {
+    let fields=new SpecialFields();
+    xtTypeManager().addRootType("Test Type", {
+      name: 'string',
+      id: 'string',
+      on: 'date',
+      value: 'number'
+    });
+    fields = XtSpecialFieldsHelper.findSpecialFields("Test Type", xtTypeManager().findType('Test Type') as XtTypeHierarchy, fields);
+
+    expect(fields.idField).toBe('id');
+    expect(fields.numericValueField).toBe('value');
+    expect(fields.displayTemplate).toBeDefined();
+    expect(fields.dateFields![0]).toBe('on');
+
   })
 })

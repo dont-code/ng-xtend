@@ -1,47 +1,42 @@
 import { JsonPipe, NgComponentOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
+import { Button } from 'primeng/button';
+import { Panel } from 'primeng/panel';
+import { Tag } from 'primeng/tag';
 import { XtBaseContext, XtContext } from 'xt-components';
-//import { SampleHelloComponent, SampleCurrencyComponent } from 'xt-plugin-sample';
+import { PageHeaderComponent } from '../shared/page-header/page-header.component';
 
 @Component({
   selector: 'app-xt-form-plugin-tester',
   standalone: true,
-  imports: [NgComponentOutlet, ReactiveFormsModule, ButtonModule, JsonPipe],
+  imports: [NgComponentOutlet, ReactiveFormsModule, Button, Panel, Tag, JsonPipe, PageHeaderComponent],
   templateUrl: './xt-form-test.component.html',
   styleUrl: './xt-form-test.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class XtFormTestComponent {
+  protected readonly builder = inject(FormBuilder);
 
-  mainForm = this.builder.group ({
+  mainForm = this.builder.group({
     currency: ['EUR'],
-    other: ['']
+    other: [''],
   });
 
-  constructor (protected builder:FormBuilder) {
-
-  }
-
-  validateForm () {
+  validateForm(): void {
     this.mainForm.updateValueAndValidity();
   }
 
-  currencyComponent () {
-  //  return SampleCurrencyComponent;
+  currencyComponent() {
     return null;
   }
 
-  otherComponent () {
-    //return SampleHelloComponent;
+  otherComponent() {
     return null;
   }
 
-  contextFor (subComponentName:string, inlineView:boolean, readOnly:boolean): XtContext<any> {
-    const displayType=readOnly?(inlineView?'INLINE_VIEW':'FULL_VIEW'):'FULL_EDITABLE';
+  contextFor(subComponentName: string, inlineView: boolean, readOnly: boolean): XtContext<any> {
+    const displayType = readOnly ? (inlineView ? 'INLINE_VIEW' : 'FULL_VIEW') : 'FULL_EDITABLE';
     return new XtBaseContext(displayType, subComponentName, this.mainForm);
   }
-
-
 }

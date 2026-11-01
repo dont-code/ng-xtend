@@ -107,6 +107,42 @@ export class XtPluginRegistry {
     }
 
     /**
+     * Unregisters a plugin and its components/workflows.
+     *
+     * Types and type handlers registered by the plugin are intentionally left
+     * in place, as the type resolver does not support removal. Removing the
+     * components is enough for the resolver to stop selecting them.
+     *
+     * @param name - The name of the plugin to remove
+     * @returns true if a plugin with that name was registered and removed
+     */
+    unregisterPlugin (name:string):boolean {
+      const info = this.pluginRegistry.get(name);
+      if (info == null) return false;
+      this.pluginRegistry.delete(name);
+
+      const removedComponents = new Set<string>();
+      if (info.components != null) {
+        for (const comp of info.components) {
+          this.componentRegistry.delete(comp.componentName);
+          removedComponents.add(comp.componentName);
+        }
+      }
+
+      if (info.workflows != null) {
+        for (const wfw of info.workflows) {
+          this.workflowRegistry.delete(wfw.name);
+        }
+      }
+
+      if (removedComponents.size > 0) this.componentByTypeCache.clear();
+
+      this.listComponents.update((array) => array.filter((comp) => !removedComponents.has(comp.componentName)));
+      this.listPlugins.update((array) => array.filter((plugin) => plugin.name !== name));
+      return true;
+    }
+
+    /**
      * Registers a workflow component
      * @param info - The workflow information to register
      */

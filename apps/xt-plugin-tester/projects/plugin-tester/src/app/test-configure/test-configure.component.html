@@ -1,9 +1,76 @@
-<h1>Configure your test environment</h1>
-<p-panel header="Document storage configuration">
-  <div class="flex flex-wrap m-12 gap-4 items-center" id="DocUrl">
-    <label for="inMemoryStore">Store documents in memory</label>
-    <p-checkbox id="inMemoryStore" [ngModel]="storeInMemory()" [binary]="true" (ngModelChange)="inMemoryChanged ($event)">In memory only</p-checkbox>
-    <label for="docUrl">Store documents from these services</label>
-    <p-autocomplete id="docUrl" [ngModel]="docUrl()" (ngModelChange)="docUrlChanged($event)" [suggestions]="listofDocUrls()"  [dropdown]="true" [forceSelection]="false" ></p-autocomplete>
-  </div>
-</p-panel>
+<app-page-header
+  icon="pi pi-cog"
+  title="Configuration"
+  subtitle="Choose where the tester stores documents while you test plugins."
+/>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+  <p-panel header="Document storage" styleClass="lg:col-span-2">
+    <div class="flex flex-col gap-5">
+      <div>
+        <span class="mb-2 block text-sm font-medium">Storage mode</span>
+        <p-selectButton
+          [options]="modes"
+          optionLabel="label"
+          optionValue="value"
+          [allowEmpty]="false"
+          [ngModel]="mode()"
+          (ngModelChange)="mode.set($event)"
+        />
+        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ modeHelp() }}</p>
+      </div>
+
+      @if (!mode()) {
+        <div>
+          <label for="docUrl" class="mb-1 block text-sm font-medium">Document service url</label>
+          <p-autocomplete
+            inputId="docUrl"
+            [fluid]="true"
+            [dropdown]="true"
+            [ngModel]="docUrl()"
+            (ngModelChange)="docUrl.set($event)"
+            [suggestions]="filteredDocUrls()"
+            (completeMethod)="filterDocUrls($event)"
+            placeholder="https://..."
+          />
+          <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Pick one of the known endpoints or type your own.
+          </p>
+        </div>
+      }
+
+      <div class="flex justify-end">
+        <p-button label="Apply configuration" icon="pi pi-check" (onClick)="apply()" />
+      </div>
+    </div>
+  </p-panel>
+
+  <p-panel header="Current">
+    <div class="flex flex-col gap-3 text-sm">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-database text-slate-400"></i>
+        <span class="text-slate-500 dark:text-slate-400">Storage</span>
+        <span class="ml-auto max-w-[60%] truncate text-right font-medium" [title]="session.storageSummary()">
+          {{ session.storageSummary() }}
+        </span>
+      </div>
+      <p-divider />
+      <div class="flex items-center gap-2">
+        <i class="pi pi-box text-slate-400"></i>
+        <span class="text-slate-500 dark:text-slate-400">Plugins loaded</span>
+        <span class="ml-auto font-medium">{{ session.pluginCount() }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="pi pi-th-large text-slate-400"></i>
+        <span class="text-slate-500 dark:text-slate-400">Components</span>
+        <span class="ml-auto font-medium">{{ session.componentCount() }}</span>
+      </div>
+
+      @if (session.configApplied()) {
+        <div class="mt-2">
+          <p-tag severity="success" icon="pi pi-check" value="Configuration applied" />
+        </div>
+      }
+    </div>
+  </p-panel>
+</div>

@@ -64,7 +64,8 @@ export class XtSpecialFieldsHelper {
         }
       }
     }
-    if ((curIdScore.score>0)&&(specialFields?.idField==null)) {
+    if ((curIdScore.score>79)&&(specialFields?.idField==null)) {
+      // We are extra cautious about id field as it's quite important
       specialFields.idField=curIdScore.field;
     }
     if( (curNumericalScore.score>0) && (specialFields?.numericValueField==null)) {
@@ -99,11 +100,27 @@ export class XtSpecialFieldsHelper {
         XtSpecialFieldsHelper.scoreNumericalFieldFromProperty(prop, first[prop], curNumericalScore);
         XtSpecialFieldsHelper.scoreDisplayFieldFromProperty(prop, first[prop], curDisplayScore);
       }
-      if (curIdScore.score>0) {
-        const test=data.length>1?data[Math.floor((data.length+1)/2)]:null;
-        if ((test==null) || (test[curIdScore.field]!=first[curIdScore.field]))  // Just check that another element doesn't have the same value as an id should be unique
+        // We are extra careful with auto-detecting Ids, as it's a key property
+      if (curIdScore.score>79) {
+          // Check the uniqueness of the Id in the existing data
+        const set = new Set<any>();
+        let duplicateFound=false;
+        for (const item of data) {
+          const idVal= item[curIdScore.field];
+          if (idVal!=null) {
+            if (set.has(idVal)) {
+              console.warn("Autodetected Unique Key "+curIdScore.field+" without data uniqueness.");
+              duplicateFound=true;
+              break;
+            } else {
+              set.add(idVal);
+            }
+          }
+        }
+        if (!duplicateFound)
           existingFields.idField=curIdScore.field;
       }
+
       if (curDisplayScore.score>0) {
         existingFields.setDisplayTemplate('<%='+curDisplayScore.field+'%>');
       }

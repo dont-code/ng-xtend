@@ -1,5 +1,15 @@
 @if (hasError()) {
-  <p-panel header="Errors">
-    {{ errors()|json}}
-  </p-panel>
+  <div
+    class="rounded-lg border border-red-200 bg-red-50 p-3 text-sm dark:border-red-900 dark:bg-red-950/40"
+  >
+    <div class="flex items-center gap-2 font-medium text-red-700 dark:text-red-300">
+      <i class="pi pi-exclamation-circle"></i>
+      <span>Please fix the following:</span>
+    </div>
+    <ul class="mt-1 list-disc pl-5 text-red-600 dark:text-red-400">
+      @for (message of errorMessages(); track message) {
+        <li>{{ message }}</li>
+      }
+    </ul>
+  </div>
 }

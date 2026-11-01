@@ -1,6 +1,24 @@
-<h1>Hierarchy Editor</h1>
+<app-page-header
+  icon="pi pi-sitemap"
+  title="Hierarchy"
+  subtitle="Experimental scratch page for nested types and references."
+>
+  <p-tag severity="warn" icon="pi pi-flask" value="Experimental" />
+</app-page-header>
 
-<form [formGroup]="mainForm">
-    <input type="text" pInputText formControlName="toWho" />
-
-</form>
+<p-panel header="Nested value">
+  <form [formGroup]="mainForm" class="flex flex-col gap-4">
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      This page registers a small nested type and edits it through a plain form. It is not part of
+      the main plugin testing workflow.
+    </p>
+    <div class="flex flex-col gap-2">
+      <label for="toWho" class="text-sm font-medium">To who</label>
+      <input id="toWho" pInputText formControlName="toWho" />
+    </div>
+    <pre
+      class="max-h-64 overflow-auto rounded-lg bg-slate-100 p-3 text-xs text-slate-800 dark:bg-slate-950 dark:text-slate-200"
+      >{{ mainForm.value | json }}</pre
+    >
+  </form>
+</p-panel>

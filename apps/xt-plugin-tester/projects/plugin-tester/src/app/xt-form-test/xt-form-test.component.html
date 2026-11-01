@@ -1,11 +1,30 @@
+<app-page-header
+  icon="pi pi-file-edit"
+  title="Form editor"
+  subtitle="Experimental scratch page for low-level form integration."
+>
+  <p-tag severity="warn" icon="pi pi-flask" value="Experimental" />
+</app-page-header>
 
-<h1>Form Editor</h1>
-
-<form [formGroup]="mainForm">
-    <ng-container *ngComponentOutlet="currencyComponent(); inputs: {context:contextFor ('currency', false, false)}" />
-    <ng-container *ngComponentOutlet="otherComponent(); inputs: {context:contextFor ('other', false, false)}" />
-    <p-button label="Validate" (onClick)="validateForm()" />
-Result:
-<p>Status is {{mainForm.status}}</p>
-<p>Value is {{mainForm.value | json}}</p>
-</form>
+<p-panel header="Scratch form">
+  <form [formGroup]="mainForm" class="flex flex-col gap-4">
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      This page is a placeholder for testing custom components against a plain reactive form. It is
+      not part of the main plugin testing workflow.
+    </p>
+    <ng-container
+      *ngComponentOutlet="currencyComponent(); inputs: { context: contextFor('currency', false, false) }"
+    />
+    <ng-container
+      *ngComponentOutlet="otherComponent(); inputs: { context: contextFor('other', false, false) }"
+    />
+    <div class="flex items-center gap-2">
+      <p-button label="Validate" icon="pi pi-check" (onClick)="validateForm()" />
+      <p-tag severity="secondary" [value]="'Status: ' + mainForm.status" />
+    </div>
+    <pre
+      class="max-h-64 overflow-auto rounded-lg bg-slate-100 p-3 text-xs text-slate-800 dark:bg-slate-950 dark:text-slate-200"
+      >{{ mainForm.value | json }}</pre
+    >
+  </form>
+</p-panel>

@@ -117,7 +117,7 @@ export function withXtStoreProvider<T extends ManagedData = ManagedData> (entity
        * Fetches all entities from the provider and replaces the store's entity collection.
        * @returns A promise that resolves when entities are loaded
        */
-      fetchEntities (): Promise<void> {
+      async fetchEntities (): Promise<void> {
         patchState(store, {loading:true});
         return lastValueFrom(this._callProviderSearchEntities().pipe ( mergeMap((entities:T[]) => {
           return this._resolveReferences(entities);

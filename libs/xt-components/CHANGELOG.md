@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v1.3.0...xt-components-v1.4.0) (2026-11-01)
+
+
+### Features
+
+* plugin reloaded ([324c3ca](https://github.com/dont-code/ng-xtend/commit/324c3ca25eb38948743de5ffcc534ad2ae7de4ca))
+
 ## [1.3.0](https://github.com/dont-code/ng-xtend/compare/xt-components-v1.2.1...xt-components-v1.3.0) (2026-10-11)
 
 

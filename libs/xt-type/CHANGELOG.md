@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.12.0...xt-type-v0.12.1) (2026-11-01)
+
+
+### Bug Fixes
+
+* extra cautious for IdField ([aee4d32](https://github.com/dont-code/ng-xtend/commit/aee4d325ed7f0b88bc7dc620fc2fe1632df4d962))
+
 ## [0.12.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.11.1...xt-type-v0.12.0) (2026-08-15)
 
 

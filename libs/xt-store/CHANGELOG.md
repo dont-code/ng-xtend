@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v1.3.0...xt-store-v1.4.0) (2026-11-01)
+
+
+### Bug Fixes
+
+* ensure no test store ([9256810](https://github.com/dont-code/ng-xtend/commit/9256810a53b44caee5dd2e244571a508ffaa1571))
+* rush & pnpm upgrades ([8150dd8](https://github.com/dont-code/ng-xtend/commit/8150dd87ef02b1a109eb86772ea86a606e3ea0ed))
+
 ## [1.3.0](https://github.com/dont-code/ng-xtend/compare/xt-store-v1.2.1...xt-store-v1.3.0) (2026-10-11)
 
 

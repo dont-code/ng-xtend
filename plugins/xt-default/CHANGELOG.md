@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v1.3.0...xt-plugin-default-v1.4.0) (2026-11-01)
+
+
+### Miscellaneous Chores
+
+* **xt-plugin-default:** Synchronize xt-components versions
+
 ## [1.3.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-default-v1.2.1...xt-plugin-default-v1.3.0) (2026-10-11)
 
 

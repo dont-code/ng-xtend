@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.3.0...xt-plugin-intl-v1.4.0) (2026-11-01)
+
+
+### Bug Fixes
+
+* using ebsuild for tests ([44b14d2](https://github.com/dont-code/ng-xtend/commit/44b14d231b21bea69ff8b79055e7f801022c3147))
+
 ## [1.3.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.2.1...xt-plugin-intl-v1.3.0) (2026-10-11)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v1.4.0...xt-plugin-workflow-v1.4.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* support for deploy next ([1180b22](https://github.com/dont-code/ng-xtend/commit/1180b22ba84bd2adec14ce9fd4318814b08491c8))
+
 ## [1.4.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-workflow-v1.3.0...xt-plugin-workflow-v1.4.0) (2026-11-01)
 
 

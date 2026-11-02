@@ -24,6 +24,10 @@
 						"production": {
 							"target": "plugin-tester:esbuild:production"
 						},
+            "next": {
+              "target": "plugin-tester:esbuild:next",
+              "dev": true
+            },
 						"development": {
 							"target": "plugin-tester:esbuild:development",
 							"dev": true
@@ -86,6 +90,11 @@
 							],
 							"outputHashing": "all"
 						},
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
 						"development": {
 							"optimization": false,
 							"extractLicenses": false,
@@ -100,6 +109,9 @@
 						"production": {
 							"buildTarget": "plugin-tester:esbuild:production"
 						},
+            "next": {
+              "buildTarget": "plugin-tester:esbuild:next"
+            },
 						"development": {
 							"buildTarget": "plugin-tester:esbuild:development"
 						}

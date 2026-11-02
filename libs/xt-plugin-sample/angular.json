@@ -22,6 +22,9 @@
 						"production": {
 							"tsConfig": "projects/sample/tsconfig.lib.prod.json"
 						},
+            "next": {
+              "tsConfig": "projects/sample/tsconfig.lib.next.json"
+            },
 						"development": {
 							"tsConfig": "projects/sample/tsconfig.lib.json"
 						}
@@ -51,6 +54,10 @@
 						"production": {
 							"target": "sample-plugin:esbuild:production"
 						},
+            "next": {
+              "target": "sample-plugin:esbuild:next",
+              "dev": true
+            },
 						"development": {
 							"target": "sample-plugin:esbuild:development",
 							"dev": true
@@ -111,7 +118,12 @@
 							],
 							"outputHashing": "all"
 						},
-						"development": {
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "development": {
 							"optimization": false,
 							"extractLicenses": false,
 							"sourceMap": true

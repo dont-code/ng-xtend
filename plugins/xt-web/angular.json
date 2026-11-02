@@ -21,6 +21,9 @@
             "production": {
               "tsConfig": "projects/web/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/web/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/web/tsconfig.lib.json"
             }
@@ -48,6 +51,10 @@
           "configurations": {
             "production": {
               "target": "web-plugin:esbuild:production"
+            },
+            "next": {
+              "target": "web-plugin:esbuild:next",
+              "dev": true
             },
             "development": {
               "target": "web-plugin:esbuild:development",
@@ -107,6 +114,11 @@
               ],
               "outputHashing": "all"
             },
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -120,6 +132,9 @@
           "configurations": {
             "production": {
               "buildTarget": "web-plugin:esbuild:production"
+            },
+            "next": {
+              "buildTarget": "web-plugin:esbuild:next"
             },
             "development": {
               "buildTarget": "web-plugin:esbuild:development"

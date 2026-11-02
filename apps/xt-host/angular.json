@@ -23,6 +23,11 @@
 						"production": {
 							"target": "host:esbuild:production"
 						},
+            "next": {
+              "target": "host:esbuild:next",
+              "dev": true,
+              "devServer": false
+            },
 						"development": {
 							"target": "host:esbuild:development",
 							"dev": true,
@@ -84,6 +89,11 @@
 							],
 							"outputHashing": "all"
 						},
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
 						"development": {
 							"optimization": false,
 							"extractLicenses": false,
@@ -98,6 +108,9 @@
 						"production": {
 							"buildTarget": "host:esbuild:production"
 						},
+            "next": {
+              "buildTarget": "host:esbuild:next"
+            },
 						"development": {
 							"buildTarget": "host:esbuild:development"
 						}

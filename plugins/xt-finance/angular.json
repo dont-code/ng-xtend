@@ -22,6 +22,9 @@
             "production": {
               "tsConfig": "projects/finance/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/finance/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/finance/tsconfig.lib.json"
             }
@@ -49,6 +52,10 @@
           "configurations": {
             "production": {
               "target": "finance-plugin:esbuild:production"
+            },
+            "next": {
+              "target": "finance-plugin:esbuild:next",
+              "dev": true
             },
             "development": {
               "target": "finance-plugin:esbuild:development",
@@ -110,6 +117,11 @@
               ],
               "outputHashing": "all"
             },
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -123,6 +135,9 @@
           "configurations": {
             "production": {
               "buildTarget": "finance-plugin:esbuild:production"
+            },
+            "next": {
+              "buildTarget": "finance-plugin:esbuild:next"
             },
             "development": {
               "buildTarget": "finance-plugin:esbuild:development"

@@ -21,6 +21,9 @@
             "production": {
               "tsConfig": "projects/default/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/default/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/default/tsconfig.lib.json"
             }
@@ -75,6 +78,11 @@
               ],
               "outputHashing": "all"
             },
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -88,6 +96,9 @@
           "configurations": {
             "production": {
               "buildTarget": "default-plugin:build:production"
+            },
+            "next": {
+              "buildTarget": "default-plugin:build:next"
             },
             "development": {
               "buildTarget": "default-plugin:build:development"

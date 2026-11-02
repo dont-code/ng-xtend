@@ -22,6 +22,9 @@
 						"production": {
 							"tsConfig": "projects/intl/tsconfig.lib.prod.json"
 						},
+            "next": {
+              "tsConfig": "projects/intl/tsconfig.lib.next.json"
+            },
 						"development": {
 							"tsConfig": "projects/intl/tsconfig.lib.json"
 						}
@@ -50,6 +53,10 @@
 						"production": {
 							"target": "intl-plugin:esbuild:production"
 						},
+            "next": {
+              "target": "intl-plugin:esbuild:next",
+              "dev": true
+            },
 						"development": {
 							"target": "intl-plugin:esbuild:development",
 							"dev": true
@@ -110,6 +117,11 @@
 							],
 							"outputHashing": "all"
 						},
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
 						"development": {
 							"optimization": false,
 							"extractLicenses": false,
@@ -124,6 +136,9 @@
 						"production": {
 							"buildTarget": "intl-plugin:esbuild:production"
 						},
+            "next": {
+              "buildTarget": "intl-plugin:esbuild:next"
+            },
 						"development": {
 							"buildTarget": "intl-plugin:esbuild:development"
 						}

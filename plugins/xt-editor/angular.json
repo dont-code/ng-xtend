@@ -21,6 +21,9 @@
             "production": {
               "tsConfig": "projects/editor/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/editor/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/editor/tsconfig.lib.json"
             }
@@ -48,6 +51,10 @@
           "configurations": {
             "production": {
               "target": "editor-plugin:esbuild:production"
+            },
+            "next": {
+              "target": "editor-plugin:esbuild:next",
+              "dev": true
             },
             "development": {
               "target": "editor-plugin:esbuild:development",
@@ -122,6 +129,11 @@
               ],
               "outputHashing": "all"
             },
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -135,6 +147,9 @@
           "configurations": {
             "production": {
               "buildTarget": "editor-plugin:esbuild:production"
+            },
+            "next": {
+              "buildTarget": "editor-plugin:esbuild:next"
             },
             "development": {
               "buildTarget": "editor-plugin:esbuild:development"

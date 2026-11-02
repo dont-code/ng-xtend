@@ -22,6 +22,9 @@
             "production": {
               "tsConfig": "projects/agenda/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/agenda/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/agenda/tsconfig.lib.json"
             }
@@ -49,6 +52,10 @@
           "configurations": {
             "production": {
               "target": "agenda-plugin:esbuild:production"
+            },
+            "next": {
+              "target": "agenda-plugin:esbuild:next",
+              "dev": true
             },
             "development": {
               "target": "agenda-plugin:esbuild:development",
@@ -110,6 +117,11 @@
               ],
               "outputHashing": "all"
             },
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -123,6 +135,9 @@
           "configurations": {
             "production": {
               "buildTarget": "agenda-plugin:esbuild:production"
+            },
+            "next": {
+              "buildTarget": "agenda-plugin:esbuild:next"
             },
             "development": {
               "buildTarget": "agenda-plugin:esbuild:development"

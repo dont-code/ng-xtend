@@ -15,6 +15,9 @@
             "production": {
               "tsConfig": "projects/dc-workflow/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/dc-workflow/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/dc-workflow/tsconfig.lib.json"
             }

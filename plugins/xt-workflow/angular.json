@@ -21,6 +21,9 @@
             "production": {
               "tsConfig": "projects/workflow/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/workflow/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/workflow/tsconfig.lib.json"
             }
@@ -78,6 +81,11 @@
                 }
               ],
               "outputHashing": "all"
+            },
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             },
             "development": {
               "optimization": false,

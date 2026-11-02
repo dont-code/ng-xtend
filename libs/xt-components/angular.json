@@ -22,6 +22,9 @@
             "production": {
               "tsConfig": "projects/xt-components/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/xt-components/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/xt-components/tsconfig.lib.json"
             }
@@ -77,6 +80,11 @@
               ],
               "outputHashing": "all"
             },
+            "next": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -91,6 +99,9 @@
           "configurations": {
             "production": {
               "buildTarget": "tester-app:build:production"
+            },
+            "next": {
+              "buildTarget": "tester-app:build:next"
             },
             "development": {
               "buildTarget": "tester-app:build:development"

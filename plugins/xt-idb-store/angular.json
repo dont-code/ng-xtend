@@ -22,6 +22,9 @@
             "production": {
               "tsConfig": "projects/idb-store/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/idb-store/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/idb-store/tsconfig.lib.json"
             }

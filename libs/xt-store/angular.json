@@ -21,6 +21,9 @@
             "production": {
               "tsConfig": "projects/store/tsconfig.lib.prod.json"
             },
+            "next": {
+              "tsConfig": "projects/store/tsconfig.lib.next.json"
+            },
             "development": {
               "tsConfig": "projects/store/tsconfig.lib.json"
             }

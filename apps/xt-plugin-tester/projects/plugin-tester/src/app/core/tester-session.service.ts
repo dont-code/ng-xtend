@@ -132,6 +132,9 @@ export class TesterSessionService {
     this.loading.set(true);
     this.loadingUrl.set(url);
     try {
+      const problem = await this.checkRemoteEntry(url);
+      if (problem != null) throw new Error(problem);
+
       const module = await loadRemoteModule({ remoteEntry: url, exposedModule: './Register' });
       const name = this.resolver.registerPluginModule(module, url);
       this.resolver.resolvePendingReferences();
@@ -262,6 +265,36 @@ export class TesterSessionService {
 
   private upsert(record: LoadedPlugin): void {
     this.loadedPlugins.update((list) => [...list.filter((p) => p.url !== record.url), record]);
+  }
+
+  /**
+   * Checks that the remote entry url actually returns a JSON document.
+   *
+   * Without this, a 404 or an HTML error page is reported by the module loader
+   * as an obscure JSON parse error. Returning a readable message here lets the
+   * plugin card show what really went wrong.
+   */
+  private async checkRemoteEntry(url: string): Promise<string | null> {
+    let response: Response;
+    try {
+      response = await fetch(url, { headers: { Accept: 'application/json' } });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      return `Could not reach the plugin server: ${message}`;
+    }
+
+    if (!response.ok) {
+      const status = `${response.status}${response.statusText ? ` ${response.statusText}` : ''}`;
+      return `The plugin entry could not be found: the server returned HTTP ${status}.`;
+    }
+
+    try {
+      JSON.parse(await response.text());
+    } catch {
+      const contentType = response.headers.get('content-type') ?? 'a non-JSON response';
+      return `The URL did not return a valid remoteEntry.json: the server sent ${contentType}.`;
+    }
+    return null;
   }
 
   private normalizeUrl(rawUrl: string): string | null {

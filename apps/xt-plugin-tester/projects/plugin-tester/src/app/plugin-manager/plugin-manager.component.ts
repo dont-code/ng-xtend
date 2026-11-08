@@ -23,6 +23,7 @@ import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-
 import { httpResource } from '@angular/common/http';
 import { TesterSessionService, LoadedPlugin } from '../core/tester-session.service';
 import { PageHeaderComponent } from '../shared/page-header/page-header.component';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 type PluginInfo = {
   plugin: string;
@@ -43,6 +44,8 @@ type PluginInfo = {
     Tag,
     Tooltip,
     PageHeaderComponent,
+    Tabs,
+    Tab, TabList, TabPanel, TabPanels
   ],
   templateUrl: './plugin-manager.component.html',
   styleUrl: './plugin-manager.component.css',
@@ -80,6 +83,17 @@ export class PluginManagerComponent implements OnDestroy {
     return Array.isArray(value) ? value : [];
   });
 
+  knownPluginSources = computed<string[]>(() => {
+    const pluginInfos = this.loadedListUrls.value();
+    if (pluginInfos!=null) {
+      return ['Local','Latest','Next', 'Others'];
+    }
+    return [];
+  });
+
+  /** The currently selected quick load source tab. */
+  readonly activeSource = signal<string | number | undefined>('Local');
+
   suggestedUrls = signal<PluginInfo[]>([]);
 
   constructor() {
@@ -90,6 +104,30 @@ export class PluginManagerComponent implements OnDestroy {
         },
       })
     );
+  }
+
+  knownPluginsPerSource (source: string) :PluginInfo[]{
+    const ret:PluginInfo[]=[];
+    const value = this.loadedListUrls.value();
+    if( value!=null) {
+      let newInfo:PluginInfo;
+      for (const pluginInfo of value) {
+        if( source=='Local'|| source=='Next' || source=='Latest') {
+          newInfo = { plugin: pluginInfo.plugin, urls:pluginInfo.urls.filter((url)=> {
+            const toSearch=(source=='Local')?'//localhost':'/'+source.toLowerCase()+'/';
+            return url.indexOf(toSearch)!=-1;
+          }) };
+        } else {
+          newInfo = { plugin: pluginInfo.plugin, urls:pluginInfo.urls.filter((url)=> {
+              return url.indexOf('//localhost')==-1 && url.indexOf('/next/')==-1 && url.indexOf('/latest/')==-1;
+            }) };
+        }
+        if (newInfo.urls.length>0) {
+          ret.push(newInfo);
+        }
+     }
+    }
+    return ret;
   }
 
   ngOnDestroy(): void {
@@ -172,6 +210,10 @@ export class PluginManagerComponent implements OnDestroy {
       rejectButtonProps: { label: 'Cancel', severity: 'secondary', text: true },
       accept: () => this.session.removePlugin(record),
     });
+  }
+
+  removeFailed(plugin: LoadedPlugin): void {
+    this.session.removePlugin(plugin);
   }
 
   confirmClearAll(): void {

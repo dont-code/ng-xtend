@@ -39,6 +39,8 @@ Demo applications can be seen here:
 ---
 
 ## News
+- ***2026-11-05:*** Revamped the Plugin tester, it's now easier to test your plugins. [Check here!](https://dont-code.net/apps/latest/plugin-tester)
+- ***2026-10-15:*** Added a plugin for rich text editing based on [ProseMirror](https://prosemirror.net/).
 - ***2026-07-26:*** Release 1.0 is finally here ! Many bug fixing
 - ***2026-07-19:*** Release 0.8 adds support for auto-display in swipe-able carousel mode, and a new type of powerful plugins: [Workflows !](https://github.com/dont-code/ng-xtend/tree/main/plugins/xt-workflow)
 - ***2026-06-14:*** We now have an [API Doc](https://ng-xtend.dev/api/index.html) and step by step [Guidelines](https://ng-xtend.dev/guides/index.html). Thanks to [Opencode Big Pickle AI engine](https://opencode.ai)!
@@ -70,6 +72,7 @@ Currently, ng-xtend supports four major extension points:
 | **Simple Components** | Turn regular Angular components into pluggable units for specific data types. |
 | **Complex Components** | Components that provide their own extension points. *Example: A "Money" plugin delegating "Currency" selection to another plugin.* |
 | **List Components** | Effortlessly display collections of objects by delegating item rendering to the right plugins. |
+| **Workflow Components** | Provides complete user journeys by combining multiple pages and components with data access. |
 | **Action Handlers** ✨ | Add logic and actionable buttons to your UI dynamically. |
 
 ---
@@ -84,7 +87,7 @@ You can see how the different plugins work together without knowing each other. 
 ### 🛠️ Plugin Tester
 Curious about how plugins are dynamically injected? Try the dedicated tester:
 
-[![Plugin tester](docs/screenshots/plugin-tester-web-plugin-details.png)](https://dont-code.net/apps/latest/plugin-tester)
+[![Plugin tester](docs/screenshots/plugin-tester-loading-simple.png)](https://dont-code.net/apps/latest/plugin-tester)
 
 ---
 
@@ -96,10 +99,10 @@ Curious about how plugins are dynamically injected? Try the dedicated tester:
 - [x] Strong type support
 - [x] Remote dynamic loading
 - [x] Action components support
-- [X] Workflows
-- [-] Enhanced modelization support
+- [x] Workflows
+- [x] Enhanced modelization support
 - [x] AI application generation
-- [X] **v1.0 Release!** 🏁
+- [x] **v1.0 Release!** 🏁
 - [ ] Enhanced plugin isolation
 - [ ] v2.0 & beyond
 

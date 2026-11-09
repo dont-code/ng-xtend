@@ -111,7 +111,7 @@
     "type": "linked-versions",
     "groupName": "xt-components",
     "components": [
-      "xt-store", "xt-idb-store","xt-components","dc-workflow","xt-plugin-sample","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda", "xt-plugin-workflow"
+      "xt-store", "xt-idb-store","xt-components","dc-workflow","xt-plugin-sample","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda", "xt-plugin-workflow", "xt-editor"
     ]
   }]
 }

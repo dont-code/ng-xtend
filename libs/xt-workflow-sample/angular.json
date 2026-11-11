@@ -45,6 +45,40 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "workflow-sample-plugin:esbuild:production"
+						},
+						"next": {
+							"target": "workflow-sample-plugin:esbuild:next",
+							"dev": true
+						},
+						"development": {
+							"target": "workflow-sample-plugin:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "workflow-sample-plugin:serve-original:development",
+						"rebuildDelay": 0,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"test": {
+					"builder": "@angular/build:unit-test",
+					"options": {
+						"buildTarget": "workflow-sample-plugin:esbuild:development"
+					}
+				},
+				"esbuild": {
 					"builder": "@angular/build:application",
 					"options": {
 						"outputPath": "dist/workflow-sample-plugin",
@@ -92,22 +126,22 @@
 							"sourceMap": true
 						}
 					},
-					"defaultConfiguration": "production"
+					"defaultConfiguration": "development"
 				},
-				"serve": {
+				"serve-original": {
 					"builder": "@angular/build:dev-server",
 					"configurations": {
 						"production": {
-							"buildTarget": "workflow-sample-plugin:build:production"
+							"buildTarget": "workflow-sample-plugin:esbuild:production"
 						},
 						"development": {
-							"buildTarget": "workflow-sample-plugin:build:development"
+							"buildTarget": "workflow-sample-plugin:esbuild:development"
 						}
 					},
-					"defaultConfiguration": "development"
-				},
-				"test": {
-					"builder": "@angular/build:unit-test"
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4201
+					}
 				}
 			}
 		}

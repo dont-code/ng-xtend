@@ -87,13 +87,35 @@ projects/
       sample-workflow.component.ts   # the workflow itself
       register.ts                    # plugin registration
   workflow-sample-plugin/   # a small app used to run and test the workflow
+    federation.config.js             # native-federation config
+    src/bootstrap.ts                 # Angular bootstrap
+    src/main.ts                      # federation entry point
 ```
+
+## Federation
+
+The demo app is a [native-federation](https://www.npmjs.com/package/@angular-architects/native-federation)
+remote named `workflow-sample-plugin`. Its `federation.config.js` exposes the workflow and
+its registration function:
+
+```js
+exposes: {
+  './SampleWorkflowComponent': './projects/workflow-sample/src/lib/sample-workflow.component.ts',
+  './Register': './projects/workflow-sample/src/lib/register.ts'
+}
+```
+
+When cloning this sample into a new workflow plugin, update `name` and the `exposes` paths
+to match your component and register files.
 
 ## Development
 
 ```bash
 # Build the library
 npm run build
+
+# Build the federated demo app
+npx ng build workflow-sample-plugin
 
 # Run the library and app tests
 npm run test

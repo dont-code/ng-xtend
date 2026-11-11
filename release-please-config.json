@@ -1,109 +1,85 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "prerelease": true,
   "packages": {
     "libs/xt-type": {
       "release-type": "node",
       "package-name": "xt-type",
       "extra-files": ["jsr.json"],
       "prerelease-type": "beta",
-      "draft": false,
       "prerelease": false
     },
     "libs/xt-store": {
       "release-type": "node",
       "package-name": "xt-store",
       "extra-files": ["projects/store/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-idb-store": {
       "release-type": "node",
       "package-name": "xt-idb-store",
       "extra-files": ["projects/idb-store/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "libs/xt-components": {
       "release-type": "node",
       "package-name": "xt-components",
       "extra-files": ["projects/xt-components/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "libs/dc-workflow": {
       "release-type": "node",
       "package-name": "dc-workflow",
       "extra-files": ["projects/dc-workflow/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "libs/xt-plugin-sample": {
       "release-type": "node",
       "package-name": "xt-plugin-sample",
       "extra-files": ["projects/sample/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-default": {
       "release-type": "node",
       "package-name": "xt-plugin-default",
       "extra-files": ["projects/default/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-intl": {
       "release-type": "node",
       "package-name": "xt-plugin-intl",
       "extra-files": ["projects/intl/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-finance": {
       "release-type": "node",
       "package-name": "xt-plugin-finance",
       "extra-files": ["projects/finance/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-web": {
       "release-type": "node",
       "package-name": "xt-plugin-web",
       "extra-files": ["projects/web/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-agenda": {
       "release-type": "node",
       "package-name": "xt-plugin-agenda",
       "extra-files": ["projects/agenda/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-editor": {
       "release-type": "node",
       "package-name": "xt-plugin-editor",
       "extra-files": ["projects/editor/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     },
     "plugins/xt-workflow": {
       "release-type": "node",
       "package-name": "xt-plugin-workflow",
       "extra-files": ["projects/workflow/package.json"],
-      "prerelease-type": "beta",
-      "draft": false,
-      "prerelease": false
+      "prerelease-type": "beta"
     }
 
   },

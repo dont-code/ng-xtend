@@ -1,0 +1,115 @@
+{
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"newProjectRoot": "projects",
+	"cli": {
+		"cache": {
+			"enabled": true
+		}
+	},
+	"projects": {
+		"workflow-sample": {
+			"projectType": "library",
+			"root": "projects/workflow-sample",
+			"sourceRoot": "projects/workflow-sample/src",
+			"prefix": "lib",
+			"architect": {
+				"build": {
+					"builder": "@angular/build:ng-packagr",
+					"configurations": {
+						"production": {
+							"tsConfig": "projects/workflow-sample/tsconfig.lib.prod.json"
+						},
+						"next": {
+							"tsConfig": "projects/workflow-sample/tsconfig.lib.next.json"
+						},
+						"development": {
+							"tsConfig": "projects/workflow-sample/tsconfig.lib.json"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"test": {
+					"builder": "@angular/build:unit-test",
+					"options": {
+						"tsConfig": "projects/workflow-sample/tsconfig.spec.json"
+					}
+				}
+			}
+		},
+		"workflow-sample-plugin": {
+			"projectType": "application",
+			"schematics": {},
+			"root": "projects/workflow-sample-plugin",
+			"sourceRoot": "projects/workflow-sample-plugin/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/workflow-sample-plugin",
+						"index": "projects/workflow-sample-plugin/src/index.html",
+						"browser": "projects/workflow-sample-plugin/src/main.ts",
+						"preserveSymlinks": true,
+						"polyfills": [
+							"es-module-shims"
+						],
+						"tsConfig": "projects/workflow-sample-plugin/tsconfig.app.json",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/workflow-sample-plugin/public"
+							}
+						],
+						"styles": [
+							"projects/workflow-sample-plugin/src/styles.css"
+						]
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "1MB",
+									"maximumError": "2MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "4kB",
+									"maximumError": "8kB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"next": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular/build:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "workflow-sample-plugin:build:production"
+						},
+						"development": {
+							"buildTarget": "workflow-sample-plugin:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"test": {
+					"builder": "@angular/build:unit-test"
+				}
+			}
+		}
+	}
+}

@@ -317,6 +317,12 @@
       "publishFolder": "dist/xt-plugin-sample"
     },
     {
+      "packageName": "xt-workflow-sample",
+      "projectFolder": "libs/xt-workflow-sample",
+      "shouldPublish": false,
+      "publishFolder": "dist/xt-workflow-sample"
+    },
+    {
       "packageName": "xt-plugin-default",
       "projectFolder": "plugins/xt-default",
       "shouldPublish": true,

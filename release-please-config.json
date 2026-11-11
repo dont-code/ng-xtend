@@ -44,6 +44,12 @@
       "extra-files": ["projects/sample/package.json"],
       "prerelease-type": "beta"
     },
+    "libs/xt-workflow-sample": {
+      "release-type": "node",
+      "package-name": "xt-workflow-sample",
+      "extra-files": ["projects/workflow-sample/package.json"],
+      "prerelease-type": "beta"
+    },
     "plugins/xt-default": {
       "release-type": "node",
       "package-name": "xt-plugin-default",
@@ -92,7 +98,7 @@
     "type": "linked-versions",
     "groupName": "xt-components",
     "components": [
-      "xt-store", "xt-idb-store","xt-components","dc-workflow","xt-plugin-sample","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda", "xt-plugin-workflow", "xt-editor"
+      "xt-store", "xt-idb-store","xt-components","dc-workflow","xt-plugin-sample","xt-workflow-sample","xt-plugin-default", "xt-plugin-intl","xt-plugin-finance","xt-plugin-web","xt-plugin-agenda", "xt-plugin-workflow", "xt-editor"
     ]
   }]
 }

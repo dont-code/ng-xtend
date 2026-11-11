@@ -1,4 +1,14 @@
 /**
+ * Workflow type name.
+ *
+ * `'list-detail'` and `'carousel'` are the built-in workflows provided by
+ * `xt-plugin-workflow`. Any other string can be registered by a plugin through
+ * `XtResolverService.registerPlugin`, which is what makes custom workflows
+ * resolvable by `wfw-render`.
+ */
+export type DcWorkflowType = 'list-detail' | 'carousel' | (string & {});
+
+/**
  * Core configuration model for dc-workflow components.
  * Defines the entity to manage, workflow type, and optional behaviors
  * for sorting, display filtering, and automatic selection.
@@ -7,7 +17,7 @@ export type DcWorkflowModel = {
   /** Entity name to manage (resolved via XtResolverService) */
   entity: string,
   /** Workflow display type: 'list-detail' for tabbed list/edit, 'carousel' for card-based navigation */
-  workflow: 'list-detail'|'carousel',
+  workflow: DcWorkflowType,
   /** Data configuration including sorting rules */
   data?: {
     /** Sort configuration applied to entity queries */

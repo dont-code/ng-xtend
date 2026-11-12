@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { XtResolverService } from 'xt-components';
 import { WfwRender } from 'dc-workflow';
 import { TestWorkflowComponent } from './test-workflow.component';
-import { registerWorkflowSamplePlugin } from '../../../../workflow-sample/src/lib/register';
+import { registerWorkflowSamplePlugin } from '../../../../lib/src/lib/register';
 
 describe('TestWorkflowComponent', () => {
   let component: TestWorkflowComponent;

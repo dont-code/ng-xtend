@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Toolbar } from 'primeng/toolbar';
 import { XtResolverService } from 'xt-components';
-import { registerWorkflowSamplePlugin } from '../../../workflow-sample/src/lib/register';
+import { registerWorkflowSamplePlugin } from '../../../lib/src/lib/register';
 
 @Component({
   selector: 'app-root',

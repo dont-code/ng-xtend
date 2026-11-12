@@ -5,8 +5,8 @@ module.exports = withNativeFederation({
   name: 'workflow-sample-plugin',
 
   exposes: {
-    './SampleWorkflowComponent': './projects/workflow-sample/src/lib/sample-workflow.component.ts',
-    './Register': './projects/workflow-sample/src/lib/register.ts'
+    './SampleWorkflowComponent': './projects/lib/src/lib/sample-workflow.component.ts',
+    './Register': './projects/lib/src/lib/register.ts'
   },
 
   shared: {

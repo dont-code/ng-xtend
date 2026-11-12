@@ -23,10 +23,10 @@ The whole component is:
   template: `<p>I'm the Sample Workflow</p>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SampleWorkflowComponent extends SimpleWorkflow {}
+export class SampleWorkflowComponent extends AbstractDcWorkflowBase {}
 ```
 
-`SimpleWorkflow` (from `dc-workflow`) already declares the required `config` input, so a
+`AbstractDcWorkflowBase` (from `dc-workflow`) already declares the required `config` input, so a
 workflow with no data access is just a template.
 
 ## Register it
@@ -47,34 +47,52 @@ const config: DcWorkflowModel = { entity: 'anything', workflow: 'sample' };
 <wfw-render [workflowConfig]="config" />
 ```
 
-## Create a new workflow in 3 steps
+## Turn the sample into your own workflow
 
-1. **Create the component.** Copy `sample-workflow.component.ts` and change the template:
+Every sample-specific name in this package is built from a **single placeholder word,
+`sample`**, used in three case forms. Renaming the sample into a new workflow is therefore
+just a find/replace of those three strings — there is no other name to hunt down.
 
-   ```typescript
-   @Component({
-     selector: 'wfw-my-workflow',
-     imports: [],
-     template: `<p>My brand new workflow</p>`,
-   })
-   export class MyWorkflowComponent extends SimpleWorkflow {}
-   ```
+| Find (case-sensitive) | Replace with | Example for a workflow named `invoice` |
+|-----------------------|--------------|----------------------------------------|
+| `sample`              | `<name>`     | `invoice`                              |
+| `Sample`              | `<Name>`     | `Invoice`                              |
+| `SAMPLE`              | `<NAME>`     | `INVOICE`                              |
 
-2. **Register it.** Copy `register.ts` and give your workflow a unique name and type:
+That one replacement keeps everything consistent, including:
 
-   ```typescript
-   resolverService.registerPlugin({
-     name: 'myWorkflowPlugin',
-     workflows: [
-       { name: 'myWorkflow', class: MyWorkflowComponent, workflowsHandled: ['my-type'] },
-     ],
-   });
-   ```
+- the npm package name (`xt-workflow-sample`),
+- the Angular project names (`workflow-sample`, `workflow-sample-plugin`),
+- the native-federation remote name and the `dist/` output folder,
+- the workflow type (`'sample'`), the selector (`wfw-sample-workflow`), the component
+  (`SampleWorkflowComponent`), the registration function (`registerWorkflowSamplePlugin`)
+  and the constant (`SAMPLE_WORKFLOW_TYPE`),
+- the demo app's title and heading texts.
 
-3. **Use it.** Set `workflow: 'my-type'` in your `DcWorkflowModel`; `wfw-render` finds it
-   automatically.
+### Steps
 
-> **Need data?** Extend `AbstractDcWorkflow` instead of `SimpleWorkflow`. It adds store
+1. **Copy the package** to its new folder — the folder follows the same rule, e.g.
+   `libs/xt-workflow-invoice`.
+2. **Apply the three replacements** above to every file in the new folder.
+3. **Rename the two component files** so their names match the new component name:
+   - `projects/lib/src/lib/sample-workflow.component.ts`
+   - `projects/lib/src/lib/sample-workflow.component.spec.ts`
+
+   The `import` statements inside them are already updated by step 2.
+4. **Register the new package** in the monorepo (all three use the same rule):
+   - `rush.json`
+   - `release-please-config.json`
+   - `.release-please-manifest.json`
+5. **Edit the template** in `projects/lib/src/lib/<name>-workflow.component.ts` to render
+   your workflow instead of `I'm the Sample Workflow`.
+
+### What you do *not* rename
+
+- the project folders `projects/lib` and `projects/plugin` — already generic;
+- the federation expose key `./Register` and the `registerPlugin` alias;
+- the `wfw-` selector prefix and the `AbstractDcWorkflowBase` base class.
+
+> **Need data?** Extend `AbstractDcWorkflow` instead of `AbstractDcWorkflowBase`. It adds store
 > management (`fetchFromStore`, `storeEntity`, `deleteEntity`, ...) used by the built-in
 > `list-detail` and `carousel` workflows in `xt-plugin-workflow`.
 
@@ -82,11 +100,11 @@ const config: DcWorkflowModel = { entity: 'anything', workflow: 'sample' };
 
 ```
 projects/
-  workflow-sample/          # the library published as xt-workflow-sample
+  lib/                      # the library published as xt-workflow-sample
     src/lib/
       sample-workflow.component.ts   # the workflow itself
       register.ts                    # plugin registration
-  workflow-sample-plugin/   # a small app used to run and test the workflow
+  plugin/                   # a small app used to run and test the workflow
     federation.config.js             # native-federation config
     src/bootstrap.ts                 # Angular bootstrap
     src/main.ts                      # federation entry point
@@ -100,13 +118,13 @@ its registration function:
 
 ```js
 exposes: {
-  './SampleWorkflowComponent': './projects/workflow-sample/src/lib/sample-workflow.component.ts',
-  './Register': './projects/workflow-sample/src/lib/register.ts'
+  './SampleWorkflowComponent': './projects/lib/src/lib/sample-workflow.component.ts',
+  './Register': './projects/lib/src/lib/register.ts'
 }
 ```
 
-When cloning this sample into a new workflow plugin, update `name` and the `exposes` paths
-to match your component and register files.
+Both the remote `name` and the `exposes` paths are updated automatically by the placeholder
+replacement described in [Turn the sample into your own workflow](#turn-the-sample-into-your-own-workflow).
 
 ## Development
 
@@ -126,6 +144,6 @@ npm start
 
 ## Dependencies
 
-- `dc-workflow` - Workflow infrastructure (`SimpleWorkflow`, `AbstractDcWorkflow`, `DcWorkflowModel`, `WfwRender`)
+- `dc-workflow` - Workflow infrastructure (`AbstractDcWorkflowBase`, `AbstractDcWorkflow`, `DcWorkflowModel`, `WfwRender`)
 - `xt-components` - Core component infrastructure (`XtResolverService`)
 - `primeng` - UI components used by the demo app

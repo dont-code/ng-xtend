@@ -10,21 +10,21 @@
 	"projects": {
 		"workflow-sample": {
 			"projectType": "library",
-			"root": "projects/workflow-sample",
-			"sourceRoot": "projects/workflow-sample/src",
+			"root": "projects/lib",
+			"sourceRoot": "projects/lib/src",
 			"prefix": "lib",
 			"architect": {
 				"build": {
 					"builder": "@angular/build:ng-packagr",
 					"configurations": {
 						"production": {
-							"tsConfig": "projects/workflow-sample/tsconfig.lib.prod.json"
+							"tsConfig": "projects/lib/tsconfig.lib.prod.json"
 						},
 						"next": {
-							"tsConfig": "projects/workflow-sample/tsconfig.lib.next.json"
+							"tsConfig": "projects/lib/tsconfig.lib.next.json"
 						},
 						"development": {
-							"tsConfig": "projects/workflow-sample/tsconfig.lib.json"
+							"tsConfig": "projects/lib/tsconfig.lib.json"
 						}
 					},
 					"defaultConfiguration": "development"
@@ -32,7 +32,7 @@
 				"test": {
 					"builder": "@angular/build:unit-test",
 					"options": {
-						"tsConfig": "projects/workflow-sample/tsconfig.spec.json"
+						"tsConfig": "projects/lib/tsconfig.spec.json"
 					}
 				}
 			}
@@ -40,8 +40,8 @@
 		"workflow-sample-plugin": {
 			"projectType": "application",
 			"schematics": {},
-			"root": "projects/workflow-sample-plugin",
-			"sourceRoot": "projects/workflow-sample-plugin/src",
+			"root": "projects/plugin",
+			"sourceRoot": "projects/plugin/src",
 			"prefix": "app",
 			"architect": {
 				"build": {
@@ -82,21 +82,21 @@
 					"builder": "@angular/build:application",
 					"options": {
 						"outputPath": "dist/workflow-sample-plugin",
-						"index": "projects/workflow-sample-plugin/src/index.html",
-						"browser": "projects/workflow-sample-plugin/src/main.ts",
+						"index": "projects/plugin/src/index.html",
+						"browser": "projects/plugin/src/main.ts",
 						"preserveSymlinks": true,
 						"polyfills": [
 							"es-module-shims"
 						],
-						"tsConfig": "projects/workflow-sample-plugin/tsconfig.app.json",
+						"tsConfig": "projects/plugin/tsconfig.app.json",
 						"assets": [
 							{
 								"glob": "**/*",
-								"input": "projects/workflow-sample-plugin/public"
+								"input": "projects/plugin/public"
 							}
 						],
 						"styles": [
-							"projects/workflow-sample-plugin/src/styles.css"
+							"projects/plugin/src/styles.css"
 						]
 					},
 					"configurations": {

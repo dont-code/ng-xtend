@@ -5,7 +5,8 @@
 	"cli": {
 		"cache": {
 			"enabled": true
-		}
+    },
+    "analytics": "7e94255a-a5b8-4a20-9312-8b6d123f49b2"
 	},
 	"projects": {
 		"workflow-sample": {

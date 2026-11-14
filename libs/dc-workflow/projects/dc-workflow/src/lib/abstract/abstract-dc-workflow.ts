@@ -1,7 +1,6 @@
-import { DcWorkflow } from '../definition/dc-workflow';
-import { Component, computed, effect, inject, input, linkedSignal, model, signal } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, model, signal } from '@angular/core';
 import { DcWorkflowModel, DcWorkflowSortOption } from '../models/dc-workflow-model';
-import { XtCompositeComponent, XtMessageHandler, XtResolverService } from 'xt-components';
+import { XtMessageHandler, XtResolverService } from 'xt-components';
 import {
   XtSignalStore,
   XtSortBy,
@@ -10,14 +9,18 @@ import {
   XtStoreManagerService
 } from 'xt-store';
 import { ManagedData } from 'xt-type';
-import { FormGroup } from '@angular/forms';
+import { AbstractDcWorkflowBase } from './abstract-dc-workflow-base';
 
 /**
- * Abstract base class for all dc-workflow implementations.
- * Provides store management, entity fetching, display filtering, and selection logic.
+ * Abstract base class for workflows that need store access.
+ *
+ * Extends {@link AbstractDcWorkflowBase} with store management, entity fetching,
+ * display filtering and selection logic.
  *
  * Concrete implementations (CarouselComponent, ListDetailsComponent) extend this class
  * and add their own UI and interaction patterns.
+ *
+ * For workflows that do not access the store, extend {@link AbstractDcWorkflowBase} instead.
  *
  * @typeParam T - The managed data type extending ManagedData
  */
@@ -26,13 +29,7 @@ import { FormGroup } from '@angular/forms';
   imports: [],
   template: ''
 })
-export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends XtCompositeComponent<T> implements DcWorkflow {
-  /**
-   * Required workflow configuration input signal.
-   * Controls entity type, workflow behavior, sorting, display, and selection.
-   */
-  config=input.required<DcWorkflowModel>();
-
+export class AbstractDcWorkflow<T extends ManagedData=ManagedData> extends AbstractDcWorkflowBase<T> {
   /** Resolver service for type information and component resolution */
   protected readonly resolver = inject (XtResolverService);
   /** Store manager for creating and retrieving entity stores */

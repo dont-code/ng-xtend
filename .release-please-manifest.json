@@ -4,6 +4,7 @@
   "libs/xt-store": "1.4.1",
   "libs/xt-components": "1.4.1",
   "libs/xt-plugin-sample": "1.4.1",
+  "libs/xt-workflow-sample": "1.4.1",
   "libs/dc-workflow": "1.4.1",
   "plugins/xt-idb-store": "1.4.1",
   "plugins/xt-default": "1.4.1",

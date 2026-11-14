@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.12.1...xt-type-v0.13.0) (2026-11-14)
+
+
+### Features
+
+* upgrade to Angular 22 and Optimus UI ([aeedad3](https://github.com/dont-code/ng-xtend/commit/aeedad3b108d6ddb46f2747238d93bc26be3642c))
+
 ## [0.12.1](https://github.com/dont-code/ng-xtend/compare/xt-type-v0.12.0...xt-type-v0.12.1) (2026-11-01)
 
 

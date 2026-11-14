@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v1.4.1...dc-workflow-v1.5.0) (2026-11-14)
+
+
+### Features
+
+* upgrade to Angular 22 and Optimus UI ([aeedad3](https://github.com/dont-code/ng-xtend/commit/aeedad3b108d6ddb46f2747238d93bc26be3642c))
+* workflow sample ([aececad](https://github.com/dont-code/ng-xtend/commit/aececadc55c05ac68dba827ec1f1feb7bf50fd32))
+* workflow sample ([aaa0d6e](https://github.com/dont-code/ng-xtend/commit/aaa0d6e393eb8534924e54f6c6f680668d0e263a))
+
 ## [1.4.1](https://github.com/dont-code/ng-xtend/compare/dc-workflow-v1.4.0...dc-workflow-v1.4.1) (2026-11-08)
 
 

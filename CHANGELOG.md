@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.9.1](https://github.com/dont-code/ng-xtend/compare/ng-xtend-v0.9.0...ng-xtend-v0.9.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* back to publishing all ([d9fb7aa](https://github.com/dont-code/ng-xtend/commit/d9fb7aafc9aa254fbe2ea8874a130ed315ebe612))
+* bad version xt-plugin-editor ([d8d50c9](https://github.com/dont-code/ng-xtend/commit/d8d50c95817d811fc69fdae0997565b16b6852bd))
+* only deploy editor ([8bedd48](https://github.com/dont-code/ng-xtend/commit/8bedd489cd5c6b047fa1dfe3b974203ca2fea7f5))
+* only deploy editor ([a879835](https://github.com/dont-code/ng-xtend/commit/a8798351c0e2df3be52839fd2c3b2d168e535812))
+* only deploy editor ([a32a51c](https://github.com/dont-code/ng-xtend/commit/a32a51c6ce5b1e2d96d64b2423424e129dc88671))
+
 ## [0.9.0](https://github.com/dont-code/ng-xtend/compare/ng-xtend-v1.4.1...ng-xtend-v0.9.0) (2026-11-14)
 
 

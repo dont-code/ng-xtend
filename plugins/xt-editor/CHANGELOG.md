@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/dont-code/ng-xtend/compare/xt-plugin-editor-v1.5.0...xt-plugin-editor-v1.5.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* bad version xt-plugin-editor ([d8d50c9](https://github.com/dont-code/ng-xtend/commit/d8d50c95817d811fc69fdae0997565b16b6852bd))
+
 ## [1.5.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-editor-v1.4.1...xt-plugin-editor-v1.5.0) (2026-11-14)
 
 

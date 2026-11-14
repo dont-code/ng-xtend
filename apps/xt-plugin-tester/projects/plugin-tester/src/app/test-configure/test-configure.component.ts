@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { SelectButton } from 'primeng/selectbutton';
-import { Panel } from 'primeng/panel';
-import { Button } from 'primeng/button';
-import { Divider } from 'primeng/divider';
-import { Tag } from 'primeng/tag';
+import { AutoComplete, AutoCompleteCompleteEvent } from '@openng/optimus-ui/autocomplete';
+import { SelectButton } from '@openng/optimus-ui/selectbutton';
+import { Panel } from '@openng/optimus-ui/panel';
+import { Button } from '@openng/optimus-ui/button';
+import { Divider } from '@openng/optimus-ui/divider';
+import { Tag } from '@openng/optimus-ui/tag';
 import { TesterSessionService } from '../core/tester-session.service';
 import { PageHeaderComponent } from '../shared/page-header/page-header.component';
 

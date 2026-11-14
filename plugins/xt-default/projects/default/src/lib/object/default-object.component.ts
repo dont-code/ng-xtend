@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { XtCompositeComponent, XtContext, XtRenderSubComponent, XtResolverService } from 'xt-components';
-import { TableModule } from 'primeng/table';
+import { TableModule } from '@openng/optimus-ui/table';
 
 @Component({
   selector: 'xt-default-object',

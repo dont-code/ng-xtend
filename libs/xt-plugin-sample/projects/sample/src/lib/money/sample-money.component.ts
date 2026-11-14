@@ -12,7 +12,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { SampleMoney } from './sample-money.model';
 import { XtCompositeComponent, XtRenderSubComponent } from 'xt-components';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { InputNumberModule } from '@openng/optimus-ui/inputnumber';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({

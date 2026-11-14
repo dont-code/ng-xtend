@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, model, output, Signal } from '@angular/core';
 import { XtContext, XtRenderSubComponent } from 'xt-components';
-import { TableModule } from 'primeng/table';
+import { TableModule } from '@openng/optimus-ui/table';
 import { isTypeReference, XtTypeHandler, XtTypeHierarchy, XtTypeReference } from 'xt-type';
 import { ObjectSetBase } from './object-set-base';
 

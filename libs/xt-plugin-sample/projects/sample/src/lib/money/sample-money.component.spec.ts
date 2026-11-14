@@ -5,7 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { HostTestTypedComponent, HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { registerSamplePlugin } from '../register';
 import { By } from '@angular/platform-browser';
-import { InputNumber } from 'primeng/inputnumber';
+import { InputNumber } from '@openng/optimus-ui/inputnumber';
 import { SampleCurrencyComponent } from '../currency/sample-currency.component';
 import { beforeEach, describe, expect, it } from 'vitest';
 

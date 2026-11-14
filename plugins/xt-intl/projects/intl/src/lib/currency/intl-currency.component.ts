@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { InputNumberModule } from '@openng/optimus-ui/inputnumber';
 import { XtSimpleComponent } from 'xt-components';
 import { CommonModule } from '@angular/common';
-import { InputTextModule } from 'primeng/inputtext';
+import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import {
   AutoComplete,
   AutoCompleteCompleteEvent,
   AutoCompleteSelectEvent,
   AutoCompleteUnselectEvent
-} from 'primeng/autocomplete';
+} from '@openng/optimus-ui/autocomplete';
 
 @Component({
   selector: 'xt-intl-currency',

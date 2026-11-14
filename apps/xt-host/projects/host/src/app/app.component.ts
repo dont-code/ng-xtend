@@ -1,12 +1,12 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { ToolbarModule } from 'primeng/toolbar';
-import { Drawer } from 'primeng/drawer';
-import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { ButtonModule } from '@openng/optimus-ui/button';
+import { ToolbarModule } from '@openng/optimus-ui/toolbar';
+import { Drawer } from '@openng/optimus-ui/drawer';
+import { MenuModule } from '@openng/optimus-ui/menu';
+import { MenuItem } from '@openng/optimus-ui/api';
 import { HostMenuComponent } from './host-menu/host-menu.component';
-import { Toast } from 'primeng/toast';
+import { Toast } from '@openng/optimus-ui/toast';
 import { ApplicationModelManagerService } from './application-model-manager/application-model-manager.service';
 
 type ThemeMode = 'light' | 'dark' | 'system';

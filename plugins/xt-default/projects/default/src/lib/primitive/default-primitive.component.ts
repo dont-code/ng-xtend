@@ -10,10 +10,10 @@ import {
 } from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InputText } from 'primeng/inputtext';
-import { Checkbox } from 'primeng/checkbox';
-import { InputNumber } from 'primeng/inputnumber';
-import { DatePicker } from 'primeng/datepicker';
+import { InputText } from '@openng/optimus-ui/inputtext';
+import { Checkbox } from '@openng/optimus-ui/checkbox';
+import { InputNumber } from '@openng/optimus-ui/inputnumber';
+import { DatePicker } from '@openng/optimus-ui/datepicker';
 import { Subscription } from 'rxjs';
 import { DatePipe, DecimalPipe } from '@angular/common';
 

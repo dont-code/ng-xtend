@@ -8,7 +8,7 @@ import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { XtCompositeComponent } from '../xt-composite/xt-composite.component';
 import { HostTestTypedComponent, HostTestTypedFormComponent } from '../test/xt-test-helper-components';
 import { XtResolverService } from '../angular/xt-resolver.service';
-import { Button } from 'primeng/button';
+import { Button } from '@openng/optimus-ui/button';
 import { By } from '@angular/platform-browser';
 import { XtPluginRegistry } from '../registry/xt-plugin-registry';
 import { beforeEach, describe, expect, it } from 'vitest';

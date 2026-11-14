@@ -8,10 +8,10 @@ import { XtResolverService, XtUnitTestHelper } from 'xt-components';
 import { StoreTestBed } from 'xt-store';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { DcWorkflowModel } from 'dc-workflow';
 import { FormGroup } from '@angular/forms';
-import { Table } from 'primeng/table';
+import { Table } from '@openng/optimus-ui/table';
 
 describe('ListDetailsComponent', () => {
   let component: ListDetailsComponent<any>;

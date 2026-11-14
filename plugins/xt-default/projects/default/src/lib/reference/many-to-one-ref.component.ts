@@ -10,7 +10,7 @@ import {
   untracked
 } from '@angular/core';
 import { XtBaseContext, XtContext, XtRenderSubComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
-import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteCompleteEvent } from '@openng/optimus-ui/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XtTypeHandler, XtTypeReference } from 'xt-type';
 import { firstValueFrom, Subscription } from 'rxjs';

@@ -1,11 +1,11 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteSelectEvent } from '@openng/optimus-ui/autocomplete';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DefaultPrimitiveComponent } from '../../../../default/src/lib/primitive/default-primitive.component';
 import { JsonPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { XtRenderComponent } from 'xt-components';
-import { Panel } from 'primeng/panel';
+import { Panel } from '@openng/optimus-ui/panel';
 
 @Component({
   selector: 'app-test',

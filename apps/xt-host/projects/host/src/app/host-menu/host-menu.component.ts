@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
 import { ApplicationModelManagerService } from '../application-model-manager/application-model-manager.service';
-import { Menu } from 'primeng/menu';
-import { MenuItem, PrimeIcons } from 'primeng/api';
+import { Menu } from '@openng/optimus-ui/menu';
+import { MenuItem, PrimeIcons } from '@openng/optimus-ui/api';
 
 @Component({
   selector: 'app-host-menu',

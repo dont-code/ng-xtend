@@ -1,4 +1,4 @@
-const { withNativeFederation, shareAll, share } = require('@angular-architects/native-federation/config');
+const { withNativeFederation, fromPackageJson } = require('@angular-architects/native-federation/config');
 
 module.exports = withNativeFederation({
 
@@ -11,11 +11,11 @@ module.exports = withNativeFederation({
     './Register': './projects/sample/src/lib/register.ts'
   },
 
-  shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-},
+  shared: fromPackageJson({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
+    .patch(['@angular/animations', '@angular/common', '@angular/core', '@angular/forms', '@angular/platform-browser', '@angular/router'], { includeSecondaries: { keepAll: true } }),
   features: {
-    ignoreUnusedDeps:true
+    ignoreUnusedDeps: true,
+    denseExternals: true
   },
   skip: [
     'rxjs/ajax',
@@ -23,9 +23,9 @@ module.exports = withNativeFederation({
     'rxjs/testing',
     'rxjs/webSocket',
     // Add further packages you don't need at runtime
-    /^@primeuix\//,
+    /^@openng\/optimus-ui-/,
     'chart.js/auto',
-    'primeng/chart',
+    '@openng/optimus-ui/chart',
     'primeicons'
   ]
 

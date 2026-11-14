@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { XtRenderComponent } from 'xt-components';
-import { Card } from 'primeng/card';
+import { Card } from '@openng/optimus-ui/card';
 
 @Component({
   selector: 'app-test',

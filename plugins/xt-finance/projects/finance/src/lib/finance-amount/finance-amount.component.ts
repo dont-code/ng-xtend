@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { XtComponentOutput, XtCompositeComponent, XtRenderSubComponent, XtResolverService } from 'xt-components';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { InputNumber } from 'primeng/inputnumber';
+import { InputNumber } from '@openng/optimus-ui/inputnumber';
 import { CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MoneyAmount } from '../money-handler/money-amount';

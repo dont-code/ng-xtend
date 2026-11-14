@@ -5,9 +5,9 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { XtResolverService, XtSimpleComponent } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { AutoComplete } from 'primeng/autocomplete';
+import { AutoComplete } from '@openng/optimus-ui/autocomplete';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { provideRouter } from '@angular/router';
 
 describe('TestComponent', () => {

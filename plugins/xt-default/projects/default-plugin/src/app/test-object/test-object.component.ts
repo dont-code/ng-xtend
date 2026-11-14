@@ -7,13 +7,13 @@ import {
   OnInit,
   signal
 } from '@angular/core';
-import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteSelectEvent } from '@openng/optimus-ui/autocomplete';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { XtRenderComponent, XtResolverService } from 'xt-components';
 import { Subscription } from 'rxjs';
 import { updateFormGroupWithValue } from 'xt-components';
-import { Panel } from 'primeng/panel';
+import { Panel } from '@openng/optimus-ui/panel';
 import { DefaultObjectComponent } from '../../../../default/src/lib/object/default-object.component';
 import { AppComponent } from '../app.component';
 

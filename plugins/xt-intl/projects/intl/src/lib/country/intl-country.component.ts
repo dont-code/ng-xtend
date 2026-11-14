@@ -6,7 +6,7 @@ import {
   AutoCompleteCompleteEvent,
   AutoCompleteSelectEvent,
   AutoCompleteUnselectEvent
-} from 'primeng/autocomplete';
+} from '@openng/optimus-ui/autocomplete';
 import { Country, getByAlpha3, listCountries, searchCountries } from './country-data';
 
 @Component({

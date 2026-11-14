@@ -11,7 +11,7 @@ import { XtResolverService, XtUnitTestHelper } from 'xt-components';
 import { StoreTestBed } from 'xt-store';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { WfwRender } from 'dc-workflow';
 import { ListDetailsComponent, registerWorkflowPlugin } from 'xt-plugin-workflow';
 import { DcApplicationModel } from '../shared/models/dc-application-model';

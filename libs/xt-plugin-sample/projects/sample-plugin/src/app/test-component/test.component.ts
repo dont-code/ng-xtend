@@ -4,7 +4,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SampleCurrencyComponent } from '../../../../sample/src/lib/currency/sample-currency.component';
 import { SampleMoneyComponent } from '../../../../sample/src/lib/money/sample-money.component';
 import { SampleHelloComponent } from '../../../../sample/src/lib/hello/sample-hello.component';
-import { InputText } from 'primeng/inputtext';
+import { InputText } from '@openng/optimus-ui/inputtext';
 import { JsonPipe } from '@angular/common';
 
 @Component({

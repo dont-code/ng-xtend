@@ -4,11 +4,11 @@ import { XtResolverService } from 'xt-components';
 import { StoreTestBed } from 'xt-store';
 import { registerWorkflowPlugin } from '../../../workflow/src/lib/register';
 import { registerDefaultPlugin } from 'xt-plugin-default';
-import { Toolbar } from 'primeng/toolbar';
-import { Button } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
-import { Menu } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { Toolbar } from '@openng/optimus-ui/toolbar';
+import { Button } from '@openng/optimus-ui/button';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
+import { Menu } from '@openng/optimus-ui/menu';
+import { MenuItem } from '@openng/optimus-ui/api';
 import { Subscription } from 'rxjs';
 
 type ThemeMode = 'light' | 'dark' | 'system';

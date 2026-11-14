@@ -13,15 +13,15 @@ import {
 import { updateFormGroupWithValue, XtBaseModel, XtMessageHandler, XtRenderComponent } from 'xt-components';
 import { FormBuilder, FormGroup, PristineChangeEvent, ReactiveFormsModule } from '@angular/forms';
 import { ManagedData } from 'xt-type';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
-import { Toolbar } from 'primeng/toolbar';
-import { Button } from 'primeng/button';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
-import { InputText } from 'primeng/inputtext';
-import { Tooltip } from 'primeng/tooltip';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@openng/optimus-ui/tabs';
+import { Toolbar } from '@openng/optimus-ui/toolbar';
+import { Button } from '@openng/optimus-ui/button';
+import { IconField } from '@openng/optimus-ui/iconfield';
+import { InputIcon } from '@openng/optimus-ui/inputicon';
+import { InputText } from '@openng/optimus-ui/inputtext';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
 import { Subscription } from 'rxjs';
-import { ProgressSpinner } from 'primeng/progressspinner';
+import { ProgressSpinner } from '@openng/optimus-ui/progressspinner';
 import { AbstractDcWorkflow } from 'dc-workflow';
 
 /**

@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { XtResolverService } from 'xt-components';
 import { XtApiStoreProvider, XtMemoryStoreProvider, XtStoreManagerService } from 'xt-store';

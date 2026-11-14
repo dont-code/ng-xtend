@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { XtRenderSubComponent, XtSimpleComponent } from 'xt-components';
-import { InputNumber } from 'primeng/inputnumber';
+import { InputNumber } from '@openng/optimus-ui/inputnumber';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DateInterval } from '../type-handlers/date-interval';
-import { Select } from 'primeng/select';
+import { Select } from '@openng/optimus-ui/select';
 
 @Component({
   selector: 'xt-agenda-date-interval',

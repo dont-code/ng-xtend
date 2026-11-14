@@ -2,7 +2,7 @@ import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { XtResolverService } from 'xt-components';
-import { Button } from 'primeng/button';
+import { Button } from '@openng/optimus-ui/button';
 import { DcWorkflowModel, WfwRender } from 'dc-workflow';
 import { StoreTestBed } from 'xt-store';
 import { NgClass } from '@angular/common';

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Toolbar } from 'primeng/toolbar';
+import { Toolbar } from '@openng/optimus-ui/toolbar';
 import { XtResolverService } from 'xt-components';
 import { registerWorkflowSamplePlugin } from '../../../lib/src/lib/register';
 

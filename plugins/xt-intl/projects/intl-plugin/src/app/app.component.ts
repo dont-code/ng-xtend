@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from '@openng/optimus-ui/button';
+import { ToolbarModule } from '@openng/optimus-ui/toolbar';
 import { XtResolverService } from 'xt-components';
 import { registerInternationalPlugin } from '../../../intl/src/lib/register';
 

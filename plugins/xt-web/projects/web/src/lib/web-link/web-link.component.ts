@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InputText } from 'primeng/inputtext';
-import { Tooltip } from 'primeng/tooltip';
+import { InputText } from '@openng/optimus-ui/inputtext';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
 
 @Component({
   selector: 'xt-web-link',

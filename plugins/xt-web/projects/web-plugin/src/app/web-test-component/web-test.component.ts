@@ -1,11 +1,11 @@
 import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteSelectEvent } from '@openng/optimus-ui/autocomplete';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { attachToFormGroup, XtRenderComponent, XtResolverService } from 'xt-components';
-import { Panel } from 'primeng/panel';
-import { Checkbox } from 'primeng/checkbox';
+import { Panel } from '@openng/optimus-ui/panel';
+import { Checkbox } from '@openng/optimus-ui/checkbox';
 import { XtStoreManagerService, XtApiStoreProvider, XtMemoryStoreProvider } from 'xt-store';
 
 @Component({

@@ -5,9 +5,9 @@ import { registerDefaultPlugin } from '../../../default/src/lib/register';
 import { XtTypeInfo } from 'xt-type';
 import { AuthorTestType, BookGenreTestType } from './test-types/ref-test-types';
 import { TestAuthorComponent } from './test-types/test-author.component';
-import { Toolbar } from 'primeng/toolbar';
-import { Button } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
+import { Toolbar } from '@openng/optimus-ui/toolbar';
+import { Button } from '@openng/optimus-ui/button';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
 import { Subscription } from 'rxjs';
 
 @Component({

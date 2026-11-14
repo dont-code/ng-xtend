@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { XtSimpleComponent } from '../xt-simple/xt-simple.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HostTestFormComponent, HostTestSimpleComponent } from '../test/xt-test-helper-components';
-import { Button } from 'primeng/button';
+import { Button } from '@openng/optimus-ui/button';
 import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it } from 'vitest';
 

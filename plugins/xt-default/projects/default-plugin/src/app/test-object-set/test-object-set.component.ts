@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, model, signal } from '@angular/core';
-import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteSelectEvent } from '@openng/optimus-ui/autocomplete';
 import { JsonPipe } from '@angular/common';
 import { XtRenderComponent } from 'xt-components';
 import { FormsModule } from '@angular/forms';
-import { Panel } from 'primeng/panel';
-import { Button } from 'primeng/button';
+import { Panel } from '@openng/optimus-ui/panel';
+import { Button } from '@openng/optimus-ui/button';
 import { DefaultObjectSetComponent } from '../../../../default/src/lib/object-set/default-object-set.component';
 import { CarouselObjectSetComponent } from '../../../../default/src/lib/object-set/carousel-object-set.component';
 import { AppComponent } from '../app.component';

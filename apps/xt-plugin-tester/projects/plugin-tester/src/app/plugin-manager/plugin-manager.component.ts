@@ -7,23 +7,23 @@ import {
   signal,
 } from '@angular/core';
 import { XtComponentInfo, XtPluginInfo, XtResolverService } from 'xt-components';
-import { Button } from 'primeng/button';
-import { ConfirmationService, PrimeIcons } from 'primeng/api';
+import { Button } from '@openng/optimus-ui/button';
+import { ConfirmationService, PrimeIcons } from '@openng/optimus-ui/api';
 import { XtTypeDetail, XtTypeInfo, isTypeDetail } from 'xt-type';
-import { Card } from 'primeng/card';
-import { Panel } from 'primeng/panel';
+import { Card } from '@openng/optimus-ui/card';
+import { Panel } from '@openng/optimus-ui/panel';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { Chip } from 'primeng/chip';
-import { Tag } from 'primeng/tag';
-import { Tooltip } from 'primeng/tooltip';
+import { AutoComplete, AutoCompleteCompleteEvent } from '@openng/optimus-ui/autocomplete';
+import { Chip } from '@openng/optimus-ui/chip';
+import { Tag } from '@openng/optimus-ui/tag';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
 import { ErrorHandlerService } from '../error-handler/error-handler.service';
 import { Subscription } from 'rxjs';
 import { FormErrorDisplayerComponent } from '../form-error-displayer/form-error-displayer.component';
 import { httpResource } from '@angular/common/http';
 import { TesterSessionService, LoadedPlugin } from '../core/tester-session.service';
 import { PageHeaderComponent } from '../shared/page-header/page-header.component';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@openng/optimus-ui/tabs';
 
 type PluginInfo = {
   plugin: string;

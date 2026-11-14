@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { XtSimpleComponent } from 'xt-components';
-import { Rating } from 'primeng/rating';
+import { Rating } from '@openng/optimus-ui/rating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({

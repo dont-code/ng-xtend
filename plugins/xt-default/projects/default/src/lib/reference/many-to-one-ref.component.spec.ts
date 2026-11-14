@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { AutoComplete } from 'primeng/autocomplete';
+import { AutoComplete } from '@openng/optimus-ui/autocomplete';
 
 import { ManyToOneRefComponent } from './many-to-one-ref.component';
 import { beforeEach, describe, expect, it } from 'vitest';

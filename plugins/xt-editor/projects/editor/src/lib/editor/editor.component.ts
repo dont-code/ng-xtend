@@ -17,11 +17,11 @@ import { defaultMarkdownParser, defaultMarkdownSerializer, schema } from 'prosem
 import { basicSetup, canInsert, markActive, openPrompt, TextField } from '../prose-mirror/basic-setup';
 import { MarkdownPipe } from '../markdown/markdown-pipe';
 import { InlineMarkdownPipe } from '../markdown/inline-markdown-pipe';
-import { Tooltip } from 'primeng/tooltip';
-import { Dialog } from 'primeng/dialog';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
+import { Dialog } from '@openng/optimus-ui/dialog';
 import { icons, MenuElement, MenuItem } from 'prosemirror-menu';
 import { type } from '@ngrx/signals';
-import { ButtonDirective } from 'primeng/button';
+import { ButtonDirective } from '@openng/optimus-ui/button';
 import { toggleMark } from 'prosemirror-commands';
 
 @Component({

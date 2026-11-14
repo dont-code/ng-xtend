@@ -5,7 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { registerDefaultPlugin } from '../register';
 import { HostTestTypedFormComponent, XtBaseContext, XtResolverService } from 'xt-components';
 import { By } from '@angular/platform-browser';
-import { DatePicker } from 'primeng/datepicker';
+import { DatePicker } from '@openng/optimus-ui/datepicker';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('DefaultPrimitiveComponent', () => {

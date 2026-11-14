@@ -5,9 +5,9 @@ import { XtBaseContext } from 'xt-components';
 import { By } from '@angular/platform-browser';
 import { AgendaDateIntervalComponent } from './agenda-date-interval.component';
 import { FormBuilder } from '@angular/forms';
-import { InputNumber } from 'primeng/inputnumber';
+import { InputNumber } from '@openng/optimus-ui/inputnumber';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { SelectItem } from 'primeng/select';
+import { SelectItem } from '@openng/optimus-ui/select';
 
 describe('AgendaDateIntervalComponent', () => {
   let component: AgendaDateIntervalComponent;

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { XtMessageHandler, XtResolverService, XtSimpleComponent } from 'xt-components';
-import { Checkbox, CheckboxChangeEvent } from 'primeng/checkbox';
+import { Checkbox, CheckboxChangeEvent } from '@openng/optimus-ui/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { XtStoreManagerService } from 'xt-store';
 

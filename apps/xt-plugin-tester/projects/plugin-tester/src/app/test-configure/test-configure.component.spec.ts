@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestConfigureComponent } from './test-configure.component';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('TestConfigure', () => {

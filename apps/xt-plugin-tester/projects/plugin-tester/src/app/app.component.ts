@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Button } from 'primeng/button';
-import { Tag } from 'primeng/tag';
-import { Toast } from 'primeng/toast';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { Tooltip } from 'primeng/tooltip';
+import { Button } from '@openng/optimus-ui/button';
+import { Tag } from '@openng/optimus-ui/tag';
+import { Toast } from '@openng/optimus-ui/toast';
+import { ConfirmDialog } from '@openng/optimus-ui/confirmdialog';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
 import { XtResolverService } from 'xt-components';
 import { registerDefaultPlugin } from 'xt-plugin-default';
 import { XtMemoryStoreProvider, xtStoreManager } from 'xt-store';

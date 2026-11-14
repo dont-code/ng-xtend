@@ -1,9 +1,9 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { InputText } from 'primeng/inputtext';
-import { Panel } from 'primeng/panel';
-import { Tag } from 'primeng/tag';
+import { InputText } from '@openng/optimus-ui/inputtext';
+import { Panel } from '@openng/optimus-ui/panel';
+import { Tag } from '@openng/optimus-ui/tag';
 import { XtBaseContext, XtResolverService } from 'xt-components';
 import { PageHeaderComponent } from '../shared/page-header/page-header.component';
 

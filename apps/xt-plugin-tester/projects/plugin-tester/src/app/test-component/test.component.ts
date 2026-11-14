@@ -16,14 +16,14 @@ import {
 } from 'xt-components';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AutoComplete, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteSelectEvent } from '@openng/optimus-ui/autocomplete';
 import { Subscription } from 'rxjs';
-import { Panel } from 'primeng/panel';
-import { Button } from 'primeng/button';
-import { Tag } from 'primeng/tag';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
-import { Tooltip } from 'primeng/tooltip';
-import { MessageService } from 'primeng/api';
+import { Panel } from '@openng/optimus-ui/panel';
+import { Button } from '@openng/optimus-ui/button';
+import { Tag } from '@openng/optimus-ui/tag';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@openng/optimus-ui/tabs';
+import { Tooltip } from '@openng/optimus-ui/tooltip';
+import { MessageService } from '@openng/optimus-ui/api';
 import { TesterSessionService } from '../core/tester-session.service';
 import { PageHeaderComponent } from '../shared/page-header/page-header.component';
 

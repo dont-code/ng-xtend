@@ -1,12 +1,12 @@
-const { withNativeFederation, shareAll, share } = require('@angular-architects/native-federation/config');
+const { withNativeFederation, fromPackageJson } = require('@angular-architects/native-federation/config');
 
 module.exports = withNativeFederation({
   name: 'xt-plugin-tester',
-  shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
-  },
+  shared: fromPackageJson({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
+    .patch(['@angular/animations', '@angular/common', '@angular/core', '@angular/forms', '@angular/platform-browser', '@angular/router'], { includeSecondaries: { keepAll: true } }),
   features: {
-    ignoreUnusedDeps:true
+    ignoreUnusedDeps: true,
+    denseExternals: true
   },
   skip: [
     'rxjs/ajax',
@@ -14,8 +14,8 @@ module.exports = withNativeFederation({
     'rxjs/testing',
     'rxjs/webSocket',
     'chart.js/auto',
-    /^@primeuix\//,
-    'primeng/chart',
+    /^@openng\/optimus-ui-/,
+    '@openng/optimus-ui/chart',
     'primeicons'
   ]
 });

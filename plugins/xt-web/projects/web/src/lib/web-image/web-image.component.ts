@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { IStoreProvider, XtMessageHandler, StoreSupport, XtSimpleComponent } from 'xt-components';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
+import { FileUpload, FileUploadHandlerEvent } from '@openng/optimus-ui/fileupload';
 import { NgIf } from '@angular/common';
-import { InputText } from 'primeng/inputtext';
-import { Image } from 'primeng/image';
+import { InputText } from '@openng/optimus-ui/inputtext';
+import { Image } from '@openng/optimus-ui/image';
 
 @Component({
   selector: 'xt-web-image',

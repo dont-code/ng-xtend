@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { InputNumberModule } from '@openng/optimus-ui/inputnumber';
 import { XtSimpleComponent } from 'xt-components';
 import { CommonModule } from '@angular/common';
-import { InputTextModule } from 'primeng/inputtext';
-import { Select, SelectChangeEvent } from 'primeng/select';
+import { InputTextModule } from '@openng/optimus-ui/inputtext';
+import { Select, SelectChangeEvent } from '@openng/optimus-ui/select';
 
 @Component({
   selector: 'xt-dummy-currency',

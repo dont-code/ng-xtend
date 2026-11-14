@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PluginManagerComponent } from './plugin-manager.component';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { XtCompositeComponent, XtResolverService, XtSimpleComponent } from 'xt-components';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';

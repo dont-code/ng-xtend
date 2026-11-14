@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from './error-handler.service';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 describe('ErrorHandlerService', () => {

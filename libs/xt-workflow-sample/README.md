@@ -146,4 +146,4 @@ npm start
 
 - `dc-workflow` - Workflow infrastructure (`AbstractDcWorkflowBase`, `AbstractDcWorkflow`, `DcWorkflowModel`, `WfwRender`)
 - `xt-components` - Core component infrastructure (`XtResolverService`)
-- `primeng` - UI components used by the demo app
+- `@openng/optimus-ui` - UI components used by the demo app

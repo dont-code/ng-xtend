@@ -64,7 +64,7 @@ registerWorkflowPlugin(resolverService);
 - `dc-workflow` - Base workflow infrastructure
 - `xt-components` - Core component infrastructure
 - `xt-plugin-default` - CarouselObjectSetComponent
-- `primeng` - UI components (tabs, toolbar, button, dialog, progressspinner)
+- `@openng/optimus-ui` - UI components (tabs, toolbar, button, dialog, progressspinner)
 
 ## Development
 

@@ -27,7 +27,7 @@ module.exports = withNativeFederation({
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
   },
-  skip: ['chart.js/auto', 'primeng/chart', 'primeicons']
+  skip: ['chart.js/auto', '@openng/optimus-ui/chart', 'primeicons']
 });
 ```
 

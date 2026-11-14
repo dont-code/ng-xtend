@@ -62,9 +62,9 @@ jobs:
           node ../../common/scripts/install-run-rush-pnpm.js publish --access public --tag ${{env.stage}}
           cd ../..
         continue-on-error: true
-      - name: Publish libraries to ${{env.stage}}
-        run: |
-          unset NODE_AUTH_TOKEN
+#      - name: Publish libraries to ${{env.stage}}
+#        run: |
+#          unset NODE_AUTH_TOKEN
 #          node common/scripts/install-run-rush-pnpm.js publish libs/xt-store/dist/store --access public --tag ${{env.stage}}
 #          node common/scripts/install-run-rush-pnpm.js publish libs/xt-components/dist/xt-components --access public --tag ${{env.stage}}
 #          node common/scripts/install-run-rush-pnpm.js publish libs/dc-workflow/dist/dc-workflow --access public --tag ${{env.stage}}

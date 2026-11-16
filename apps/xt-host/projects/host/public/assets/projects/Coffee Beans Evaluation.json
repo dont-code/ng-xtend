@@ -25,10 +25,10 @@
         {
           "fields": [{
               "name": "Name",
-              "type": "Text"
+              "type": "string"
             }, {
               "name": "Type",
-              "type": "Shop type"
+              "type": "string"
             }
           ],
           "name": "Online Shop"

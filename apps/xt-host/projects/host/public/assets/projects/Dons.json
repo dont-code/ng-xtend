@@ -18,7 +18,7 @@
             },
             "b": {
               "name": "Qui",
-              "type": "Reference"
+              "type": "string"
             },
             "c": {
               "type": "Date & Time",

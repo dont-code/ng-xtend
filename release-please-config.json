@@ -8,7 +8,8 @@
             "package-name": "ng-xtend",
             "changelog-path": "CHANGELOG.md",
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "libs/xt-type": {
             "release-type": "node",
@@ -25,7 +26,8 @@
                 "projects/store/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-idb-store": {
             "release-type": "node",
@@ -34,7 +36,8 @@
                 "projects/idb-store/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "libs/xt-components": {
             "release-type": "node",
@@ -43,7 +46,8 @@
                 "projects/xt-components/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "libs/dc-workflow": {
             "release-type": "node",
@@ -52,7 +56,8 @@
                 "projects/dc-workflow/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "libs/xt-plugin-sample": {
             "release-type": "node",
@@ -61,7 +66,8 @@
                 "projects/sample/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "libs/xt-workflow-sample": {
             "release-type": "node",
@@ -70,7 +76,8 @@
                 "projects/workflow-sample/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-default": {
             "release-type": "node",
@@ -79,7 +86,8 @@
                 "projects/default/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-intl": {
             "release-type": "node",
@@ -88,7 +96,8 @@
                 "projects/intl/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-finance": {
             "release-type": "node",
@@ -97,7 +106,8 @@
                 "projects/finance/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-web": {
             "release-type": "node",
@@ -106,7 +116,8 @@
                 "projects/web/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-agenda": {
             "release-type": "node",
@@ -115,7 +126,8 @@
                 "projects/agenda/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-editor": {
             "release-type": "node",
@@ -124,7 +136,8 @@
                 "projects/editor/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         },
         "plugins/xt-workflow": {
             "release-type": "node",
@@ -133,7 +146,8 @@
                 "projects/workflow/package.json"
             ],
             "prerelease": true,
-            "prerelease-type": "next"
+            "prerelease-type": "next",
+            "versioning": "prerelease"
         }
     },
     "plugins": [
@@ -156,5 +170,6 @@
                 "xt-editor"
             ]
         }
-    ]
+    ],
+    "versioning": "prerelease"
 }

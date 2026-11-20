@@ -12,7 +12,7 @@ module.exports = withNativeFederation({
   },
 
   shared: fromPackageJson({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
-    .patch(['@angular/animations', '@angular/common', '@angular/core', '@angular/forms', '@angular/platform-browser', '@angular/router'], { includeSecondaries: { keepAll: true } }),
+    .patch(['@angular/animations', '@angular/common', '@angular/core', '@angular/forms', '@angular/platform-browser', '@angular/router', '@openng/optimus-ui'], { includeSecondaries: { keepAll: true } }),
   features: {
     ignoreUnusedDeps: true,
     denseExternals: true
@@ -26,6 +26,7 @@ module.exports = withNativeFederation({
     /^@openng\/optimus-ui-/,
     'chart.js/auto',
     '@openng/optimus-ui/chart',
+    '@openng/optimus-ui/editor',
     'primeicons'
   ]
 

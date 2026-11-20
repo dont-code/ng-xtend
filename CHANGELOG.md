@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.9.1-next](https://github.com/dont-code/ng-xtend/compare/ng-xtend-v0.9.0...ng-xtend-v0.9.1-next) (2026-11-20)
+
+
+### Bug Fixes
+
+* back to publishing all ([d9fb7aa](https://github.com/dont-code/ng-xtend/commit/d9fb7aafc9aa254fbe2ea8874a130ed315ebe612))
+* bad version xt-plugin-editor ([d8d50c9](https://github.com/dont-code/ng-xtend/commit/d8d50c95817d811fc69fdae0997565b16b6852bd))
+* federation updates ([266b2ba](https://github.com/dont-code/ng-xtend/commit/266b2ba00db99f37f3986d62bfb42d5991f507f9))
+* federation updates ([e63148d](https://github.com/dont-code/ng-xtend/commit/e63148dbb27871bc5245376ea7be8a34c5ea4e07))
+* fixed release-please version generation ([92f7a6b](https://github.com/dont-code/ng-xtend/commit/92f7a6b4e4bdf5e706f2500ee879b3167b980c4e))
+* fixed release-please version generation ([f6d6493](https://github.com/dont-code/ng-xtend/commit/f6d6493d0e75f028722fa6bd919d92b979fab083))
+* fixed release-please version generation ([2440b50](https://github.com/dont-code/ng-xtend/commit/2440b50aed49ca926d5b383454826b0d21dc37ce))
+* only deploy editor ([8bedd48](https://github.com/dont-code/ng-xtend/commit/8bedd489cd5c6b047fa1dfe3b974203ca2fea7f5))
+* only deploy editor ([a879835](https://github.com/dont-code/ng-xtend/commit/a8798351c0e2df3be52839fd2c3b2d168e535812))
+* only deploy editor ([a32a51c](https://github.com/dont-code/ng-xtend/commit/a32a51c6ce5b1e2d96d64b2423424e129dc88671))
+
 ## [0.9.0](https://github.com/dont-code/ng-xtend/compare/ng-xtend-v1.4.1...ng-xtend-v0.9.0) (2026-11-14)
 
 

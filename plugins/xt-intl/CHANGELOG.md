@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1-next](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.5.0...xt-plugin-intl-v1.5.1-next) (2026-11-20)
+
+
+### Bug Fixes
+
+* federation updates ([266b2ba](https://github.com/dont-code/ng-xtend/commit/266b2ba00db99f37f3986d62bfb42d5991f507f9))
+* federation updates ([e63148d](https://github.com/dont-code/ng-xtend/commit/e63148dbb27871bc5245376ea7be8a34c5ea4e07))
+
 ## [1.5.0](https://github.com/dont-code/ng-xtend/compare/xt-plugin-intl-v1.4.1...xt-plugin-intl-v1.5.0) (2026-11-14)
 
 
